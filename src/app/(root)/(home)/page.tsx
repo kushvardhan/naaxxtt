@@ -10,7 +10,7 @@ export default function Home() {
 
   return (
 <div
-  className={`w-screen h-[calc(100vh-6rem)] flex items-center justify-center 
+  className={`  flex items-center justify-center 
     ${theme.mode === 'dark' ? 'bg-black text-white' : 'bg-white text-black'}`}>
   
   <button

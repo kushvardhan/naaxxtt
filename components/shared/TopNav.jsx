@@ -1,10 +1,15 @@
 "use client";
-import React from 'react'
+import React,{ useContext } from 'react'
 import Link from 'next/link'
+import { ThemeContext } from '../../context/ThemeContext';
 
 const TopNav = () => {
+
+      const theme = useContext(ThemeContext);
+      if (!theme) return null;
+
   return (
-    <div className='w-screen h-[6rem] bg-zinc-900 flex justify-between items-center'>
+    <div className={`w-screen h-[6rem] ${theme.mode === 'dark' ? 'bg-[#111] text-white' : 'bg-[#eee] text-black'} flex justify-between items-center`}>
         <div className='flex items-center px-6 '>
             <Link href='/' className='font-black text-3xl'>
             NextText

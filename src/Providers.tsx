@@ -7,9 +7,10 @@ import { ThemeProvider } from "../context/ThemeContext";
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider>
-      <ThemeProvider>
-        {children}
-      </ThemeProvider>
+<ThemeProvider>
+  {children}
+</ThemeProvider>
+
     </ClerkProvider>
   );
 }

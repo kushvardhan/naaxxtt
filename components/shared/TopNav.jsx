@@ -9,7 +9,7 @@ const TopNav = () => {
       if (!theme) return null;
 
   return (
-    <div className={`w-screen h-[6rem] ${theme.mode === 'dark' ? 'bg-[#111] text-white' : 'bg-[#eee] text-black'} flex justify-between items-center`}>
+    <div className={`flex-between fixed z-50 w-full gap-5 p-6 ${theme.mode === 'dark' ? 'bg-[#111] text-white' : 'bg-[#eee] text-black shadow-light-300'} sm:px-12`}>
         <div className='flex items-center px-6 '>
             <Link href='/' className='font-black text-3xl'>
             NextText

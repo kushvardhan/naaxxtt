@@ -2,6 +2,7 @@
 
 import { createContext, useEffect, useState, ReactNode } from "react";
 
+
 type ThemeContextType = {
   mode: string;
   setMode: React.Dispatch<React.SetStateAction<string>>;

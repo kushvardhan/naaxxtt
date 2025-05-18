@@ -9,13 +9,16 @@ import {
   MenubarRadioGroup,
   MenubarRadioItem,
 } from "./menubar"
-import { useTheme } from "next-themes"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Laptop, Moon, Sun } from "lucide-react"
+import { ThemeContext } from "../../../context/ThemeContext";
 
 export const ThemeToggleMenu = () => {
-  const { setTheme, theme, resolvedTheme } = useTheme()
+  const themeContext = useContext(ThemeContext)
   const [mounted, setMounted] = useState(false)
+
+  if (!themeContext) return null
+  const { mode, setMode } = themeContext
 
   useEffect(() => {
     setMounted(true)
@@ -24,8 +27,8 @@ export const ThemeToggleMenu = () => {
   if (!mounted) return null
 
   const renderIcon = () => {
-    if (resolvedTheme === "light") return <Sun className="w-5 h-5" />
-    if (resolvedTheme === "dark") return <Moon className="w-5 h-5" />
+    if (mode === "light") return <Sun className="w-5 h-5" />
+    if (mode === "dark") return <Moon className="w-5 h-5" />
     return <Laptop className="w-5 h-5" />
   }
 
@@ -36,7 +39,7 @@ export const ThemeToggleMenu = () => {
           {renderIcon()}
         </MenubarTrigger>
         <MenubarContent>
-          <MenubarRadioGroup value={theme} onValueChange={setTheme}>
+          <MenubarRadioGroup value={mode} onValueChange={setMode}>
             <MenubarRadioItem value="light" className="flex gap-2 items-center">
               <Sun className="w-4 h-4" /> Light
             </MenubarRadioItem>

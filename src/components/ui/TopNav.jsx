@@ -1,13 +1,17 @@
 // components/shared/TopNav.tsx
 "use client"
-
+import { useContext } from "react"
+import { ThemeContext } from "../../../context/ThemeContext"
 import Link from "next/link"
 import { SignedIn, UserButton } from "@clerk/nextjs"
 import { ThemeToggleMenu } from "./ThemeToggleMenu"
 
 const TopNav = () => {
+
+  const theme = useContext(ThemeContext);
+
   return (
-    <nav className="flex items-center justify-between fixed z-50 w-full gap-5 p-6 bg-background text-foreground border-b sm:px-12">
+    <nav className={`flex items-center justify-between fixed z-50 w-full gap-5 p-6 ${theme.mode === "dark" ? "bg-black text-white" : "bg-white text-black"} text-foreground border-b sm:px-12`}>
       <div className="flex items-center gap-1">
         <Link href="/" className="font-black font-spaceGrotesk text-4xl">
           <span>Next</span>
@@ -16,7 +20,7 @@ const TopNav = () => {
       </div>
 
       <div className="flex items-center gap-4">
-        <ThemeToggleMenu />
+        <ThemeToggleMenu  />
         <SignedIn>
           <UserButton
             afterSignOutUrl="/"

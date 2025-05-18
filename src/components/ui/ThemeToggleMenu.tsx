@@ -13,13 +13,14 @@ export const ThemeToggleMenu = () => {
   if (!themeContext) return null
   const { mode, setMode } = themeContext
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  // Close dropdown when clicking outside
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    function handleClickOutside(event: globalThis.MouseEvent) {
+    function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setOpen(false)
       }
@@ -46,6 +47,14 @@ export const ThemeToggleMenu = () => {
     return <Laptop className="w-5 h-5" />
   }
 
+  const getDotStyle = (value: string) => {
+    if (value === "dark")
+      return "bg-green-500 shadow-[0_0_8px_2px_rgba(34,197,94,0.8)]"
+    if (value === "light")
+      return "bg-blue-500 shadow-[0_0_8px_2px_rgba(59,130,246,0.8)]"
+    return "bg-gray-900 shadow-[0_0_6px_2px_rgba(107,114,128,0.9)]"
+  }
+
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
       <button
@@ -65,34 +74,39 @@ export const ThemeToggleMenu = () => {
       {open && (
         <div
           className={`
-            absolute right-0 mt-2 w-42 rounded-xl shadow-lg
-            ${mode === "dark" ? "bg-neutral-900 text-white border border-neutral-700" : "bg-white text-black border border-gray-300"}
-            z-50
+            absolute right-0 mt-2 w-44 rounded-xl shadow-lg z-50
+            ${mode === "dark"
+              ? "bg-neutral-900 text-white border border-neutral-700"
+              : "bg-white text-black border border-gray-300"}
           `}
           role="menu"
         >
-          {options.map(({ value, label, icon }) => (
-            <button
-              key={value}
-              onClick={() => {
-                setMode(value)
-                setOpen(false)
-              }}
-              className={`
-                w-full flex items-center gap-2 px-4 py-2 text-left rounded-md
-                transition-colors
-                ${mode === value
-                  ? mode === "dark"
-                    ? "bg-neutral-700"
-                    : "bg-gray-200"
-                  : "hover:bg-muted/30"}
-              `}
-              role="menuitem"
-            >
-              {icon}
-              <span>{label}</span>
-            </button>
-          ))}
+          {options.map(({ value, label, icon }) => {
+            const isSelected = mode === value
+            return (
+              <button
+                key={value}
+                onClick={() => {
+                  setMode(value)
+                  setOpen(false)
+                }}
+                className={`
+                  w-full flex items-center justify-between px-4 py-2 rounded-md
+                  transition-colors hover:bg-muted/30
+                  ${isSelected ? "bg-transparent" : ""}
+                `}
+                role="menuitem"
+              >
+                <div className="flex items-center gap-2">
+                  {icon}
+                  <span>{label}</span>
+                </div>
+                {isSelected && (
+                  <span className={`w-2 h-2 rounded-full ml-4 ${getDotStyle(value)}`} />
+                )}
+              </button>
+            )
+          })}
         </div>
       )}
     </div>

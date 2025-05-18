@@ -1,7 +1,8 @@
 "use client"
 
 import React, { useState, useContext, useEffect, useRef } from "react"
-import { Sun, Moon, Laptop } from "lucide-react"
+import { Moon, Laptop } from "lucide-react"
+import { SunIcon as SolidSun } from "@heroicons/react/24/solid"
 import { ThemeContext } from "../../../context/ThemeContext"
 
 export const ThemeToggleMenu = () => {
@@ -13,12 +14,10 @@ export const ThemeToggleMenu = () => {
   if (!themeContext) return null
   const { mode, setMode } = themeContext
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -36,23 +35,25 @@ export const ThemeToggleMenu = () => {
   if (!mounted) return null
 
   const options = [
-    { value: "light", label: "Light", icon: <Sun className="w-4 h-4" /> },
-    { value: "dark", label: "Dark", icon: <Moon className="w-4 h-4" /> },
-    { value: "system", label: "System", icon: <Laptop className="w-4 h-4" /> },
+    { value: "light", label: "Light", icon: SolidSun },
+    { value: "dark", label: "Dark", icon: Moon },
+    { value: "system", label: "System", icon: Laptop },
   ]
 
-  const currentIcon = () => {
-    if (mode === "light") return <Sun className="w-5 h-5" />
-    if (mode === "dark") return <Moon className="w-5 h-5" />
-    return <Laptop className="w-5 h-5" />
-  }
+const getDotStyle = (value: string) => {
+  if (value === "dark")
+    return "bg-green-500 shadow-[0_0_8px_2px_rgba(34,197,94,0.8)]"
+  if (value === "light")
+    return "bg-orange-500 shadow-[0_0_8px_2px_rgba(249,115,22,0.7)]"
+  return "bg-gray-900 shadow-[0_0_6px_2px_rgba(107,114,128,0.9)]"
+}
 
-  const getDotStyle = (value: string) => {
-    if (value === "dark")
-      return "bg-green-500 shadow-[0_0_8px_2px_rgba(34,197,94,0.8)]"
-    if (value === "light")
-      return "bg-blue-500 shadow-[0_0_8px_2px_rgba(59,130,246,0.8)]"
-    return "bg-gray-900 shadow-[0_0_6px_2px_rgba(107,114,128,0.9)]"
+
+  const getIcon = () => {
+    const iconProps = "w-5 h-5 text-orange-600"
+    if (mode === "light") return <SolidSun className={iconProps} />
+    if (mode === "dark") return <Moon className="w-5 h-5 fill-orange-600 stroke-none" />
+    return <Laptop className="w-5 h-5 fill-orange-600 stroke-none" />
   }
 
   return (
@@ -68,7 +69,7 @@ export const ThemeToggleMenu = () => {
         aria-haspopup="true"
         aria-expanded={open}
       >
-        {currentIcon()}
+        {getIcon()}
       </button>
 
       {open && (
@@ -81,8 +82,9 @@ export const ThemeToggleMenu = () => {
           `}
           role="menu"
         >
-          {options.map(({ value, label, icon }) => {
+          {options.map(({ value, label, icon: Icon }) => {
             const isSelected = mode === value
+            const iconClass = `w-4 h-4 ${isSelected ? "text-orange-600 fill-orange-600 stroke-none" : ""}`
             return (
               <button
                 key={value}
@@ -98,7 +100,7 @@ export const ThemeToggleMenu = () => {
                 role="menuitem"
               >
                 <div className="flex items-center gap-2">
-                  {icon}
+                  <Icon className={iconClass} />
                   <span>{label}</span>
                 </div>
                 {isSelected && (

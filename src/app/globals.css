@@ -120,3 +120,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Hide the default radio dot in MenubarRadioItem */
+[data-radix-menubar-radio-item]::before {
+  display: none !important;
+}

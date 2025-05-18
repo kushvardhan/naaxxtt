@@ -1,11 +1,10 @@
-// components/shared/TopNav.tsx
 "use client"
 
 import { useContext } from "react"
 import { ThemeContext } from "../../../context/ThemeContext"
 import Link from "next/link"
 import { SignedIn, UserButton } from "@clerk/nextjs"
-import { ThemeToggleMenu } from "./ThemeToggleMenu"
+import { ThemeToggleMenu } from "./ThemeToggleMenu.tsx"
 
 const TopNav = () => {
   const theme = useContext(ThemeContext)

@@ -1,5 +1,5 @@
 "use client";
-import TopNav from "../../components/ui/TopNav";
+import TopNav from "../../components/Shared/TopNav";
 
 export default function Layout({ children }) {
   return (

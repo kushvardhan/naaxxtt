@@ -13,7 +13,7 @@ const TopNav = () => {
     <nav
       className={`flex items-center justify-between fixed z-50 w-full gap-5 p-6 border-b sm:px-12 transition-colors ${
         theme.mode === "dark"
-          ? "bg-black text-white"
+          ? "bg-zinc-900 text-white"
           : "bg-white text-black"
       }`}
     >

@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useClerk, SignedIn } from "@clerk/nextjs";
 import {
   Sheet,
   SheetClose,
@@ -164,6 +165,7 @@ const sideBarLinks = [
 const MobileNav = () => {
   const theme = useContext(ThemeContext);
   const pathName = usePathname();
+const { signOut } = useClerk();
 
   return (
     <div className="sm:hidden flex items-center">
@@ -251,37 +253,59 @@ const MobileNav = () => {
           </nav>
 
           <SignedOut>
+  <div className="mt-6 flex flex-col gap-3">
+    <SheetClose asChild>
+      <Link href="/sign-in">
+        <Button
+          variant="outline"
+          className={`w-full rounded-lg py-3 text-base font-medium transition-all duration-300
+            ${
+              theme?.mode === "dark"
+                ? "bg-zinc-900 text-white border-zinc-700 hover:bg-orange-300/30 hover:text-orange-100"
+                : "bg-white text-black border border-zinc-300  hover:bg-zinc-700/80 hover:text-white"
+            }`}
+        >
+          Log in
+        </Button>
+      </Link>
+    </SheetClose>
+    <SheetClose asChild>
+      <Link href="/sign-up">
+        <Button
+          variant="outline"
+          className={`w-full rounded-lg py-3 text-base font-medium transition-all duration-300
+            ${
+              theme?.mode === "dark"
+                ? "bg-zinc-800 text-white border-zinc-700 hover:bg-orange-300/40 hover:text-orange-100"
+                : "bg-white text-black border border-zinc-300 hover:bg-zinc-700 hover:text-white"
+            }`}
+        >
+          Sign up
+        </Button>
+      </Link>
+    </SheetClose>
+  </div>
+</SignedOut>
+
+ <SignedIn>
             <div className="mt-6 flex flex-col gap-3">
               <SheetClose asChild>
-                <Link href="/sign-in">
-                  <Button
-                    variant="outline"
-                    className={`w-full rounded-lg py-3 text-base font-medium ${
+                <Button
+                  variant="outline"
+                  onClick={() => signOut()}
+                  className={`w-full rounded-lg py-3 text-base font-medium transition-all duration-300
+                    ${
                       theme?.mode === "dark"
-                        ? "bg-zinc-900 text-white border-zinc-700"
-                        : "bg-white text-black border border-zinc-300"
+                        ? "bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-700"
+                        : "bg-white text-black border border-zinc-300 hover:bg-zinc-100"
                     }`}
-                  >
-                    Log in
-                  </Button>
-                </Link>
-              </SheetClose>
-              <SheetClose asChild>
-                <Link href="/sign-up">
-                  <Button
-                    variant="outline"
-                    className={`w-full rounded-lg py-3 text-base font-medium ${
-                      theme?.mode === "dark"
-                        ? "bg-zinc-800 text-white border-zinc-700"
-                        : "bg-white text-black border border-zinc-300"
-                    }`}
-                  >
-                    Sign up
-                  </Button>
-                </Link>
+                >
+                  Log out
+                </Button>
               </SheetClose>
             </div>
-          </SignedOut>
+          </SignedIn>
+
         </SheetContent>
       </Sheet>
     </div>

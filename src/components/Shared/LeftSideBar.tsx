@@ -2,7 +2,7 @@
 
 import React, { useContext, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ThemeContext } from "../../../context/ThemeContext";
 
 const sideBarLinks = [
@@ -26,7 +26,7 @@ const sideBarLinks = [
     route: "/",
     label: "Home",
   },
-    {
+  {
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +66,7 @@ const sideBarLinks = [
     route: "/community",
     label: "Community",
   },
-    {
+  {
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -86,7 +86,7 @@ const sideBarLinks = [
     route: "/find-jobs",
     label: "Find Jobs",
   },
-    {
+  {
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -106,21 +106,29 @@ const sideBarLinks = [
     route: "/ask-question",
     label: "Ask a question",
   },
-  // add other links similarly ...
 ];
 
 const LeftSidebar = () => {
   const theme = useContext(ThemeContext);
   const pathName = usePathname();
+  const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
 
-  const bgColor = theme.mode === "dark" ? "bg-black text-white" : "bg-zinc-200 text-black";
+  // Replace with your real auth logic, e.g. from context
+  const signedIn = false; // change as needed or pull from context
+
+  const bgColor = theme.mode === "dark" ? "bg-zinc-900 text-white" : "bg-gradient-to-l from-zinc-100 to-white text-black";
   const hoverBg = theme.mode === "dark" ? "hover:bg-orange-400/30" : "hover:bg-orange-200";
 
+  const handleLogout = () => {
+    // Put your logout logic here
+    // Then redirect to login page
+    router.push("/login");
+  };
+
   return (
-    // Show on md and up, hide on small screens (where MobileNav is visible)
     <div
-      className={`hidden md:flex flex-col fixed top-[64px] left-0 min-h-[calc(100vh-64px)] transition-width duration-300 ease-in-out 
+      className={`hidden md:flex flex-col fixed top-[64px] left-0 min-h-[calc(100vh-64px)] transition-width duration-300 ease-in-out
       ${collapsed ? "w-16" : "w-64"} ${bgColor}`}
     >
       <button
@@ -131,37 +139,19 @@ const LeftSidebar = () => {
         aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
       >
         {collapsed ? (
-          // Icon for expand (right arrow)
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         ) : (
-          // Icon for collapse (left arrow)
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
         )}
       </button>
 
-      <nav className="flex flex-col flex-grow mt-2 gap-1">
+      <nav className="flex flex-col flex-grow mt-2 gap-2">
         {sideBarLinks.map(({ icon, route, label }) => {
-          const isActive =
-            (pathName.includes(route) && route.length > 1) || pathName === route;
-
+          const isActive = (pathName === route) || (route.length > 1 && pathName.startsWith(route));
           return (
             <Link
               key={route}
@@ -193,6 +183,53 @@ const LeftSidebar = () => {
           );
         })}
       </nav>
+
+      {/* Auth button at bottom */}
+      <div className={`mb-4 mt-auto mx-2`}>
+        {signedIn ? (
+          <button
+            onClick={handleLogout}
+            className={`w-full flex items-center justify-center gap-3 rounded-lg px-4 py-3 transition-colors duration-300
+            bg-red-600 text-white hover:bg-red-700
+            ${collapsed ? "justify-center px-2" : ""}
+            `}
+            title={collapsed ? "Logout" : undefined}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H3m6-6l-6 6 6 6" />
+            </svg>
+            {!collapsed && "Logout"}
+          </button>
+        ) : (
+          <Link
+            href="/login"
+            className={`w-full flex items-center justify-center gap-3 rounded-lg px-4 py-3 transition-colors duration-300
+            bg-green-600 text-white hover:bg-green-700
+            ${collapsed ? "justify-center px-2" : ""}
+            `}
+            title={collapsed ? "Login" : undefined}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H3m6-6l-6 6 6 6" />
+            </svg>
+            {!collapsed && "Login"}
+          </Link>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,22 +1,20 @@
 "use client";
+
 import TopNav from "../../components/Shared/TopNav";
-import LeftSideBar from "../../components/Shared/LeftSideBar";
+import LeftSidebar from "../../components/Shared/LeftSideBar";
 
 export default function Layout({ children }) {
   return (
-    <main className={`relative`}>
+    <main className="relative min-h-screen flex flex-col">
       <TopNav />
-      <div className="z-10 min-w-screen absolute top-[calc(100vh-TopNav)] flex">
-        <LeftSideBar />
-        <section className="flex flex-1 flex-col px-6 pb-6 pt-36 max-md:pb-14 sm:px-14">
-          <div className="mx-auto w-full max-w-5xl ">{children}</div>
+      <div className="flex flex-1 pt-16"> {/* pt-16 equals 64px for the top nav */}
+        <LeftSidebar />
+        <section className="flex flex-1 flex-col px-6 pb-6 pt-6 max-md:pb-14 sm:px-14 overflow-auto">
+          <div className="mx-auto w-full max-w-5xl">{children}</div>
         </section>
-        RightSideBar
+        {/* RightSidebar placeholder (replace with actual if needed) */}
+        {/* <RightSidebar /> */}
       </div>
     </main>
   );
 }
-
-
-
-

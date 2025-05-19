@@ -108,7 +108,7 @@ const sideBarLinks = [
   },
 ];
 
-const LeftSidebar = () => {
+const LeftSidebar = ({ navHeight }: { navHeight: number }) => {
   const theme = useContext(ThemeContext);
   const pathName = usePathname();
   const router = useRouter();
@@ -128,8 +128,9 @@ const LeftSidebar = () => {
 
   return (
     <div
-      className={`hidden md:flex flex-col fixed top-[64px] left-0 min-h-[calc(100vh-64px)] transition-width duration-300 ease-in-out
-      ${collapsed ? "w-16" : "w-64"} ${bgColor}`}
+      className={`hidden md:flex flex-col fixed left-0 min-h-[calc(100vh-95px)] transition-width duration-300 ease-in-out
+        ${collapsed ? "w-16" : "w-64"} ${bgColor}`}
+      style={{ top: navHeight, bottom:0 }}
     >
       <button
         onClick={() => setCollapsed(!collapsed)}
@@ -147,6 +148,7 @@ const LeftSidebar = () => {
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
         )}
+        
       </button>
 
       <nav className="flex flex-col flex-grow mt-2 gap-2">

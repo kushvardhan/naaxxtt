@@ -5,6 +5,7 @@ import { ThemeContext } from "../../../context/ThemeContext"
 import Link from "next/link"
 import { SignedIn, UserButton } from "@clerk/nextjs"
 import { ThemeToggleMenu } from "./ThemeToggleMenu.tsx"
+import MobileNav from "./MobileNav.tsx"
 
 const TopNav = () => {
   const theme = useContext(ThemeContext)
@@ -24,7 +25,7 @@ const TopNav = () => {
         </Link>
       </div>
 
-      <div className="flex items-center gap-6 font-mono">
+      <div className="flex items-center gap-4 font-mono">
         <ThemeToggleMenu />
 <SignedIn>
   <UserButton
@@ -42,9 +43,7 @@ const TopNav = () => {
     }}
   />
 </SignedIn>
-
-
-        Mobile Menu
+    <MobileNav/>
       </div>
     </nav>
   )

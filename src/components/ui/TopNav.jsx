@@ -24,19 +24,27 @@ const TopNav = () => {
         </Link>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-6 font-mono">
         <ThemeToggleMenu />
-        <SignedIn>
-          <UserButton
-            afterSignOutUrl="/"
-            appearance={{
-              elements: {
-                avatarBox: "h-10 w-10 shadow-sm shadow-white/20 dark:shadow-white/30",
-              },
-              variables: { colorPrimary: "#ff7000" },
-            }}
-          />
-        </SignedIn>
+<SignedIn>
+  <UserButton
+    afterSignOutUrl="/"
+    appearance={{
+      elements: {
+        userButtonAvatarBox: `h-14 w-14 rounded-full overflow-hidden shadow-sm shadow-white/20 ${
+          theme.mode === 'dark' ? 'bg-zinc-800 text-white shadow-lg shadow-yellow-700 border-1 border-zinc-500' : 'bg-zinc-200 text-black'
+        }`,
+        userButtonAvatarImage: `object-cover`,
+      },
+      variables: {
+        colorPrimary: "#ff7000",
+      },
+    }}
+  />
+</SignedIn>
+
+
+        Mobile Menu
       </div>
     </nav>
   )

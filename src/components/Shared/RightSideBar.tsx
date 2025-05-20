@@ -54,9 +54,9 @@ const RightSideBar = () => {
 
   return (
     <section
-      className={`${bgColor} sticky right-0 top-0 h-screen flex flex-col justify-between overflow-hidden border-l p-6 pt-28 max-sm:hidden lg:w-[300px] xl:w-[330px]`}
+      className={`${bgColor} sticky right-0 top-0 h-screen border-l p-6 pt-28 max-sm:hidden lg:w-[300px] xl:w-[330px]`}
     >
-      <div className="flex flex-col gap-6">
+      <div className="h-full overflow-y-auto hide-scrollbar flex flex-col gap-6">
         {/* Top Questions */}
         <div>
           <h1 className="text-xl font-bold mb-3">Top Questions</h1>
@@ -86,35 +86,35 @@ const RightSideBar = () => {
             ))}
           </div>
         </div>
-{/* Popular Tags */}
-<div>
-  <h1 className="text-xl font-bold mb-4">Popular Tags</h1>
-  <div className="flex flex-wrap gap-2 max-h-[140px] overflow-y-auto pr-1 hide-scrollbar">
-    {popularTags.map(({ tag, count }, index) => (
-      <Link
-        href={`/tag/${tag.toLowerCase()}`}
-        key={index}
-        className={`flex items-center gap-2 px-2 py-1 rounded-full text-sm font-medium border ${
-          theme.mode === "dark"
-            ? "border-zinc-700 text-white hover:bg-orange-400/30"
-            : "border-zinc-300 text-black hover:bg-orange-200"
-        } transition-all duration-200 whitespace-nowrap`}
-      >
-        #{tag}
-        <span
-          className={`text-xs rounded-full px-2 py-0.5 ${
-            theme.mode === "dark"
-              ? "bg-zinc-800 text-zinc-300"
-              : "bg-zinc-200 text-zinc-700"
-          }`}
-        >
-          {count}
-        </span>
-      </Link>
-    ))}
-  </div>
-</div>
 
+        {/* Popular Tags */}
+        <div>
+          <h1 className="text-xl font-bold mb-4">Popular Tags</h1>
+          <div className="flex flex-wrap gap-2">
+            {popularTags.map(({ tag, count }, index) => (
+              <Link
+                href={`/tag/${tag.toLowerCase()}`}
+                key={index}
+                className={`flex items-center gap-2 px-2 py-1 rounded-full text-sm font-medium border ${
+                  theme.mode === "dark"
+                    ? "border-zinc-700 text-white hover:bg-orange-400/30"
+                    : "border-zinc-300 text-black hover:bg-orange-200"
+                } transition-all duration-200 whitespace-nowrap`}
+              >
+                #{tag}
+                <span
+                  className={`text-xs rounded-full px-2 py-0.5 ${
+                    theme.mode === "dark"
+                      ? "bg-zinc-800 text-zinc-300"
+                      : "bg-zinc-200 text-zinc-700"
+                  }`}
+                >
+                  {count}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -125,3 +125,12 @@
 [data-radix-menubar-radio-item]::before {
   display: none !important;
 }
+
+/* Hide scrollbar in all browsers */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+}

@@ -1,15 +1,11 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import { Button } from "@/components/Shared/button";
+import { SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useContext, useState } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
-import { SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
-import { useUser } from "@clerk/nextjs";
-import { Button } from "@/components/Shared/button";
-import {
-  SheetClose,
-} from "@/components/Shared/sheet";
 
 const sideBarLinks = [
   {
@@ -114,6 +110,57 @@ const sideBarLinks = [
   },
 ];
 
+const loginIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-5 h-5"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M15 12H3m0 0l3.75 3.75M3 12l3.75-3.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+    />
+  </svg>
+);
+
+const signupIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-5 h-5"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M12 4v16m8-8H4"
+    />
+  </svg>
+);
+
+const logoutIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-5 h-5"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3-3H9m0 0l3-3m-3 3l3 3"
+    />
+  </svg>
+);
+
 const LeftSidebar = ({ navHeight }: { navHeight: number }) => {
   const theme = useContext(ThemeContext);
   const pathName = usePathname();
@@ -121,40 +168,66 @@ const LeftSidebar = ({ navHeight }: { navHeight: number }) => {
   const [collapsed, setCollapsed] = useState(false);
   const { signOut } = useClerk();
 
-
-
-  const bgColor = theme.mode === "dark" ? "bg-zinc-900 text-white" : "bg-gradient-to-l from-zinc-100 to-white text-black";
-  const hoverBg = theme.mode === "dark" ? "hover:bg-orange-400/30" : "hover:bg-orange-200";
-
+  const bgColor =
+    theme.mode === "dark"
+      ? "bg-zinc-900 text-white"
+      : "bg-gradient-to-l from-zinc-100 to-white text-black";
+  const hoverBg =
+    theme.mode === "dark" ? "hover:bg-orange-400/30" : "hover:bg-orange-200";
 
   return (
     <div
       className={`hidden md:flex flex-col fixed left-0 min-h-[calc(100vh-95px)] transition-width duration-300 ease-in-out
         ${collapsed ? "w-16" : "w-64"} ${bgColor}`}
-      style={{ top: navHeight, bottom:0 }}
+      style={{ top: navHeight, bottom: 0 }}
     >
       <button
         onClick={() => setCollapsed(!collapsed)}
         className={`m-2 p-2 rounded-md self-end ${
-          theme.mode === "dark" ? "text-white bg-zinc-900 hover:bg-zinc-800" : "text-black bg-white hover:bg-zinc-100"
+          theme.mode === "dark"
+            ? "text-white bg-zinc-900 hover:bg-zinc-800"
+            : "text-black bg-white hover:bg-zinc-100"
         }`}
         aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
       >
         {collapsed ? (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 5l7 7-7 7"
+            />
           </svg>
         ) : (
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
         )}
-        
       </button>
 
       <nav className="flex flex-col flex-grow mt-2 gap-6">
         {sideBarLinks.map(({ icon, route, label }) => {
-          const isActive = (pathName === route) || (route.length > 1 && pathName.startsWith(route));
+          const isActive =
+            pathName === route ||
+            (route.length > 1 && pathName.startsWith(route));
           return (
             <Link
               key={route}
@@ -168,7 +241,11 @@ const LeftSidebar = ({ navHeight }: { navHeight: number }) => {
             >
               <div
                 className={`text-lg flex-shrink-0 ${
-                  isActive ? "text-black scale-110" : theme.mode === "dark" ? "text-white" : "text-black"
+                  isActive
+                    ? "text-black scale-110"
+                    : theme.mode === "dark"
+                    ? "text-white"
+                    : "text-black"
                 }`}
               >
                 {icon}
@@ -190,63 +267,53 @@ const LeftSidebar = ({ navHeight }: { navHeight: number }) => {
       {/* Auth button at bottom */}
       <div className={`mb-12 mt-auto mx-2`}>
         <SignedOut>
-  <div className="mt-6 flex flex-col gap-3">
-    <Link href="/sign-in">
-      <Button
-        variant="outline"
-        className={`w-full rounded-lg py-3 text-base font-medium transition-all duration-300
+          <div className="mt-6 flex flex-col gap-3">
+            <Link href="/sign-in">
+              <Button
+                variant="outline"
+                className={`w-full flex items-center justify-center gap-2 rounded-lg py-3 text-base font-medium transition-all duration-300
           ${
             theme?.mode === "dark"
               ? "bg-zinc-900 text-white border-zinc-700 hover:bg-orange-300/30 hover:text-orange-100"
               : "bg-white text-black border border-zinc-300 hover:bg-zinc-700/80 hover:text-white"
-          }`}
-      >
-        Log in
-      </Button>
-    </Link>
-    <Link href="/sign-up">
-      <Button
-        variant="outline"
-        className={`w-full rounded-lg py-3 text-base font-medium transition-all duration-300
+          }
+        `}
+              >
+                {loginIcon}
+                {!collapsed && "Log in"}
+              </Button>
+            </Link>
+            <Link href="/sign-up">
+              <Button
+                variant="outline"
+                className={`w-full flex items-center justify-center gap-2 rounded-lg py-3 text-base font-medium transition-all duration-300
           ${
             theme?.mode === "dark"
               ? "bg-zinc-800 text-white border-zinc-700 hover:bg-orange-300/40 hover:text-orange-100"
               : "bg-white text-black border border-zinc-300 hover:bg-zinc-700 hover:text-white"
-          }`}
-      >
-        Sign up
-      </Button>
-    </Link>
-  </div>
-</SignedOut>
+          }
+        `}
+              >
+                {signupIcon}
+                {!collapsed && "Sign up"}
+              </Button>
+            </Link>
+          </div>
+        </SignedOut>
 
-<SignedIn>
+        <SignedIn>
   <div className="mt-2 flex flex-col gap-3">
     <Button
       variant="outline"
       onClick={() => signOut()}
-      className={`w-full rounded-lg py-6 text-lg font-semibold flex items-center justify-center gap-2 transition-all duration-300
-        ${
-          theme?.mode === "dark"
-            ? "bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-200/10 hover:cursor-pointer hover:text-red-500 hover:font-bold"
-            : "bg-white text-black border border-zinc-300 hover:bg-zinc-200 hover:cursor-pointer hover:text-red-600"
-        }`}
+      className={`w-full flex items-center justify-center gap-2 rounded-lg py-6 text-lg font-semibold transition-all duration-300
+        ${theme?.mode === "dark"
+          ? "bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-200/10 hover:text-red-500 hover:font-bold"
+          : "bg-white text-black border border-zinc-300 hover:bg-zinc-200 hover:text-red-600"}
+      `}
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="w-6 h-6"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3-3H9m0 0l3-3m-3 3l3 3"
-        />
-      </svg>
-      Log out
+      {logoutIcon}
+      {!collapsed && "Log out"}
     </Button>
   </div>
 </SignedIn>

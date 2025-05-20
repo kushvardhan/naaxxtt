@@ -6,12 +6,12 @@ import { ThemeContext } from "../../../context/ThemeContext";
 const topQuestions = [
   {
     question:
-      "What is the best way to learn React The best way to learn React is to build projects. (SSR ) EIHH?",
+      "What is the best way to learn React amet consectetur The best way to learn React is to build projects. (SSR ) EIHH?",
     slug: "/questions/1",
   },
   {
     question:
-      "What is the best way to learn React lorem ipsum dolor sit amet consectetur adipisicing elit?",
+      "What is the best way to learn React lorem ipsum dolor sit adipisicing elit?",
     slug: "/questions/2",
   },
   {
@@ -47,15 +47,17 @@ const RightSideBar = () => {
   const bgColor =
     theme.mode === "dark"
       ? "bg-zinc-900 text-white border-zinc-800"
-      : "bg-gradient-to-l from-zinc-100 to-white text-black border-zinc-200";
+      : "bg-gradient-to-l from-white to-zinc-100/30 text-black border-zinc-200";
 
   const hoverBg =
     theme.mode === "dark" ? "hover:bg-black" : "hover:bg-zinc-300";
 
   return (
-    <section
-      className={`${bgColor} sticky right-0 top-0 h-screen border-l p-6 pt-28 max-sm:hidden lg:w-[300px] xl:w-[330px]`}
-    >
+   <section
+  className={`${bgColor} ${
+    theme.mode === "light" ? "shadow-xl shadow-zinc-400/60" : ""
+  } sticky right-0 top-0 h-screen border-l p-6 pt-28 hidden lg:block lg:w-[300px] xl:w-[330px]`}
+>
       <div className="h-full overflow-y-auto hide-scrollbar flex flex-col gap-6">
         {/* Top Questions */}
         <div>
@@ -67,7 +69,7 @@ const RightSideBar = () => {
                 key={ind}
                 className={`group flex justify-between items-center gap-3 rounded-md px-2 py-3 text-sm ${hoverBg} transition-all duration-200`}
               >
-                <span className="flex-1 line-clamp-2">{que.question}</span>
+                <span className="flex-1 line-clamp-3.5">{que.question}</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

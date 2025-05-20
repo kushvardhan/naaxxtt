@@ -162,13 +162,15 @@ const LeftSB = () => {
   const bgColor =
     theme.mode === "dark"
       ? "bg-zinc-900 text-white"
-      : "bg-gradient-to-l from-zinc-100 to-white text-black";
+      : "bg-gradient-to-l from-zinc-100/30 to-white text-black";
   const hoverBg =
     theme.mode === "dark" ? "hover:bg-orange-400/30" : "hover:bg-orange-200";
 
   return (
     <section
-      className={`${bgColor} sticky left-0 top-0 flex h-screen flex-col justify-between overflow-y-auto border-2 p-6 pt-34 max-sm:hidden lg:w-[266px]`}
+      className={`${bgColor} ${
+    theme.mode === "light" ? "shadow-xl shadow-zinc-400/60" : ""
+  } sticky left-0 top-0 flex h-screen flex-col justify-between overflow-y-auto border-2 p-6 pt-34 max-sm:hidden lg:w-[266px]`}
     >
       <div className="flex flex-1 flex-col gap-2">
         {sideBarLinks.map((link) => {

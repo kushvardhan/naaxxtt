@@ -4,6 +4,12 @@ import React, { useContext, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ThemeContext } from "../../../context/ThemeContext";
+import { SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
+import { Button } from "@/components/Shared/button";
+import {
+  SheetClose,
+} from "@/components/Shared/sheet";
 
 const sideBarLinks = [
   {
@@ -113,18 +119,13 @@ const LeftSidebar = ({ navHeight }: { navHeight: number }) => {
   const pathName = usePathname();
   const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
+  const { signOut } = useClerk();
 
-  // Replace with your real auth logic, e.g. from context
-  const signedIn = false; // change as needed or pull from context
+
 
   const bgColor = theme.mode === "dark" ? "bg-zinc-900 text-white" : "bg-gradient-to-l from-zinc-100 to-white text-black";
   const hoverBg = theme.mode === "dark" ? "hover:bg-orange-400/30" : "hover:bg-orange-200";
 
-  const handleLogout = () => {
-    // Put your logout logic here
-    // Then redirect to login page
-    router.push("/login");
-  };
 
   return (
     <div
@@ -151,7 +152,7 @@ const LeftSidebar = ({ navHeight }: { navHeight: number }) => {
         
       </button>
 
-      <nav className="flex flex-col flex-grow mt-2 gap-2">
+      <nav className="flex flex-col flex-grow mt-2 gap-6">
         {sideBarLinks.map(({ icon, route, label }) => {
           const isActive = (pathName === route) || (route.length > 1 && pathName.startsWith(route));
           return (
@@ -187,50 +188,69 @@ const LeftSidebar = ({ navHeight }: { navHeight: number }) => {
       </nav>
 
       {/* Auth button at bottom */}
-      <div className={`mb-4 mt-auto mx-2`}>
-        {signedIn ? (
-          <button
-            onClick={handleLogout}
-            className={`w-full flex items-center justify-center gap-3 rounded-lg px-4 py-3 transition-colors duration-300
-            bg-red-600 text-white hover:bg-red-700
-            ${collapsed ? "justify-center px-2" : ""}
-            `}
-            title={collapsed ? "Logout" : undefined}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H3m6-6l-6 6 6 6" />
-            </svg>
-            {!collapsed && "Logout"}
-          </button>
-        ) : (
-          <Link
-            href="/login"
-            className={`w-full flex items-center justify-center gap-3 rounded-lg px-4 py-3 transition-colors duration-300
-            bg-green-600 text-white hover:bg-green-700
-            ${collapsed ? "justify-center px-2" : ""}
-            `}
-            title={collapsed ? "Login" : undefined}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H3m6-6l-6 6 6 6" />
-            </svg>
-            {!collapsed && "Login"}
-          </Link>
-        )}
+      <div className={`mb-12 mt-auto mx-2`}>
+        <SignedOut>
+  <div className="mt-6 flex flex-col gap-3">
+    <Link href="/sign-in">
+      <Button
+        variant="outline"
+        className={`w-full rounded-lg py-3 text-base font-medium transition-all duration-300
+          ${
+            theme?.mode === "dark"
+              ? "bg-zinc-900 text-white border-zinc-700 hover:bg-orange-300/30 hover:text-orange-100"
+              : "bg-white text-black border border-zinc-300 hover:bg-zinc-700/80 hover:text-white"
+          }`}
+      >
+        Log in
+      </Button>
+    </Link>
+    <Link href="/sign-up">
+      <Button
+        variant="outline"
+        className={`w-full rounded-lg py-3 text-base font-medium transition-all duration-300
+          ${
+            theme?.mode === "dark"
+              ? "bg-zinc-800 text-white border-zinc-700 hover:bg-orange-300/40 hover:text-orange-100"
+              : "bg-white text-black border border-zinc-300 hover:bg-zinc-700 hover:text-white"
+          }`}
+      >
+        Sign up
+      </Button>
+    </Link>
+  </div>
+</SignedOut>
+
+<SignedIn>
+  <div className="mt-2 flex flex-col gap-3">
+    <Button
+      variant="outline"
+      onClick={() => signOut()}
+      className={`w-full rounded-lg py-6 text-lg font-semibold flex items-center justify-center gap-2 transition-all duration-300
+        ${
+          theme?.mode === "dark"
+            ? "bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-200/10 hover:cursor-pointer hover:text-red-500 hover:font-bold"
+            : "bg-white text-black border border-zinc-300 hover:bg-zinc-200 hover:cursor-pointer hover:text-red-600"
+        }`}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="w-6 h-6"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3-3H9m0 0l3-3m-3 3l3 3"
+        />
+      </svg>
+      Log out
+    </Button>
+  </div>
+</SignedIn>
+
       </div>
     </div>
   );

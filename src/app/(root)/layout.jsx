@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import TopNav from "../../components/Shared/TopNav";
 import LeftSidebar from "../../components/Shared/LeftSideBar";
+import RightSideBar from "../../components/Shared/RightSideBar";
 
 export default function Layout({ children }) {
   const navRef = useRef(null);
@@ -35,12 +36,11 @@ export default function Layout({ children }) {
           overflow: "hidden",
         }}
       >
-        <LeftSidebar />
+        <LeftSidebar /> 
         <section className="flex flex-1 flex-col px-6 pb-6 pt-6 max-md:pb-14 sm:px-14 overflow-auto">
           <div className="mx-auto w-full max-w-5xl">{children}</div>
         </section>
-        {/* Right sidebar if any */}
-        hdfvfd
+        <RightSideBar/>
       </div>
     </main>
   );

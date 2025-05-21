@@ -4,6 +4,8 @@ import { useContext } from 'react';
 import { ThemeContext } from "../../../../context/ThemeContext";
 import Link from 'next/link';
 import {Button} from '../../../components/Shared/button';
+import LocalSearchBar from '@/components/Shared/Search/LocalSearchBar';
+
 
 export default function Home() {
 
@@ -20,9 +22,14 @@ export default function Home() {
         </Button>
       </Link>
     </div>
-    <div className={`mt-11 flex justify-between gap-5 max-sm:flex-col sm: items-center ${theme.mode === 'dark' ? "bg-black" : "bg-white"}`}>
-      LocalSearchBar
-      
+    <div className={`mt-11 flex justify-between gap-5 max-sm:flex-col sm: items-center ${theme.mode === 'dark' ? "bg-zinc-400" : "bg-white"}`}>
+      <LocalSearchBar
+      route='/' 
+      iconPosition='left'
+      placeholder='Search for questions'
+      otherClasses = 'flex-1'
+      />
+      Filters
     </div>
 </div>
   );

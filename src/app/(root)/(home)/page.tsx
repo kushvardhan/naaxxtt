@@ -411,9 +411,18 @@ const questions = [
 
 
     ))
-  ) : (
-    <p className="text-center text-zinc-500 dark:text-zinc-300">No questions found</p>
-  )}
+  ) : <p
+  className={`text-center 
+    ${isDark ? 'text-zinc-500' : 'text-zinc-700'} 
+    text-xl sm:text-2xl 
+    font-serif 
+    font-semibold 
+    tracking-tight
+    transition-colors duration-300
+  `}
+>
+  No questions found
+</p>}
 </div>
 
 

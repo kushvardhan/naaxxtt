@@ -82,7 +82,6 @@ const LocalSearchBar = ({
           spellCheck={false}
           autoComplete="on"
           type='text'
-
           value=""
           onChange={()=>{}}
         />

@@ -37,7 +37,7 @@ export default function Layout({ children }) {
         }}
       >
         <LeftSidebar /> 
-        <section className="flex flex-1 flex-col px-6 pb-6 pt-6 max-md:pb-14 sm:px-14 overflow-auto">
+        <section className="flex flex-1 flex-col px-2 pb-6 pt-6 max-md:pb-14 sm:px-4 overflow-auto">
           <div className="mx-auto w-full max-w-5xl">{children}</div>
         </section>
         <RightSideBar/>

@@ -51,7 +51,7 @@ const LocalSearchBar = ({
   return (
     <div
       className={` min-h-[45px] flex flex-grow items-center gap-4 px-2  rounded-[10px] ${
-        theme.mode === "dark" ? "bg-black" : "bg-zinc-200"
+        theme.mode === "dark" ? "bg-zinc-900" : "bg-zinc-200"
       }  {otherClasses} `}
     >
       {

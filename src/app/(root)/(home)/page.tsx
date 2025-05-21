@@ -47,10 +47,10 @@ export default function Home() {
   if (!theme) return null;
 
   return (
-    <div className="h-[calc(100vh-120px)] w-full mt-20">
+    <div className={`h-[calc(100vh-120px)] w-full mt-20 ${isDark ? "bg-black" : "bg-white"} `}>
       {/* Header */}
       <div
-        className={`flex w-full justify-between items-center gap-4 ${
+        className={`flex w-full justify-between items-center py-3 px-2 gap-4 ${
           isDark ? "bg-black" : "bg-white"
         }`}
       >
@@ -71,7 +71,7 @@ export default function Home() {
       {/* Search + Dropdown for tags */}
       <div
         className={`mt-8 flex gap-4 flex-wrap items-center ${
-          isDark ? "bg-zinc-400" : "bg-white"
+          isDark ? "bg-black" : "bg-white"
         }`}
       >
         {/* Search Bar */}
@@ -86,18 +86,33 @@ export default function Home() {
         {/* Dropdown for sm/md screens */}
 <div className="block lg:hidden">
   <DropdownMenu>
-    <DropdownMenuTrigger asChild>
-      <Button className="font-mono px-3 py-2 text-sm">
-        Tags
-      </Button>
-    </DropdownMenuTrigger>
+<DropdownMenuTrigger asChild>
+  <Button className="font-mono px-3 py-2 text-sm flex items-center gap-3">
+    Select Filters
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className="w-4 h-4"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="m19.5 8.25-7.5 7.5-7.5-7.5"
+      />
+    </svg>
+  </Button>
+</DropdownMenuTrigger>
+
     <DropdownMenuContent
-      className={`w-48 rounded-md p-2 max-h-56 overflow-y-auto ${
-        isDark ? "bg-zinc-800 text-white" : "bg-white text-black"
+      className={`w-48 rounded-md py-1 px-2 max-h-56 overflow-y-auto ${
+        isDark ? "bg-zinc-900 text-white" : "bg-white text-black"
       }`}
       style={{
-        scrollbarWidth: "none", // Firefox
-        msOverflowStyle: "none", // IE/Edge
+        scrollbarWidth: "none", 
+        msOverflowStyle: "none", 
       }}
     >
       <div

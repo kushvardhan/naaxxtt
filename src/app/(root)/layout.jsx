@@ -1,13 +1,15 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import TopNav from "../../components/Shared/TopNav";
 import LeftSidebar from "../../components/Shared/LeftSideBar";
 import RightSideBar from "../../components/Shared/RightSideBar";
+import { ThemeContext } from "../../../context/ThemeContext";
 
 export default function Layout({ children }) {
   const navRef = useRef(null);
   const [navHeight, setNavHeight] = useState(0);
+  const theme = useContext(ThemeContext);
 
   useEffect(() => {
     function updateNavHeight() {
@@ -23,13 +25,13 @@ export default function Layout({ children }) {
   }, []);
 
   return (
-    <main className="relative min-h-screen flex flex-col">
+    <main className={`relative min-h-screen flex flex-col ${theme.mode === 'dark' ? "bg-black":"bg-white"} `}>
       <div ref={navRef}>
         <TopNav />
       </div>
 
       <div
-        className="main-div flex flex-1"
+        className={`main-div flex flex-1 `}
         style={{
           marginTop: navHeight,
           height: `calc(100vh - ${navHeight}px)`,

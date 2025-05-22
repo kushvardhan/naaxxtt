@@ -235,21 +235,36 @@ export function Question() {
                   placeholder="Add tags"
                   onKeyDown={(e)=>handleInputKeyDown(e,field)}
                 />
-                  {
-                    field.value.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {field.value.map((tag: string) => (
-                          <div
-                            key={tag}
-                            className="flex items-center gap-2 px-2 py-1 rounded-full text-sm font-medium border"
-                          >
-                            {tag}
-                          </div>
-                        ))}
-                      </div>
-                    )
-                  
-
+                {field.value.length > 0 && (
+  <div className="flex flex-wrap gap-2 mt-2">
+    {field.value.map((tag: string, index: number) => (
+      <div
+        key={tag}
+        className={`flex items-center gap-1 px-2 py-[0.8] rounded-md text-sm font-medium 
+        border transition cursor-pointer group 
+        ${isDark 
+          ? "bg-zinc-800 text-white border-zinc-600 hover:bg-zinc-700" 
+          : "bg-orange-100 text-orange-800 border-orange-300 hover:bg-orange-200"
+        }`}
+      >
+        <span>{tag}</span>
+        <span
+          onClick={() => {
+            const updatedTags = [...field.value];
+            updatedTags.splice(index, 1);
+            form.setValue("tags", updatedTags);
+            form.trigger();
+          }}
+          className={`ml-1 text-base font-bold transition 
+            ${isDark ? "text-zinc-400 hover:text-red-400" : "text-zinc-700 hover:text-red-600"}
+          `}
+        >
+          ×
+        </span>
+      </div>
+    ))}
+  </div>
+)}
                 </>
               </FormControl>
               <FormDescription

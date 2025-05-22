@@ -11,10 +11,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useFormContext, FormProvider } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Editor } from "@tinymce/tinymce-react";
 
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ThemeContext } from "../../../context/ThemeContext";
@@ -223,7 +224,7 @@ export function Question() {
                 </span>{" "}
               </FormLabel>
               <FormControl className="mt-1">
-                <div>
+                <>
 
                     <Input
                   className={`font-mono text-lg no-focus outline-none min-h-[56px] paragraph ${
@@ -249,7 +250,7 @@ export function Question() {
                     )
                   
 
-                </div>
+                </>
               </FormControl>
               <FormDescription
                 className={`text-sm mt-2 ${

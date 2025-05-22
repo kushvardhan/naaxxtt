@@ -37,6 +37,34 @@ export function Question() {
   const theme = useContext(ThemeContext);
   const isDark = theme.mode === "dark";
 
+  const handleInputKeyDown = (e:React.KeyboardEvent<HTMLElement>,field:any)=>{
+    if(e.key === "Enter" && field.name==='tags'){
+      e.preventDefault();
+
+      const tagInput = e.target as HTMLInputElement;
+      const tagValue = tagInput.value.trim();
+
+      if(tagValue !== ""){
+        if(tagValue.length > 15){
+          return form.setError('tags',{
+            type:'required',
+            message:'Tag must be less than 15 characters.',
+          })
+        }
+
+        if(!field.value.includes(tagValue)){
+          form.setValue('tags',[...field.value,tagValue]);
+          tagInput.value = "";
+          form.clearErrors('tags');
+        }else{
+          form.trigger();
+        }
+
+      }
+    }
+     
+  }
+
   const form = useForm<z.infer<typeof QuestionSchema>>({
     resolver: zodResolver(QuestionSchema),
     defaultValues: {
@@ -195,15 +223,33 @@ export function Question() {
                 </span>{" "}
               </FormLabel>
               <FormControl className="mt-1">
-                <Input
+                <div>
+
+                    <Input
                   className={`font-mono text-lg no-focus outline-none min-h-[56px] paragraph ${
                     isDark
                       ? "text-white border-2 border-zinc-700 bg-zinc-900"
                       : "text-black border-1 border-zinc-500/50 bg-zinc-900"
                   }  !important`}
-                  placeholder=""
-                  {...field}
+                  placeholder="Add tags"
+                  onKeyDown={(e)=>handleInputKeyDown(e,field)}
                 />
+                  {
+                    field.value.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {field.value.map((tag: string) => (
+                          <div
+                            key={tag}
+                            className="flex items-center gap-2 px-2 py-1 rounded-full text-sm font-medium border"
+                          >
+                            {tag}
+                          </div>
+                        ))}
+                      </div>
+                    )
+                  
+
+                </div>
               </FormControl>
               <FormDescription
                 className={`text-sm mt-2 ${

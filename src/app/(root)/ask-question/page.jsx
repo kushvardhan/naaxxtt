@@ -1,9 +1,18 @@
-import React from 'react'
+import Question from "@/components/forms/Question"
 
-const AskPage = () => {
+const Page = () => {
+
   return (
-    <div>Ask Questions Page</div>
+    <div className={`mt-20 `}>
+      <h1 className={`text-2xl font-bold font-mono dark:text-white`}>
+        Ask a Question
+      </h1>
+
+      <div className="mt-8">
+        <Question />
+      </div>
+    </div>
   )
 }
 
-export default AskPage
+export default Page

@@ -15,6 +15,7 @@ import { Button } from "../../../components/Shared/button";
 export default function Home() {
   const theme = useContext(ThemeContext);
   const isDark = theme?.mode === "dark";
+  const [searchQuery,setSearchQuery] = useState("");
 
 
   const formatDate = (dateString: string): string => {
@@ -262,11 +263,13 @@ export default function Home() {
       >
         {/* Search Bar */}
         <LocalSearchBar
-          route="/"
-          iconPosition="left"
-          placeholder="Search for questions"
-          otherClasses="flex-1"
-        />
+  route="/"
+  iconPosition="left"
+  placeholder="Search for questions"
+  otherClasses="flex-1"
+  value={searchQuery}
+  onChange={(e) => setSearchQuery(e.target.value)}
+/>
 
         {/* Dropdown for sm/md screens */}
         {/* Dropdown for sm/md screens */}

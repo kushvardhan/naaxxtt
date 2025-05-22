@@ -67,7 +67,7 @@ export default function Home() {
       },
       upvotes: 10,
       likes: 5,
-      createdAt: "2021-01-01",
+      createdAt: "2025-05-05",
       answers: 2,
       views: 10,
     },
@@ -398,6 +398,7 @@ export default function Home() {
                 <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm">
                   {/* Upvotes */}
                   <span
+                  title="Upvote"
                     className={`flex items-center gap-1 ${
                       isDark ? "text-white" : "text-red-600"
                     }`}
@@ -416,6 +417,7 @@ export default function Home() {
 
                   {/* Comments */}
                   <span
+                  title="Answer"
                     className={`flex items-center gap-1 ${
                       isDark ? "text-zinc-100" : "text-zinc-700"
                     }`}
@@ -440,6 +442,7 @@ export default function Home() {
 
                   {/* Views */}
                   <span
+                  title="Views"
                     className={`flex items-center gap-1 ${
                       isDark ? "text-zinc-100" : "text-zinc-700"
                     }`}
@@ -468,6 +471,7 @@ export default function Home() {
 
                   {/* Like */}
                   <span
+                  title="Like"
                     className={`flex items-center gap-1 ${
                       isDark ? "text-zinc-100" : "text-zinc-700"
                     }`}
@@ -490,7 +494,7 @@ export default function Home() {
                   </span>
 
                   {/* Date */}
-                  <span className={`text-xs spacing-tighter font-semibold select-none ${isDark ? 'text-zinc-300' : 'text-zinc-700'}`}>{formatDate(que.createdAt)}</span>
+                  <span title="Created At" className={`text-xs spacing-tighter font-semibold select-none ${isDark ? 'text-zinc-300' : 'text-zinc-700'}`}>{formatDate(que.createdAt)}</span>
 
                 </div>
               </div>

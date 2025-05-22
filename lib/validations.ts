@@ -4,8 +4,8 @@ import * as z from "zod"
   title: z.string().min(5, {
     message: "Title must be at least 5 characters.",
   }).max(130),
-  explanation: z.string().min(10, {
-    message: "Explanation must be at least 15 characters.",
+  explanation: z.string().min(20, {
+    message: "Explanation must be at least 20 characters.",
   }).max(400),
   tags: z.array(z.string().min(1, {
     message: "Tag must be at least 1 character.",

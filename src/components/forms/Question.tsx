@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Editor } from "@tinymce/tinymce-react";
+
 import { useContext, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -106,7 +107,7 @@ export function Question() {
           control={form.control}
           name="explanation"
           render={({ field }) => (
-            <FormItem className="w-full flex flex-col gap-2">
+            <FormItem className="w-full flex flex-col gap-5">
               <FormLabel
                 className={`font-semibold text-regular ${
                   isDark ? "text-white" : "text-black"
@@ -125,9 +126,9 @@ export function Question() {
               </FormLabel>
               <FormControl className="mt-2">
                 <Editor
-                  apiKey="no-api-key"
+                  apiKey={process.env.NEXT_PUBLIC_TINY_API_KEY}
                   onInit={(_evt, editor) => (editorRef.current = editor)}
-                  initialValue="<p>This is the initial content of the editor.</p>"
+                  initialValue=""
                   init={{
                     height: 500,
                     menubar: false,
@@ -147,17 +148,15 @@ export function Question() {
                       "insertdatetime",
                       "media",
                       "table",
-                      "code",
+                      "codesample",
                       "help",
                       "wordcount",
                     ],
                     toolbar:
-                      "undo redo | blocks | " +
-                      "bold italic forecolor | alignleft aligncenter " +
-                      "alignright alignjustify | bullist numlist outdent indent | " +
-                      "removeformat | help",
-                    content_style:
-                      "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                      "undo redo | blocks | bold italic forecolor | " +
+                      "alignleft aligncenter alignright alignjustify | bullist numlist | codesample",
+                    toolbar_mode: "wrap",
+                    content_style: "body { font-family:Inter; font-size:16px }",
                   }}
                 />
               </FormControl>

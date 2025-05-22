@@ -5,6 +5,7 @@ import TopNav from "../../components/Shared/TopNav";
 import LeftSidebar from "../../components/Shared/LeftSideBar";
 import RightSideBar from "../../components/Shared/RightSideBar";
 import { ThemeContext } from "../../../context/ThemeContext";
+import "../globals.css";
 
 export default function Layout({ children }) {
   const navRef = useRef(null);
@@ -25,25 +26,45 @@ export default function Layout({ children }) {
   }, []);
 
   return (
-    <main className={`relative min-h-screen flex flex-col ${theme.mode === 'dark' ? "bg-black":"bg-white"} `}>
-      <div ref={navRef}>
-        <TopNav />
-      </div>
-
-      <div
-        className={`main-div flex flex-1 `}
-        style={{
-          marginTop: navHeight,
-          height: `calc(100vh - ${navHeight}px)`,
-          overflow: "hidden",
+    <>
+      {/* Add this script to set dark mode before hydration */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            try {
+              var mode = window.localStorage.getItem('theme');
+              if (!mode) {
+                mode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+              }
+              if (mode === 'dark') {
+                document.documentElement.classList.add('dark');
+              } else {
+                document.documentElement.classList.remove('dark');
+              }
+            } catch(e){}
+          `,
         }}
-      >
-        <LeftSidebar /> 
-        <section className="flex flex-1 flex-col px-2 pb-6 pt-6 max-md:pb-14 sm:px-4 overflow-auto">
-          <div className="mx-auto w-full max-w-5xl">{children}</div>
-        </section>
-        <RightSideBar/>
-      </div>
-    </main>
+      />
+      <main className={`relative min-h-screen flex flex-col ${theme.mode === 'dark' ? "bg-black":"bg-white"} `}>
+        <div ref={navRef}>
+          <TopNav />
+        </div>
+
+        <div
+          className={`main-div flex flex-1 `}
+          style={{
+            marginTop: navHeight,
+            height: `calc(100vh - ${navHeight}px)`,
+            overflow: "hidden",
+          }}
+        >
+          <LeftSidebar /> 
+          <section className="flex flex-1 flex-col px-2 pb-6 pt-6 max-md:pb-14 sm:px-4 overflow-auto">
+            <div className="mx-auto w-full max-w-5xl">{children}</div>
+          </section>
+          <RightSideBar/>
+        </div>
+      </main>
+    </>
   );
 }

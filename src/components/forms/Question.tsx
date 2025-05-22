@@ -1,10 +1,7 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/Shared/input"
+import { Input } from "@/components/Shared/input";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -13,23 +10,31 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { QuestionSchema } from "../../../lib/validations"
-import { useContext } from "react"
-import { ThemeContext } from "../../../context/ThemeContext"
+} from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Editor } from "@tinymce/tinymce-react";
+import { useContext, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { ThemeContext } from "../../../context/ThemeContext";
+import { QuestionSchema } from "../../../lib/validations";
 
 const formSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-})
-
-
+});
 
 export function Question() {
+  const editorRef = useRef(null);
+  const log = () => {
+    if (editorRef.current) {
+      console.log(editorRef.current.getContent());
+    }
+  };
 
   const theme = useContext(ThemeContext);
-const isDark = theme.mode === "dark";
+  const isDark = theme.mode === "dark";
 
   const form = useForm<z.infer<typeof QuestionSchema>>({
     resolver: zodResolver(QuestionSchema),
@@ -38,48 +43,131 @@ const isDark = theme.mode === "dark";
       explanation: "",
       tags: [],
     },
-  })
+  });
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof QuestionSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
+    console.log(values);
   }
   return (
-     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full flex flex-col gap-10 overflow-y-auto ">
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full flex flex-col gap-10 overflow-y-auto "
+      >
         <FormField
           control={form.control}
           name="title"
           render={({ field }) => (
             <FormItem className="w-full flex flex-col">
-              <FormLabel className={`font-semibold text-regular ${isDark ? "text-white" : "text-black"}`}>Question Title<span className={`${isDark ? "text-red-400 font-semibold" : "text-red-600 font-semibold text-xl"}`}>*</span> </FormLabel>
+              <FormLabel
+                className={`font-semibold text-regular ${
+                  isDark ? "text-white" : "text-black"
+                }`}
+              >
+                Question Title
+                <span
+                  className={`${
+                    isDark
+                      ? "text-red-400 font-semibold"
+                      : "text-red-600 font-semibold text-xl"
+                  }`}
+                >
+                  *
+                </span>{" "}
+              </FormLabel>
               <FormControl className="mt-1">
-                 <Input className={`font-mono text-lg no-focus outline-none min-h-[56px] paragraph ${isDark ? "text-white border-2 border-zinc-700 bg-zinc-900" : "text-black border-1 border-zinc-500/50 bg-zinc-900"}  !important`}
-                 placeholder="Enter your question title" {...field} />
+                <Input
+                  className={`font-mono text-lg no-focus outline-none min-h-[56px] paragraph ${
+                    isDark
+                      ? "text-white border-2 border-zinc-700 bg-zinc-900"
+                      : "text-black border-1 border-zinc-500/50 bg-zinc-900"
+                  }  !important`}
+                  placeholder="Enter your question title"
+                  {...field}
+                />
               </FormControl>
-              <FormDescription className={`text-sm mt-2 ${isDark ? "text-zinc-400" : "text-zinc-700/90"}`}>
-                Be specific and imagine you are asking a question to another person.
+              <FormDescription
+                className={`text-sm mt-2 ${
+                  isDark ? "text-zinc-400" : "text-zinc-700/90"
+                }`}
+              >
+                Be specific and imagine you are asking a question to another
+                person.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-          <FormField
+        <FormField
           control={form.control}
           name="explanation"
           render={({ field }) => (
             <FormItem className="w-full flex flex-col gap-2">
-              <FormLabel className={`font-semibold text-regular ${isDark ? "text-white" : "text-black"}`}>Detailed explanation of your problem<span className={`${isDark ? "text-red-400 font-semibold" : "text-red-600 font-semibold text-xl"}`}>*</span> </FormLabel>
-              <FormControl className="mt-1">
-                
-
-
+              <FormLabel
+                className={`font-semibold text-regular ${
+                  isDark ? "text-white" : "text-black"
+                }`}
+              >
+                Detailed explanation of your problem
+                <span
+                  className={`${
+                    isDark
+                      ? "text-red-400 font-semibold"
+                      : "text-red-600 font-semibold text-xl"
+                  }`}
+                >
+                  *
+                </span>{" "}
+              </FormLabel>
+              <FormControl className="mt-2">
+                <Editor
+                  apiKey="no-api-key"
+                  onInit={(_evt, editor) => (editorRef.current = editor)}
+                  initialValue="<p>This is the initial content of the editor.</p>"
+                  init={{
+                    height: 500,
+                    menubar: false,
+                    plugins: [
+                      "advlist",
+                      "autolink",
+                      "lists",
+                      "link",
+                      "image",
+                      "charmap",
+                      "preview",
+                      "anchor",
+                      "searchreplace",
+                      "visualblocks",
+                      "code",
+                      "fullscreen",
+                      "insertdatetime",
+                      "media",
+                      "table",
+                      "code",
+                      "help",
+                      "wordcount",
+                    ],
+                    toolbar:
+                      "undo redo | blocks | " +
+                      "bold italic forecolor | alignleft aligncenter " +
+                      "alignright alignjustify | bullist numlist outdent indent | " +
+                      "removeformat | help",
+                    content_style:
+                      "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                  }}
+                />
               </FormControl>
-              <FormDescription className={`text-sm mt-2 ${isDark ? "text-zinc-400" : "text-zinc-700/90"}`}>
-                Introduce the problem and expand on what you put in the title. Mininum 20 characters.
+              <FormDescription
+                className={`text-sm mt-2 ${
+                  isDark ? "text-zinc-400" : "text-zinc-700/90"
+                }`}
+              >
+                Introduce the problem and expand on what you put in the title.
+                Mininum 20 characters.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -91,29 +179,61 @@ const isDark = theme.mode === "dark";
           name="tags"
           render={({ field }) => (
             <FormItem className="w-full flex flex-col">
-              <FormLabel className={`font-semibold text-regular ${isDark ? "text-white" : "text-black"}`}>Tags<span className={`${isDark ? "text-red-400 font-semibold" : "text-red-600 font-semibold text-xl"}`}>*</span> </FormLabel>
+              <FormLabel
+                className={`font-semibold text-regular ${
+                  isDark ? "text-white" : "text-black"
+                }`}
+              >
+                Tags
+                <span
+                  className={`${
+                    isDark
+                      ? "text-red-400 font-semibold"
+                      : "text-red-600 font-semibold text-xl"
+                  }`}
+                >
+                  *
+                </span>{" "}
+              </FormLabel>
               <FormControl className="mt-1">
-                 <Input className={`font-mono text-lg no-focus outline-none min-h-[56px] paragraph ${isDark ? "text-white border-2 border-zinc-700 bg-zinc-900" : "text-black border-1 border-zinc-500/50 bg-zinc-900"}  !important`}
-                 placeholder="" {...field} />
+                <Input
+                  className={`font-mono text-lg no-focus outline-none min-h-[56px] paragraph ${
+                    isDark
+                      ? "text-white border-2 border-zinc-700 bg-zinc-900"
+                      : "text-black border-1 border-zinc-500/50 bg-zinc-900"
+                  }  !important`}
+                  placeholder=""
+                  {...field}
+                />
               </FormControl>
-              <FormDescription className={`text-sm mt-2 ${isDark ? "text-zinc-400" : "text-zinc-700/90"}`}>
-               Add up to 3 tags to describe what your question is about. You need to press enter to add a tag.
+              <FormDescription
+                className={`text-sm mt-2 ${
+                  isDark ? "text-zinc-400" : "text-zinc-700/90"
+                }`}
+              >
+                Add up to 3 tags to describe what your question is about. You
+                need to press enter to add a tag.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button className={`rounded-md font-bold text-lg
+        <Button
+          className={`rounded-md font-bold text-lg
         bg-gradient-to-r from-orange-400 to-orange-600
         hover:from-orange-600 hover:to-orange-700
         cursor-pointer
         text-white shadow-md transition
         focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 !important
-      `} type="submit">Ask a Question</Button>
+      `}
+          type="submit"
+        >
+          Ask a Question
+        </Button>
       </form>
     </Form>
-  )
+  );
 }
 
 export default Question;

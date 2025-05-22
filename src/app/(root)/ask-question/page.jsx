@@ -7,7 +7,7 @@ const Page = () => {
       <h1  className={`text-3xl font-bold font-mono  text-black !important dark:text-white `}>
         Ask a Question
       </h1>
-      <div className="mt-8">
+      <div className="mt-8 px-2">
         <Question />
       </div>
     </div>

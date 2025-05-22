@@ -16,6 +16,42 @@ export default function Home() {
   const theme = useContext(ThemeContext);
   const isDark = theme?.mode === "dark";
 
+
+  const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diff = now.getTime() - date.getTime();
+
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(diff / (1000 * 60));
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const weeks = Math.floor(days / 7);
+
+  if (minutes < 1) return `${seconds} seconds ago`;
+  if (hours < 1) return `${minutes} minutes ago`;
+  if (days < 1) return `${hours} hours ago`;
+  if (days < 7) return `${days} days ago`;
+  if (days < 30) return `${weeks} weeks ago`;
+
+  // If older than a month
+  const day = date.getDate();
+  const suffix =
+    day % 10 === 1 && day !== 11
+      ? 'st'
+      : day % 10 === 2 && day !== 12
+      ? 'nd'
+      : day % 10 === 3 && day !== 13
+      ? 'rd'
+      : 'th';
+
+  const month = date.toLocaleString('default', { month: 'short' });
+  const year = date.getFullYear();
+
+  return `${day}${suffix} ${month} ${year}`;
+};
+
+
   const questions = [
     {
       _id: 1,
@@ -454,7 +490,8 @@ export default function Home() {
                   </span>
 
                   {/* Date */}
-                  <span>{new Date(que.createdAt).toLocaleDateString()}</span>
+                  <span className={`text-xs spacing-tighter font-semibold select-none ${isDark ? 'text-zinc-300' : 'text-zinc-700'}`}>{formatDate(que.createdAt)}</span>
+
                 </div>
               </div>
             </div>
@@ -482,8 +519,8 @@ export default function Home() {
             <p className="text-center text-2xl font-bold font-mono tracking-tighter">
               No Questions Found
             </p>
-            <p className="text-center mt-2 text-base font-medium text-zinc-500 dark:text-zinc-400">
-              Try asking something else or refresh later.
+            <p className={`text-center mt-2 text-base font-medium select-none ${isDark ? "text-zinc-300/80" : "text-zinc-700"}`}>
+            Be the first to break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved! 
             </p>
 
             {/* Ask a Question Button */}

@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     serverActions: {}, 
     mdxRs: true,
   },
-  serverExternalPackages: ["mongoose"], // ✅ Correct key
+  serverExternalPackages: ["mongoose"],
 };
 
 export default nextConfig;

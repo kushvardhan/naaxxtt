@@ -80,7 +80,6 @@ export function Question() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof QuestionSchema>) {
     setIsSubmitting(true);
-  
     try{
       await createQuestion({});
     }catch(error){
@@ -88,7 +87,6 @@ export function Question() {
     }finally{
       setIsSubmitting(false);
     }
-
   }
   return (
     <Form {...form}>

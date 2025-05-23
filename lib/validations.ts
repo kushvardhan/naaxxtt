@@ -6,7 +6,7 @@ import * as z from "zod"
   }).max(130),
   explanation: z.string().min(20, {
     message: "Explanation must be at least 20 characters.",
-  }).max(400),
+  }).max(600),
   tags: z.array(
   z.string().min(1, { message: "Tag must be at least 1 character." }).max(15, {
     message: "Tag must be less than 15 characters.",

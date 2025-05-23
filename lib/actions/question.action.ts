@@ -3,7 +3,7 @@
 import { connectToDatabase } from "../mongoose";
 
  
-export async function createQuestion(params:any){
+export async function createQuestion(){
     try{
         await connectToDatabase();
     }catch(error){

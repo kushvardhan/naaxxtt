@@ -91,7 +91,8 @@ export function Question() {
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        // onSubmit={form.handleSubmit(onSubmit)}
+        action={createQuestion}
         className="w-full flex flex-col gap-10 overflow-y-auto "
       >
         <FormField

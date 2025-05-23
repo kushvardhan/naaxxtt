@@ -92,7 +92,7 @@ export function Question() {
     <Form {...form}>
       <form
         // onSubmit={form.handleSubmit(onSubmit)}
-        action={createQuestion}
+        action={createQuestion({params: { title: values.title, explanation: values.explanation, tags: values.tags, author: "author", path: "path" }})}
         className="w-full flex flex-col gap-10 overflow-y-auto "
       >
         <FormField

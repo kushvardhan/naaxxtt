@@ -1,11 +1,40 @@
 "use server";
 
+import Question from "../../database/question.model";
+import Tag from "../../database/tag.model";
 import { connectToDatabase } from "../mongoose";
 
  
-export async function createQuestion(){
+export async function createQuestion({params}: { params: { title: string; explanation: string; tags: string[]; author: string; path: string } }){
     try{
-        await connectToDatabase();
+        connectToDatabase()
+        const {title,explanation,tags,author,path}=params;
+    
+        const question = await Question.create({
+            title,
+            explanation,
+            author,
+        });
+
+        const tagDocuments = [];
+
+        for(const tag of tags){
+            const existingTag = await Tag.findOneAndUpdate(
+                {name: {$regex: new RegExp(`^${tag}$`, "i") }},
+                { $setOnInsert:{name:tag}, $push: {questions: question._id}  },
+                { new: true, upsert: true }
+            );
+            tagDocuments.push(existingTag._id);
+        }
+
+        await Question.findByIdAndUpdate(question._id, {
+            $push: {
+                tags:{ $each: tagDocuments }
+            }
+        });
+
+        
+
     }catch(error){
         console.log(error);
     }

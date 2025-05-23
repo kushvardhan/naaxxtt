@@ -1,6 +1,14 @@
 import Question from "@/components/forms/Question";
+import { getUserById } from "../../../../lib/actions/user.action";
 
-const Page = () => {
+const Page = async() => {
+
+  const {userId} = auth();
+
+  if(!userId) redirect('/sign-in');
+
+  const mongoUser = await getUserById({userId});
+  console.log(mongoUser);
 
   return (
     <div className="mt-20 max-h-[80vh] overflow-y-auto scrollbar-none">

@@ -2,7 +2,7 @@ import {Schema, models,model,Document} from 'mongoose';
 
 export interface IQuestion extends Document{
     title: string,
-    content: string,
+    explanation: string,
     tags: Schema.Types.ObjectId[],
     author: Schema.Types.ObjectId,
     upvotes: Schema.Types.ObjectId[],
@@ -19,7 +19,7 @@ const QuestionSchema = new Schema({
         required: true,
         trim: true,
     },
-    content:{
+    explanation:{
         type: String,
         required: true,
         trim: true,

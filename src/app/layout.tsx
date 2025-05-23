@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import Providers from '../Providers'; 
+import Providers from '../../lib/Providers'; 
 import { Space_Grotesk,Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 

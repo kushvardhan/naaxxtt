@@ -1,12 +1,12 @@
-import * as React from "react"
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import { cn } from "../../../lib/utils";
 
 interface InputProps extends React.ComponentProps<"input"> {
-  variant?: "default" | "bare"
+  variant?: "default" | "bare";
 }
 
 function Input({ className, type, variant = "default", ...props }: InputProps) {
-  const isBare = variant === "bare"
+  const isBare = variant === "bare";
 
   return (
     <input
@@ -20,7 +20,7 @@ function Input({ className, type, variant = "default", ...props }: InputProps) {
       )}
       {...props}
     />
-  )
+  );
 }
 
-export { Input }
+export { Input };

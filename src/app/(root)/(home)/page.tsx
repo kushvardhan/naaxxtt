@@ -249,7 +249,7 @@ export default function Home() {
           All Questions
         </h1>
         <Link href="/ask-question" className="flex justify-end max-sm:w-full">
-          <Button className="bg-orange-400 min-h-[46px] px-4 py-3 font-semibold">
+          <Button className="bg-orange-400 hover:bg-orange-600/80 text-md font-mono tracking-tight min-h-[46px] px-3 py-2 font-semibold transition-all cursor-pointer">
             Ask Question
           </Button>
         </Link>

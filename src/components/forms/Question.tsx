@@ -81,7 +81,7 @@ export function Question() {
   async function onSubmit(values: z.infer<typeof QuestionSchema>) {
     setIsSubmitting(true);
     try{
-      await createQuestion({});
+      await createQuestion({ title: values.title, explanation: values.explanation, tags: values.tags });
     }catch(error){
       console.log(error);
     }finally{
@@ -91,8 +91,8 @@ export function Question() {
   return (
     <Form {...form}>
       <form
-        // onSubmit={form.handleSubmit(onSubmit)}
-        action={createQuestion({params: { title: values.title, explanation: values.explanation, tags: values.tags, author: "author", path: "path" }})}
+        onSubmit={form.handleSubmit(onSubmit)}
+        // action={createQuestion()}
         className="w-full flex flex-col gap-10 overflow-y-auto "
       >
         <FormField

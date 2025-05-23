@@ -200,9 +200,13 @@ const MobileNav = () => {
               : "bg-white text-black"
           }`}
         >
-          <Link href="/" className="text-4xl font-black pl-1 font-mono">
-            Next<span className="text-orange-600">Flow</span>
-          </Link>
+          <Link
+  href="/"
+  className="font-black font-mono font-spaceGrotesk mt-2 text-4xl bg-gradient-to-r from-white via-orange-300 to-orange-600 bg-clip-text text-transparent"
+>
+  NullFlow
+</Link>
+
 
           <nav className="mt-8 flex flex-col gap-3">
             {sideBarLinks.map((link) => {

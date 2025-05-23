@@ -19,12 +19,12 @@ const TopNav = () => {
     >
       <div className="flex items-center gap-1 px-3">
         <Link
-          href="/"
-          className="font-black font-mono font-spaceGrotesk text-4xl"
-        >
-          <span>Next</span>
-          <span className="text-orange-600 dark:text-orange-500">Flow</span>
-        </Link>
+  href="/"
+  className="font-black font-mono font-spaceGrotesk text-4xl bg-gradient-to-r from-white via-orange-300 to-orange-600 bg-clip-text text-transparent"
+>
+  NullFlow
+</Link>
+
       </div>
 
       <GlobalSearch />

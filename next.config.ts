@@ -3,9 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   experimental: {
     serverActions: {}, 
-    mdxRs:true,
-    serverComponentsExternalPackages: ["mongoose"],
+    mdxRs: true,
   },
+  serverExternalPackages: ["mongoose"], // ✅ Correct key
 };
 
 export default nextConfig;

@@ -11,7 +11,7 @@ import * as z from "zod"
     message: "Tag must be at least 1 character.",
   }).min(15)).min(1, {
     message: "At least one tag is required.",
-  }).max(5, {
-    message: "Maximum 5 tags are allowed.",
+  }).max(6, {
+    message: "Maximum 6 tags are allowed.",
   }),
 })

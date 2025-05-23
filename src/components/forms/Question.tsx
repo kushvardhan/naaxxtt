@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ThemeContext } from "../../../context/ThemeContext";
 import { QuestionSchema } from "../../../lib/validations";
+import { createQuestion } from "../../../lib/actions/question.action";
 
 const type: any = "create";
 
@@ -77,13 +78,13 @@ export function Question() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof QuestionSchema>) {
+  async function onSubmit(values: z.infer<typeof QuestionSchema>) {
     setIsSubmitting(true);
   
     try{
-
+      await createQuestion({});
     }catch(error){
-
+      console.log(error);
     }finally{
       setIsSubmitting(false);
     }
@@ -165,6 +166,8 @@ export function Question() {
                 <Editor
                   apiKey={process.env.NEXT_PUBLIC_TINY_API_KEY}
                   onInit={(_evt, editor) => (editorRef.current = editor)}
+                  onBlur={field.onBlur}
+                  onEditorChange={(content) => field.onChange(content)}
                   initialValue=""
                   init={{
                     height: 500,
@@ -243,7 +246,7 @@ export function Question() {
                     onKeyDown={(e) => handleInputKeyDown(e, field)}
                   />
                   {field.value.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mt-2">
+                    <div className="flex flex-wrap gap-2 mt-4">
                       {field.value.map((tag: string, index: number) => (
                         <div
                           key={tag}

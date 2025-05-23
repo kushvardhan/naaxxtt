@@ -63,3 +63,7 @@ const QuestionSchema = new Schema({
         default: [],
     },
 })
+
+const Question = models.Question || model('Question', QuestionSchema);
+
+export default Question;

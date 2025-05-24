@@ -5,7 +5,7 @@ import Tag from "../../database/tag.model";
 import { connectToDatabase } from "../mongoose";
 
  
-export async function createQuestion({params}: { params: { title: string; explanation: string; tags: string[]; author: string; path: string } }){
+export async function createQuestion(params:any){
     try{
         connectToDatabase()
         const {title,explanation,tags,author,path}=params;
@@ -27,13 +27,13 @@ export async function createQuestion({params}: { params: { title: string; explan
             tagDocuments.push(existingTag._id);
         }
 
-        await Question.findByIdAndUpdate(question._id, {
+        const newQuet = await Question.findByIdAndUpdate(question._id, {
             $push: {
                 tags:{ $each: tagDocuments }
             }
         });
 
-        
+        return newQuet;
 
     }catch(error){
         console.log(error);

@@ -20,6 +20,7 @@ import { z } from "zod";
 import { ThemeContext } from "../../../context/ThemeContext";
 import { QuestionSchema } from "../../../lib/validations";
 import { createQuestion } from "../../../lib/actions/question.action";
+import { getUserById } from "../../../lib/actions/user.action";
 
 const type: any = "create";
 
@@ -78,16 +79,37 @@ export function Question() {
   });
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof QuestionSchema>) {
-    setIsSubmitting(true);
-    try{
-      await createQuestion({ title: values.title, explanation: values.explanation, tags: values.tags });
-    }catch(error){
-      console.log(error);
-    }finally{
-      setIsSubmitting(false);
+ async function onSubmit(values: z.infer<typeof QuestionSchema>) {
+  setIsSubmitting(true);
+  try {
+    const clerkId = 'clerk_123abc456';
+
+    const user = await getUserById({ clerkId });
+
+    if (!user || !user._id) {
+      console.error("User not found or missing _id");
+      return;
     }
+
+    // 2. Pass MongoDB _id as `author`
+    const question = await createQuestion({
+      title: values.title,
+      explanation: values.explanation,
+      tags: values.tags,
+      author: user._id, // ← use the Mongo _id here!
+      path: window.location.pathname,
+    });
+
+    console.log("Created Question:", question);
+
+  } catch (error) {
+    console.error("Error posting question:", error);
+  } finally {
+    setIsSubmitting(false);
   }
+}
+
+
   return (
     <Form {...form}>
       <form

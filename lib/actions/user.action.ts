@@ -3,14 +3,13 @@
 import User from "../../database/user.model";
 import { connectToDatabase } from "../mongoose"
 
-export async function getUserById(params:any){
-    try{
-        connectToDatabase();
-        const userId = 'clerk_123abc456';
-        const user = await User.findById({clerkId:userId});
-        return user; 
-    }catch(error){
-        console.log(error);
-        throw error;
-    }
+export async function getUserById({ clerkId }: { clerkId: string }) {
+  try {
+    await connectToDatabase();
+    const user = await User.findOne({ clerkId });
+    return user;
+  } catch (error) {
+    console.error("Error in getUserById:", error);
+    throw error;
+  }
 }

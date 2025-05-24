@@ -7,17 +7,11 @@ import { connectToDatabase } from "../mongoose";
 
 export async function createQuestion(params: any) {
   try {
-    await connectToDatabase();
+    connectToDatabase();
     console.log("createQuestion called with params:", params);
 
-    const { title, explanation, tags, author, path } = params;
+    const { title, explanation, tags } = params;
 
-    const user = await User.findOne(author);
-
-    if (!user || !user._id) {
-      console.log("User not found or missing _id", user);
-      return null;
-    }
 
     const question = await Question.create({
       title,

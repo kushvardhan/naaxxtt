@@ -7,9 +7,13 @@ export async function getUserById(params: any) {
   try {
     await connectToDatabase(); 
     console.log('Fetching USERRR');
-    const user = await User.findOne({ clerkId: params.clerkId }); // ✅ Use passed clerkId
 
-    console.log("Fetched user:", user);
+    const {userId} = params;    
+
+    const user = await User.findOne({clerkId: userId});
+
+    console.log("User fetched: ",user);
+
     return user;
   } catch (error) {
     console.error("Error fetching user:", error);

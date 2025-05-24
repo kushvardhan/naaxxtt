@@ -84,15 +84,6 @@ export function Question() {
   try {
     const clerkId = 'clerk_123abc456';
 
-    // 1. Get full user info by Clerk ID (returns Mongo _id)
-    const user = await getUserById({ clerkId });
-
-    if (!user || !user._id) {
-      console.error("User not found or missing _id");
-      return;
-    }
-
-    // 2. Pass MongoDB _id as `author`
     const question = await createQuestion({
       title: values.title,
       explanation: values.explanation,

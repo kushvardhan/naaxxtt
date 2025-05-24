@@ -20,11 +20,13 @@ import { z } from "zod";
 import { ThemeContext } from "../../../context/ThemeContext";
 import { QuestionSchema } from "../../../lib/validations";
 import { createQuestion } from "../../../lib/actions/question.action";
-import { getUserById } from "../../../lib/actions/user.action";
+import { useRouter, usePathname } from "next/navigation";
 
-const type: any = "create";
+const type: unknown = "create";
 
 export function Question() {
+  const router = useRouter();
+  const pathname = usePathname();
   const editorRef = useRef(null);
 
   const [isSubmmitting, setIsSubmitting] = useState(false);
@@ -82,17 +84,15 @@ export function Question() {
  async function onSubmit(values: z.infer<typeof QuestionSchema>) {
   setIsSubmitting(true);
   try {
-    const clerkId = 'clerk_123abc456';
 
     const question = await createQuestion({
       title: values.title,
       explanation: values.explanation,
       tags: values.tags,
-      author: user._id, // ← use the Mongo _id here!
-      path: window.location.pathname,
     });
 
     console.log("Created Question:", question);
+    router.push('/');
 
   } catch (error) {
     console.error("Error posting question:", error);

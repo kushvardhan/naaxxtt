@@ -4,12 +4,14 @@ import { auth } from "@clerk/nextjs";
 
 const Page = async() => {
 
-  const {userId} = auth();
+  // const {userId} = auth();
 
-     if(!userId) redirect('/sign-in');
+  const userId = 'clerk_123abc456';
+
+  if(!userId) redirect('/sign-in');
 
   const mongoUser = await getUserById({userId});
-  console.log(mongoUser);
+  console.log(mongoUser); 
 
   return (
     <div className="mt-20 max-h-[80vh] overflow-y-auto scrollbar-none">

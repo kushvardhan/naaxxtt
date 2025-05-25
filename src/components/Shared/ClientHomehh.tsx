@@ -1,6 +1,5 @@
 "use client";
 
-import React from 'react'
 import LocalSearchBar from "@/components/Shared/Search/LocalSearchBar";
 import {
   DropdownMenu,
@@ -12,52 +11,82 @@ import Link from "next/link";
 import { useContext, useState } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
 import { Button } from "./button";
-import { getQuestions } from '../../../lib/actions/question.action';
 
-export default async function ClientHomehh(mappedQuestions) {
+type Tag = {
+  _id: string;
+  name: string;
+};
+
+type Author = {
+  name: string;
+  image: string;
+};
+
+type Question = {
+  _id: string;
+  title: string;
+  tags: Tag[];
+  user: Author;
+  upvotes: number;
+  answers: number;
+  views: number;
+  createdAt: string;
+};
+
+type Props = {
+  mappedQuestions: Question[];
+};
+
+const Tags = [
+  { tag: "python" },
+  { tag: "json" },
+  { tag: "file-io" },
+  { tag: "data" },
+  { tag: "dictionary" },
+  { tag: "serialization" },
+];
+
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diff = now.getTime() - date.getTime();
+
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(diff / (1000 * 60));
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const weeks = Math.floor(days / 7);
+
+  if (minutes < 1) return `${seconds} seconds ago`;
+  if (hours < 1) return `${minutes} minutes ago`;
+  if (days < 1) return `${hours} hours ago`;
+  if (days < 7) return `${days} days ago`;
+  if (days < 30) return `${weeks} weeks ago`;
+
+  // If older than a month
+  const day = date.getDate();
+  const suffix =
+    day % 10 === 1 && day !== 11
+      ? "st"
+      : day % 10 === 2 && day !== 12
+      ? "nd"
+      : day % 10 === 3 && day !== 13
+      ? "rd"
+      : "th";
+
+  const month = date.toLocaleString("default", { month: "short" });
+  const year = date.getFullYear();
+
+  return `${day}${suffix} ${month} ${year}`;
+}
+
+export default function ClientHomehh({ mappedQuestions }: Props) {
   const theme = useContext(ThemeContext);
   const isDark = theme?.mode === "dark";
   const [searchQuery, setSearchQuery] = useState("");
-
-  const result = await getQuestions({});
-  console.log(result.questions);
-
-  function formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diff = now.getTime() - date.getTime();
-
-    const seconds = Math.floor(diff / 1000);
-    const minutes = Math.floor(diff / (1000 * 60));
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const weeks = Math.floor(days / 7);
-
-    if (minutes < 1) return ${seconds} seconds ago;
-    if (hours < 1) return ${minutes} minutes ago;
-    if (days < 1) return ${hours} hours ago;
-    if (days < 7) return ${days} days ago;
-    if (days < 30) return ${weeks} weeks ago;
-
-    // If older than a month
-    const day = date.getDate();
-    const suffix =
-      day % 10 === 1 && day !== 11
-        ? "st"
-        : day % 10 === 2 && day !== 12
-        ? "nd"
-        : day % 10 === 3 && day !== 13
-        ? "rd"
-        : "th";
-
-    const month = date.toLocaleString("default", { month: "short" });
-    const year = date.getFullYear();
-
-    return ${day}${suffix} ${month} ${year};
-  }
-
-
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  const questions = mappedQuestions || [];
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
@@ -68,30 +97,36 @@ export default async function ClientHomehh(mappedQuestions) {
   if (!theme) return null;
 
   return (
-    <>
     <div
-          className={`h-[calc(100vh-120px)] w-full mt-20 ${isDark ? "bg-black" : "bg-white"} `}
+      className={`h-[calc(100vh-130px)] w-full mt-20 overflow-y-scroll scrollbar-hidden ${
+    isDark ? "bg-black" : "bg-white"
+  }`}
+    >
+      {/* Header */}
+      <div
+        className={`flex w-full justify-between items-center py-3 px-2 gap-4 ${
+          isDark ? "bg-black" : "bg-white"
+        }`}
       >
-          {/* Header */}
-          <div
-              className={flex} w-full justify-between items-center py-3 px-2 gap-4 $ {...isDark ? "bg-black" : "bg-white"} />
-          
-          <h1
-              className={text - 2} xl font-bold font-mono $ {...isDark ? "text-white" : "text-black"} />
-          
+        <h1
+          className={`text-2xl xl font-bold font-mono ${
+            isDark ? "text-white" : "text-black"
+          }`}
+        >
           All Questions
-      </h1><Link href="/ask-question" className="flex justify-end max-sm:w-full">
-              <Button className="bg-orange-400 hover:bg-orange-600/80 text-md font-mono tracking-tight min-h-[46px] px-3 py-2 font-semibold transition-all cursor-pointer">
-                  Ask Question
-              </Button>
-          </Link></>
+        </h1>
+        <Link href="/ask-question" className="flex justify-end max-sm:w-full">
+          <Button className="bg-orange-400 hover:bg-orange-600/80 text-md sm:text-sm sm:px-1/2 sm:py-1 font-mono tracking-tight min-h-[46px] px-3 py-2 font-semibold transition-all cursor-pointer">
+            Ask Question
+          </Button>
+        </Link>
       </div>
 
       {/* Search + Dropdown for tags */}
       <div
-        className={mt-8 flex gap-4 flex-wrap items-center ${
+        className={`mt-8 flex gap-4 flex-wrap items-center ${
           isDark ? "bg-black" : "bg-white"
-        }}
+        }`}
       >
         {/* Search Bar */}
         <LocalSearchBar
@@ -103,7 +138,6 @@ export default async function ClientHomehh(mappedQuestions) {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
 
-        {/* Dropdown for sm/md screens */}
         {/* Dropdown for sm/md screens */}
         <div className="block lg:hidden">
           <DropdownMenu>
@@ -128,9 +162,9 @@ export default async function ClientHomehh(mappedQuestions) {
             </DropdownMenuTrigger>
 
             <DropdownMenuContent
-              className={w-48 rounded-md py-1 px-2 max-h-56 overflow-y-auto ${
+              className={`w-48 rounded-md py-1 px-2 max-h-56 overflow-y-auto ${
                 isDark ? "bg-zinc-900 text-white" : "bg-white text-black"
-              }}
+              }`}
               style={{
                 scrollbarWidth: "none",
                 msOverflowStyle: "none",
@@ -148,13 +182,13 @@ export default async function ClientHomehh(mappedQuestions) {
                     key={idx}
                     checked={selectedTags.includes(item.tag)}
                     onCheckedChange={() => toggleTag(item.tag)}
-                    className={font-mono text-sm border-b last:border-none ${
+                    className={`font-mono text-sm border-b last:border-none ${
                       isDark
                         ? "border-zinc-700 hover:bg-zinc-900"
                         : "border-gray-200 hover:bg-gray-300"
-                    }}
+                    }`}
                     style={{
-                      WebkitScrollbar: "none", // Chrome/Safari
+                      WebkitScrollbar: "none", 
                     }}
                   >
                     {item.tag}
@@ -171,11 +205,11 @@ export default async function ClientHomehh(mappedQuestions) {
         {Tags.slice(0, 6).map((item, idx) => (
           <Button
             key={idx}
-            className={text-xs px-2 py-0.5 font-mono rounded-md hover:cursor-pointer ${
+            className={`text-xs cursor-pointer px-2 py-0.5 font-mono rounded-md hover:cursor-pointer ${
               isDark
                 ? "bg-zinc-700 text-white hover:bg-zinc-600"
                 : "bg-gray-200/70 text-black hover:bg-gray-300"
-            }}
+            }`}
           >
             {item.tag}
           </Button>
@@ -186,15 +220,19 @@ export default async function ClientHomehh(mappedQuestions) {
           questions.map((que) => (
             <div
               key={que._id}
-              className={w-full rounded-xl border p-4 shadow-sm transition-all duration-200 hover:shadow-md
-    ${isDark ? "bg-zinc-900 border-zinc-700" : "bg-white border-zinc-200"}
-  }
+              className={`w-full rounded-xl border p-4 shadow-sm transition-all duration-200 hover:shadow-md
+                ${
+                  isDark
+                    ? "bg-zinc-900 border-zinc-700"
+                    : "bg-white border-zinc-300 shadow-xl shadow-zinc-400"
+                }
+              `}
             >
               {/* Title */}
               <h2
-                className={text-base sm:text-lg font-semibold line-clamp-2 break-words
-      ${isDark ? "text-zinc-100" : "text-zinc-800"}
-    }
+                className={`text-base sm:text-lg font-semibold line-clamp-2 break-words
+                  ${isDark ? "text-zinc-100" : "text-zinc-800"}
+                `}
               >
                 {que.title}
               </h2>
@@ -204,9 +242,13 @@ export default async function ClientHomehh(mappedQuestions) {
                 {que.tags.map((tag) => (
                   <span
                     key={tag._id}
-                    className={rounded-md px-2 py-0.5 text-xs font-mono
-          ${isDark ? "bg-zinc-700 text-white" : "bg-zinc-100 text-zinc-700"}
-        }
+                    className={`rounded-md cursor-pointer px-2 py-1 text-xs font-mono
+                      ${
+                        isDark
+                          ? "bg-zinc-700 text-white hover:bg-zinc-600 transition-all"
+                          : "bg-zinc-200 text-zinc-950 hover:bg-zinc-300 transition-all "
+                      }
+                    `}
                   >
                     {tag.name}
                   </span>
@@ -215,9 +257,9 @@ export default async function ClientHomehh(mappedQuestions) {
 
               {/* Meta Info */}
               <div
-                className={mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm
-      ${isDark ? "text-zinc-400" : "text-zinc-500"}
-    }
+                className={`mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm
+                  ${isDark ? "text-zinc-400" : "text-zinc-500"}
+                `}
               >
                 {/* User */}
                 <div className="flex items-center gap-3">
@@ -234,9 +276,9 @@ export default async function ClientHomehh(mappedQuestions) {
                   {/* Upvotes */}
                   <span
                     title="Upvote"
-                    className={flex items-center gap-1 ${
+                    className={`flex items-center gap-1 ${
                       isDark ? "text-white" : "text-red-600"
-                    }}
+                    }`}
                   >
                     <svg
                       className="w-4 h-4"
@@ -253,9 +295,9 @@ export default async function ClientHomehh(mappedQuestions) {
                   {/* Comments */}
                   <span
                     title="Answer"
-                    className={flex items-center gap-1 ${
+                    className={`flex items-center gap-1 ${
                       isDark ? "text-zinc-100" : "text-zinc-700"
-                    }}
+                    }`}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -271,16 +313,15 @@ export default async function ClientHomehh(mappedQuestions) {
                         d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
                       />
                     </svg>
-
                     {que.answers}
                   </span>
 
                   {/* Views */}
                   <span
                     title="Views"
-                    className={flex items-center gap-1 ${
+                    className={`flex items-center gap-1 ${
                       isDark ? "text-zinc-100" : "text-zinc-700"
-                    }}
+                    }`}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -305,35 +346,23 @@ export default async function ClientHomehh(mappedQuestions) {
                   </span>
 
                   {/* Like */}
-                  <span
+                  {/* If you want to show likes, you can add a likes property to mappedQuestions */}
+                  {/* <span
                     title="Like"
-                    className={flex items-center gap-1 ${
+                    className={`flex items-center gap-1 ${
                       isDark ? "text-zinc-100" : "text-zinc-700"
-                    }}
+                    }`}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z"
-                      />
-                    </svg>
+                    <svg ... />
                     {que.likes}
-                  </span>
+                  </span> */}
 
                   {/* Date */}
                   <span
                     title="Created At"
-                    className={text-xs spacing-tighter font-semibold select-none ${
+                    className={`text-xs spacing-tighter font-semibold select-none ${
                       isDark ? "text-zinc-300" : "text-zinc-700"
-                    }}
+                    }`}
                   >
                     {formatDate(que.createdAt)}
                   </span>
@@ -343,9 +372,9 @@ export default async function ClientHomehh(mappedQuestions) {
           ))
         ) : (
           <div
-            className={relative max-w-xl mx-auto p-8 rounded-3xl transition-all duration-300 overflow-hidden shadow-md
-    ${isDark ? "bg-zinc-900 text-zinc-100" : "bg-white text-zinc-800"}
-  }
+            className={`relative max-w-xl mx-auto p-8 rounded-3xl transition-all duration-300 overflow-hidden shadow-md
+              ${isDark ? "bg-zinc-900 text-zinc-100" : "bg-white text-zinc-800"}
+            `}
           >
             {/* Mini Floating Cards */}
             <div className="absolute -top-6 -left-6 w-24 h-24 bg-orange-100 dark:bg-orange-900 text-orange-600 dark:text-orange-300 rounded-xl shadow-md flex items-center justify-center text-3xl font-bold rotate-[-12deg]">
@@ -365,27 +394,27 @@ export default async function ClientHomehh(mappedQuestions) {
               No Questions Found
             </p>
             <p
-              className={text-center mt-2 text-base font-medium select-none ${
+              className={`text-center mt-2 text-base font-medium select-none ${
                 isDark ? "text-zinc-300/80" : "text-zinc-700"
-              }}
+              }`}
             >
               Be the first to break the silence! 🚀 Ask a Question and kickstart
-              the discussion. our query could be the next big thing others learn
-              from. Get involved!
+              the discussion. Your query could be the next big thing others
+              learn from. Get involved!
             </p>
 
             {/* Ask a Question Button */}
             <div className="mt-8 flex justify-center">
               <Link
                 href="/ask-question"
-                className={
-        px-6 py-3 rounded-lg font-bold text-lg
-        bg-gradient-to-r from-orange-400 to-orange-600
-        hover:from-orange-500 hover:to-orange-700
-        text-white shadow-md transition
-        focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2
-        dark:from-orange-700 dark:to-orange-900 dark:hover:from-orange-800 dark:hover:to-orange-950
-      }
+                className={`
+                  px-6 py-3 rounded-lg font-bold text-lg
+                  bg-gradient-to-r from-orange-400 to-orange-600
+                  hover:from-orange-500 hover:to-orange-700
+                  text-white shadow-md transition
+                  focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2
+                  dark:from-orange-700 dark:to-orange-900 dark:hover:from-orange-800 dark:hover:to-orange-950
+                `}
               >
                 Ask a Question
               </Link>
@@ -395,4 +424,4 @@ export default async function ClientHomehh(mappedQuestions) {
       </div>
     </div>
   );
-}    
+}

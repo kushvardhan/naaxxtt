@@ -1,5 +1,5 @@
+import ClientHomehh from "@/components/Shared/ClientHomehh";
 import { getQuestions } from "../../../../lib/actions/question.action";
-// import {ClientHomehh} from "@/components/Shared/ClientHomehh";
 
 export default async function Home() {
   const result = await getQuestions({});
@@ -9,10 +9,11 @@ export default async function Home() {
   const mappedQuestions = questions.map((q: any) => ({
     _id: q._id.toString(),
     title: q.title || "No Title",
-    tags: q.tags?.map((tag: any) => ({
-      _id: tag._id.toString(),
-      name: tag.name || "Unknown",
-    })) || [],
+    tags:
+      q.tags?.map((tag: any) => ({
+        _id: tag._id.toString(),
+        name: tag.name || "Unknown",
+      })) || [],
     user: {
       name: q.author?.name || "Unknown User",
       image:

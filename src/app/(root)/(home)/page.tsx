@@ -29,7 +29,7 @@ export default async function Home() {
   }));
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-[calc(100vh-130px)] w-full mt-20 overflow-y-scroll scrollbar-hidden ">
       <ClientHomehh mappedQuestions={mappedQuestions} />
     </div>
   );

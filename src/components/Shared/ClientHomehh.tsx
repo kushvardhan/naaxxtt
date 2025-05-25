@@ -98,19 +98,19 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
 
   return (
     <div
-      className={`h-[calc(100vh-130px)] w-full mt-20 overflow-y-scroll scrollbar-hidden ${
+      className={`h-[calc(screen-120px)] w-full overflow-y-scroll scrollbar-hidden ${
     isDark ? "bg-black" : "bg-white"
   }`}
     >
       {/* Header */}
       <div
-        className={`flex w-full justify-between items-center py-3 px-2 gap-4 ${
+        className={`flex w-full justify-between scrollbar-hidden items-center py-3 px-2 gap-4 ${
           isDark ? "bg-black" : "bg-white"
         }`}
       >
         <h1
-          className={`text-2xl xl font-bold font-mono ${
-            isDark ? "text-white" : "text-black"
+          className={`text-2xl lg:text-5xl font-bold font-mono ${
+            isDark ? "text-zinc-100" : "text-black"
           }`}
         >
           All Questions
@@ -124,7 +124,7 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
 
       {/* Search + Dropdown for tags */}
       <div
-        className={`mt-8 flex gap-4 flex-wrap items-center ${
+        className={`mt-8 flex gap-4 flex-wrap items-center  ${
           isDark ? "bg-black" : "bg-white"
         }`}
       >
@@ -133,7 +133,7 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
           route="/"
           iconPosition="left"
           placeholder="Search for questions"
-          otherClasses="flex-1"
+          otherClasses="flex-1 "
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />

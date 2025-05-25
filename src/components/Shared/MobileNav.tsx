@@ -200,9 +200,9 @@ const MobileNav = () => {
               : "bg-white text-black"
           }`}
         >
-          <Link
+<Link
   href="/"
-  className="font-black font-mono font-spaceGrotesk mt-2 text-4xl bg-gradient-to-r from-white via-orange-300 to-orange-600 bg-clip-text text-transparent"
+  className="font-black font-mono font-spaceGrotesk mt-2 text-4xl bg-gradient-to-r from-amber-300 via-orange-400 to-orange-600 bg-clip-text text-transparent"
 >
   NullFlow
 </Link>

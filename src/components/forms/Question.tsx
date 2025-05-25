@@ -24,7 +24,11 @@ import { useRouter, usePathname } from "next/navigation";
 
 const type: unknown = "create";
 
-export function Question() {
+interface Props{
+  mongoUserId:string;
+}
+
+export function Question({mongoUserId}:Props) {
   const router = useRouter();
   const pathname = usePathname();
   const editorRef = useRef(null);
@@ -33,6 +37,50 @@ export function Question() {
 
   const theme = useContext(ThemeContext);
   const isDark = theme.mode === "dark";
+
+const contentStyle = `
+  body {
+    font-family: monospace;
+    font-size: 18px;
+    background-color: ${isDark ? "#1e1e1e" : "#ffffff"};
+    color: ${isDark ? "#f1f1f1" : "#111111"};
+    border: none;
+  }
+
+  pre, code {
+    background-color: ${isDark ? "#2d2d2d" : "#f5f5f5"};
+    color: ${isDark ? "#dcdcdc" : "#333"};
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid ${isDark ? "#333" : "#ddd"};
+  }
+
+  table, th, td {
+    border: 1px solid ${isDark ? "#444" : "#ccc"};
+  }
+
+  a {
+    color: ${isDark ? "#80bfff" : "#0066cc"};
+  }
+
+  hr {
+    border: 1px solid ${isDark ? "#333" : "#ccc"};
+  }
+
+  ::selection {
+    background: ${isDark ? "#555" : "#cce4ff"};
+    color: ${isDark ? "#fff" : "#000"};
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${isDark ? "#444" : "#bbb"};
+    border-radius: 4px;
+  }
+`;
 
   const handleInputKeyDown = (
     e: React.KeyboardEvent<HTMLElement>,
@@ -89,9 +137,9 @@ export function Question() {
       title: values.title,
       explanation: values.explanation,
       tags: values.tags,
+      author:JSON.parse(mongoUserId),
     });
 
-    console.log("Created Question:", question);
     router.push('/');
 
   } catch (error) {
@@ -209,7 +257,7 @@ export function Question() {
                       "undo redo | blocks | bold italic forecolor | " +
                       "alignleft aligncenter alignright alignjustify | bullist numlist | codesample",
                     toolbar_mode: "wrap",
-                    content_style: "body { font-family:Inter; font-size:16px }",
+                    content_style: contentStyle,
                   }}
                 />
               </FormControl>
@@ -219,7 +267,7 @@ export function Question() {
                 }`}
               >
                 Introduce the problem and expand on what you put in the title.
-                Mininum 20 characters.
+                Mininum 100 characters.
               </FormDescription>
               <FormMessage />
             </FormItem>

@@ -18,12 +18,13 @@ const TopNav = () => {
       }`}
     >
       <div className="flex items-center gap-1 px-3">
-        <Link
+<Link
   href="/"
-  className="font-black font-mono font-spaceGrotesk text-4xl bg-gradient-to-r from-white via-orange-300 to-orange-600 bg-clip-text text-transparent"
+  className="font-black font-mono font-spaceGrotesk text-4xl bg-gradient-to-r from-amber-300 via-orange-400 to-orange-600 bg-clip-text text-transparent"
 >
   NullFlow
 </Link>
+
 
       </div>
 

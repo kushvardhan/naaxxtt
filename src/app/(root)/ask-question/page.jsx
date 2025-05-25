@@ -12,7 +12,7 @@ const Page = async () => {
   if(!userId) redirect('/sign-in');
 
   const mongoUser = await getUserById({userId});
-  console.log(mongoUser); 
+  console.log("mongo user ",mongoUser); 
 
   return (
     <div className="mt-20 max-h-[80vh] overflow-y-auto scrollbar-none">
@@ -20,7 +20,7 @@ const Page = async () => {
         Ask a Question
       </h1>
       <div className="mt-8 px-2">
-        <Question />
+        <Question mongoUserId={JSON.stringify(mongoUser._id)} />
       </div>
     </div>
   );

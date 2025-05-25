@@ -10,48 +10,51 @@ import {
 import Link from "next/link";
 import { useContext, useState } from "react";
 import { ThemeContext } from "../../../../context/ThemeContext";
+import { getQuestions } from "../../../../lib/actions/question.action";
 import { Button } from "../../../components/Shared/button";
 
-export default function Home() {
+// eslint-disable-next-line @next/next/no-async-client-component
+export default async function Home() {
   const theme = useContext(ThemeContext);
   const isDark = theme?.mode === "dark";
-  const [searchQuery,setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
+  const result = await getQuestions({});
+  console.log(result.questions);
 
-  const formatDate = (dateString: string): string => {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diff = now.getTime() - date.getTime();
+  function formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
 
-  const seconds = Math.floor(diff / 1000);
-  const minutes = Math.floor(diff / (1000 * 60));
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const weeks = Math.floor(days / 7);
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(diff / (1000 * 60));
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const weeks = Math.floor(days / 7);
 
-  if (minutes < 1) return `${seconds} seconds ago`;
-  if (hours < 1) return `${minutes} minutes ago`;
-  if (days < 1) return `${hours} hours ago`;
-  if (days < 7) return `${days} days ago`;
-  if (days < 30) return `${weeks} weeks ago`;
+    if (minutes < 1) return `${seconds} seconds ago`;
+    if (hours < 1) return `${minutes} minutes ago`;
+    if (days < 1) return `${hours} hours ago`;
+    if (days < 7) return `${days} days ago`;
+    if (days < 30) return `${weeks} weeks ago`;
 
-  // If older than a month
-  const day = date.getDate();
-  const suffix =
-    day % 10 === 1 && day !== 11
-      ? 'st'
-      : day % 10 === 2 && day !== 12
-      ? 'nd'
-      : day % 10 === 3 && day !== 13
-      ? 'rd'
-      : 'th';
+    // If older than a month
+    const day = date.getDate();
+    const suffix =
+      day % 10 === 1 && day !== 11
+        ? "st"
+        : day % 10 === 2 && day !== 12
+        ? "nd"
+        : day % 10 === 3 && day !== 13
+        ? "rd"
+        : "th";
 
-  const month = date.toLocaleString('default', { month: 'short' });
-  const year = date.getFullYear();
+    const month = date.toLocaleString("default", { month: "short" });
+    const year = date.getFullYear();
 
-  return `${day}${suffix} ${month} ${year}`;
-};
-
+    return `${day}${suffix} ${month} ${year}`;
+  }
 
   const questions = [
     {
@@ -263,13 +266,13 @@ export default function Home() {
       >
         {/* Search Bar */}
         <LocalSearchBar
-  route="/"
-  iconPosition="left"
-  placeholder="Search for questions"
-  otherClasses="flex-1"
-  value={searchQuery}
-  onChange={(e) => setSearchQuery(e.target.value)}
-/>
+          route="/"
+          iconPosition="left"
+          placeholder="Search for questions"
+          otherClasses="flex-1"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
 
         {/* Dropdown for sm/md screens */}
         {/* Dropdown for sm/md screens */}
@@ -401,7 +404,7 @@ export default function Home() {
                 <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm">
                   {/* Upvotes */}
                   <span
-                  title="Upvote"
+                    title="Upvote"
                     className={`flex items-center gap-1 ${
                       isDark ? "text-white" : "text-red-600"
                     }`}
@@ -420,7 +423,7 @@ export default function Home() {
 
                   {/* Comments */}
                   <span
-                  title="Answer"
+                    title="Answer"
                     className={`flex items-center gap-1 ${
                       isDark ? "text-zinc-100" : "text-zinc-700"
                     }`}
@@ -445,7 +448,7 @@ export default function Home() {
 
                   {/* Views */}
                   <span
-                  title="Views"
+                    title="Views"
                     className={`flex items-center gap-1 ${
                       isDark ? "text-zinc-100" : "text-zinc-700"
                     }`}
@@ -474,7 +477,7 @@ export default function Home() {
 
                   {/* Like */}
                   <span
-                  title="Like"
+                    title="Like"
                     className={`flex items-center gap-1 ${
                       isDark ? "text-zinc-100" : "text-zinc-700"
                     }`}
@@ -497,8 +500,14 @@ export default function Home() {
                   </span>
 
                   {/* Date */}
-                  <span title="Created At" className={`text-xs spacing-tighter font-semibold select-none ${isDark ? 'text-zinc-300' : 'text-zinc-700'}`}>{formatDate(que.createdAt)}</span>
-
+                  <span
+                    title="Created At"
+                    className={`text-xs spacing-tighter font-semibold select-none ${
+                      isDark ? "text-zinc-300" : "text-zinc-700"
+                    }`}
+                  >
+                    {formatDate(que.createdAt)}
+                  </span>
                 </div>
               </div>
             </div>
@@ -526,8 +535,14 @@ export default function Home() {
             <p className="text-center text-2xl font-bold font-mono tracking-tighter">
               No Questions Found
             </p>
-            <p className={`text-center mt-2 text-base font-medium select-none ${isDark ? "text-zinc-300/80" : "text-zinc-700"}`}>
-            Be the first to break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved! 
+            <p
+              className={`text-center mt-2 text-base font-medium select-none ${
+                isDark ? "text-zinc-300/80" : "text-zinc-700"
+              }`}
+            >
+              Be the first to break the silence! 🚀 Ask a Question and kickstart
+              the discussion. our query could be the next big thing others learn
+              from. Get involved!
             </p>
 
             {/* Ask a Question Button */}

@@ -99,8 +99,8 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
   return (
     <div
       className={`h-[calc(screen-120px)] w-full overflow-y-scroll scrollbar-hidden ${
-    isDark ? "bg-black" : "bg-white"
-  }`}
+        isDark ? "bg-black" : "bg-white"
+      }`}
     >
       {/* Header */}
       <div
@@ -115,7 +115,10 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
         >
           All Questions
         </h1>
-        <Link href="/ask-question" className="flex justify-end items-center max-sm:w-full">
+        <Link
+          href="/ask-question"
+          className="flex justify-end items-center max-sm:w-full"
+        >
           <Button className="bg-orange-400 hover:bg-orange-500/100 text-md sm:text-sm sm:px-1/2 sm:py-1 font-mono tracking-tight min-h-[46px] px-3 py-2 font-bold transition-all text-center cursor-pointer">
             Ask Question
           </Button>
@@ -188,7 +191,7 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
                         : "border-gray-200 hover:bg-gray-300"
                     }`}
                     style={{
-                      WebkitScrollbar: "none", 
+                      WebkitScrollbar: "none",
                     }}
                   >
                     {item.tag}
@@ -205,10 +208,10 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
         {Tags.slice(0, 6).map((item, idx) => (
           <Button
             key={idx}
-            className={`text-xs cursor-pointer px-2 py-0.5 font-mono rounded-md hover:cursor-pointer ${
+            className={`text-xs cursor-pointer px-2 py-0.5 font-mono rounded-md hover:cursor-pointer  ${
               isDark
-                ? "bg-zinc-700 text-white hover:bg-zinc-600"
-                : "bg-gray-300/70 text-black hover:bg-gray-300"
+                ? "bg-zinc-900 border-1 border-zinc-600 text-white hover:bg-zinc-950 hover:shadow-[inset_0px_1px_1px_0px_rgba(255,165,2,0.7)] hover:shadow-lg hover:shadow-zinc-700 transition-all duration-400 "
+                : "bg-gray-100/70 border-1 border-zinc-400/50  hover:bg-zinc-950 hover:shadow-[inset_0px_2px_2px_0px_rgba(555,165,2,0.8)] hover:bg-yellow-100/30 hover:shadow-lg hover:shadow-zinc-400  text-black  transition-all duration-400"
             }`}
           >
             {item.tag}
@@ -223,7 +226,7 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
               className={`w-full rounded-xl border p-4 shadow-sm transition-all duration-200 hover:shadow-lg
                 ${
                   isDark
-                    ? "bg-zinc-950 border-zinc-700 shadow-md shadow-zinc-800"
+                    ? "bg-zinc-950 border-zinc-700 shadow-lg shadow-zinc-800"
                     : "bg-white border-zinc-300 shadow-md shadow-zinc-400"
                 }
               `}

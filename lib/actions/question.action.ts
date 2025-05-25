@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import Question from "../../database/question.model";
 import Tag from "../../database/tag.model";
 import User from "../../database/user.model";
@@ -8,7 +9,7 @@ import { createQuestionsParams, GetQuestionsParams } from "./shared.type";
 
 export async function getQuestions(params: GetQuestionsParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
     console.log("Params: ",params);
     const questions = await Question.find({})
     .populate({
@@ -29,10 +30,10 @@ export async function getQuestions(params: GetQuestionsParams) {
 
 export async function createQuestion(params: createQuestionsParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
     console.log("createQuestion called with params:", params);
 
-    const { title, explanation, tags,author} = params;
+    const { title, explanation, tags,author,path} = params;
 
 
     const question = await Question.create({
@@ -56,6 +57,8 @@ export async function createQuestion(params: createQuestionsParams) {
         tags: { $each: tagDocuments },
       },
     });
+
+    revalidatePath(path);
 
   } catch (error) {
     console.log(error);

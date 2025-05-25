@@ -10,13 +10,13 @@ export async function createQuestion(params: any) {
     connectToDatabase();
     console.log("createQuestion called with params:", params);
 
-    const { title, explanation, tags } = params;
+    const { title, explanation, tags,author} = params;
 
 
     const question = await Question.create({
       title,
       explanation,
-      author: user._id,
+      author,
     });
     const tagDocuments = [];
 
@@ -29,13 +29,12 @@ export async function createQuestion(params: any) {
       tagDocuments.push(existingTag._id);
     }
 
-    const newQuet = await Question.findByIdAndUpdate(question._id, {
+    await Question.findByIdAndUpdate(question._id, {
       $push: {
         tags: { $each: tagDocuments },
       },
     });
 
-    return newQuet;
   } catch (error) {
     console.log(error);
   }

@@ -202,7 +202,7 @@ const MobileNav = () => {
         >
 <Link
   href="/"
-  className="font-black font-mono font-spaceGrotesk mt-2 text-4xl bg-gradient-to-r from-amber-300 via-orange-400 to-orange-600 bg-clip-text text-transparent"
+  className="font-black font-mono font-spaceGrotesk mt-2  lg:tracking-wide text-4xl lg:text-5xl bg-gradient-to-r from-amber-300 via-orange-400 to-orange-600 bg-clip-text text-transparent"
 >
   NullFlow
 </Link>

@@ -104,7 +104,7 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
     >
       {/* Header */}
       <div
-        className={`flex w-full justify-between scrollbar-hidden items-center py-3 px-2 gap-4 ${
+        className={`flex w-full justify-between items-center scrollbar-hidden py-3 px-2 gap-4 ${
           isDark ? "bg-black" : "bg-white"
         }`}
       >
@@ -115,8 +115,8 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
         >
           All Questions
         </h1>
-        <Link href="/ask-question" className="flex justify-end max-sm:w-full">
-          <Button className="bg-orange-400 hover:bg-orange-600/80 text-md sm:text-sm sm:px-1/2 sm:py-1 font-mono tracking-tight min-h-[46px] px-3 py-2 font-semibold transition-all cursor-pointer">
+        <Link href="/ask-question" className="flex justify-end items-center max-sm:w-full">
+          <Button className="bg-orange-400 hover:bg-orange-500/100 text-md sm:text-sm sm:px-1/2 sm:py-1 font-mono tracking-tight min-h-[46px] px-3 py-2 font-bold transition-all text-center cursor-pointer">
             Ask Question
           </Button>
         </Link>
@@ -208,7 +208,7 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
             className={`text-xs cursor-pointer px-2 py-0.5 font-mono rounded-md hover:cursor-pointer ${
               isDark
                 ? "bg-zinc-700 text-white hover:bg-zinc-600"
-                : "bg-gray-200/70 text-black hover:bg-gray-300"
+                : "bg-gray-300/70 text-black hover:bg-gray-300"
             }`}
           >
             {item.tag}
@@ -220,11 +220,11 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
           questions.map((que) => (
             <div
               key={que._id}
-              className={`w-full rounded-xl border p-4 shadow-sm transition-all duration-200 hover:shadow-md
+              className={`w-full rounded-xl border p-4 shadow-sm transition-all duration-200 hover:shadow-lg
                 ${
                   isDark
-                    ? "bg-zinc-900 border-zinc-700"
-                    : "bg-white border-zinc-300 shadow-xl shadow-zinc-400"
+                    ? "bg-zinc-950 border-zinc-700 shadow-md shadow-zinc-800"
+                    : "bg-white border-zinc-300 shadow-md shadow-zinc-400"
                 }
               `}
             >

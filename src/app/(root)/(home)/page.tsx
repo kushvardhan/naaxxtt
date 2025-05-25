@@ -6,7 +6,7 @@ export default async function Home() {
   console.log(result.questions);
   const questions = result?.questions || [];
 
-  const mappedQuestions = questions.map((q: any) => ({
+  const mappedQuestions = questions.map((q: unknown) => ({
     _id: q._id.toString(),
     title: q.title || "No Title",
     tags:

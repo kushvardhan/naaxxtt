@@ -18,9 +18,7 @@ export const connectToDatabase = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URL, {
       dbName: 'NullDeBugged',
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    } as any); // TypeScript workaround if it complains
+    }); 
     isConnected = true;
     console.log('✅ Connected to MongoDB');
   } catch (error) {

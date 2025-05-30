@@ -1,28 +1,26 @@
 import mongoose from 'mongoose';
 
-let isConnected: boolean = false;
+let isConnected = false;
 
 export const connectToDatabase = async () => {
-  mongoose.set('strictQuery', true);
-
-  if (!process.env.MONGODB_URL) {
-    console.error('❌ MONGODB_URL not found in environment variables');
+  if (isConnected) {
+    console.log("✅ Using existing DB connection");
     return;
   }
 
-  if (isConnected) {
-    console.log('✅ Already connected to MongoDB');
-    return;
+  if (!process.env.MONGODB_URL) {
+    throw new Error("❌ MONGODB_URL is not defined");
   }
 
   try {
     await mongoose.connect(process.env.MONGODB_URL, {
       dbName: 'NullDeBugged',
-    }); 
+      serverSelectionTimeoutMS: 10000,
+    });
     isConnected = true;
-    console.log('✅ Connected to MongoDB');
+    console.log("✅ MongoDB connected successfully");
   } catch (error) {
-    console.error('❌ MongoDB connection error:', error);
-    throw error; // important for debugging in calling functions
+    console.error("❌ MongoDB connection error:", error);
+    throw error;
   }
 };

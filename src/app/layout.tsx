@@ -19,8 +19,8 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: 'NullPointer',
-  description: 'NullDebugged is a developer community platform focused on solving coding problems and debugging efficiently. It connects programmers to share knowledge, find practical solutions, and collaborate to overcome coding challenges.',
+  title: 'NullFlow',
+  description: 'NullFlow is a developer community platform focused on solving coding problems and debugging efficiently. It connects programmers to share knowledge, find practical solutions, and collaborate to overcome coding challenges.',
 };
 
 export default function RootLayout({

@@ -12,6 +12,7 @@ import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../../../context/ThemeContext";
 import { getQuestions } from "../../../../lib/actions/question.action";
 import { Button } from "../../../components/Shared/button";
+import Image from "next/image";
 
 export default function ClientHome() {
   const theme = useContext(ThemeContext);
@@ -197,9 +198,11 @@ export default function ClientHome() {
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <img
+                  <Image
                     src={que.user.image}
                     alt={que.user.name}
+                      width={24}
+                  height={24}
                     className="h-8 w-8 rounded-full object-cover"
                   />
                   <span className="text-sm font-medium">{que.user.name}</span>

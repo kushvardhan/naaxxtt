@@ -43,7 +43,6 @@ interface CustomInputProps {
 
 
 const LocalSearchBar = ({
-  route,
   iconPosition,
   placeholder,
   otherClasses,

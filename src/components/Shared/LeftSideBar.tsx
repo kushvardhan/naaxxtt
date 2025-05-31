@@ -1,4 +1,5 @@
 "use client";
+import clsx from "clsx";
 import { useContext } from "react";
 import Link from "next/link";
 import { ThemeContext } from "../../../context/ThemeContext";
@@ -182,18 +183,16 @@ const LeftSB = () => {
             <Link
               key={link.label}
               href={link.route}
-              className={`flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-300
-                ${isActive ? "bg-orange-500 text-black" : ""}
-                ${!isActive ? hoverBg : ""}
-
-                ${
-                  !isActive
-                    ? theme?.mode === "dark"
-                      ? "hover:bg-orange-400/30 text-white hover:text-white"
-                      : "hover:bg-orange-200 text-black"
-                    : ""
-                }
-              `}
+              className={clsx(
+  "flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-300",
+  {
+    "bg-orange-500 text-black": isActive,
+    [hoverBg]: !isActive,
+    "hover:bg-orange-400/30 text-white hover:text-white":
+      !isActive && theme.mode === "dark",
+    "hover:bg-orange-200 text-black": !isActive && theme.mode === "light",
+  }
+)}
             >
               <div
                 className={`transition-transform font-semibold duration-300 ${

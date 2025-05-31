@@ -7,6 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/Shared/dropdown-menu";
+import Image from "next/image";
 import Link from "next/link";
 import { useContext, useState } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
@@ -266,9 +267,11 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
               >
                 {/* User */}
                 <div className="flex items-center gap-3">
-                  <img
+                  <Image
                     src={que.user.image}
                     alt={que.user.name}
+                    width={24}
+                    height={24}
                     className="h-8 w-8 rounded-full object-cover"
                   />
                   <span className="text-sm font-medium">{que.user.name}</span>

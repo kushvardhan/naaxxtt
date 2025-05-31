@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface QuestionCardProps {
   question: {
     _id: string;
@@ -10,7 +12,6 @@ interface QuestionCardProps {
     createdAt: string;
   };
 }
-
 
 export default function QuestionCard({ question }: QuestionCardProps) {
   return (
@@ -30,9 +31,14 @@ export default function QuestionCard({ question }: QuestionCardProps) {
 
       <div className="mt-3 flex justify-between text-sm text-gray-600">
         <div className="flex items-center gap-2">
-          <img
-            src={question.user.image || "https://banner2.cleanpng.com/20180416/gbw/avfp7lvmb.webp"}
+          <Image
+            src={
+              question.user.image ||
+              "https://banner2.cleanpng.com/20180416/gbw/avfp7lvmb.webp"
+            }
             alt={question.user.name}
+            width={24}
+            height={24}
             className="w-6 h-6 rounded-full"
           />
           <span>{question.user.name}</span>
@@ -47,4 +53,3 @@ export default function QuestionCard({ question }: QuestionCardProps) {
     </div>
   );
 }
- 

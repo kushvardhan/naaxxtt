@@ -1,5 +1,6 @@
 import { verifyWebhook } from '@clerk/nextjs/webhooks'
-import { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { createUser, updateUser } from '../../../../lib/actions/user.action'
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,10 +15,38 @@ export async function POST(req: NextRequest) {
 
     if(eventType === 'user.created'){
         const {id,email_addresses,image_url, first_name, last_name, username} = evt.data;
-        console.log('User created');
+        const mongoUser = await createUser({
+            clerkId:id,
+            name:`${first_name}${last_name ? ` ${last_name}` : ''}`,
+            username:username!,
+            email:email_addresses[0].email_address,
+            image:image_url,
+            about:"Hello, I'm new here!",
+        });
+        console.log('User created',mongoUser);
+        return NextResponse.json({
+            message:'OK',
+            user: mongoUser
+        })
+    }else if(eventType === 'user.updated'){
+        const {id,email_addresses,image_url, first_name, last_name, username} = evt.data;
+        const mongoUser = await updateUser({
+            clerkId:id,
+            updateData:{
+                name:`${first_name}${last_name ? ` ${last_name}` : ''}`,
+                username:username!,
+                email:email_addresses[0].email_address,
+                image:image_url,
+            },
+            path: `/profile/${id}`,
+        });
+        console.log('User Updated',mongoUser);
+        return NextResponse.json({
+            message:'OK',
+            user: mongoUser
+        })
     }
 
-    return new Response('Webhook received', { status: 200 })
   } catch (err) {
     console.error('Error verifying webhook:', err)
     return new Response('Error verifying webhook', { status: 400 })

@@ -20,3 +20,21 @@ export async function getUserById(params: unknown) {
     throw error;
   }
 }
+
+export async function createUser(userData: CreateUserParams) {
+  try {
+    await connectToDatabase(); 
+    console.log('Creating USERRR');
+
+    const user = await User.create(
+      userData
+    );
+
+    console.log("User created: ",user);
+ 
+    return user;
+  } catch (error) {
+    console.error("Error creating user:", error);
+    throw error;
+  }
+} 

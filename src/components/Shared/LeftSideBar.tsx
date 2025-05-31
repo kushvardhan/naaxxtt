@@ -17,7 +17,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth="1.5"
         stroke="currentColor"
-        className="w-6 h-6"
+  className="invert-colors  w-8 h-8 size-0.5 size-6"
       >
         <path
           strokeLinecap="round"
@@ -37,7 +37,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-6 h-6"
+  className="invert-colors w-8 h-8 size-0.5 size-6"
       >
         <path
           strokeLinecap="round"
@@ -57,7 +57,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-6 h-6"
+  className="invert-colors w-8 h-8 size-0.5 size-6"
       >
         <path
           strokeLinecap="round"
@@ -77,7 +77,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-6 h-6"
+  className="invert-colors w-8 h-8 size-0.5 size-6"
       >
         <path
           strokeLinecap="round"
@@ -97,7 +97,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-6 h-6"
+  className="invert-colors w-8 h-8 size-0.5 size-6"
       >
         <path
           strokeLinecap="round"
@@ -122,7 +122,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-6 h-6"
+  className="invert-colors  w-8 h-8 size-0.5 size-6"
       >
         <path
           strokeLinecap="round"
@@ -142,7 +142,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-6 h-6"
+  className="invert-colors  w-8 h-8 size-0.5 size-6"
       >
         <path
           strokeLinecap="round"

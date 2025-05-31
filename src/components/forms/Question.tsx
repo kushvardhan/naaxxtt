@@ -82,9 +82,14 @@ const contentStyle = `
   }
 `;
 
+interface Field {
+    name: string;
+    value: string[];
+  }
+
   const handleInputKeyDown = (
     e: React.KeyboardEvent<HTMLElement>,
-  field: ControllerRenderProps<z.infer<typeof QuestionSchema>, "tags">
+  field: Field,
   ) => {
     if (e.key === "Enter" && field.name === "tags") {
       e.preventDefault();

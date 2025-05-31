@@ -1,16 +1,37 @@
 import ClientHomehh from "@/components/Shared/ClientHomehh";
 import { getQuestions } from "../../../../lib/actions/question.action";
 
+interface Tag {
+  _id: string;
+  name: string;
+}
+
+interface Author {
+  name?: string;
+  image?: string;
+}
+
+interface Question {
+  _id: string;
+  title?: string;
+  tags?: Tag[];
+  author?: Author;
+  upvotes?: any[];
+  answers?: any[];
+  views?: number;
+  createdAt?: string | Date;
+}
+
 export default async function Home() {
   const result = await getQuestions({});
   console.log(result.questions);
   const questions = result?.questions || [];
 
-  const mappedQuestions = questions.map((q: unknown) => ({
+  const mappedQuestions = questions.map((q: Question) => ({
     _id: q._id.toString(),
     title: q.title || "No Title",
     tags:
-      q.tags?.map((tag: any) => ({
+      q.tags?.map((tag) => ({
         _id: tag._id.toString(),
         name: tag.name || "Unknown",
       })) || [],

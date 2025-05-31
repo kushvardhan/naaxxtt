@@ -16,8 +16,8 @@ interface Question {
   title?: string;
   tags?: Tag[];
   author?: Author;
-  upvotes?: any[];
-  answers?: any[];
+  upvotes?: number;
+  answers?: number;
   views?: number;
   createdAt?: string | Date;
 }

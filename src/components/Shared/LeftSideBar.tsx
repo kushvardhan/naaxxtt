@@ -281,6 +281,7 @@ const LeftSB = () => {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
+                    // eslint-disable-next-line react/jsx-no-duplicate-props
                     className="w-6 h-6 size-2"
                   >
                     <path

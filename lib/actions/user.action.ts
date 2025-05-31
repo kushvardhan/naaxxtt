@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import User from "../../database/user.model";
 import Question from '../../database/question.model';
 import { connectToDatabase } from "../mongoose";
-import { CreateUserParams,UpdateUserParams } from "./shared.type";
+import { CreateUserParams,UpdateUserParams,DeleteUserParams } from "./shared.type";
 
 export async function getUserById(params: unknown) {
   try {
@@ -77,6 +77,7 @@ export async function deleteUser(params: DeleteUserParams) {
       throw new Error('User not found.');
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const userQuestionIds = await Question.find({ author: user._id }).distinct('_id');
 
     await Question.deleteMany({ author: user._id });

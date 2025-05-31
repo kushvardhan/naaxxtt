@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Editor } from "@tinymce/tinymce-react";
-
+import { ControllerRenderProps } from "react-hook-form";
 import { useContext, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -84,7 +84,7 @@ const contentStyle = `
 
   const handleInputKeyDown = (
     e: React.KeyboardEvent<HTMLElement>,
-    field: any
+  field: ControllerRenderProps<z.infer<typeof QuestionSchema>, "tags">
   ) => {
     if (e.key === "Enter" && field.name === "tags") {
       e.preventDefault();

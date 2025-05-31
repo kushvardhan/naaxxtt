@@ -5,8 +5,8 @@ import Link from "next/link";
 import { ThemeContext } from "../../../context/ThemeContext";
 import { usePathname } from "next/navigation";
 import { SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
-import { useUser } from "@clerk/nextjs";
 import { Button } from "./button";
+
 
 const sideBarLinks = [
   {
@@ -176,7 +176,7 @@ const LeftSB = () => {
       <div className="flex flex-1 flex-col gap-2">
         {sideBarLinks.map((link) => {
           const isActive =
-            (pathName.includes(link.route) && link.route.length > 1) ||
+            (pathName.includes(link.route)  && link.route !== "/" && link.route.length > 1) ||
             pathName === link.route;
 
           return (

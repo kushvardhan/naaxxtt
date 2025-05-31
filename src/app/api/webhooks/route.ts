@@ -1,6 +1,6 @@
 import { verifyWebhook } from '@clerk/nextjs/webhooks'
 import { NextRequest, NextResponse } from 'next/server'
-import { createUser, updateUser } from '../../../../lib/actions/user.action'
+import { createUser, updateUser,deleteUser } from '../../../../lib/actions/user.action'
 
 export async function POST(req: NextRequest) {
   try {
@@ -45,6 +45,18 @@ export async function POST(req: NextRequest) {
             message:'OK',
             user: mongoUser
         })
+    }
+
+    if(eventType === 'user.deleted'){
+        const {id} = evt.data;
+        const deleteUser = await deleteUser({
+            clerkId : id!,
+        });
+    
+        return NextResponse.json({
+            message:'User Deleted',
+            user:deleteUser,
+        });
     }
 
   } catch (err) {

@@ -234,7 +234,7 @@ const LeftSB = () => {
                     }`}
             >
               <svg
-                className="invert-colors lg:hidden w-10 h-10 size-0.5 size-6"
+                className="invert-colors w-10 h-10 size-0.5"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -262,7 +262,7 @@ const LeftSB = () => {
                     }`}
             >
               <svg
-                className="invert-colors lg:hidden w-10 h-10 size-0.5 size-6"
+                className="invert-colors w-10 h-10 size-0.5"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -295,7 +295,7 @@ const LeftSB = () => {
           }`}
           >
             <svg
-              className="invert-colors lg:hidden w-10 h-10 size-0.5 size-6"
+              className="invert-colors w-10 h-10 size-0.5 size-6"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"

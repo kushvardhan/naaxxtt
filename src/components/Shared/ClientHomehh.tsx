@@ -179,6 +179,7 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
                 style={{
                   overflowY: "scroll",
                   scrollbarWidth: "none", // Firefox
+                  msOverflowStyle: "none",
                 }}
               >
                 {Tags.map((item, idx) => (
@@ -191,9 +192,7 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
                         ? "border-zinc-700 hover:bg-zinc-900"
                         : "border-gray-200 hover:bg-gray-300"
                     }`}
-                    style={{
-                      WebkitScrollbar: "none",
-                    }}
+                    style={{}}
                   >
                     {item.tag}
                   </DropdownMenuCheckboxItem>
@@ -211,7 +210,7 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
             key={idx}
             className={`text-xs cursor-pointer px-2 py-0.5 font-mono rounded-md hover:cursor-pointer  ${
               isDark
-                ? "bg-zinc-900 border-1 border-zinc-600 text-white hover:bg-zinc-950 hover:shadow-[inset_0px_1px_1px_0px_rgba(255,165,2,0.7)] hover:shadow-lg hover:shadow-zinc-700 transition-all duration-400 "
+                ? "bg-zinc-900 border-1 border-zinc-600 text-white hover:bg-zinc-950 hover:shadow-[inset_0px_1px_1px_0px_rgba(255,165,2,0.7)] hover:shadow-lg hover:shadow-zinc-700 transition-all duration-400"
                 : "bg-gray-100/70 border-1 border-zinc-400/50  hover:bg-zinc-950 hover:shadow-[inset_0px_2px_2px_0px_rgba(555,165,2,0.8)] hover:bg-yellow-100/30 hover:shadow-lg hover:shadow-zinc-400  text-black  transition-all duration-400"
             }`}
           >

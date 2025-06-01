@@ -1,12 +1,11 @@
 "use client";
-import clsx from "clsx";
-import { useContext } from "react";
-import Link from "next/link";
-import { ThemeContext } from "../../../context/ThemeContext";
-import { usePathname } from "next/navigation";
 import { SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
+import clsx from "clsx";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useContext } from "react";
+import { ThemeContext } from "../../../context/ThemeContext";
 import { Button } from "./button";
-
 
 const sideBarLinks = [
   {
@@ -17,7 +16,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth="1.5"
         stroke="currentColor"
-  className="invert-colors  w-8 h-8 size-0.5 size-6"
+        className="invert-colors  w-8 h-8 size-0.5 size-6"
       >
         <path
           strokeLinecap="round"
@@ -37,7 +36,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-  className="invert-colors w-8 h-8 size-0.5 size-6"
+        className="invert-colors w-8 h-8 size-0.5 size-6"
       >
         <path
           strokeLinecap="round"
@@ -57,7 +56,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-  className="invert-colors w-8 h-8 size-0.5 size-6"
+        className="invert-colors w-8 h-8 size-0.5 size-6"
       >
         <path
           strokeLinecap="round"
@@ -77,7 +76,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-  className="invert-colors w-8 h-8 size-0.5 size-6"
+        className="invert-colors w-8 h-8 size-0.5 size-6"
       >
         <path
           strokeLinecap="round"
@@ -97,7 +96,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-  className="invert-colors w-8 h-8 size-0.5 size-6"
+        className="invert-colors w-8 h-8 size-0.5 size-6"
       >
         <path
           strokeLinecap="round"
@@ -122,7 +121,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-  className="invert-colors  w-8 h-8 size-0.5 size-6"
+        className="invert-colors  w-8 h-8 size-0.5 size-6"
       >
         <path
           strokeLinecap="round"
@@ -142,7 +141,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-  className="invert-colors  w-8 h-8 size-0.5 size-6"
+        className="invert-colors  w-8 h-8 size-0.5 size-6"
       >
         <path
           strokeLinecap="round"
@@ -170,13 +169,15 @@ const LeftSB = () => {
   return (
     <section
       className={`${bgColor} ${
-    theme.mode === "light" ? "shadow-xl shadow-zinc-400/60" : ""
-  } sticky left-0 top-0 flex h-screen flex-col justify-between overflow-y-auto border-2 p-6 pt-34 max-sm:hidden lg:w-[266px]`}
+        theme.mode === "light" ? "shadow-xl shadow-zinc-400/60" : ""
+      } sticky left-0 top-0 flex h-screen flex-col justify-between overflow-y-auto border-2 p-6 pt-34 max-sm:hidden lg:w-[266px]`}
     >
       <div className="flex flex-1 flex-col gap-2">
         {sideBarLinks.map((link) => {
           const isActive =
-            (pathName.includes(link.route)  && link.route !== "/" && link.route.length > 1) ||
+            (pathName.includes(link.route) &&
+              link.route !== "/" &&
+              link.route.length > 1) ||
             pathName === link.route;
 
           return (
@@ -184,15 +185,16 @@ const LeftSB = () => {
               key={link.label}
               href={link.route}
               className={clsx(
-  "flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-300",
-  {
-    "bg-orange-500 text-black": isActive,
-    [hoverBg]: !isActive,
-    "hover:bg-orange-400/30 text-white hover:text-white":
-      !isActive && theme.mode === "dark",
-    "hover:bg-orange-200 text-black": !isActive && theme.mode === "light",
-  }
-)}
+                "flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-300",
+                {
+                  "bg-orange-500 text-black": isActive,
+                  [hoverBg]: !isActive,
+                  "hover:bg-orange-400/30 text-white hover:text-white":
+                    !isActive && theme.mode === "dark",
+                  "hover:bg-orange-200 text-black":
+                    !isActive && theme.mode === "light",
+                }
+              )}
             >
               <div
                 className={`transition-transform font-semibold duration-300 ${
@@ -209,7 +211,7 @@ const LeftSB = () => {
               </div>
               <span
                 className={`text-lg transition-all duration-300 ${
-                  isActive ? "font-bold text-xl" : "font-semibold"
+                  isActive ? "font-bold text-lg" : "font-semibold"
                 } max-lg:hidden`}
               >
                 {link.label}
@@ -219,82 +221,101 @@ const LeftSB = () => {
         })}
       </div>
 
-         <SignedOut>
-                    <div className="mt-6 flex flex-col gap-3">
-                        <Link href="/sign-in">
-                          <Button
-                            variant="outline"
-                            className={`w-full rounded-lg py-3 text-base font-medium transition-all duration-300
+      <SignedOut>
+        <div className="mt-6 flex flex-col gap-3">
+          <Link href="/sign-in">
+            <Button
+              variant="outline"
+              className={`w-full rounded-lg py-3 text-base font-medium transition-all duration-300
                     ${
                       theme?.mode === "dark"
                         ? "bg-zinc-900 text-white border-zinc-700 hover:bg-orange-300/30 hover:text-orange-100"
                         : "bg-white text-black border border-zinc-300  hover:bg-zinc-700/80 hover:text-white"
                     }`}
-                          >
-                            <svg
-                            className='invert-colors lg:hidden w-10 h-10 size-0.5'
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-</svg>
+            >
+              <svg
+                className="invert-colors lg:hidden w-10 h-10 size-0.5"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                />
+              </svg>
 
-                            <p className="max-lg:hidden">Log in</p>
-                          </Button>
-                        </Link>
-                        <Link href="/sign-up">
-                          <Button
-                            variant="outline"
-                            className={`w-full rounded-lg py-3 text-base font-medium transition-all duration-300
+              <p className="max-lg:hidden">Log in</p>
+            </Button>
+          </Link>
+          <Link href="/sign-up">
+            <Button
+              variant="outline"
+              className={`w-full rounded-lg py-3 text-base font-medium transition-all duration-300
                     ${
                       theme?.mode === "dark"
                         ? "bg-zinc-800 text-white border-zinc-700 hover:bg-orange-300/40 hover:text-orange-100"
                         : "bg-white text-black border border-zinc-300 hover:bg-zinc-700 hover:text-white"
                     }`}
-                          >
-                            <svg
-                            className='invert-colors lg:hidden w-10 h-10 size-0.5'
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
-</svg>
+            >
+              <svg
+                className="invert-colors lg:hidden w-10 h-10 size-0.5"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z"
+                />
+              </svg>
 
-                            <p className="max-lg:hidden">Sign up</p>
-                          </Button>
-                        </Link>
-                    </div>
-                  </SignedOut>
+              <p className="max-lg:hidden">Sign up</p>
+            </Button>
+          </Link>
+        </div>
+      </SignedOut>
 
-                            <SignedIn>
-            <div className="mt-6 flex flex-col gap-3">
-                <Button
-                  variant="outline"
-                  onClick={() => signOut()}
-                  className={`w-full rounded-lg py-6 text-lg font-semibold flex items-center justify-center gap-2 transition-all duration-300
+      <SignedIn>
+        <div className="mt-6 flex flex-col gap-3">
+          <Button
+            variant="outline"
+            onClick={() => signOut()}
+            className={`w-full rounded-lg py-6 text-lg font-semibold flex items-center justify-center gap-2 transition-all duration-300
           ${
             theme?.mode === "dark"
               ? "bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-200/10 hover:cursor-pointer hover:text-red-500 hover:font-bold"
               : "bg-zinc-200/40 text-black border border-zinc-300 hover:bg-zinc-200 hover:cursor-pointer hover:text-red-600"
           }`}
-                >
-                  <svg
-                    className='invert-colors lg:hidden w-10 h-10 size-0.5'
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    // eslint-disable-next-line react/jsx-no-duplicate-props
-                    className="w-6 h-6 size-2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3-3H9m0 0l3-3m-3 3l3 3"
-                    />
-                  </svg>
-                  <p className="max-lg:hidden">Log out</p>
-                </Button>
-            </div>
-          </SignedIn>
-
+          >
+            <svg
+              className="invert-colors lg:hidden w-10 h-10 size-0.5"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              // eslint-disable-next-line react/jsx-no-duplicate-props
+              className="w-6 h-6 size-2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3-3H9m0 0l3-3m-3 3l3 3"
+              />
+            </svg>
+            <p className="max-lg:hidden">Log out</p>
+          </Button>
+        </div>
+      </SignedIn>
     </section>
   );
 };

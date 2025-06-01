@@ -224,7 +224,7 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
           questions.map((que) => (
             <div
               key={que._id}
-              className={`w-full rounded-xl border p-4 shadow-sm transition-all duration-200 hover:shadow-lg
+              className={`w-full rounded-xl cursor-pointer border p-4 shadow-sm transition-all duration-200 hover:shadow-lg
                 ${
                   isDark
                     ? "bg-zinc-950 border-zinc-700 shadow-lg shadow-zinc-800"

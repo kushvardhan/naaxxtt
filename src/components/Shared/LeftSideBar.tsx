@@ -160,16 +160,16 @@ const LeftSB = () => {
   const { signOut } = useClerk();
 
   const bgColor =
-    theme.mode === "dark"
+    theme?.mode === "dark"
       ? "bg-zinc-900 text-white"
       : "bg-gradient-to-l from-zinc-100/30 to-white text-black";
   const hoverBg =
-    theme.mode === "dark" ? "hover:bg-orange-400/30" : "hover:bg-orange-200";
+    theme?.mode === "dark" ? "hover:bg-orange-400/30" : "hover:bg-orange-200";
 
   return (
     <section
       className={`${bgColor} ${
-        theme.mode === "light" ? "shadow-xl shadow-zinc-400/60" : ""
+        theme?.mode === "light" ? "shadow-xl shadow-zinc-400/60" : ""
       } sticky left-0 top-0 flex h-screen flex-col justify-between overflow-y-auto border-2 p-6 pt-34 max-sm:hidden lg:w-[266px]`}
     >
       <div className="flex flex-1 flex-col gap-2">
@@ -190,9 +190,9 @@ const LeftSB = () => {
                   "bg-orange-500 text-black": isActive,
                   [hoverBg]: !isActive,
                   "hover:bg-orange-400/30 text-white hover:text-white":
-                    !isActive && theme.mode === "dark",
+                    !isActive && theme?.mode === "dark",
                   "hover:bg-orange-200 text-black":
-                    !isActive && theme.mode === "light",
+                    !isActive && theme?.mode === "light",
                 }
               )}
             >
@@ -234,13 +234,12 @@ const LeftSB = () => {
                     }`}
             >
               <svg
-                className="invert-colors lg:hidden w-10 h-10 size-0.5"
+                className="invert-colors lg:hidden w-10 h-10 size-0.5 size-6"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-6"
               >
                 <path
                   strokeLinecap="round"
@@ -263,13 +262,12 @@ const LeftSB = () => {
                     }`}
             >
               <svg
-                className="invert-colors lg:hidden w-10 h-10 size-0.5"
+                className="invert-colors lg:hidden w-10 h-10 size-0.5 size-6"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-6"
               >
                 <path
                   strokeLinecap="round"
@@ -297,14 +295,12 @@ const LeftSB = () => {
           }`}
           >
             <svg
-              className="invert-colors lg:hidden w-10 h-10 size-0.5"
+              className="invert-colors lg:hidden w-10 h-10 size-0.5 size-6"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              // eslint-disable-next-line react/jsx-no-duplicate-props
-              className="w-6 h-6 size-2"
             >
               <path
                 strokeLinecap="round"

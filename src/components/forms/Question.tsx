@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Editor } from "@tinymce/tinymce-react";
-import { ControllerRenderProps } from "react-hook-form";
 import { useContext, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -36,7 +35,7 @@ export function Question({mongoUserId}:Props) {
   const [isSubmmitting, setIsSubmitting] = useState(false);
 
   const theme = useContext(ThemeContext);
-  const isDark = theme.mode === "dark";
+  const isDark = theme?.mode === "dark";
 
 const contentStyle = `
   body {

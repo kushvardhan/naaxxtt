@@ -1,4 +1,6 @@
 "use client";
+
+import { cn } from "../../../lib/utils";
 import { SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
 import clsx from "clsx";
 import Link from "next/link";
@@ -16,7 +18,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth="1.5"
         stroke="currentColor"
-        className="invert-colors  w-8 h-8 size-0.5 size-6"
+        className="invert-colors size-8"
       >
         <path
           strokeLinecap="round"
@@ -36,7 +38,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="invert-colors w-8 h-8 size-0.5 size-6"
+        className="invert-colors size-8"
       >
         <path
           strokeLinecap="round"
@@ -56,7 +58,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="invert-colors w-8 h-8 size-0.5 size-6"
+        className="invert-colors size-8"
       >
         <path
           strokeLinecap="round"
@@ -76,7 +78,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="invert-colors w-8 h-8 size-0.5 size-6"
+        className="invert-colors size-8"
       >
         <path
           strokeLinecap="round"
@@ -96,7 +98,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="invert-colors w-8 h-8 size-0.5 size-6"
+        className="invert-colors size-8"
       >
         <path
           strokeLinecap="round"
@@ -121,7 +123,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="invert-colors  w-8 h-8 size-0.5 size-6"
+        className="invert-colors size-8"
       >
         <path
           strokeLinecap="round"
@@ -141,7 +143,7 @@ const sideBarLinks = [
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="invert-colors  w-8 h-8 size-0.5 size-6"
+        className="invert-colors size-8"
       >
         <path
           strokeLinecap="round"
@@ -226,15 +228,15 @@ const LeftSB = () => {
           <Link href="/sign-in">
             <Button
               variant="outline"
-              className={`w-full rounded-lg py-3 text-base font-medium transition-all duration-300
-                    ${
-                      theme?.mode === "dark"
-                        ? "bg-zinc-900 text-white border-zinc-700 hover:bg-orange-300/30 hover:text-orange-100"
-                        : "bg-white text-black border border-zinc-300  hover:bg-zinc-700/80 hover:text-white"
-                    }`}
+               className={cn(
+    "w-full rounded-lg py-3 text-base font-medium transition-all duration-300",
+    theme?.mode === "dark"
+      ? "bg-zinc-900 text-white border-zinc-700 hover:bg-orange-300/30 hover:text-orange-100"
+      : "bg-white text-black border border-zinc-300  hover:bg-zinc-700/80 hover:text-white"
+  )}
             >
               <svg
-                className="invert-colors w-10 h-10 size-0.5"
+                className="invert-colors size-8"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -254,15 +256,15 @@ const LeftSB = () => {
           <Link href="/sign-up">
             <Button
               variant="outline"
-              className={`w-full rounded-lg py-3 text-base font-medium transition-all duration-300
-                    ${
-                      theme?.mode === "dark"
-                        ? "bg-zinc-800 text-white border-zinc-700 hover:bg-orange-300/40 hover:text-orange-100"
-                        : "bg-white text-black border border-zinc-300 hover:bg-zinc-700 hover:text-white"
-                    }`}
+              className={cn(
+    "w-full rounded-lg py-3 text-base font-medium transition-all duration-300",
+    theme?.mode === "dark"
+      ? "bg-zinc-900 text-white border-zinc-700 hover:bg-orange-300/30 hover:text-orange-100"
+      : "bg-white text-black border border-zinc-300  hover:bg-zinc-700/80 hover:text-white"
+  )}
             >
               <svg
-                className="invert-colors w-10 h-10 size-0.5"
+                className="invert-colors size-8"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -287,15 +289,15 @@ const LeftSB = () => {
           <Button
             variant="outline"
             onClick={() => signOut()}
-            className={`w-full rounded-lg py-6 text-lg font-semibold flex items-center justify-center gap-2 transition-all duration-300
-          ${
-            theme?.mode === "dark"
-              ? "bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-200/10 hover:cursor-pointer hover:text-red-500 hover:font-bold"
-              : "bg-zinc-200/40 text-black border border-zinc-300 hover:bg-zinc-200 hover:cursor-pointer hover:text-red-600"
-          }`}
+            className={cn(
+    "w-full rounded-lg py-3 text-base font-medium transition-all duration-300",
+    theme?.mode === "dark"
+      ? "bg-zinc-900 text-white border-zinc-700 hover:bg-orange-300/30 hover:text-orange-100"
+      : "bg-white text-black border border-zinc-300  hover:bg-zinc-700/80 hover:text-white"
+  )}
           >
             <svg
-              className="invert-colors w-10 h-10 size-0.5 size-6"
+              className="invert-colors size-8"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"

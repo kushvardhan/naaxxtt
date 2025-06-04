@@ -85,7 +85,7 @@ export const ThemeToggleMenu = () => {
 
       {open && (
         <div
-          className={`absolute right-0 mt-2 w-36 sm:w-44 rounded-lg sm:rounded-xl shadow-lg z-50
+          className={`absolute right-0 mt-2 w-36 sm:w-44 rounded-lg sm:rounded-xl shadow-lg z-50 hover:cursor-pointer  
     ${
       mode === "dark"
         ? "bg-neutral-900 text-white border border-neutral-700"

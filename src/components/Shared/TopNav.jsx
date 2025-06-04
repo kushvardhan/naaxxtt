@@ -33,7 +33,7 @@ const TopNav = () => {
       <GlobalSearch />
 
       <div className="flex items-center gap-4 font-mono">
-        <ThemeToggleMenu />
+        <ThemeToggleMenu/>
         <SignedIn>
           <UserButton
             afterSignOutUrl="/"

@@ -301,7 +301,7 @@ const MobileNav = () => {
                   onClick={() => signOut()}
                   className={`w-full rounded-lg py-6 text-lg font-semibold flex items-center justify-center gap-2 transition-all duration-300
           ${
-            theme?.mode === "dark"
+            theme.mode === "dark"
               ? "bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-200/10 hover:cursor-pointer hover:text-red-500 hover:font-bold"
               : "bg-white text-black border border-zinc-300 hover:bg-zinc-200 hover:cursor-pointer hover:text-red-600"
           }`}

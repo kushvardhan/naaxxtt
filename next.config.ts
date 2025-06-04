@@ -2,12 +2,19 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   experimental: {
-    serverActions: {}, 
+    serverActions: {},
     mdxRs: true,
   },
   serverExternalPackages: ["mongoose"],
   images: {
-    domains: ['banner2.cleanpng.com'],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "banner2.cleanpng.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
   },
 };
 

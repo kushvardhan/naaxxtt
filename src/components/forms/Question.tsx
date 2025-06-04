@@ -185,10 +185,10 @@ interface Field {
               </FormLabel>
               <FormControl className="mt-1">
                 <Input
-                  className={`font-mono text-lg no-focus outline-none min-h-[56px] paragraph ${
+                  className={`font-mono text-xl no-focus outline-none min-h-[56px] paragraph ${
                     isDark
-                      ? "text-white border-2 border-zinc-700 bg-zinc-900"
-                      : "text-black border-1 border-zinc-500/50 bg-zinc-900"
+                      ? "text-white border-2 border-zinc-700 bg-zinc-900 text- font-bold"
+                      : "text-black border-1 border-zinc-500/50 bg-zinc-200 text-semibold"
                   }  !important`}
                   placeholder="Enter your question title"
                   {...field}
@@ -303,10 +303,10 @@ interface Field {
               <FormControl className="mt-1">
                 <div>
                   <Input
-                    className={`font-mono text-lg no-focus outline-none min-h-[56px] paragraph ${
+                    className={`font-mono text-xl no-focus text-semibold outline-none min-h-[56px] paragraph ${
                       isDark
                         ? "text-white border-2 border-zinc-700 bg-zinc-900"
-                        : "text-black border-1 border-zinc-500/50 bg-zinc-900"
+                        : "text-black border-1 border-zinc-500/50 bg-zinc-200"
                     }  !important`}
                     placeholder="Add tags"
                     onKeyDown={(e) => handleInputKeyDown(e, field)}

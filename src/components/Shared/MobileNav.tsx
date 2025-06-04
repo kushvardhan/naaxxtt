@@ -166,6 +166,10 @@ const MobileNav = () => {
   const pathName = usePathname();
   const { signOut } = useClerk();
 
+  if (!theme) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="sm:hidden flex items-center">
       <Sheet>
@@ -173,7 +177,7 @@ const MobileNav = () => {
           <button
             aria-label="Open menu"
             className={`p-2 rounded-md ${
-              theme?.mode === "dark" ? "text-white" : "text-black"
+              theme.mode === "dark" ? "text-white" : "text-black"
             }`}
           >
             <svg
@@ -195,18 +199,17 @@ const MobileNav = () => {
         <SheetContent
           side="left"
           className={`w-[80vw] max-w-sm px-4 py-6 ${
-            theme?.mode === "dark"
+            theme.mode === "dark"
               ? "bg-zinc-900 text-white"
               : "bg-white text-black"
           }`}
         >
-<Link
-  href="/"
-  className="font-black font-mono font-spaceGrotesk mt-2  lg:tracking-wide text-4xl lg:text-5xl bg-gradient-to-r from-amber-300 via-orange-400 to-orange-600 bg-clip-text text-transparent"
->
-  NullFlow
-</Link>
-
+          <Link
+            href="/"
+            className="font-black font-mono font-spaceGrotesk mt-2  lg:tracking-wide text-4xl lg:text-5xl bg-gradient-to-r from-amber-300 via-orange-400 to-orange-600 bg-clip-text text-transparent"
+          >
+            NullFlow
+          </Link>
 
           <nav className="mt-8 flex flex-col gap-3">
             {sideBarLinks.map((link) => {
@@ -221,7 +224,7 @@ const MobileNav = () => {
     ${isActive ? "bg-orange-500 text-black" : ""}
     ${
       !isActive
-        ? theme?.mode === "dark"
+        ? theme.mode === "dark"
           ? "hover:bg-orange-400/30 text-white hover:text-white"
           : "hover:bg-orange-200 text-black"
         : ""
@@ -234,7 +237,7 @@ const MobileNav = () => {
                       }
     ${
       !isActive
-        ? theme?.mode === "dark"
+        ? theme.mode === "dark"
           ? "text-white group-hover:text-black"
           : "text-black"
         : ""
@@ -263,7 +266,7 @@ const MobileNav = () => {
                     variant="outline"
                     className={`w-full rounded-lg py-3 text-base font-medium transition-all duration-300
             ${
-              theme?.mode === "dark"
+              theme.mode === "dark"
                 ? "bg-zinc-900 text-white border-zinc-700 hover:bg-orange-300/30 hover:text-orange-100"
                 : "bg-white text-black border border-zinc-300  hover:bg-zinc-700/80 hover:text-white"
             }`}
@@ -278,7 +281,7 @@ const MobileNav = () => {
                     variant="outline"
                     className={`w-full rounded-lg py-3 text-base font-medium transition-all duration-300
             ${
-              theme?.mode === "dark"
+              theme.mode === "dark"
                 ? "bg-zinc-800 text-white border-zinc-700 hover:bg-orange-300/40 hover:text-orange-100"
                 : "bg-white text-black border border-zinc-300 hover:bg-zinc-700 hover:text-white"
             }`}

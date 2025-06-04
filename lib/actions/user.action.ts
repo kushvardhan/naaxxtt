@@ -1,22 +1,26 @@
-"use server"
+"use server";
 
 import { revalidatePath } from "next/cache";
+import Question from "../../database/question.model";
 import User from "../../database/user.model";
-import Question from '../../database/question.model';
 import { connectToDatabase } from "../mongoose";
-import { CreateUserParams,UpdateUserParams,DeleteUserParams } from "./shared.type";
+import {
+  CreateUserParams,
+  DeleteUserParams,
+  UpdateUserParams,
+} from "./shared.type";
 
-export async function getUserById(params: unknown) {
+export async function getUserById(params: { userId: string }) {
   try {
-    await connectToDatabase(); 
-    console.log('Fetching USERRR');
+    await connectToDatabase();
+    console.log("Fetching USERRR");
 
-    const { userId } = params;    
+    const { userId } = params;
 
-    const user = await User.findOne({clerkId: userId });
+    const user = await User.findOne({ clerkId: userId });
 
-    console.log("User fetched: ",user);
- 
+    console.log("User fetched: ", user);
+
     return user;
   } catch (error) {
     console.error("Error fetching user:", error);
@@ -26,45 +30,39 @@ export async function getUserById(params: unknown) {
 
 export async function createUser(userData: CreateUserParams) {
   try {
-    await connectToDatabase(); 
-    console.log('Creating USERRR');
+    await connectToDatabase();
+    console.log("Creating USERRR");
 
-    const user = await User.create(
-      userData
-    );
+    const user = await User.create(userData);
 
-    console.log("User created: ",user);
- 
+    console.log("User created: ", user);
+
     return user;
   } catch (error) {
     console.error("Error creating user:", error);
     throw error;
   }
-} 
+}
 
 export async function updateUser(params: UpdateUserParams) {
   try {
-    await connectToDatabase(); 
-    console.log('Updating USERRR');
+    await connectToDatabase();
+    console.log("Updating USERRR");
 
-    const {clerkId,updateData,path} = params;
+    const { clerkId, updateData, path } = params;
 
-    await User.findOneAndUpdate(
-      {clerkId},
-      updateData,
-      {
-        new:true,
-      }
-    )
+    await User.findOneAndUpdate({ clerkId }, updateData, {
+      new: true,
+    });
 
     console.log("User updated!!");
- 
+
     revalidatePath(path);
   } catch (error) {
     console.error("Error updating user:", error);
     throw error;
   }
-} 
+}
 
 export async function deleteUser(params: DeleteUserParams) {
   try {
@@ -74,19 +72,20 @@ export async function deleteUser(params: DeleteUserParams) {
     const user = await User.findOne({ clerkId });
 
     if (!user) {
-      throw new Error('User not found.');
+      throw new Error("User not found.");
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const userQuestionIds = await Question.find({ author: user._id }).distinct('_id');
+    const userQuestionIds = await Question.find({ author: user._id }).distinct(
+      "_id"
+    );
 
     await Question.deleteMany({ author: user._id });
 
     const deletedUser = await User.findByIdAndDelete(user._id);
 
-    console.log(deletedUser, 'deleted.');
+    console.log(deletedUser, "deleted.");
     return deletedUser;
-
   } catch (err) {
     console.log("Error deleting user: ", err);
     throw err;

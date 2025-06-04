@@ -13,21 +13,21 @@ import {
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Editor } from "@tinymce/tinymce-react";
+import { usePathname, useRouter } from "next/navigation";
 import { useContext, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ThemeContext } from "../../../context/ThemeContext";
-import { QuestionSchema } from "../../../lib/validations";
 import { createQuestion } from "../../../lib/actions/question.action";
-import { useRouter, usePathname } from "next/navigation";
+import { QuestionSchema } from "../../../lib/validations";
 
 const type: unknown = "create";
 
-interface Props{
-  mongoUserId:string;
+interface Props {
+  mongoUserId: string;
 }
 
-export function Question({mongoUserId}:Props) {
+export function Question({ mongoUserId }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const editorRef = useRef(null);
@@ -35,9 +35,22 @@ export function Question({mongoUserId}:Props) {
   const [isSubmmitting, setIsSubmitting] = useState(false);
 
   const theme = useContext(ThemeContext);
-  const isDark = theme?.mode === "dark";
+  const form = useForm<z.infer<typeof QuestionSchema>>({
+    resolver: zodResolver(QuestionSchema),
+    defaultValues: {
+      title: "",
+      explanation: "",
+      tags: [],
+    },
+  });
 
-const contentStyle = `
+  if (!theme) {
+    return <div>Loading...</div>;
+  }
+
+  const isDark = theme.mode === "dark";
+
+  const contentStyle = `
   body {
     font-family: monospace;
     font-size: 18px;
@@ -81,14 +94,14 @@ const contentStyle = `
   }
 `;
 
-interface Field {
+  interface Field {
     name: string;
     value: string[];
   }
 
   const handleInputKeyDown = (
     e: React.KeyboardEvent<HTMLElement>,
-  field: Field,
+    field: Field
   ) => {
     if (e.key === "Enter" && field.name === "tags") {
       e.preventDefault();
@@ -123,37 +136,25 @@ interface Field {
     }
   };
 
-  const form = useForm<z.infer<typeof QuestionSchema>>({
-    resolver: zodResolver(QuestionSchema),
-    defaultValues: {
-      title: "",
-      explanation: "",
-      tags: [],
-    },
-  });
-
   // 2. Define a submit handler.
- async function onSubmit(values: z.infer<typeof QuestionSchema>) {
-  setIsSubmitting(true);
-  try {
+  async function onSubmit(values: z.infer<typeof QuestionSchema>) {
+    setIsSubmitting(true);
+    try {
+      await createQuestion({
+        title: values.title,
+        explanation: values.explanation,
+        tags: values.tags,
+        author: JSON.parse(mongoUserId),
+        path: pathname,
+      });
 
-    await createQuestion({
-      title: values.title,
-      explanation: values.explanation,
-      tags: values.tags,
-      author:JSON.parse(mongoUserId),
-      path:pathname,
-    });
-
-    router.push('/');
-
-  } catch (error) {
-    console.error("Error posting question:", error);
-  } finally {
-    setIsSubmitting(false);
+      router.push("/");
+    } catch (error) {
+      console.error("Error posting question:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
-}
-
 
   return (
     <Form {...form}>

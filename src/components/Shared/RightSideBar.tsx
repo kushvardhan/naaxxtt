@@ -44,6 +44,10 @@ const popularTags = [
 const RightSideBar = () => {
   const theme = useContext(ThemeContext);
 
+  if (!theme) {
+    return <div>Loading...</div>;
+  }
+
   const bgColor =
     theme.mode === "dark"
       ? "bg-zinc-900 text-white border-zinc-800"
@@ -53,11 +57,11 @@ const RightSideBar = () => {
     theme.mode === "dark" ? "hover:bg-black" : "hover:bg-zinc-300";
 
   return (
-   <section
-  className={`${bgColor} ${
-    theme.mode === "light" ? "shadow-xl shadow-zinc-400/60" : ""
-  } sticky right-0 top-0 h-screen border-l p-6 pt-28 hidden lg:block lg:w-[300px] xl:w-[330px]`}
->
+    <section
+      className={`${bgColor} ${
+        theme.mode === "light" ? "shadow-xl shadow-zinc-400/60" : ""
+      } sticky right-0 top-0 h-screen border-l p-6 pt-28 hidden lg:block lg:w-[300px] xl:w-[330px]`}
+    >
       <div className="h-full overflow-y-auto hide-scrollbar flex flex-col gap-6">
         {/* Top Questions */}
         <div>

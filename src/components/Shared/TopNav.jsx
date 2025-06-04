@@ -11,6 +11,10 @@ import { ThemeToggleMenu } from "./ThemeToggleMenu";
 const TopNav = () => {
   const theme = useContext(ThemeContext);
 
+  if (!theme) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <nav
       className={`w-full flex items-center justify-between fixed z-50 gap-5 py-6 px-2 border-b sm:px-6 transition-colors ${
@@ -18,14 +22,12 @@ const TopNav = () => {
       }`}
     >
       <div className="flex items-center gap-1 px-3">
-<Link
-  href="/"
-  className="font-black font-mono font-spaceGrotesk lg:tracking-wide text-4xl lg:text-5xl bg-gradient-to-r from-amber-300 via-orange-400 to-orange-600 bg-clip-text text-transparent"
->
-  NullFlow
-</Link>
-
-
+        <Link
+          href="/"
+          className="font-black font-mono font-spaceGrotesk lg:tracking-wide text-4xl lg:text-5xl bg-gradient-to-r from-amber-300 via-orange-400 to-orange-600 bg-clip-text text-transparent"
+        >
+          NullFlow
+        </Link>
       </div>
 
       <GlobalSearch />

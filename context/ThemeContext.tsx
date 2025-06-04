@@ -1,26 +1,36 @@
 "use client";
 
-import { createContext, useEffect, useState, ReactNode } from "react";
-
+import { useTheme } from "next-themes";
+import { createContext } from "react";
 
 type ThemeContextType = {
   mode: string;
-  setMode: React.Dispatch<React.SetStateAction<string>>;
+  setMode: (theme: string) => void;
 };
 
-export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+export const ThemeContext = createContext<ThemeContextType | undefined>(
+  undefined
+);
 
-export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [mode, setMode] = useState("dark");
+// Custom hook that provides the same interface as before but uses next-themes
+export const useThemeContext = () => {
+  const { theme, setTheme } = useTheme();
 
-  useEffect(() => {
-    const html = document.querySelector("html");
-    html?.setAttribute("data-theme", mode);
-  }, [mode]);
+  return {
+    mode: theme || "dark",
+    setMode: setTheme,
+  };
+};
+
+// For backward compatibility, provide a context that uses next-themes
+export const ThemeContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const themeData = useThemeContext();
 
   return (
-    <ThemeContext.Provider value={{ mode, setMode }}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={themeData}>{children}</ThemeContext.Provider>
   );
 };

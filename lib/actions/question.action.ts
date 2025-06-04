@@ -10,8 +10,39 @@ import { createQuestionsParams, GetQuestionsParams } from "./shared.type";
 export async function getQuestions(params: GetQuestionsParams) {
   try {
     await connectToDatabase();
-    console.log("Params: ", params);
-    const questions = await Question.find({})
+
+    const { searchQuery, filter } = params;
+
+    // Build query
+    const query: Record<string, any> = {};
+
+    if (searchQuery) {
+      query.$or = [
+        { title: { $regex: searchQuery, $options: "i" } },
+        { explanation: { $regex: searchQuery, $options: "i" } },
+      ];
+    }
+
+    // Build sort options
+    let sortOptions = {};
+
+    switch (filter) {
+      case "newest":
+        sortOptions = { createdAt: -1 };
+        break;
+      case "frequent":
+        sortOptions = { views: -1 };
+        break;
+      case "unanswered":
+        query.answers = { $size: 0 };
+        sortOptions = { createdAt: -1 };
+        break;
+      default:
+        sortOptions = { createdAt: -1 };
+        break;
+    }
+
+    const questions = await Question.find(query)
       .populate({
         path: "tags",
         model: Tag,
@@ -20,7 +51,7 @@ export async function getQuestions(params: GetQuestionsParams) {
         path: "author",
         model: User,
       })
-      .sort({ createdAt: -1 });
+      .sort(sortOptions);
 
     return { questions };
   } catch (error) {

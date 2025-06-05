@@ -14,7 +14,7 @@ export async function getQuestions(params: GetQuestionsParams) {
     const { searchQuery, filter } = params;
 
     // Build query
-    const query: Record<string, any> = {};
+    const query: Record<string, unknown> = {};
 
     if (searchQuery) {
       query.$or = [

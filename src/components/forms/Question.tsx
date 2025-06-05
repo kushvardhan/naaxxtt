@@ -310,7 +310,9 @@ export function Question({ mongoUserId }: Props) {
                         : "text-black border-1 border-zinc-500/50 bg-zinc-200"
                     }  !important`}
                     placeholder="Add tags"
-                    onKeyDown={(e) => handleInputKeyDown(e, field)}
+                    onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
+                      handleInputKeyDown(e, field)
+                    }
                   />
                   {field.value.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-4">

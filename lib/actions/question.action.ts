@@ -1,5 +1,5 @@
 "use server";
-
+import mongoose from 'mongoose'
 import { revalidatePath } from "next/cache";
 import Question from "../../database/question.model";
 import Tag from "../../database/tag.model";

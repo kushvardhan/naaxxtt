@@ -35,7 +35,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   return (
     <main
       className={`relative min-h-screen flex flex-col ${
-        theme.mode === "dark" ? "bg-black" : "bg-white"
+        theme?.mode === "dark" ? "bg-black" : "bg-white"
       } `}
     >
       <div ref={navRef}>

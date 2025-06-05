@@ -48,7 +48,7 @@ export function Question({ mongoUserId }: Props) {
     return <div>Loading...</div>;
   }
 
-  const isDark = theme.mode === "dark";
+  const isDark = theme?.mode === "dark";
 
   const contentStyle = `
   body {

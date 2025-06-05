@@ -49,17 +49,17 @@ const RightSideBar = () => {
   }
 
   const bgColor =
-    theme.mode === "dark"
+    theme?.mode === "dark"
       ? "bg-zinc-900 text-white border-zinc-800"
       : "bg-gradient-to-l from-white to-zinc-100/30 text-black border-zinc-200";
 
   const hoverBg =
-    theme.mode === "dark" ? "hover:bg-black" : "hover:bg-zinc-300";
+    theme?.mode === "dark" ? "hover:bg-black" : "hover:bg-zinc-300";
 
   return (
     <section
       className={`${bgColor} ${
-        theme.mode === "light" ? "shadow-xl shadow-zinc-400/60" : ""
+        theme?.mode === "light" ? "shadow-xl shadow-zinc-400/60" : ""
       } sticky right-0 top-0 h-screen border-l p-6 pt-28 hidden lg:block lg:w-[300px] xl:w-[330px]`}
     >
       <div className="h-full overflow-y-auto hide-scrollbar flex flex-col gap-6">
@@ -102,7 +102,7 @@ const RightSideBar = () => {
                 href={`/tag/${tag.toLowerCase()}`}
                 key={index}
                 className={`flex items-center gap-2 px-2 py-1 rounded-full text-sm font-medium border ${
-                  theme.mode === "dark"
+                  theme?.mode === "dark"
                     ? "border-zinc-700 text-white hover:bg-orange-400/30"
                     : "border-zinc-300 text-black hover:bg-orange-200"
                 } transition-all duration-200 whitespace-nowrap`}
@@ -110,7 +110,7 @@ const RightSideBar = () => {
                 #{tag}
                 <span
                   className={`text-xs rounded-full px-2 py-0.5 ${
-                    theme.mode === "dark"
+                    theme?.mode === "dark"
                       ? "bg-zinc-800 text-zinc-300"
                       : "bg-zinc-200 text-zinc-700"
                   }`}

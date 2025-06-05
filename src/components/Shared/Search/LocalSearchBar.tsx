@@ -66,7 +66,7 @@ const LocalSearchBar = ({
     return <div>Loading...</div>;
   }
 
-  const isDark = theme.mode === "dark";
+  const isDark = theme?.mode === "dark";
 
   return (
     <div

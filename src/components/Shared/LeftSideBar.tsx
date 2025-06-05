@@ -166,16 +166,16 @@ const LeftSB = () => {
   }
 
   const bgColor =
-    theme.mode === "dark"
+    theme?.mode === "dark"
       ? "bg-zinc-900 text-white"
       : "bg-gradient-to-l from-zinc-100/30 to-white text-black";
   const hoverBg =
-    theme.mode === "dark" ? "hover:bg-orange-400/30" : "hover:bg-orange-200";
+    theme?.mode === "dark" ? "hover:bg-orange-400/30" : "hover:bg-orange-200";
 
   return (
     <section
       className={`${bgColor} ${
-        theme.mode === "light" ? "shadow-xl shadow-zinc-400/60" : ""
+        theme?.mode === "light" ? "shadow-xl shadow-zinc-400/60" : ""
       } sticky left-0 top-0 flex h-screen flex-col justify-between overflow-y-auto border-2 p-6 pt-34 max-sm:hidden lg:w-[266px]`}
     >
       <div className="flex flex-1 flex-col gap-2">
@@ -196,9 +196,9 @@ const LeftSB = () => {
                   "bg-orange-500 text-black": isActive,
                   [hoverBg]: !isActive,
                   "hover:bg-orange-400/30 text-white hover:text-white":
-                    !isActive && theme.mode === "dark",
+                    !isActive && theme?.mode === "dark",
                   "hover:bg-orange-200 text-black":
-                    !isActive && theme.mode === "light",
+                    !isActive && theme?.mode === "light",
                 }
               )}
             >
@@ -207,7 +207,7 @@ const LeftSB = () => {
                   isActive ? "scale-110 font-bold text-black" : ""
                 } ${
                   !isActive
-                    ? theme.mode === "dark"
+                    ? theme?.mode === "dark"
                       ? "text-white group-hover:text-black"
                       : "text-black"
                     : ""
@@ -234,7 +234,7 @@ const LeftSB = () => {
               variant="outline"
               className={cn(
                 "w-full rounded-lg py-6 text-lg font-semibold flex items-center justify-center gap-2 transition-all duration-300",
-                theme.mode === "dark"
+                theme?.mode === "dark"
                   ? "bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-200/10 hover:cursor-pointer hover:text-red-500 hover:font-bold"
                   : "bg-zinc-200/40 text-black border border-zinc-300 hover:bg-zinc-200 hover:cursor-pointer hover:text-red-600"
               )}
@@ -262,7 +262,7 @@ const LeftSB = () => {
               variant="outline"
               className={cn(
                 "w-full rounded-lg py-6 text-lg font-semibold flex items-center justify-center gap-2 transition-all duration-300",
-                theme.mode === "dark"
+                theme?.mode === "dark"
                   ? "bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-200/10 hover:cursor-pointer hover:text-red-500 hover:font-bold"
                   : "bg-zinc-200/40 text-black border border-zinc-300 hover:bg-zinc-200 hover:cursor-pointer hover:text-red-600"
               )}
@@ -295,7 +295,7 @@ const LeftSB = () => {
             onClick={() => signOut()}
             className={cn(
               "w-full rounded-lg py-6 text-lg font-semibold flex items-center justify-center gap-2 transition-all duration-300",
-              theme.mode === "dark"
+              theme?.mode === "dark"
                 ? "bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-200/10 hover:cursor-pointer hover:text-red-500 hover:font-bold"
                 : "bg-zinc-200/40 text-black border border-zinc-300 hover:bg-zinc-200 hover:cursor-pointer hover:text-red-600"
             )}

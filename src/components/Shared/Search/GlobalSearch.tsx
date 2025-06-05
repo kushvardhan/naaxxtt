@@ -47,11 +47,17 @@ const Input = ({
 const GlobalSearch = () => {
   const theme = useContext(ThemeContext);
 
-  if (!theme) {
-    return <div>Loading...</div>;
+  // Bulletproof null check with explicit return
+  if (!theme || typeof theme === "undefined") {
+    return (
+      <div className="relative w-full max-w-[600px] max-lg:hidden">
+        Loading...
+      </div>
+    );
   }
 
-  const isDark = theme.mode === "dark";
+  // Safe access with fallback
+  const isDark = theme?.mode === "dark" || false;
 
   return (
     <div className="relative w-full max-w-[600px] max-lg:hidden">

@@ -10,10 +10,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "banner2.cleanpng.com",
-        port: "",
-        pathname: "/**",
-      },
+        hostname: "*",
+      },{
+        protocol: "http",
+        hostname: "*",
+      }
     ],
   },
 };

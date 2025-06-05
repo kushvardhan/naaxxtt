@@ -1,5 +1,5 @@
 "use server";
-import mongoose from 'mongoose'
+
 import { revalidatePath } from "next/cache";
 import Question from "../../database/question.model";
 import Tag from "../../database/tag.model";
@@ -72,7 +72,7 @@ export async function createQuestion(params: createQuestionsParams) {
       explanation,
       author,
     });
-    const tagDocuments: string[] = [];
+    const tagDocuments: any[] = [];
 
     if (tags && tags.length > 0) {
       for (const tag of tags) {
@@ -81,15 +81,19 @@ export async function createQuestion(params: createQuestionsParams) {
           { $setOnInsert: { name: tag }, $push: { questions: question._id } },
           { new: true, upsert: true }
         );
-        tagDocuments.push(existingTag._id);
+        if (existingTag) {
+          tagDocuments.push(existingTag._id);
+        }
       }
     }
 
-    await Question.findByIdAndUpdate(question._id, {
-      $push: {
-        tags: { $each: tagDocuments },
-      },
-    });
+    if (tagDocuments.length > 0) {
+      await Question.findByIdAndUpdate(question._id, {
+        $push: {
+          tags: { $each: tagDocuments },
+        },
+      });
+    }
 
     if (path) {
       revalidatePath(path);

@@ -24,7 +24,7 @@ export async function getQuestions(params: GetQuestionsParams) {
     }
 
     // Build sort options
-    let sortOptions = {};
+    let sortOptions: Record<string, 1 | -1> = {};
 
     switch (filter) {
       case "newest":
@@ -72,7 +72,7 @@ export async function createQuestion(params: createQuestionsParams) {
       explanation,
       author,
     });
-    const tagDocuments = [];
+    const tagDocuments: string[] = [];
 
     if (tags && tags.length > 0) {
       for (const tag of tags) {

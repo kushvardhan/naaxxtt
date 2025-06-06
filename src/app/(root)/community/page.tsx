@@ -1,10 +1,18 @@
 "use client"
 
 import React from 'react'
-
+import LocalSearchBar from "@/components/Shared/Search/LocalSearchBar";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/Shared/dropdown-menu";
 import Link from "next/link";
 import { useContext, useState } from "react";
-import { ThemeContext } from "../../../context/ThemeContext";
+import { ThemeContext } from "../../../../context/ThemeContext";
+import { Button } from "@/components/Shared/button";
+
 
 const page = () => {
   

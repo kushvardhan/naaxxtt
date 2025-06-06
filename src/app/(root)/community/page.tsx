@@ -18,6 +18,17 @@ const page = () => {
   
   const theme = useContext(ThemeContext);
   const isDark = theme?.mode === "dark";
+    const [searchQuery, setSearchQuery] = useState("");
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  
+    const questions = mappedQuestions || [];
+  
+    const toggleTag = (tag: string) => {
+      setSelectedTags((prev) =>
+        prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+      );
+    };
+  
 
   return (
     <>

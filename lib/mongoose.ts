@@ -15,6 +15,7 @@ export const connectToDatabase = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URL, {
       dbName: 'NullDeBugged',
+      serverSelectionTimeoutMS: 10000,
     });
     isConnected = true;
     console.log("✅ MongoDB connected successfully");

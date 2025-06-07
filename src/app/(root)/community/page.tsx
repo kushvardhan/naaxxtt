@@ -66,7 +66,7 @@ const Tags = [
     <>
     <div className='w-full h-[calc(100vh-130px)] w-full mt-20 overflow-y-scroll scrollbar-hidden '>
         <div
-        className={`h-[calc(screen-120px)] mt-20 w-full overflow-y-scroll scrollbar-hidden ${
+        className={`h-[calc(screen-120px)] w-full overflow-y-scroll scrollbar-hidden ${
           isDark ? "bg-black" : "bg-white"
         }`}
       >
@@ -83,14 +83,7 @@ const Tags = [
           >
             Community
           </h1>
-          <Link
-            href="/ask-question"
-            className="flex justify-end items-center max-sm:w-full"
-          >
-            <Button className="bg-orange-400 hover:bg-orange-500/100 text-md sm:text-sm sm:px-1/2 sm:py-1 font-mono tracking-tight min-h-[46px] px-3 py-2 font-bold transition-all text-center cursor-pointer">
-              Ask Question
-            </Button>
-          </Link>
+          
         </div>
   
         {/* Search + Dropdown for tags */}
@@ -110,7 +103,7 @@ const Tags = [
           />
   
           {/* Dropdown for sm/md screens */}
-          <div className="block lg:hidden">
+          <div className="block ">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className="font-mono px-3 py-2 text-sm flex items-center gap-3">

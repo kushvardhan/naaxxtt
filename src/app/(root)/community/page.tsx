@@ -80,7 +80,7 @@ const Tags = [
   <div className="w-full sm:w-[15%]">
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="font-mono px-3 py-2 text-sm flex items-center gap-3 w-full">
+        <Button className="font-mono px-3 py-2 text-sm flex items-center gap-3">
           Select Filters
           <svg
             xmlns="http://www.w3.org/2000/svg"

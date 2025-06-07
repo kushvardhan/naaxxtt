@@ -64,7 +64,8 @@ const Tags = [
 
   return (
     <>
-   <div
+    <div className='w-full h-[calc(100vh-130px)] w-full mt-20 overflow-y-scroll scrollbar-hidden '>
+        <div
         className={`h-[calc(screen-120px)] w-full overflow-y-scroll scrollbar-hidden ${
           isDark ? "bg-black" : "bg-white"
         }`}
@@ -169,6 +170,8 @@ const Tags = [
           </div>
         </div>
     </div>
+    </div>
+   
     </>
 )
 }

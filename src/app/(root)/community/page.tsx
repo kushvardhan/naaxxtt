@@ -66,7 +66,7 @@ const Tags = [
     <>
     <div className='w-full h-[calc(100vh-130px)] w-full mt-20 overflow-y-scroll scrollbar-hidden '>
         <div
-        className={`h-[calc(screen-120px)] w-full overflow-y-scroll scrollbar-hidden ${
+        className={`h-[calc(screen-120px)] mt-20 w-full overflow-y-scroll scrollbar-hidden ${
           isDark ? "bg-black" : "bg-white"
         }`}
       >
@@ -81,7 +81,7 @@ const Tags = [
               isDark ? "text-zinc-100" : "text-black"
             }`}
           >
-            All Questions
+            Community
           </h1>
           <Link
             href="/ask-question"

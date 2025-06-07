@@ -15,6 +15,40 @@ import { Button } from "@/components/Shared/button";
 
 
 const page = () => {
+
+  type Tag = {
+  _id: string;
+  name: string;
+};
+
+type Author = {
+  name: string;
+  image: string;
+};
+
+type Question = {
+  _id: string;
+  title: string;
+  tags: Tag[];
+  user: Author;
+  upvotes: number;
+  answers: number;
+  views: number;
+  createdAt: string;
+};
+
+type Props = {
+  mappedQuestions: Question[];
+};
+
+const Tags = [
+  { tag: "python" },
+  { tag: "json" },
+  { tag: "file-io" },
+  { tag: "data" },
+  { tag: "dictionary" },
+  { tag: "serialization" },
+];
   
   const theme = useContext(ThemeContext);
   const isDark = theme?.mode === "dark";

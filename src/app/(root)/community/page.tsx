@@ -71,13 +71,13 @@ const Tags = [
     route="/"
     iconPosition="left"
     placeholder="Search for questions"
-    otherClasses="w-full sm:w-[65%]"
+    otherClasses="w-full sm:w-[85%]"
     value={searchQuery}
     onChange={(e) => setSearchQuery(e.target.value)}
   />
 
   {/* Dropdown */}
-  <div className="w-full sm:w-[35%]">
+  <div className="w-full sm:w-[15%]">
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button className="font-mono px-3 py-2 text-sm flex items-center gap-3 w-full">

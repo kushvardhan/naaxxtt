@@ -65,23 +65,23 @@ const Tags = [
   return (
     <>
     <div className='w-full h-[calc(100vh-130px)] w-full mt-20 overflow-y-scroll scrollbar-hidden '>
-       <div className="w-full flex flex-row gap-4 sm:flex-nowrap">
+       <div className="w-full flex flex-row gap-4 sm:flex-nowrap flex justify-between items-center">
   {/* Search Bar */}
   <LocalSearchBar
     route="/"
     iconPosition="left"
     placeholder="Search for questions"
-    otherClasses="w-full sm:w-[85%]"
+    otherClasses="w-full sm:w-[75%] md:w-[70%]"
     value={searchQuery}
     onChange={(e) => setSearchQuery(e.target.value)}
   />
 
   {/* Dropdown */}
-  <div className="w-full sm:w-[15%]">
+  <div className="w-full sm:w-[25%] md:w-[30%] ">
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button className="font-mono px-3 py-2 text-sm flex items-center gap-3">
-          Select Filters
+          Filter
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

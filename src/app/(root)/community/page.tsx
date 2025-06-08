@@ -64,23 +64,24 @@ const Tags = [
 
   return (
     <>
-    <div className='w-full h-[calc(100vh-130px)] w-full mt-20 overflow-y-scroll scrollbar-hidden '>
-       <div className="w-full flex flex-row gap-4 sm:flex-nowrap">
+    <div className='w-full h-[calc(100vh-130px)]  mt-20 overflow-y-scroll scrollbar-hidden '>
+       <div className="w-full flex flex-row gap-4 sm:flex-nowrap items-center">
   {/* Search Bar */}
   <LocalSearchBar
     route="/"
     iconPosition="left"
     placeholder="Search for questions"
-    otherClasses="w-full sm:w-[75%] md:w-[70%]"
+    otherClasses="w-full"
     value={searchQuery}
     onChange={(e) => setSearchQuery(e.target.value)}
   />
 
-    <div className="w-full sm:w-[25%] md:w-[30%] ">
+  {/* Dropdown */}
+  <div className="w-full">
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button className="font-mono px-3 py-2 text-sm flex items-center gap-3">
-          Filter
+          Search Filter
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -122,8 +123,6 @@ const Tags = [
       </DropdownMenuContent>
     </DropdownMenu>
   </div>
-  {/* Dropdown */}
-
 </div>
 
     </div>

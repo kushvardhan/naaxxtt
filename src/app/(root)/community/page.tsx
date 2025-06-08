@@ -65,7 +65,7 @@ const Tags = [
   return (
     <>
     <div className='w-full h-[calc(100vh-130px)] w-full mt-20 overflow-y-scroll scrollbar-hidden '>
-       <div className="w-full flex flex-row gap-4 sm:flex-nowrap flex justify-between items-center">
+       <div className="w-full flex flex-row gap-4 sm:flex-nowrap">
   {/* Search Bar */}
   <LocalSearchBar
     route="/"
@@ -76,8 +76,7 @@ const Tags = [
     onChange={(e) => setSearchQuery(e.target.value)}
   />
 
-  {/* Dropdown */}
-  <div className="w-full sm:w-[25%] md:w-[30%] ">
+    <div className="w-full sm:w-[25%] md:w-[30%] ">
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button className="font-mono px-3 py-2 text-sm flex items-center gap-3">
@@ -123,6 +122,8 @@ const Tags = [
       </DropdownMenuContent>
     </DropdownMenu>
   </div>
+  {/* Dropdown */}
+
 </div>
 
     </div>

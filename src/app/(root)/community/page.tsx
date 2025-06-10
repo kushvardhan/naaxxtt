@@ -65,7 +65,7 @@ const Tags = [
   return (
     <>
     <div className='w-full h-[calc(100vh-130px)]  mt-20 overflow-y-scroll scrollbar-hidden '>
-       <div className="w-full flex flex-row gap-4 sm:flex-nowrap items-center">
+       <div className="w-full flex flex-row gap-4 mt-20 sm:flex-nowrap items-center">
   {/* Search Bar */}
   <LocalSearchBar
     route="/"

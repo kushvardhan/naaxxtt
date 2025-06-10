@@ -51,7 +51,8 @@ export async function getQuestions(params: GetQuestionsParams) {
         path: "author",
         model: User,
       })
-      .sort(sortOptions);
+      .sort(sortOptions)
+      .lean();
 
     return { questions };
   } catch (error) {
@@ -102,3 +103,4 @@ export async function createQuestion(params: createQuestionsParams) {
     console.log(error);
   }
 }
+

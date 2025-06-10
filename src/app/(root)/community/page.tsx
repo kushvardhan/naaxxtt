@@ -66,7 +66,7 @@ const Tags = [
     <>
     <div className='w-full h-[calc(100vh-130px)] mt-[130px] overflow-y-scroll scrollbar-hidden '>
       <div
-        className={`flex w-full mt-4 justify-between items-center scrollbar-hidden py-3 px-2 gap-4 ${
+        className={`flex w-full mt-2 justify-between items-center scrollbar-hidden py-3 px-2 gap-4 ${
           isDark ? "bg-black" : "bg-white"
         }`}
       >

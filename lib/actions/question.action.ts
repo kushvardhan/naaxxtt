@@ -6,6 +6,7 @@ import Tag from "../../database/tag.model";
 import User from "../../database/user.model";
 import { connectToDatabase } from "../mongoose";
 import { createQuestionsParams, GetQuestionsParams } from "./shared.type";
+import { IQuestion } from "../../database/question.model";
 
 export async function getQuestions(params: GetQuestionsParams) {
   try {
@@ -42,7 +43,7 @@ export async function getQuestions(params: GetQuestionsParams) {
         break;
     }
 
-    const questions = await Question.find(query)
+    const questions = await Question.find(query as any)
       .populate({
         path: "tags",
         model: Tag,
@@ -54,7 +55,7 @@ export async function getQuestions(params: GetQuestionsParams) {
       .sort(sortOptions)
       .lean();
 
-    return { questions };
+    return questions as IQuestion[];
   } catch (error) {
     console.log(error);
     throw error;
@@ -103,4 +104,3 @@ export async function createQuestion(params: createQuestionsParams) {
     console.log(error);
   }
 }
-

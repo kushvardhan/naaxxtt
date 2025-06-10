@@ -11,13 +11,12 @@ export const ThemeToggleMenu = () => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  if (!themeContext) return null;
-  const { mode, setMode } = themeContext;
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  if (!themeContext) return null;
+  const { mode, setMode } = themeContext;
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {

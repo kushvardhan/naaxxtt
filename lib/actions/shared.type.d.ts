@@ -12,7 +12,7 @@ export interface createQuestionsParams {
   title?: string;
   explanation?: string;
   tags?: string[];
-  author?: Schema.Types.ObjectId | IUser;
+  author?: Schema.Types.ObjectId | IUser | string;
   path?: string;
 }
 
@@ -36,15 +36,15 @@ export interface DeleteUserParams {
   clerkId: string;
 }
 
-export interface GetAllUsersParams{
-  page? : number,
-  pageSize? : number,
-  filter? : string,
-  searchQuery? : string,
+export interface GetAllUsersParams {
+  page?: number;
+  pageSize?: number;
+  filter?: string;
+  searchQuery?: string;
 }
 
-export interface ToggleSaveQuestionParams{
-  userId: string,
-  questionId: string,
-  path: string,
+export interface ToggleSaveQuestionParams {
+  userId: string;
+  questionId: string;
+  path: string;
 }

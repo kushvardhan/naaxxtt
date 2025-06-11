@@ -12,9 +12,11 @@ import Link from "next/link";
 import { useContext, useState } from "react";
 import { ThemeContext } from "../../../../context/ThemeContext";
 import { Button } from "@/components/Shared/button";
+import {getAllUser} from '../../../../lib/actions/user.action' 
 
+const page = async() => {
 
-const page = () => {
+  const result = await getAllUser({});
 
   type Tag = {
   _id: string;
@@ -154,13 +156,20 @@ const Tags = [
       </div>
         
         <section className='mt-10 flex flex-wrap gap-3'>
-
+                {
+                  result?.users?.length > 0 ? (
+                    result?.users?.map((user)=>(
+                      <div key={user.name} >{user.name}</div>
+                    ))
+                  ):(
+                    <div>User not found</div>
+                  )
+                }
         </section>
 
     </div>
-   
     </>
 )
 }
 
-export default page
+export default page;

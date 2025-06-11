@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import mongoose from 'mongoose';
 import Question from "../../database/question.model";
 import User from "../../database/user.model";
 import { connectToDatabase } from "../mongoose";
@@ -8,6 +9,7 @@ import {
   CreateUserParams,
   DeleteUserParams,
   UpdateUserParams,
+  GetAllUsersParams
 } from "./shared.type";
 
 export async function getUserById(params: { userId: string }) {
@@ -89,3 +91,29 @@ export async function deleteUser(params: DeleteUserParams) {
     throw err;
   }
 }
+
+export async function getAllUser(params:GetAllUsersParams){
+  try{
+    await connectToDatabase();
+
+    // const {page=1, pageSize=20,filter,searchQuery}= params;
+
+    const users = await User.find({}).sort({createdAt: -1});
+    
+    return {users};
+
+  }catch(err){
+    console.log("Error getting users: ",err);
+    throw err;
+  }
+}
+
+// export async function User(params:GetAllUsersParams){
+//   try{
+//     await connectToDatabase();
+    
+//   }catch(err){
+//     console.log("Error getting users: ",err);
+//     throw err;
+//   }
+// }

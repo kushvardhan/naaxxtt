@@ -6,7 +6,6 @@ import Tag from "../../database/tag.model";
 import User from "../../database/user.model";
 import { connectToDatabase } from "../mongoose";
 import { createQuestionsParams, GetQuestionsParams } from "./shared.type";
-import { IQuestion } from "../../database/question.model";
 
 export async function getQuestions(params: GetQuestionsParams) {
   try {
@@ -55,7 +54,28 @@ export async function getQuestions(params: GetQuestionsParams) {
       .sort(sortOptions)
       .lean();
 
-    return questions as IQuestion[];
+    // Convert to plain objects for client components
+    const serializedQuestions = questions.map((question) => ({
+      ...question,
+      _id: question._id.toString(),
+      tags: question.tags.map((tag: any) => ({
+        ...tag,
+        _id: tag._id.toString(),
+        questions: tag.questions.map((id: any) => id.toString()),
+        followers: tag.followers.map((id: any) => id.toString()),
+      })),
+      author: {
+        ...question.author,
+        _id: question.author._id.toString(),
+        saved: question.author.saved.map((id: any) => id.toString()),
+      },
+      upvotes: question.upvotes.map((id: any) => id.toString()),
+      downvotes: question.downvotes.map((id: any) => id.toString()),
+      likes: question.likes.map((id: any) => id.toString()),
+      answers: question.answers.map((id: any) => id.toString()),
+    }));
+
+    return serializedQuestions;
   } catch (error) {
     console.log(error);
     throw error;

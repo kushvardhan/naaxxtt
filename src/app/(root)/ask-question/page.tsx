@@ -1,6 +1,6 @@
 import Question from "@/components/forms/Question";
-import { redirect } from "next/navigation";
-import {auth} from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs";
+import { redirect} from "next/navigation";
 import { getUserById } from "../../../../lib/actions/user.action";
 
 const Page = async () => {
@@ -31,7 +31,7 @@ const Page = async () => {
         Ask a Question
       </h1>
       <div className="mt-8 px-2">
-        <Question mongoUserId={JSON.stringify(mongoUser._id)} />
+        <Question mongoUserId={mongoUser._id} />
       </div>
     </div>
   );

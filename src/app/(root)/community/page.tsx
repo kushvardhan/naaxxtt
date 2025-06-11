@@ -42,12 +42,9 @@ type Props = {
 };
 
 const Tags = [
-  { tag: "python" },
-  { tag: "json" },
-  { tag: "file-io" },
-  { tag: "data" },
-  { tag: "dictionary" },
-  { tag: "serialization" },
+  { tag: "New User" },
+  { tag: "Old User" },
+  { tag: "Top Contributors" },
 ];
   
   const theme = useContext(ThemeContext);
@@ -87,9 +84,9 @@ const Tags = [
       >
         {/* Search Bar */}
         <LocalSearchBar
-          route="/"
+          route="/community"
           iconPosition="left"
-          placeholder="Search for questions"
+          placeholder="Search for amazing minds"
           otherClasses="flex-1 "
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -155,6 +152,10 @@ const Tags = [
           </DropdownMenu>
         </div>
       </div>
+        
+        <section className='mt-10 flex flex-wrap gap-3'>
+
+        </section>
 
     </div>
    

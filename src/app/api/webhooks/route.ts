@@ -10,8 +10,6 @@ export async function POST(req: NextRequest) {
   try {
     const evt = await verifyWebhook(req);
 
-    // Do something with payload
-    // For this guide, log payload to console
     const { id } = evt.data;
     const eventType = evt.type;
     console.log(
@@ -79,7 +77,6 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Default response for unhandled event types
     return NextResponse.json({
       message: "Webhook received",
       eventType: eventType,

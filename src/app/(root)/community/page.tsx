@@ -9,7 +9,7 @@ import {
 } from "@/components/Shared/dropdown-menu";
 import { Button } from "@/components/Shared/button";
 import { ThemeContext } from "../../../../context/ThemeContext";
-import {useState,useEffect} from 'react';
+import {useState,useContext} from 'react';
 
 const page = async () => {
   const result = await getAllUser({});
@@ -125,7 +125,7 @@ const page = async () => {
                   className="flex flex-col gap-1"
                   style={{
                     overflowY: "scroll",
-                    scrollbarWidth: "none", // Firefox
+                    scrollbarWidth: "none", 
                     msOverflowStyle: "none",
                   }}
                 >

@@ -1,16 +1,15 @@
 import Question from "@/components/forms/Question";
-import { auth } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
 import { redirect} from "next/navigation";
 import { getUserById } from "../../../../lib/actions/user.action";
 
 const Page = async () => {
-  const newLocal = await auth();
-  const { userId } = await newLocal;
+  const user = await currentUser();
+  const userId = user?.id || "";
 
-  const actualUserId = userId || "";
-  if (!actualUserId) redirect("/sign-in");
+  if (!userId) redirect("/sign-in");
 
-  const mongoUser = await getUserById({ userId: actualUserId });
+  const mongoUser = await getUserById({ userId });
   console.log("mongo user ", mongoUser);
 
   if (!mongoUser) {

@@ -1,3 +1,4 @@
+"use client";
 import { getAllUser } from "../../../../lib/actions/user.action";
 import LocalSearchBar from "@/components/Shared/Search/LocalSearchBar";
 import {
@@ -8,7 +9,7 @@ import {
 } from "@/components/Shared/dropdown-menu";
 import { Button } from "@/components/Shared/button";
 import { ThemeContext } from "../../../../context/ThemeContext";
-import { useContext, useState } from "react";
+import {useState,useEffect} from 'react';
 
 const page = async () => {
   const result = await getAllUser({});

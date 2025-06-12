@@ -4,7 +4,7 @@ import { redirect} from "next/navigation";
 import { getUserById } from "../../../../lib/actions/user.action";
 
 const Page = async () => {
-  const newLocal = auth();
+  const newLocal = await auth();
   const { userId } = await newLocal;
 
   const actualUserId = userId || "";

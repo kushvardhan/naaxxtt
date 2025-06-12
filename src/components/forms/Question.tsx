@@ -144,7 +144,7 @@ export function Question({ mongoUserId }: Props) {
         title: values.title,
         explanation: values.explanation,
         tags: values.tags,
-        author: JSON.parse(mongoUserId),
+        author: mongoUserId,
         path: pathname,
       });
 

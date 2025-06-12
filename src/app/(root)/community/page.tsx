@@ -6,8 +6,8 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/Shared/dropdown-menu";
-import Image from "next/image";
-import Link from "next/link";
+import { Button } from "@/components/Shared/button";
+import { ThemeContext } from "../../../../context/ThemeContext";
 import { useContext, useState } from "react";
 
 const page = async () => {

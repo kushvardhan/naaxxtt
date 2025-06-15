@@ -2,8 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   experimental: {
-    serverActions: {},
-    mdxRs: true,
+    serverActions: {
+      allowedOrigins: ["localhost:3000"],
+    },
   },
   serverExternalPackages: ["mongoose"],
   images: {
@@ -11,11 +12,23 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "*",
-      },{
+      },
+      {
         protocol: "http",
         hostname: "*",
       }
     ],
+  },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+      };
+    }
+    return config;
   },
 };
 

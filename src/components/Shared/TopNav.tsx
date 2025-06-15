@@ -11,15 +11,24 @@ import { ThemeToggleMenu } from "./ThemeToggleMenu";
 const TopNav = () => {
   const theme = useContext(ThemeContext);
 
-  if (!theme) {
-    return <div>Loading...</div>;
+  if (!theme || !theme.mounted) {
+    return (
+      <nav className="w-full flex items-center justify-between fixed z-50 gap-5 py-6 px-2 border-b sm:px-6 bg-white dark:bg-zinc-900">
+        <div className="animate-pulse bg-gray-200 dark:bg-gray-700 h-8 w-32 rounded"></div>
+        <div className="animate-pulse bg-gray-200 dark:bg-gray-700 h-8 w-64 rounded"></div>
+        <div className="animate-pulse bg-gray-200 dark:bg-gray-700 h-8 w-24 rounded"></div>
+      </nav>
+    );
   }
 
   return (
     <nav
       className={`w-full flex items-center justify-between fixed z-50 gap-5 py-6 px-2 border-b sm:px-6 transition-colors ${
-        theme?.mode === "dark" ? "bg-zinc-900 text-white" : "bg-white text-black"
+        theme?.mode === "dark"
+          ? "bg-zinc-900 text-white"
+          : "bg-white text-black"
       }`}
+      suppressHydrationWarning
     >
       <div className="flex items-center gap-1 px-3">
         <Link
@@ -33,7 +42,7 @@ const TopNav = () => {
       <GlobalSearch />
 
       <div className="flex items-center gap-4 font-mono">
-        <ThemeToggleMenu/>
+        <ThemeToggleMenu />
         <SignedIn>
           <UserButton
             afterSignOutUrl="/"

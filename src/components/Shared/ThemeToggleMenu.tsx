@@ -11,18 +11,11 @@ export const ThemeToggleMenu = () => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // All hooks must be called before any early returns
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!themeContext || !themeContext.mounted || !mounted) {
-    return (
-      <div className="animate-pulse bg-gray-200 dark:bg-gray-700 h-8 w-8 rounded"></div>
-    );
-  }
-  const { mode, setMode } = themeContext;
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -40,7 +33,14 @@ export const ThemeToggleMenu = () => {
     };
   }, [open]);
 
-  if (!mounted) return null;
+  // Early returns after all hooks
+  if (!themeContext || !themeContext.mounted || !mounted) {
+    return (
+      <div className="animate-pulse bg-gray-200 dark:bg-gray-700 h-8 w-8 rounded"></div>
+    );
+  }
+
+  const { mode, setMode } = themeContext;
 
   const options = [
     { value: "light", label: "Light", icon: SolidSun },

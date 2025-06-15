@@ -1,17 +1,17 @@
 "use client";
 
-import { useContext, useState, useMemo } from "react";
-import { ThemeContext } from "../../../context/ThemeContext";
-import LocalSearchBar from "@/components/Shared/Search/LocalSearchBar";
+import { User } from "@/app/(root)/community/page";
+import { Button } from "@/components/Shared/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/Shared/dropdown-menu";
-import { Button } from "@/components/Shared/button";
+import LocalSearchBar from "@/components/Shared/Search/LocalSearchBar";
 import UserCard from "@/components/Shared/UserCard";
-import { User } from "@/app/(root)/community/page";
+import { useContext, useMemo, useState } from "react";
+import { ThemeContext } from "../../../context/ThemeContext";
 
 interface CommunityClientProps {
   users: User[];
@@ -66,8 +66,10 @@ const CommunityClient = ({ users }: CommunityClientProps) => {
           (now.getTime() - joinedDate.getTime()) / (1000 * 60 * 60 * 24)
         );
 
-        if (selectedTags.includes("New User") && daysSinceJoined <= 30) return true;
-        if (selectedTags.includes("Old User") && daysSinceJoined > 365) return true;
+        if (selectedTags.includes("New User") && daysSinceJoined <= 30)
+          return true;
+        if (selectedTags.includes("Old User") && daysSinceJoined > 365)
+          return true;
         if (selectedTags.includes("Top Contributors") && user.reputation > 100)
           return true;
 
@@ -140,7 +142,9 @@ const CommunityClient = ({ users }: CommunityClientProps) => {
 
           <DropdownMenuContent
             className={`w-48 rounded-lg py-2 px-1 ${
-              isDark ? "bg-zinc-900 border-zinc-700" : "bg-white border-zinc-200"
+              isDark
+                ? "bg-zinc-900 border-zinc-700"
+                : "bg-white border-zinc-200"
             }`}
           >
             {Tags.map((item, idx) => (
@@ -197,9 +201,18 @@ const CommunityClient = ({ users }: CommunityClientProps) => {
 
       {/* Users Grid */}
       {filteredUsers.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredUsers.map((user) => (
-            <UserCard key={user._id} user={user} />
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-6 md:gap-8">
+          {filteredUsers.map((user, index) => (
+            <div
+              key={user._id}
+              className="animate-in fade-in slide-in-from-bottom-4 duration-500"
+              style={{
+                animationDelay: `${index * 100}ms`,
+                animationFillMode: "both",
+              }}
+            >
+              <UserCard user={user} />
+            </div>
           ))}
         </div>
       ) : (
@@ -209,7 +222,9 @@ const CommunityClient = ({ users }: CommunityClientProps) => {
           }`}
         >
           <div className="text-6xl mb-4">🔍</div>
-          <h3 className="text-xl font-mono font-semibold mb-2">No users found</h3>
+          <h3 className="text-xl font-mono font-semibold mb-2">
+            No users found
+          </h3>
           <p className="text-sm">
             {searchQuery || selectedTags.length > 0
               ? "Try adjusting your search or filters"

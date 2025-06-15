@@ -1,4 +1,3 @@
-"use client";
 import { getAllUser } from "../../../../lib/actions/user.action";
 import LocalSearchBar from "@/components/Shared/Search/LocalSearchBar";
 import {
@@ -12,7 +11,8 @@ import { ThemeContext } from "../../../../context/ThemeContext";
 import {useState,useContext} from 'react';
 
 const page = async () => {
-  const result = await getAllUser({});
+  const result = await getAllUser();
+  console.log('result of getAllUser: ',result);
 
   type Tag = {
     _id: string;

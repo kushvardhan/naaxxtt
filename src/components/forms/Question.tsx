@@ -147,7 +147,7 @@ export function Question({ mongoUserId }: Props) {
         author: mongoUserId,
         path: pathname,
       });
-
+      console.log(mongoUserId," has created a new question of title: ", values.title);
       router.push("/");
     } catch (error) {
       console.error("Error posting question:", error);

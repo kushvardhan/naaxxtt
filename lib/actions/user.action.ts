@@ -11,6 +11,27 @@ import {
   UpdateUserParams,
 } from "./shared.type";
 
+export async function getAllUser(params?: GetAllUsersParams) {
+  try {
+    await connectToDatabase();
+
+    const users = await User.find({}).sort({ createdAt: -1 }).lean();
+
+    const plainUsers = users.map((user) => ({
+      ...user,
+      _id: user._id.toString(),
+      joinedAt: user.joinedAt instanceof Date ? user.joinedAt.toISOString() : user.joinedAt,
+      saved: user.saved?.map((id: any) => id.toString()) || [],
+    }));
+
+    return { users: plainUsers };
+  } catch (err) {
+    console.log("Error getting users: ", err);
+    throw err;
+  }
+}
+
+
 export async function getUserById(params: { userId: string }) {
   try {
     await connectToDatabase();
@@ -24,12 +45,7 @@ export async function getUserById(params: { userId: string }) {
 
     if (!user) return null;
 
-    // Convert ObjectId to string for client components
-    return {
-      ...user,
-      _id: user._id.toString(),
-      saved: user.saved.map((id: any) => id.toString()),
-    };
+    return user;
   } catch (error) {
     console.error("Error fetching user:", error);
     throw error;
@@ -111,27 +127,7 @@ export async function deleteUser(params: DeleteUserParams) {
   }
 }
 
-export async function getAllUser(params: GetAllUsersParams) {
-  try {
-    await connectToDatabase();
 
-    // const {page=1, pageSize=20,filter,searchQuery}= params;
-
-    const users = await User.find({}).sort({ createdAt: -1 }).lean();
-
-    // Convert to plain objects for client components
-    const serializedUsers = users.map((user) => ({
-      ...user,
-      _id: user._id.toString(),
-      saved: user.saved.map((id: any) => id.toString()),
-    }));
-
-    return { users: serializedUsers };
-  } catch (err) {
-    console.log("Error getting users: ", err);
-    throw err;
-  }
-}
 
 // export async function User(params:GetAllUsersParams){
 //   try{

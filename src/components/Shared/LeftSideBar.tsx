@@ -161,8 +161,10 @@ const LeftSB = () => {
   const pathName = usePathname();
   const { signOut } = useClerk();
 
-  if (!theme) {
-    return <div>Loading...</div>;
+  if (!theme || !theme.mounted) {
+    return (
+      <div className="animate-pulse bg-gray-200 dark:bg-gray-700 w-64 h-full"></div>
+    );
   }
 
   const bgColor =

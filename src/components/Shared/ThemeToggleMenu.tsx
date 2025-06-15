@@ -15,7 +15,11 @@ export const ThemeToggleMenu = () => {
     setMounted(true);
   }, []);
 
-  if (!themeContext) return null;
+  if (!themeContext || !themeContext.mounted || !mounted) {
+    return (
+      <div className="animate-pulse bg-gray-200 dark:bg-gray-700 h-8 w-8 rounded"></div>
+    );
+  }
   const { mode, setMode } = themeContext;
 
   // eslint-disable-next-line react-hooks/rules-of-hooks

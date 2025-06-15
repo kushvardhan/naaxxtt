@@ -1,10 +1,10 @@
 "use client";
 
-import { useContext } from "react";
+import { User } from "@/app/(root)/community/page";
 import Image from "next/image";
 import Link from "next/link";
+import { useContext } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
-import { User } from "@/app/(root)/community/page";
 
 interface UserCardProps {
   user: User;
@@ -13,8 +13,10 @@ interface UserCardProps {
 const UserCard = ({ user }: UserCardProps) => {
   const theme = useContext(ThemeContext);
 
-  if (!theme) {
-    return <div>Loading...</div>;
+  if (!theme || !theme.mounted) {
+    return (
+      <div className="animate-pulse bg-gray-200 dark:bg-gray-700 h-64 rounded-xl"></div>
+    );
   }
 
   const isDark = theme?.mode === "dark";
@@ -22,13 +24,16 @@ const UserCard = ({ user }: UserCardProps) => {
   // Calculate days since joined
   const joinedDate = new Date(user.joinedAt);
   const now = new Date();
-  const daysSinceJoined = Math.floor((now.getTime() - joinedDate.getTime()) / (1000 * 60 * 60 * 24));
+  const daysSinceJoined = Math.floor(
+    (now.getTime() - joinedDate.getTime()) / (1000 * 60 * 60 * 24)
+  );
 
   // Determine user badge
   const getUserBadge = () => {
     if (daysSinceJoined <= 30) return { label: "New", color: "bg-green-500" };
     if (user.reputation > 100) return { label: "Top", color: "bg-orange-500" };
-    if (daysSinceJoined > 365) return { label: "Veteran", color: "bg-blue-500" };
+    if (daysSinceJoined > 365)
+      return { label: "Veteran", color: "bg-blue-500" };
     return null;
   };
 
@@ -37,9 +42,9 @@ const UserCard = ({ user }: UserCardProps) => {
   // Format join date
   const formatJoinDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
-      year: 'numeric' 
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
     });
   };
 
@@ -53,7 +58,9 @@ const UserCard = ({ user }: UserCardProps) => {
     >
       {/* Badge */}
       {badge && (
-        <div className={`absolute top-4 right-4 ${badge.color} text-white text-xs px-2 py-1 rounded-full font-mono font-medium`}>
+        <div
+          className={`absolute top-4 right-4 ${badge.color} text-white text-xs px-2 py-1 rounded-full font-mono font-medium`}
+        >
           {badge.label}
         </div>
       )}
@@ -62,15 +69,20 @@ const UserCard = ({ user }: UserCardProps) => {
       <div className="flex flex-col items-center mb-4">
         <div className="relative">
           <Image
-            src={user.image || "https://banner2.cleanpng.com/20180416/gbw/avfp7lvmb.webp"}
+            src={
+              user.image ||
+              "https://banner2.cleanpng.com/20180416/gbw/avfp7lvmb.webp"
+            }
             alt={user.name}
             width={80}
             height={80}
             className="w-20 h-20 rounded-full object-cover border-2 border-zinc-200 dark:border-zinc-700 group-hover:border-orange-400 transition-colors duration-300"
           />
-          <div className={`absolute -bottom-1 -right-1 w-6 h-6 rounded-full border-2 ${
-            isDark ? "border-zinc-900" : "border-white"
-          } ${user.reputation > 50 ? "bg-green-500" : "bg-zinc-400"}`}></div>
+          <div
+            className={`absolute -bottom-1 -right-1 w-6 h-6 rounded-full border-2 ${
+              isDark ? "border-zinc-900" : "border-white"
+            } ${user.reputation > 50 ? "bg-green-500" : "bg-zinc-400"}`}
+          ></div>
         </div>
       </div>
 
@@ -149,7 +161,9 @@ const UserCard = ({ user }: UserCardProps) => {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className={`w-4 h-4 ${isDark ? "text-zinc-400" : "text-zinc-500"}`}
+              className={`w-4 h-4 ${
+                isDark ? "text-zinc-400" : "text-zinc-500"
+              }`}
             >
               <path
                 strokeLinecap="round"
@@ -162,7 +176,11 @@ const UserCard = ({ user }: UserCardProps) => {
                 d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
               />
             </svg>
-            <span className={`font-mono ${isDark ? "text-zinc-300" : "text-zinc-600"}`}>
+            <span
+              className={`font-mono ${
+                isDark ? "text-zinc-300" : "text-zinc-600"
+              }`}
+            >
               {user.location}
             </span>
           </div>
@@ -182,7 +200,11 @@ const UserCard = ({ user }: UserCardProps) => {
               d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5"
             />
           </svg>
-          <span className={`font-mono ${isDark ? "text-zinc-300" : "text-zinc-600"}`}>
+          <span
+            className={`font-mono ${
+              isDark ? "text-zinc-300" : "text-zinc-600"
+            }`}
+          >
             Joined {formatJoinDate(user.joinedAt)}
           </span>
         </div>
@@ -196,7 +218,9 @@ const UserCard = ({ user }: UserCardProps) => {
             target="_blank"
             rel="noopener noreferrer"
             className={`inline-flex items-center gap-2 text-sm font-mono hover:underline ${
-              isDark ? "text-orange-400 hover:text-orange-300" : "text-orange-600 hover:text-orange-700"
+              isDark
+                ? "text-orange-400 hover:text-orange-300"
+                : "text-orange-600 hover:text-orange-700"
             }`}
           >
             <svg

@@ -269,19 +269,15 @@ const UserCard = ({ user }: UserCardProps) => {
           )}
         </div>
 
-        {/* Actions */}
-        <div className="w-full flex flex-col gap-2">
-          {user.portfolioWebsite && (
-            <Link
-              href={user.portfolioWebsite}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`flex items-center justify-center p-3 rounded-xl border transition-all duration-300 hover:scale-110 hover:-translate-y-1 ${
+        {/* Location Section */}
+        {user.location && (
+          <div className="w-full">
+            <div
+              className={`flex items-center justify-center gap-3 p-3 rounded-xl border ${
                 isDark
-                  ? "text-orange-400 hover:bg-zinc-800 hover:shadow-lg"
-                  : "text-orange-600 hover:bg-orange-50 hover:shadow-lg"
+                  ? "bg-zinc-800/30 border-zinc-700"
+                  : "bg-zinc-50/50 border-zinc-200"
               }`}
-              title="Portfolio"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -289,7 +285,53 @@ const UserCard = ({ user }: UserCardProps) => {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-5 h-5"
+                className={`w-5 h-5 ${
+                  isDark ? "text-orange-400" : "text-orange-600"
+                }`}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+                />
+              </svg>
+              <span
+                className={`text-base font-mono font-medium ${
+                  isDark ? "text-zinc-300" : "text-zinc-700"
+                }`}
+              >
+                {user.location}
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* Action Buttons */}
+        <div className="w-full flex gap-4">
+          {user.portfolioWebsite && (
+            <Link
+              href={user.portfolioWebsite}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`flex items-center justify-center p-4 rounded-2xl border-2 transition-all duration-300 hover:scale-110 hover:-translate-y-2 hover:rotate-3 ${
+                isDark
+                  ? "text-orange-400 border-orange-500/50 hover:border-orange-400 hover:bg-orange-500/10 hover:shadow-xl hover:shadow-orange-500/20"
+                  : "text-orange-600 border-orange-400/50 hover:border-orange-500 hover:bg-orange-50 hover:shadow-xl hover:shadow-orange-500/30"
+              }`}
+              title="Portfolio Website"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="w-6 h-6"
               >
                 <path
                   strokeLinecap="round"
@@ -297,15 +339,14 @@ const UserCard = ({ user }: UserCardProps) => {
                   d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244"
                 />
               </svg>
-              Portfolio
             </Link>
           )}
           <Link
             href={`/profile/${user.clerkId}`}
-            className={`flex-1 text-center py-3 px-4 rounded-xl font-mono text-sm font-semibold transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-lg ${
+            className={`flex-1 text-center py-4 px-6 rounded-2xl font-mono text-base font-bold transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl ${
               isDark
-                ? "bg-gradient-to-r from-orange-600 to-orange-500 text-white hover:from-orange-500 hover:to-orange-400"
-                : "bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-400 hover:to-orange-500"
+                ? "bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600 text-white hover:from-orange-500 hover:via-orange-400 hover:to-orange-500 shadow-lg shadow-orange-500/25"
+                : "bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 text-white hover:from-orange-400 hover:via-orange-500 hover:to-orange-400 shadow-lg shadow-orange-500/25"
             }`}
           >
             View Profile

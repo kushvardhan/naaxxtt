@@ -20,7 +20,11 @@ const CommunityPage = async () => {
   const result = await getAllUser();
   console.log('result of getAllUser: ', result);
 
-  return <CommunityClient users={result?.users || []} />;
+  return(
+    <div className="w-full h-[calc(100vh-130px)] w-full mt-20 overflow-y-scroll scrollbar-hidden" >
+    <CommunityClient users={result?.users || []} />
+  </div>
+  ) 
 };
 
 export default CommunityPage;

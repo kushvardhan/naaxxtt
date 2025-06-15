@@ -195,18 +195,40 @@ const CommunityClient = ({ users }: CommunityClientProps) => {
         </div>
       </div>
 
-      {/* Users List */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredUsers.length > 0 ? (
-          filteredUsers.map((user) => (
-            <UserCard key={user._id} user={user} isDark={isDark} />
-          ))
-        ) : (
-          <div className="text-center col-span-full text-zinc-400 font-mono text-sm">
-            No users found.
-          </div>
-        )}
-      </section>
+      {/* Users Grid */}
+      {filteredUsers.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredUsers.map((user) => (
+            <UserCard key={user._id} user={user} />
+          ))}
+        </div>
+      ) : (
+        <div
+          className={`text-center py-20 ${
+            isDark ? "text-zinc-400" : "text-zinc-600"
+          }`}
+        >
+          <div className="text-6xl mb-4">🔍</div>
+          <h3 className="text-xl font-mono font-semibold mb-2">No users found</h3>
+          <p className="text-sm">
+            {searchQuery || selectedTags.length > 0
+              ? "Try adjusting your search or filters"
+              : "No users available at the moment"}
+          </p>
+          {(searchQuery || selectedTags.length > 0) && (
+            <Button
+              variant="outline"
+              className="mt-4 font-mono"
+              onClick={() => {
+                setSearchQuery("");
+                setSelectedTags([]);
+              }}
+            >
+              Clear filters
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

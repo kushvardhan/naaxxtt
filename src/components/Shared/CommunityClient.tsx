@@ -79,7 +79,7 @@ const CommunityClient = ({ users }: CommunityClientProps) => {
   }, [users, searchQuery, selectedTags]);
 
   return (
-    <div className="w-full">
+    <div className="h-[calc(screen-120px)] w-full overflow-y-scroll scrollbar-hidden">
       {/* Header */}
       <div className="mb-8">
         <h1

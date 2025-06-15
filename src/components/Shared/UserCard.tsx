@@ -15,16 +15,31 @@ const UserCard = ({ user }: UserCardProps) => {
 
   if (!theme || !theme.mounted) {
     return (
-      <div className="animate-pulse bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 h-80 lg:h-96 rounded-2xl">
-        <div className="p-8">
-          <div className="flex justify-center mb-6">
-            <div className="w-24 h-24 lg:w-28 lg:h-28 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+      <div className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-xl border border-gray-300 dark:border-gray-600">
+        <div className="p-6">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-14 h-14 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+            <div className="flex-1">
+              <div className="h-5 bg-gray-300 dark:bg-gray-600 rounded w-3/4 mb-2"></div>
+              <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+            </div>
           </div>
-          <div className="space-y-3">
-            <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded-lg w-3/4 mx-auto"></div>
-            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded-lg w-1/2 mx-auto"></div>
-            <div className="h-16 bg-gray-300 dark:bg-gray-600 rounded-lg w-full"></div>
+          <div className="h-10 bg-gray-300 dark:bg-gray-600 rounded mb-4"></div>
+          <div className="flex justify-between mb-4">
+            <div className="text-center">
+              <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-8 mx-auto mb-1"></div>
+              <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-12 mx-auto"></div>
+            </div>
+            <div className="text-center">
+              <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-8 mx-auto mb-1"></div>
+              <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-12 mx-auto"></div>
+            </div>
+            <div className="text-center">
+              <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-12 mx-auto mb-1"></div>
+              <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-12 mx-auto"></div>
+            </div>
           </div>
+          <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded"></div>
         </div>
       </div>
     );
@@ -61,255 +76,184 @@ const UserCard = ({ user }: UserCardProps) => {
 
   return (
     <div
-      className={`group relative overflow-hidden rounded-2xl border transition-all duration-500 ease-out hover:shadow-2xl hover:-translate-y-3 hover:scale-[1.03] cursor-pointer ${
+      className={`group relative overflow-hidden rounded-xl border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${
         isDark
-          ? "bg-gradient-to-br from-zinc-900 to-zinc-800 border-zinc-700 hover:border-orange-500/50 hover:shadow-orange-500/20"
-          : "bg-gradient-to-br from-white to-zinc-50 border-zinc-200 hover:border-orange-400/50 hover:shadow-orange-500/30"
+          ? "bg-zinc-900/50 backdrop-blur-sm border-zinc-800 hover:border-zinc-700"
+          : "bg-white/80 backdrop-blur-sm border-zinc-200 hover:border-zinc-300"
       }`}
     >
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-transparent"></div>
-      </div>
-
       {/* Badge */}
       {badge && (
         <div
-          className={`absolute top-6 right-6 ${badge.color} text-white text-xs px-3 py-1.5 rounded-full font-mono font-medium shadow-lg z-10`}
+          className={`absolute top-3 right-3 ${badge.color} text-white text-xs px-2 py-1 rounded-full font-mono font-medium z-10`}
         >
           {badge.label}
         </div>
       )}
 
-      {/* Header Section */}
-      <div className="relative p-6 lg:p-8 pb-4 lg:pb-6">
-        {/* Avatar */}
-        <div className="flex justify-center mb-6">
+      <div className="p-6">
+        {/* Avatar & Basic Info */}
+        <div className="flex items-center gap-4 mb-4">
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full blur-sm opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
             <Image
               src={
                 user.image ||
                 "https://banner2.cleanpng.com/20180416/gbw/avfp7lvmb.webp"
               }
               alt={user.name}
-              width={100}
-              height={100}
-              className="relative w-24 h-24 lg:w-28 lg:h-28 rounded-full object-cover border-4 border-white dark:border-zinc-800 shadow-xl group-hover:border-orange-400 transition-all duration-300"
+              width={60}
+              height={60}
+              className="w-14 h-14 rounded-full object-cover border-2 border-zinc-200 dark:border-zinc-700 group-hover:border-orange-400 transition-colors duration-300"
             />
             <div
-              className={`absolute -bottom-2 -right-2 w-8 h-8 rounded-full border-4 shadow-lg ${
+              className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 ${
                 isDark ? "border-zinc-900" : "border-white"
               } ${user.reputation > 50 ? "bg-green-500" : "bg-zinc-400"}`}
+            ></div>
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <h3
+              className={`text-lg font-semibold font-mono truncate ${
+                isDark ? "text-zinc-100" : "text-zinc-800"
+              }`}
             >
-              <div className="w-full h-full rounded-full bg-current opacity-90"></div>
-            </div>
+              {user.name}
+            </h3>
+            <p
+              className={`text-sm font-mono truncate ${
+                isDark ? "text-orange-400" : "text-orange-600"
+              }`}
+            >
+              @{user.username}
+            </p>
           </div>
         </div>
 
-        {/* User Info */}
-        <div className="text-center mb-6">
-          <h3
-            className={`text-xl lg:text-2xl font-bold font-mono mb-2 ${
-              isDark ? "text-zinc-100" : "text-zinc-800"
-            }`}
-          >
-            {user.name}
-          </h3>
-          <p
-            className={`text-base font-mono ${
-              isDark ? "text-orange-400" : "text-orange-600"
-            }`}
-          >
-            @{user.username}
-          </p>
-        </div>
-      </div>
-
-      {/* Content Section */}
-      <div className="px-6 lg:px-8 pb-6 lg:pb-8">
-        {/* About */}
-        <div className="mb-6">
-          <h4
-            className={`text-sm font-mono font-semibold mb-3 ${
-              isDark ? "text-zinc-300" : "text-zinc-700"
-            }`}
-          >
-            About
-          </h4>
-          <p
-            className={`text-sm leading-relaxed line-clamp-3 ${
-              isDark ? "text-zinc-400" : "text-zinc-600"
-            }`}
-          >
-            {user.about || "No bio available"}
-          </p>
-        </div>
+        {/* Bio */}
+        <p
+          className={`text-sm line-clamp-2 mb-4 ${
+            isDark ? "text-zinc-400" : "text-zinc-600"
+          }`}
+        >
+          {user.about || "No bio available"}
+        </p>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 gap-6 mb-6">
-          <div
-            className={`text-center p-4 rounded-xl border ${
-              isDark
-                ? "bg-zinc-800/50 border-zinc-700"
-                : "bg-zinc-50 border-zinc-200"
-            }`}
-          >
+        <div className="flex justify-between items-center mb-4">
+          <div className="text-center">
             <div
-              className={`text-2xl font-bold font-mono mb-1 ${
+              className={`text-lg font-bold font-mono ${
                 isDark ? "text-orange-400" : "text-orange-600"
               }`}
             >
               {user.reputation}
             </div>
             <div
-              className={`text-xs font-mono uppercase tracking-wide ${
-                isDark ? "text-zinc-400" : "text-zinc-500"
+              className={`text-xs font-mono ${
+                isDark ? "text-zinc-500" : "text-zinc-500"
               }`}
             >
               Reputation
             </div>
           </div>
-          <div
-            className={`text-center p-4 rounded-xl border ${
-              isDark
-                ? "bg-zinc-800/50 border-zinc-700"
-                : "bg-zinc-50 border-zinc-200"
-            }`}
-          >
+
+          <div className="text-center">
             <div
-              className={`text-2xl font-bold font-mono mb-1 ${
+              className={`text-lg font-bold font-mono ${
                 isDark ? "text-orange-400" : "text-orange-600"
               }`}
             >
               {user.saved?.length || 0}
             </div>
             <div
-              className={`text-xs font-mono uppercase tracking-wide ${
-                isDark ? "text-zinc-400" : "text-zinc-500"
+              className={`text-xs font-mono ${
+                isDark ? "text-zinc-500" : "text-zinc-500"
               }`}
             >
               Saved
             </div>
           </div>
-        </div>
 
-        {/* Meta Information */}
-        <div className="space-y-3 mb-6">
-          {user.location && (
-            <div className="flex items-center gap-3 text-sm">
-              <div
-                className={`p-2 rounded-lg ${
-                  isDark ? "bg-zinc-800" : "bg-zinc-100"
-                }`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className={`w-4 h-4 ${
-                    isDark ? "text-orange-400" : "text-orange-600"
-                  }`}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
-                  />
-                </svg>
-              </div>
-              <span
-                className={`font-mono ${
-                  isDark ? "text-zinc-300" : "text-zinc-600"
-                }`}
-              >
-                {user.location}
-              </span>
-            </div>
-          )}
-          <div className="flex items-center gap-3 text-sm">
+          <div className="text-center">
             <div
-              className={`p-2 rounded-lg ${
-                isDark ? "bg-zinc-800" : "bg-zinc-100"
+              className={`text-lg font-bold font-mono ${
+                isDark ? "text-zinc-300" : "text-zinc-700"
               }`}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className={`w-4 h-4 ${
-                  isDark ? "text-orange-400" : "text-orange-600"
-                }`}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5"
-                />
-              </svg>
+              {formatJoinDate(user.joinedAt)}
             </div>
-            <span
-              className={`font-mono ${
-                isDark ? "text-zinc-300" : "text-zinc-600"
+            <div
+              className={`text-xs font-mono ${
+                isDark ? "text-zinc-500" : "text-zinc-500"
               }`}
             >
-              Joined {formatJoinDate(user.joinedAt)}
-            </span>
+              Joined
+            </div>
           </div>
         </div>
 
-        {/* Portfolio Link */}
-        {user.portfolioWebsite && (
-          <div className="mb-6">
+        {/* Location */}
+        {user.location && (
+          <div className="flex items-center gap-2 mb-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className={`w-4 h-4 ${
+                isDark ? "text-zinc-500" : "text-zinc-500"
+              }`}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+              />
+            </svg>
+            <span
+              className={`text-sm font-mono ${
+                isDark ? "text-zinc-400" : "text-zinc-600"
+              }`}
+            >
+              {user.location}
+            </span>
+          </div>
+        )}
+
+        {/* Action Buttons */}
+        <div className="flex gap-2">
+          {user.portfolioWebsite && (
             <Link
               href={user.portfolioWebsite}
               target="_blank"
               rel="noopener noreferrer"
-              className={`inline-flex items-center gap-3 text-sm font-mono p-3 rounded-lg border transition-all duration-200 hover:scale-105 ${
+              className={`flex-1 text-center py-2 px-3 rounded-lg font-mono text-sm transition-all duration-200 border ${
                 isDark
-                  ? "text-orange-400 hover:text-orange-300 border-zinc-700 hover:border-orange-500 bg-zinc-800/50"
-                  : "text-orange-600 hover:text-orange-700 border-zinc-200 hover:border-orange-400 bg-zinc-50"
+                  ? "text-orange-400 border-zinc-700 hover:border-orange-500 hover:bg-zinc-800"
+                  : "text-orange-600 border-zinc-300 hover:border-orange-400 hover:bg-orange-50"
               }`}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-4 h-4"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244"
-                />
-              </svg>
               Portfolio
             </Link>
-          </div>
-        )}
-
-        {/* View Profile Button */}
-        <Link
-          href={`/profile/${user.clerkId}`}
-          className={`block w-full text-center py-4 px-6 rounded-xl font-mono text-sm font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg ${
-            isDark
-              ? "bg-gradient-to-r from-orange-600 to-orange-500 text-white hover:from-orange-500 hover:to-orange-400 shadow-orange-500/25"
-              : "bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-400 hover:to-orange-500 shadow-orange-500/25"
-          }`}
-        >
-          View Profile
-        </Link>
+          )}
+          <Link
+            href={`/profile/${user.clerkId}`}
+            className={`flex-1 text-center py-2 px-3 rounded-lg font-mono text-sm font-medium transition-all duration-200 ${
+              isDark
+                ? "bg-orange-600 text-white hover:bg-orange-500"
+                : "bg-orange-500 text-white hover:bg-orange-600"
+            }`}
+          >
+            View Profile
+          </Link>
+        </div>
       </div>
     </div>
   );

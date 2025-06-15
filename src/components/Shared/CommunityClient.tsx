@@ -113,7 +113,7 @@ const CommunityClient = ({ users }: CommunityClientProps) => {
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="font-mono px-4 py-2 text-sm flex items-center gap-2 min-w-[140px]"
+              className="font-mono px-4 py-4 text-sm flex items-center gap-2 min-w-[140px]"
             >
               Filters
               {selectedTags.length > 0 && (
@@ -148,10 +148,10 @@ const CommunityClient = ({ users }: CommunityClientProps) => {
                 key={idx}
                 checked={selectedTags.includes(item.tag)}
                 onCheckedChange={() => toggleTag(item.tag)}
-                className={`font-mono text-sm rounded-md mx-1 my-0.5 ${
+                className={`font-mono text-sm rounded-md mx-1 my-0.5 cursor-pointer ${
                   isDark
-                    ? "hover:bg-zinc-800 text-zinc-200"
-                    : "hover:bg-zinc-100 text-zinc-800"
+                    ? "hover:bg-zinc-950 text-zinc-200"
+                    : "hover:bg-zinc-200 text-zinc-800"
                 }`}
               >
                 {item.tag}

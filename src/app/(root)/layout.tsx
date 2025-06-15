@@ -28,22 +28,27 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("resize", updateNavHeight);
   }, []);
 
-  if (!theme) {
-    return <div>Loading...</div>;
+  if (!theme || !theme.mounted) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-white dark:bg-black">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+      </div>
+    );
   }
 
   return (
     <main
       className={`relative min-h-screen flex flex-col ${
         theme?.mode === "dark" ? "bg-black" : "bg-white"
-      } `}
+      }`}
+      suppressHydrationWarning
     >
       <div ref={navRef}>
         <TopNav />
       </div>
 
       <div
-        className={`main-div flex flex-1 `}
+        className={`main-div flex flex-1`}
         style={{
           marginTop: navHeight,
           height: `calc(100vh - ${navHeight}px)`,

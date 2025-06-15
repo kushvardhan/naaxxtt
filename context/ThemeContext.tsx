@@ -1,11 +1,12 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { createContext } from "react";
+import { createContext, useEffect, useState } from "react";
 
 type ThemeContextType = {
   mode: string;
   setMode: (theme: string) => void;
+  mounted: boolean;
 };
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(
@@ -15,10 +16,16 @@ export const ThemeContext = createContext<ThemeContextType | undefined>(
 // Custom hook that provides the same interface as before but uses next-themes
 export const useThemeContext = () => {
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return {
     mode: theme || "dark",
     setMode: setTheme,
+    mounted,
   };
 };
 

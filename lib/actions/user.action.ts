@@ -15,6 +15,8 @@ export async function getAllUser(params?: GetAllUsersParams) {
   try {
     await connectToDatabase();
 
+    // const {page=1, pageSize=20, filter, searchQuery} = params;
+
     const users = await User.find({}).sort({ createdAt: -1 }).lean();
 
     const plainUsers = users.map((user) => ({

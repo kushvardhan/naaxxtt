@@ -1,4 +1,4 @@
-import ClientHomehh from "@/components/Shared/ClientHomehh";
+import ClientHomehh from "../../../components/Shared/ClientHomehh";
 import { getQuestions } from "../../../../lib/actions/question.action";
 
 interface Tag {

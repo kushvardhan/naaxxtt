@@ -48,3 +48,8 @@ export interface ToggleSaveQuestionParams {
   questionId: string;
   path: string;
 }
+
+export interface GetTopInteractedTagsParams{
+  userId : string;
+  limit? : number;
+}

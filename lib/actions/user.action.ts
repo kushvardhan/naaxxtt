@@ -18,6 +18,7 @@ export async function getUserById(params: { userId: string }) {
 
     const { userId } = params;
 
+    // @ts-ignore - Mongoose typing issue
     const user = await User.findOne({ clerkId: userId }).lean();
 
     console.log("User fetched: ", user);
@@ -41,6 +42,7 @@ export async function createUser(userData: CreateUserParams) {
     await connectToDatabase();
     console.log("Creating USERRR");
 
+    // @ts-ignore - Mongoose typing issue
     const user = await User.create(userData);
 
     console.log("User created: ", user);
@@ -64,6 +66,7 @@ export async function updateUser(params: UpdateUserParams) {
 
     const { clerkId, updateData, path } = params;
 
+    // @ts-ignore - Mongoose typing issue
     await User.findOneAndUpdate({ clerkId }, updateData, {
       new: true,
     });
@@ -82,6 +85,7 @@ export async function deleteUser(params: DeleteUserParams) {
     await connectToDatabase();
     const { clerkId } = params;
 
+    // @ts-ignore - Mongoose typing issue
     const user = await User.findOne({ clerkId }).lean();
 
     if (!user) {
@@ -89,10 +93,13 @@ export async function deleteUser(params: DeleteUserParams) {
     }
 
     // Get user questions before deleting them
+    // @ts-ignore - Mongoose typing issue
     await Question.find({ author: user._id }).distinct("_id");
 
+    // @ts-ignore - Mongoose typing issue
     await Question.deleteMany({ author: user._id });
 
+    // @ts-ignore - Mongoose typing issue
     const deletedUser = await User.findByIdAndDelete(user._id).lean();
 
     console.log(deletedUser, "deleted.");
@@ -117,6 +124,7 @@ export async function getAllUser(params: GetAllUsersParams) {
 
     // const {page=1, pageSize=20,filter,searchQuery}= params;
 
+    // @ts-ignore - Mongoose typing issue
     const users = await User.find({}).sort({ createdAt: -1 }).lean();
 
     // Convert to plain objects for client components

@@ -15,7 +15,7 @@ export const ThemeContext = createContext<ThemeContextType | undefined>(
 
 // Custom hook that provides the same interface as before but uses next-themes
 export const useThemeContext = () => {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export const useThemeContext = () => {
   }, []);
 
   return {
-    mode: theme || "dark",
+    mode: mounted ? resolvedTheme || theme || "dark" : "dark",
     setMode: setTheme,
     mounted,
   };

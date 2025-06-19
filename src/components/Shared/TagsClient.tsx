@@ -10,7 +10,7 @@ import {
 } from "@/components/Shared/dropdown-menu";
 import LocalSearchBar from "@/components/Shared/Search/LocalSearchBar";
 import TagCard from "@/components/Shared/TagCard";
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
 
 interface TagsClientProps {

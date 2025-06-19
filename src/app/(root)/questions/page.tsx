@@ -124,7 +124,12 @@ const QuestionsPage = async () => {
     // In a real app, you would fetch the questions data here
     // const questions = await getAllQuestions();
     
-    return <QuestionsClient questions={mockQuestions} />;
+    return (
+    <>
+    <div className='w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden'>
+    <QuestionsClient questions={mockQuestions} /> 
+    </div>
+    </>)
   } catch (error) {
     console.error("Error loading questions:", error);
     return <QuestionsClient questions={[]} />;

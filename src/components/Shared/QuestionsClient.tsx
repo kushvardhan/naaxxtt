@@ -132,7 +132,7 @@ const QuestionsClient = ({ questions }: QuestionsClientProps) => {
   };
 
   return (
-    <div className="w-full">
+    <div className="h-[calc(screen-120px)] w-full overflow-y-scroll scrollbar-hidden">
       {/* Header */}
       <div className="mb-8">
         <h1
@@ -244,7 +244,7 @@ const QuestionsClient = ({ questions }: QuestionsClientProps) => {
           </span>
           {searchQuery && (
             <span>
-              Searching for: <strong>"{searchQuery}"</strong>
+              Searching for: <strong>&quot;{searchQuery}&quot;</strong>
             </span>
           )}
           {selectedFilters.length > 0 && (

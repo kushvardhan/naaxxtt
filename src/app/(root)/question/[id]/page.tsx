@@ -152,7 +152,14 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
       views: mockQuestion.views + parseInt(params.id) * 50,
     };
 
-    return <QuestionClient question={questionWithId} />;
+    return (
+      <>
+      <div className='w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden'>
+        <QuestionClient question={questionWithId} />
+      </div>
+      </>
+    );
+    
   } catch (error) {
     console.error("Error loading question:", error);
     return (

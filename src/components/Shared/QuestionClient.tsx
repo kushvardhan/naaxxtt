@@ -104,7 +104,7 @@ const QuestionClient = ({ question }: QuestionClientProps) => {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto" suppressHydrationWarning>
+    <div className="h-[calc(screen-120px)] w-full overflow-y-scroll scrollbar-hidden " suppressHydrationWarning>
       {/* Question Header */}
       <div className="mb-8">
         <h1

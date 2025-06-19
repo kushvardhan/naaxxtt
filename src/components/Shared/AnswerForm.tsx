@@ -1,9 +1,10 @@
 "use client";
 
-import { useContext, useState, useEffect } from "react";
-import { ThemeContext } from "../../../context/ThemeContext";
 import { useUser } from "@clerk/nextjs";
+import { Sparkles } from "lucide-react";
 import Image from "next/image";
+import { useContext, useEffect, useState } from "react";
+import { ThemeContext } from "../../../context/ThemeContext";
 
 interface AnswerFormProps {
   questionId: string;
@@ -16,6 +17,14 @@ const AnswerForm = ({ questionId }: AnswerFormProps) => {
   const [answer, setAnswer] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPreview, setIsPreview] = useState(false);
+
+  const [popped, setPopped] = useState(false);
+
+  const handleClick = () => {
+    setPopped(true);
+    setTimeout(() => setPopped(false), 400);
+    // TODO: Trigger AI action here
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -40,18 +49,18 @@ const AnswerForm = ({ questionId }: AnswerFormProps) => {
     if (!answer.trim()) return;
 
     setIsSubmitting(true);
-    
+
     try {
       // Here you would submit the answer to your API
       console.log("Submitting answer:", { questionId, answer });
-      
+
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Reset form
       setAnswer("");
       setIsPreview(false);
-      
+
       // Show success message or redirect
       alert("Answer submitted successfully!");
     } catch (error) {
@@ -64,30 +73,33 @@ const AnswerForm = ({ questionId }: AnswerFormProps) => {
 
   const formatAnswerForPreview = (text: string) => {
     return text
-      .replace(/\n/g, '<br>')
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/`(.*?)`/g, '<code class="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm">$1</code>');
+      .replace(/\n/g, "<br>")
+      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*(.*?)\*/g, "<em>$1</em>")
+      .replace(
+        /`(.*?)`/g,
+        '<code class="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm">$1</code>'
+      );
   };
 
   if (!user) {
     return (
       <div
         className={`rounded-2xl border p-8 text-center ${
-          isDark
-            ? "bg-zinc-900/50 border-zinc-800"
-            : "bg-white border-zinc-200"
+          isDark ? "bg-zinc-900/50 border-zinc-800" : "bg-white border-zinc-200"
         }`}
       >
-        <h3 className={`text-xl font-bold font-mono mb-4 ${isDark ? "text-zinc-100" : "text-zinc-800"}`}>
+        <h3
+          className={`text-xl font-bold font-mono mb-4 ${
+            isDark ? "text-zinc-100" : "text-zinc-800"
+          }`}
+        >
           Sign in to answer this question
         </h3>
         <p className={`mb-6 ${isDark ? "text-zinc-400" : "text-zinc-600"}`}>
           You need to be signed in to post an answer.
         </p>
-        <button
-          className="px-6 py-3 bg-orange-500 text-white font-mono font-semibold rounded-xl hover:bg-orange-600 transition-colors duration-200"
-        >
+        <button className="px-6 py-3 bg-orange-500 text-white font-mono font-semibold rounded-xl hover:bg-orange-600 transition-colors duration-200">
           Sign In
         </button>
       </div>
@@ -97,13 +109,15 @@ const AnswerForm = ({ questionId }: AnswerFormProps) => {
   return (
     <div
       className={`rounded-2xl border ${
-        isDark
-          ? "bg-zinc-900/50 border-zinc-800"
-          : "bg-white border-zinc-200"
+        isDark ? "bg-zinc-900/50 border-zinc-800" : "bg-white border-zinc-200"
       }`}
     >
       <div className="p-8">
-        <h3 className={`text-xl font-bold font-mono mb-6 ${isDark ? "text-zinc-100" : "text-zinc-800"}`}>
+        <h3
+          className={`text-xl font-bold font-mono mb-6 ${
+            isDark ? "text-zinc-100" : "text-zinc-800"
+          }`}
+        >
           Your Answer
         </h3>
 
@@ -118,43 +132,71 @@ const AnswerForm = ({ questionId }: AnswerFormProps) => {
               className="rounded-full border-2 border-orange-400"
             />
             <div>
-              <div className={`font-semibold font-mono ${isDark ? "text-zinc-100" : "text-zinc-800"}`}>
+              <div
+                className={`font-semibold font-mono ${
+                  isDark ? "text-zinc-100" : "text-zinc-800"
+                }`}
+              >
                 {user.fullName}
               </div>
-              <div className={`text-sm ${isDark ? "text-zinc-400" : "text-zinc-600"}`}>
-                @{user.username || user.emailAddresses[0]?.emailAddress.split('@')[0]}
+              <div
+                className={`text-sm ${
+                  isDark ? "text-zinc-400" : "text-zinc-600"
+                }`}
+              >
+                @
+                {user.username ||
+                  user.emailAddresses[0]?.emailAddress.split("@")[0]}
               </div>
             </div>
           </div>
 
           {/* Editor Tabs */}
-          <div className="flex gap-2 mb-4">
-            <button
+          <div className="w-full flex items-center justify-between">
+            <div className="flex gap-2 mb-4 items-center">
+              <button
+                type="button"
+                onClick={() => setIsPreview(false)}
+                className={`px-4 py-2 rounded-lg font-mono text-sm transition-colors ${
+                  !isPreview
+                    ? "bg-orange-500 text-white"
+                    : isDark
+                    ? "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"
+                    : "text-zinc-600 hover:text-zinc-800 hover:bg-zinc-100"
+                }`}
+              >
+                Write
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsPreview(true)}
+                className={`px-4 py-2 rounded-lg font-mono text-sm transition-colors ${
+                  isPreview
+                    ? "bg-orange-500 text-white"
+                    : isDark
+                    ? "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"
+                    : "text-zinc-600 hover:text-zinc-800 hover:bg-zinc-100"
+                }`}
+              >
+                Preview
+              </button>
+            </div>
+            <div
               type="button"
-              onClick={() => setIsPreview(false)}
-              className={`px-4 py-2 rounded-lg font-mono text-sm transition-colors ${
-                !isPreview
-                  ? "bg-orange-500 text-white"
-                  : isDark
-                  ? "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"
-                  : "text-zinc-600 hover:text-zinc-800 hover:bg-zinc-100"
+              onClick={handleClick}
+              className={`group flex gap-2 items-center cursor-pointer border-2 ${
+                isDark ? "border-orange-500" : "border-orange-600"
+              } rounded-lg px-2 py-2 transition-transform duration-600 ease-out ${
+                popped ? "scale-105" : "scale-100"
               }`}
             >
-              Write
-            </button>
-            <button
-              type="button"
-              onClick={() => setIsPreview(true)}
-              className={`px-4 py-2 rounded-lg font-mono text-sm transition-colors ${
-                isPreview
-                  ? "bg-orange-500 text-white"
-                  : isDark
-                  ? "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"
-                  : "text-zinc-600 hover:text-zinc-800 hover:bg-zinc-100"
-              }`}
-            >
-              Preview
-            </button>
+              <Sparkles
+        className={`h-4 w-4 transition-transform duration-500 ease-out ${
+          isDark ? "text-orange-500" : "text-orange-600"
+        } group-hover:scale-110`}
+      />
+      <span className="text-sm font-semibold font-mono">Generate AI answer</span>
+    </div>
           </div>
 
           {/* Editor */}
@@ -172,7 +214,11 @@ const AnswerForm = ({ questionId }: AnswerFormProps) => {
                 }`}
                 required
               />
-              <div className={`text-xs ${isDark ? "text-zinc-500" : "text-zinc-500"}`}>
+              <div
+                className={`text-xs ${
+                  isDark ? "text-zinc-500" : "text-zinc-500"
+                }`}
+              >
                 Tip: Use **bold**, *italic*, and `code` for formatting
               </div>
             </div>
@@ -187,11 +233,18 @@ const AnswerForm = ({ questionId }: AnswerFormProps) => {
               {answer ? (
                 <div
                   className={`prose max-w-none ${isDark ? "prose-invert" : ""}`}
-                  dangerouslySetInnerHTML={{ __html: formatAnswerForPreview(answer) }}
+                  dangerouslySetInnerHTML={{
+                    __html: formatAnswerForPreview(answer),
+                  }}
                 />
               ) : (
-                <div className={`text-sm ${isDark ? "text-zinc-500" : "text-zinc-500"}`}>
-                  Nothing to preview yet. Write your answer in the "Write" tab.
+                <div
+                  className={`text-sm ${
+                    isDark ? "text-zinc-500" : "text-zinc-700"
+                  }`}
+                >
+                  Nothing to preview yet. Write your answer in the
+                  &quot;Write&quot; tab.
                 </div>
               )}
             </div>
@@ -199,7 +252,11 @@ const AnswerForm = ({ questionId }: AnswerFormProps) => {
 
           {/* Submit Button */}
           <div className="flex items-center justify-between">
-            <div className={`text-sm ${isDark ? "text-zinc-400" : "text-zinc-600"}`}>
+            <div
+              className={`text-sm ${
+                isDark ? "text-zinc-400" : "text-zinc-600"
+              }`}
+            >
               By posting your answer, you agree to our terms of service.
             </div>
             <button

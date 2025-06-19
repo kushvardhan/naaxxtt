@@ -16,7 +16,7 @@ const TagDetailPage = async ({ params }: TagDetailPageProps) => {
     }
 
     return (
-      <div className="w-full" suppressHydrationWarning>
+      <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden" suppressHydrationWarning>
         <div className="mb-8">
           <div className="flex items-center gap-4 mb-4">
             <div className="inline-flex items-center px-6 py-3 rounded-full text-white font-mono font-bold text-2xl bg-gradient-to-r from-orange-500 to-orange-600 shadow-lg">

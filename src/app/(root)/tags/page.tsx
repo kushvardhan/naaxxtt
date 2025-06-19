@@ -15,7 +15,11 @@ const TagsPage = async () => {
     const result = await getAllTags();
     console.log("result of getAllTags: ", result);
 
-    return <TagsClient tags={result?.tags || []} />;
+    return (
+      <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">
+        <TagsClient tags={result?.tags || []} />
+      </div>
+    );
   } catch (error) {
     console.error("Error fetching tags:", error);
     return <TagsClient tags={[]} />;

@@ -1,12 +1,11 @@
 "use client";
 
-import { useContext, useState, useEffect } from "react";
-import { ThemeContext } from "../../../context/ThemeContext";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import AnswerForm from "./AnswerForm";
+import { useContext, useEffect, useState } from "react";
+import { ThemeContext } from "../../../context/ThemeContext";
 import AnswerCard from "./AnswerCard";
+import AnswerForm from "./AnswerForm";
 
 interface Author {
   _id: string;
@@ -53,10 +52,35 @@ const QuestionClient = ({ question }: QuestionClientProps) => {
   const theme = useContext(ThemeContext);
   const [mounted, setMounted] = useState(false);
   const [userVote, setUserVote] = useState<"upvote" | "downvote" | null>(null);
+  const [createdAtFormatted, setCreatedAtFormatted] = useState("");
+  const [updatedAtFormatted, setUpdatedAtFormatted] = useState("");
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (mounted) {
+      const created = new Date(question.createdAt).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      const updated = new Date(question.updatedAt).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      setCreatedAtFormatted(created);
+      setUpdatedAtFormatted(updated);
+    }
+  }, [question.createdAt, question.updatedAt, mounted]);
 
   if (!mounted || !theme || !theme.mounted) {
     return (
@@ -67,37 +91,17 @@ const QuestionClient = ({ question }: QuestionClientProps) => {
   }
 
   const isDark = theme?.mode === "dark";
-  
-const [createdAtFormatted, setCreatedAtFormatted] = useState("");
-const [updatedAtFormatted, setUpdatedAtFormatted] = useState("");
-
-useEffect(() => {
-  const created = new Date(question.createdAt).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-  const updated = new Date(question.updatedAt).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-  setCreatedAtFormatted(created);
-  setUpdatedAtFormatted(updated);
-}, [question.createdAt, question.updatedAt]);
-
-
   const voteScore = question.upvotes.length - question.downvotes.length;
 
-  function handleVote(arg0: string): void {
-    throw new Error("Function not implemented.");
-  }
+  const handleVote = (type: "upvote" | "downvote") => {
+    if (userVote === type) {
+      setUserVote(null);
+    } else {
+      setUserVote(type);
+    }
+    // Here you would typically make an API call to update the vote
+    console.log(`Voted ${type} on question ${question._id}`);
+  };
 
   return (
     <div className="w-full max-w-5xl mx-auto" suppressHydrationWarning>
@@ -168,7 +172,12 @@ useEffect(() => {
                   : "text-zinc-600 hover:text-red-600 hover:bg-red-50"
               }`}
             >
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" transform="rotate(180)">
+              <svg
+                className="w-6 h-6"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                transform="rotate(180)"
+              >
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
               </svg>
             </button>
@@ -225,7 +234,9 @@ useEffect(() => {
                     {question.author.name}
                   </Link>
                   <div className="flex items-center gap-2 text-sm">
-                    <span className={isDark ? "text-zinc-400" : "text-zinc-600"}>
+                    <span
+                      className={isDark ? "text-zinc-400" : "text-zinc-600"}
+                    >
                       @{question.author.username}
                     </span>
                     <span className="text-orange-500 font-semibold">
@@ -247,7 +258,8 @@ useEffect(() => {
                 isDark ? "text-zinc-100" : "text-zinc-800"
               }`}
             >
-              {question.answers.length} Answer{question.answers.length !== 1 ? "s" : ""}
+              {question.answers.length} Answer
+              {question.answers.length !== 1 ? "s" : ""}
             </h2>
 
             <div className="space-y-6">

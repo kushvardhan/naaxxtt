@@ -232,13 +232,16 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
               `}
             >
               {/* Title */}
-              <h2
+              
+              <Link href={`/question/${que._id}`}>
+                <h2
                 className={`text-base sm:text-lg font-semibold line-clamp-2 break-words
                   ${isDark ? "text-zinc-100" : "text-zinc-800"}
                 `}
               >
                 {que.title}
               </h2>
+              </Link>
 
               {/* Tags */}
               <div className="mt-3 flex flex-wrap gap-2">

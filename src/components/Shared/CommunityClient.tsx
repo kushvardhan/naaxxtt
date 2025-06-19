@@ -194,7 +194,7 @@ const CommunityClient = ({ users }: CommunityClientProps) => {
           </span>
           {searchQuery && (
             <span>
-              Searching for: <strong>"{searchQuery}"</strong>
+              Searching for: <strong>&quot;{searchQuery}&quot;</strong>
             </span>
           )}
           {selectedTags.length > 0 && (

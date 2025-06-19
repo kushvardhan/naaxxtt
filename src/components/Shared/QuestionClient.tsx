@@ -4,6 +4,7 @@ import { useContext, useState, useEffect } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
 import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import AnswerForm from "./AnswerForm";
 import AnswerCard from "./AnswerCard";
 
@@ -66,27 +67,37 @@ const QuestionClient = ({ question }: QuestionClientProps) => {
   }
 
   const isDark = theme?.mode === "dark";
+  
+const [createdAtFormatted, setCreatedAtFormatted] = useState("");
+const [updatedAtFormatted, setUpdatedAtFormatted] = useState("");
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
+useEffect(() => {
+  const created = new Date(question.createdAt).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
-  const handleVote = (type: "upvote" | "downvote") => {
-    if (userVote === type) {
-      setUserVote(null);
-    } else {
-      setUserVote(type);
-    }
-  };
+  const updated = new Date(question.updatedAt).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  setCreatedAtFormatted(created);
+  setUpdatedAtFormatted(updated);
+}, [question.createdAt, question.updatedAt]);
+
 
   const voteScore = question.upvotes.length - question.downvotes.length;
+
+  function handleVote(arg0: string): void {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <div className="w-full max-w-5xl mx-auto" suppressHydrationWarning>
@@ -103,10 +114,10 @@ const QuestionClient = ({ question }: QuestionClientProps) => {
         {/* Question Meta */}
         <div className="flex flex-wrap items-center gap-4 text-sm font-mono">
           <span className={isDark ? "text-zinc-400" : "text-zinc-600"}>
-            Asked {formatDate(question.createdAt)}
+            Asked {createdAtFormatted}
           </span>
           <span className={isDark ? "text-zinc-400" : "text-zinc-600"}>
-            Modified {formatDate(question.updatedAt)}
+            Modified {updatedAtFormatted}
           </span>
           <span className={isDark ? "text-zinc-400" : "text-zinc-600"}>
             Viewed {question.views.toLocaleString()} times
@@ -224,7 +235,7 @@ const QuestionClient = ({ question }: QuestionClientProps) => {
                 </div>
               </div>
               <div className="text-sm text-zinc-500 dark:text-zinc-400 font-mono">
-                asked {formatDate(question.createdAt)}
+                asked {createdAtFormatted}
               </div>
             </div>
           </div>

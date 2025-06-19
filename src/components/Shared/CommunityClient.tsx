@@ -21,35 +21,13 @@ const CommunityClient = ({ users }: CommunityClientProps) => {
   const theme = useContext(ThemeContext);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted || !theme || !theme.mounted) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
-      </div>
-    );
-  }
-
-  const isDark = theme.mode === "dark";
-
-  const Tags = [
-    { tag: "New User" },
-    { tag: "Old User" },
-    { tag: "Top Contributors" },
-  ];
-
-  const toggleTag = (tag: string) => {
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
-  };
-
+  // Move useMemo before any conditional returns to follow Rules of Hooks
   const filteredUsers = useMemo(() => {
     let filtered = users;
 
@@ -85,6 +63,28 @@ const CommunityClient = ({ users }: CommunityClientProps) => {
 
     return filtered;
   }, [users, searchQuery, selectedTags]);
+
+  if (!mounted || !theme || !theme.mounted) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+      </div>
+    );
+  }
+
+  const isDark = theme.mode === "dark";
+
+  const Tags = [
+    { tag: "New User" },
+    { tag: "Old User" },
+    { tag: "Top Contributors" },
+  ];
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+  };
 
   return (
     <div className="h-[calc(screen-120px)] w-full overflow-y-scroll scrollbar-hidden">

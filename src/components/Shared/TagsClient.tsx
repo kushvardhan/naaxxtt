@@ -21,39 +21,13 @@ const TagsClient = ({ tags }: TagsClientProps) => {
   const theme = useContext(ThemeContext);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted || !theme || !theme.mounted) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
-      </div>
-    );
-  }
-
-  const isDark = theme?.mode === "dark";
-
-  const Filters = [
-    { filter: "Popular" },
-    { filter: "Recent" },
-    { filter: "Name" },
-    { filter: "Old" },
-  ];
-
-  const toggleFilter = (filter: string) => {
-    setSelectedFilters((prev) =>
-      prev.includes(filter)
-        ? prev.filter((f) => f !== filter)
-        : [...prev, filter]
-    );
-  };
-
-  // Filter tags based on search query and selected filters
+  // Move useMemo before any conditional returns to follow Rules of Hooks
   const filteredTags = useMemo(() => {
     let filtered = tags;
 
@@ -97,6 +71,31 @@ const TagsClient = ({ tags }: TagsClientProps) => {
 
     return filtered;
   }, [tags, searchQuery, selectedFilters]);
+
+  if (!mounted || !theme || !theme.mounted) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+      </div>
+    );
+  }
+
+  const isDark = theme?.mode === "dark";
+
+  const Filters = [
+    { filter: "Popular" },
+    { filter: "Recent" },
+    { filter: "Name" },
+    { filter: "Old" },
+  ];
+
+  const toggleFilter = (filter: string) => {
+    setSelectedFilters((prev) =>
+      prev.includes(filter)
+        ? prev.filter((f) => f !== filter)
+        : [...prev, filter]
+    );
+  };
 
   return (
     <div className="w-full">

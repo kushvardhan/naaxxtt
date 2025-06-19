@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ["mongoose"],
-  },
+  // Updated to use the new serverExternalPackages instead of experimental.serverComponentsExternalPackages
+  serverExternalPackages: ["mongoose"],
   images: {
     remotePatterns: [
       {
@@ -27,8 +26,6 @@ const nextConfig = {
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
   },
-  // Optimize for Vercel deployment
-  // output: 'standalone', // Commented out for Vercel deployment
   // Handle TypeScript errors during build
   typescript: {
     ignoreBuildErrors: false,

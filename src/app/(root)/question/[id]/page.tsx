@@ -1,3 +1,4 @@
+import Link from "next/link";
 import QuestionClient from "@/components/Shared/QuestionClient";
 
 interface QuestionDetailPageProps {
@@ -47,7 +48,8 @@ export default function RootLayout({
     clerkId: "user_123",
     name: "John Doe",
     username: "johndoe",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+    image:
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
     reputation: 1250,
   },
   tags: [
@@ -88,7 +90,8 @@ CLERK_SECRET_KEY=sk_test_...
         clerkId: "user_456",
         name: "Jane Smith",
         username: "janesmith",
-        image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+        image:
+          "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
         reputation: 2840,
       },
       upvotes: ["user1", "user3", "user7"],
@@ -120,7 +123,8 @@ export const config = {
         clerkId: "user_789",
         name: "Mike Johnson",
         username: "mikej",
-        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+        image:
+          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
         reputation: 1890,
       },
       upvotes: ["user1", "user2"],
@@ -136,14 +140,46 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
   try {
     // In a real app, you would fetch the question data here
     // const question = await getQuestionById({ questionId: params.id });
-    
-    return <QuestionClient question={mockQuestion} />;
+
+    // For now, we'll use mock data but make it dynamic based on the ID
+    const questionWithId = {
+      ...mockQuestion,
+      _id: params.id,
+      title:
+        params.id === "1"
+          ? mockQuestion.title
+          : `Question ${params.id}: How to solve common development issues?`,
+      views: mockQuestion.views + parseInt(params.id) * 50,
+    };
+
+    return <QuestionClient question={questionWithId} />;
   } catch (error) {
     console.error("Error loading question:", error);
     return (
-      <div className="text-center py-20">
-        <h1 className="text-2xl font-bold text-red-500 mb-4">Question Not Found</h1>
-        <p className="text-gray-600">The question you're looking for doesn't exist or has been removed.</p>
+      <div className="text-center py-20 px-4">
+        <div className="max-w-md mx-auto">
+          <div className="text-6xl mb-4">❓</div>
+          <h1 className="text-2xl font-bold text-red-500 mb-4">
+            Question Not Found
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
+            The question you&apos;re looking for doesn&apos;t exist or has been removed.
+          </p>
+          <div className="flex gap-4 justify-center">
+            <Link
+              href="/"
+              className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+            >
+              Go Home
+            </Link>
+            <Link
+              href="/ask-question"
+              className="px-4 py-2 border border-orange-500 text-orange-500 rounded-lg hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-colors"
+            >
+              Ask Question
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }

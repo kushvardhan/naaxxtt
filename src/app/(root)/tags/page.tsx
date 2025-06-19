@@ -1,5 +1,5 @@
-import { getAllTags } from "../../../../lib/actions/tag.action";
 import TagsClient from "@/components/Shared/TagsClient";
+import { getAllTags } from "../../../../lib/actions/tag.action";
 
 export interface Tag {
   _id: string;
@@ -11,10 +11,15 @@ export interface Tag {
 }
 
 const TagsPage = async () => {
-  const result = await getAllTags();
-  console.log('result of getAllTags: ', result);
+  try {
+    const result = await getAllTags();
+    console.log("result of getAllTags: ", result);
 
-  return <TagsClient tags={result?.tags || []} />;
+    return <TagsClient tags={result?.tags || []} />;
+  } catch (error) {
+    console.error("Error fetching tags:", error);
+    return <TagsClient tags={[]} />;
+  }
 };
 
 export default TagsPage;

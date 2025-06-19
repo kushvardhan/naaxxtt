@@ -1,6 +1,7 @@
 import CommunityClient from "@/components/Shared/CommunityClient";
 import { getAllUser } from "../../../../lib/actions/user.action";
-import {getTopInteractedTags} from '../../../lib/actions/tag.action';
+import { getTopInteractedTags } from "../../../../lib/actions/tag.action"
+
 
 export interface User {
   _id: string;

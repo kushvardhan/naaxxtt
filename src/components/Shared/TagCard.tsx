@@ -1,9 +1,9 @@
 "use client";
 
-import { useContext } from "react";
-import Link from "next/link";
-import { ThemeContext } from "../../../context/ThemeContext";
 import { Tag } from "@/app/(root)/tags/page";
+import Link from "next/link";
+import { useContext, useEffect, useState } from "react";
+import { ThemeContext } from "../../../context/ThemeContext";
 
 interface TagCardProps {
   tag: Tag;
@@ -12,7 +12,13 @@ interface TagCardProps {
 const TagCard = ({ tag }: TagCardProps) => {
   const theme = useContext(ThemeContext);
 
-  if (!theme || !theme.mounted) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || !theme || !theme.mounted) {
     return (
       <div className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-2xl h-48 w-80">
         <div className="p-6 flex flex-col space-y-4">
@@ -65,7 +71,6 @@ const TagCard = ({ tag }: TagCardProps) => {
 
         {/* Card Content */}
         <div className="relative p-8 flex flex-col space-y-6">
-          
           {/* Tag Header */}
           <div className="flex items-center justify-between">
             <div
@@ -118,7 +123,7 @@ const TagCard = ({ tag }: TagCardProps) => {
                   Questions
                 </div>
               </div>
-              
+
               <div className="text-center">
                 <div
                   className={`text-2xl font-bold font-mono ${

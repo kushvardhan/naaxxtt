@@ -1,17 +1,17 @@
 "use client";
 
-import { useContext, useState, useMemo } from "react";
-import { ThemeContext } from "../../../context/ThemeContext";
-import LocalSearchBar from "@/components/Shared/Search/LocalSearchBar";
+import { Tag } from "@/app/(root)/tags/page";
+import { Button } from "@/components/Shared/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/Shared/dropdown-menu";
-import { Button } from "@/components/Shared/button";
+import LocalSearchBar from "@/components/Shared/Search/LocalSearchBar";
 import TagCard from "@/components/Shared/TagCard";
-import { Tag } from "@/app/(root)/tags/page";
+import { useContext, useMemo, useState } from "react";
+import { ThemeContext } from "../../../context/ThemeContext";
 
 interface TagsClientProps {
   tags: Tag[];
@@ -22,7 +22,13 @@ const TagsClient = ({ tags }: TagsClientProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
 
-  if (!theme || !theme.mounted) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || !theme || !theme.mounted) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
@@ -41,7 +47,9 @@ const TagsClient = ({ tags }: TagsClientProps) => {
 
   const toggleFilter = (filter: string) => {
     setSelectedFilters((prev) =>
-      prev.includes(filter) ? prev.filter((f) => f !== filter) : [...prev, filter]
+      prev.includes(filter)
+        ? prev.filter((f) => f !== filter)
+        : [...prev, filter]
     );
   };
 
@@ -63,16 +71,24 @@ const TagsClient = ({ tags }: TagsClientProps) => {
       const primaryFilter = selectedFilters[0];
       switch (primaryFilter) {
         case "Popular":
-          filtered = filtered.sort((a, b) => b.followers.length - a.followers.length);
+          filtered = filtered.sort(
+            (a, b) => b.followers.length - a.followers.length
+          );
           break;
         case "Recent":
-          filtered = filtered.sort((a, b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime());
+          filtered = filtered.sort(
+            (a, b) =>
+              new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()
+          );
           break;
         case "Name":
           filtered = filtered.sort((a, b) => a.name.localeCompare(b.name));
           break;
         case "Old":
-          filtered = filtered.sort((a, b) => new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime());
+          filtered = filtered.sort(
+            (a, b) =>
+              new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()
+          );
           break;
         default:
           break;
@@ -115,8 +131,8 @@ const TagsClient = ({ tags }: TagsClientProps) => {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="font-mono px-4 py-2 text-sm flex items-center gap-2 min-w-[140px]"
             >
               Sort By
@@ -144,7 +160,9 @@ const TagsClient = ({ tags }: TagsClientProps) => {
 
           <DropdownMenuContent
             className={`w-48 rounded-lg py-2 px-1 ${
-              isDark ? "bg-zinc-900 border-zinc-700" : "bg-white border-zinc-200"
+              isDark
+                ? "bg-zinc-900 border-zinc-700"
+                : "bg-white border-zinc-200"
             }`}
           >
             {Filters.map((item, idx) => (
@@ -168,8 +186,8 @@ const TagsClient = ({ tags }: TagsClientProps) => {
       {/* Stats Bar */}
       <div
         className={`mb-6 p-4 rounded-lg border ${
-          isDark 
-            ? "bg-zinc-900/50 border-zinc-800 text-zinc-300" 
+          isDark
+            ? "bg-zinc-900/50 border-zinc-800 text-zinc-300"
             : "bg-zinc-50 border-zinc-200 text-zinc-600"
         }`}
       >
@@ -208,7 +226,7 @@ const TagsClient = ({ tags }: TagsClientProps) => {
               className="animate-in fade-in slide-in-from-bottom-4 duration-500"
               style={{
                 animationDelay: `${index * 100}ms`,
-                animationFillMode: 'both'
+                animationFillMode: "both",
               }}
             >
               <TagCard tag={tag} />
@@ -222,7 +240,9 @@ const TagsClient = ({ tags }: TagsClientProps) => {
           }`}
         >
           <div className="text-6xl mb-4">🏷️</div>
-          <h3 className="text-xl font-mono font-semibold mb-2">No tags found</h3>
+          <h3 className="text-xl font-mono font-semibold mb-2">
+            No tags found
+          </h3>
           <p className="text-sm">
             {searchQuery || selectedFilters.length > 0
               ? "Try adjusting your search or filters"

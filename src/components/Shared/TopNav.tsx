@@ -2,7 +2,7 @@
 
 import { SignedIn, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
 import MobileNav from "./MobileNav";
 import GlobalSearch from "./Search/GlobalSearch";
@@ -10,8 +10,13 @@ import { ThemeToggleMenu } from "./ThemeToggleMenu";
 
 const TopNav = () => {
   const theme = useContext(ThemeContext);
+  const [mounted, setMounted] = useState(false);
 
-  if (!theme || !theme.mounted) {
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || !theme || !theme.mounted) {
     return (
       <nav className="w-full flex items-center justify-between fixed z-50 gap-5 py-6 px-2 border-b sm:px-6 bg-white dark:bg-zinc-900">
         <div className="animate-pulse bg-gray-200 dark:bg-gray-700 h-8 w-32 rounded"></div>

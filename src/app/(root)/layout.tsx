@@ -13,9 +13,12 @@ import "../globals.css";
 function LayoutContent({ children }: { children: React.ReactNode }) {
   const navRef = useRef<HTMLDivElement>(null);
   const [navHeight, setNavHeight] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const theme = useContext(ThemeContext);
 
   useEffect(() => {
+    setMounted(true);
+
     function updateNavHeight() {
       if (navRef.current) {
         setNavHeight(navRef.current.offsetHeight);
@@ -28,7 +31,8 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("resize", updateNavHeight);
   }, []);
 
-  if (!theme || !theme.mounted) {
+  // Show loading state until mounted and theme is ready
+  if (!mounted || !theme || !theme.mounted) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-white dark:bg-black">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>

@@ -1,7 +1,5 @@
 import CommunityClient from "@/components/Shared/CommunityClient";
 import { getAllUser } from "../../../../lib/actions/user.action";
-import { getTopInteractedTags } from "../../../../lib/actions/tag.action"
-
 
 export interface User {
   _id: string;
@@ -20,15 +18,13 @@ export interface User {
 
 const CommunityPage = async () => {
   const result = await getAllUser();
-  console.log('result of getAllUser: ', result);
+  console.log("result of getAllUser: ", result);
 
-
-
-  return(
-    <div className="w-full h-[calc(100vh-130px)] w-full mt-20 overflow-y-scroll scrollbar-hidden" >
-    <CommunityClient users={result?.users || []} />
-  </div>
-  ) 
+  return (
+    <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">
+      <CommunityClient users={result?.users || []} />
+    </div>
+  );
 };
 
 export default CommunityPage;

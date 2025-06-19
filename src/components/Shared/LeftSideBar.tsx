@@ -4,7 +4,7 @@ import { SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
 import { cn } from "../../../lib/utils";
 import { Button } from "./button";
@@ -161,7 +161,13 @@ const LeftSB = () => {
   const pathName = usePathname();
   const { signOut } = useClerk();
 
-  if (!theme || !theme.mounted) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || !theme || !theme.mounted) {
     return (
       <div className="animate-pulse bg-gray-200 dark:bg-gray-700 w-64 h-full"></div>
     );

@@ -3,9 +3,8 @@
 import { User } from "@/app/(root)/community/page";
 import Image from "next/image";
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
-
 
 interface UserCardProps {
   user: User;
@@ -14,9 +13,15 @@ interface UserCardProps {
 
 const UserCard = ({ user, interactedTags }: UserCardProps) => {
   const theme = useContext(ThemeContext);
-  console.log("tags: ",interactedTags);
+  console.log("tags: ", interactedTags);
 
-  if (!theme || !theme.mounted) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || !theme || !theme.mounted) {
     return (
       <div className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-2xl h-72">
         <div className="p-6 flex flex-col items-center space-y-4">
@@ -280,7 +285,7 @@ const UserCard = ({ user, interactedTags }: UserCardProps) => {
                   d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244"
                 />
               </svg>
-              <span className='text-xl'></span>
+              <span className="text-xl"></span>
             </Link>
           )}
           <Link

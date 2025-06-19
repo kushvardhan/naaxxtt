@@ -10,7 +10,7 @@ import {
 } from "@/components/Shared/dropdown-menu";
 import LocalSearchBar from "@/components/Shared/Search/LocalSearchBar";
 import UserCard from "@/components/Shared/UserCard";
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
 
 interface CommunityClientProps {
@@ -22,7 +22,13 @@ const CommunityClient = ({ users }: CommunityClientProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  if (!theme || !theme.mounted) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || !theme || !theme.mounted) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>

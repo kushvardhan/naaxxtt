@@ -25,16 +25,16 @@ export const ThemeToggleMenu = () => {
         setOpen(false);
       }
     }
-    if (open) {
+    if (open && mounted) {
       document.addEventListener("mousedown", handleClickOutside);
     }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [open]);
+  }, [open, mounted]);
 
   // Early returns after all hooks
-  if (!themeContext || !themeContext.mounted || !mounted) {
+  if (!mounted || !themeContext || !themeContext.mounted) {
     return (
       <div className="animate-pulse bg-gray-200 dark:bg-gray-700 h-8 w-8 rounded"></div>
     );

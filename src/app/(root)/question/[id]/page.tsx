@@ -138,10 +138,8 @@ export const config = {
 
 const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
   try {
-    // In a real app, you would fetch the question data here
-    // const question = await getQuestionById({ questionId: params.id });
-
-    // For now, we'll use mock data but make it dynamic based on the ID
+    const quest = await getQuestionById(params.id);
+    console.log("Question DATA BY ID: ", quest);
     const questionWithId = {
       ...mockQuestion,
       _id: params.id,

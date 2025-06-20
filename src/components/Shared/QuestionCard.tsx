@@ -16,7 +16,7 @@ interface QuestionCardProps {
 export default function QuestionCard({ question }: QuestionCardProps) {
   return (
     <div className="p-4 border rounded-md shadow-sm hover:shadow-md transition">
-      <h2 className="text-lg font-semibold">{question.title}</h2>
+      <h2 className="text-lg hover:underline font-semibold">{question.title}</h2>
 
       <div className="mt-2 flex gap-2 flex-wrap">
         {question.tags.map((tag) => (

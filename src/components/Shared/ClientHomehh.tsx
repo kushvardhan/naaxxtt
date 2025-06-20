@@ -235,7 +235,7 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
               
               <Link href={`/question/${que._id}`}>
                 <h2
-                className={`text-base sm:text-lg font-semibold line-clamp-2 break-words
+                className={`text-base sm:text-lg hover:underline font-semibold line-clamp-2 break-words
                   ${isDark ? "text-zinc-100" : "text-zinc-800"}
                 `}
               >

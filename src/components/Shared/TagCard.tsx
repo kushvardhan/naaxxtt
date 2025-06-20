@@ -56,7 +56,6 @@ const TagCard = ({ tag }: TagCardProps) => {
   >
     #{tag.name}
   </span>
-</div>
 
           <div className={`w-2 h-2 rounded-full text-green-600 ${popularityDotColor}`} />
         </div>

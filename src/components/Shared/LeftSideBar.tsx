@@ -184,7 +184,7 @@ const LeftSB = () => {
     <section
       className={`${bgColor} ${
         theme?.mode === "light" ? "shadow-xl shadow-zinc-400/60" : ""
-      } sticky left-0 top-0 flex h-screen flex-col justify-between overflow-y-auto border-2 p-6 pt-34 max-sm:hidden lg:w-[266px]`}
+      } sticky left-0 top-0 flex h-screen flex-col justify-between overflow-y-scroll scrollbar-hidden border-2 p-6 pt-34 max-sm:hidden lg:w-[266px]`}
     >
       <div className="flex flex-1 flex-col gap-2">
         {sideBarLinks.map((link) => {

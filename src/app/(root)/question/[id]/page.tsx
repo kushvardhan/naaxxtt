@@ -1,5 +1,7 @@
 import Link from "next/link";
 import QuestionClient from "@/components/Shared/QuestionClient";
+import {getQuestionById} from "../../../../../lib/actions/question.action"
+
 
 interface QuestionDetailPageProps {
   params: {

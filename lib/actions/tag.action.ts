@@ -1,5 +1,6 @@
 "use server";
 
+import Tag from "../../database/tag.model";
 import { connectToDatabase } from "../mongoose";
 import { GetTopInteractedTagsParams } from "./shared.type.d";
 
@@ -22,103 +23,29 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   }
 }
 
-export async function getAllTags(params?: {
-  searchQuery?: string;
-  filter?: string;
-  page?: number;
-  pageSize?: number;
-}) {
+export async function getAllTags() {
   try {
     await connectToDatabase();
+    const tags = await Tag.find({}).sort({ createdOn: -1 }).lean();
 
-    // Return mock data for now to prevent deployment issues
-    const mockTags = [
-      {
-        _id: "1",
-        name: "javascript",
-        description: "JavaScript programming language",
-        questions: ["q1", "q2", "q3"],
-        followers: ["u1", "u2"],
-        createdOn: new Date().toISOString(),
-      },
-      {
-        _id: "2",
-        name: "react",
-        description: "React JavaScript library",
-        questions: ["q4", "q5"],
-        followers: ["u3", "u4", "u5"],
-        createdOn: new Date().toISOString(),
-      },
-      {
-        _id: "3",
-        name: "nextjs",
-        description: "Next.js React framework",
-        questions: ["q6"],
-        followers: ["u6"],
-        createdOn: new Date().toISOString(),
-      },
-      {
-        _id: "4",
-        name: "typescript",
-        description: "TypeScript programming language",
-        questions: ["q7", "q8"],
-        followers: ["u7", "u8", "u9"],
-        createdOn: new Date().toISOString(),
-      },
-      {
-        _id: "5",
-        name: "nodejs",
-        description: "Node.js runtime environment",
-        questions: ["q9", "q10"],
-        followers: ["u10"],
-        createdOn: new Date().toISOString(),
-      },
-    ];
+    const serializedTags = tags.map(tag => ({
+      ...tag,
+      _id: tag._id.toString(),
+      name: tag.name.toLowerCase(), // ✅ force lowercase
+      createdOn: new Date(tag.createdOn).toISOString(),
+      questions: tag.questions.map((q: any) => q.toString()),
+      followers: tag.followers.map((f: any) => f.toString()),
+    }));
 
-    const { searchQuery, filter } = params || {};
-
-    let filteredTags = [...mockTags];
-
-    // Apply search filter
-    if (searchQuery) {
-      filteredTags = filteredTags.filter(
-        (tag) =>
-          tag.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          tag.description.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    // Apply sort filter
-    switch (filter) {
-      case "popular":
-        filteredTags.sort((a, b) => b.followers.length - a.followers.length);
-        break;
-      case "recent":
-        filteredTags.sort(
-          (a, b) =>
-            new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime()
-        );
-        break;
-      case "name":
-        filteredTags.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case "old":
-        filteredTags.sort(
-          (a, b) =>
-            new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime()
-        );
-        break;
-      default:
-        filteredTags.sort((a, b) => b.followers.length - a.followers.length);
-        break;
-    }
-
-    return { tags: filteredTags, isNext: false };
+    return { tags: serializedTags, isNext: false };
   } catch (error) {
     console.log("Error getting all tags: ", error);
     return { tags: [], isNext: false };
   }
 }
+
+
+
 
 export async function getTagById(params: { tagId: string }) {
   try {

@@ -11,6 +11,7 @@ export interface ITag extends Document{
 const TagSchema = new Schema({
     name:{
         type: String,
+        lowercase: true,
         required: true,
         trim: true,
         unique: true,

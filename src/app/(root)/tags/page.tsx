@@ -10,6 +10,7 @@ export interface Tag {
   createdOn: string;
 }
 
+
 const TagsPage = async () => {
   try {
     const result = await getAllTags();

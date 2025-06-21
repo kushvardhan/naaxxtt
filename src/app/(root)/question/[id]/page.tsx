@@ -78,7 +78,7 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
             {/* Content */}
             <div
               className="prose prose-lg max-w-none mb-8 dark:prose-invert break-words"
-              style={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}
+              style={{ wordBreak: "break-word", overflowWrap: "anywhere" }}
               dangerouslySetInnerHTML={{ __html: question.explanation }}
             />
 

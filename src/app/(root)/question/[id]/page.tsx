@@ -50,8 +50,8 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
     });
 
     return (
-      <div className="w-full flex justify-center items-start mt-20">
-        <div className="h-[calc(screen-120px)] w-full overflow-y-scroll scrollbar-hidden flex justify-center">
+      <div className="w-full h-[calc(screen-120px)] w-full overflow-y-scroll scrollbar-hidden  flex justify-center items-start mt-20">
+        <div className=" w-full flex justify-center">
           <div
             className={
               "w-full max-w-4xl bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-lg p-8 overflow-x-auto"

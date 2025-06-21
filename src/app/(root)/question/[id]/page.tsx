@@ -1,8 +1,6 @@
-import Link from "next/link";
-import QuestionClient from "@/components/Shared/QuestionClient";
-import {getQuestionById} from "../../../../../lib/actions/question.action"
-
 import Image from "next/image";
+import Link from "next/link";
+import { getQuestionById } from "../../../../../lib/actions/question.action";
 
 interface QuestionCardProps {
   question: {
@@ -17,7 +15,6 @@ interface QuestionCardProps {
   };
 }
 
-
 interface QuestionDetailPageProps {
   params: {
     id: string;
@@ -27,55 +24,108 @@ interface QuestionDetailPageProps {
 const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
   try {
     const question = await getQuestionById({ questionId: params.id });
-    console.log("Question fetched by ID: ",question);
     if (!question) {
       throw new Error("Question not found");
     }
 
+    // Format dates
+    const createdAtFormatted = new Date(question.createdAt).toLocaleDateString(
+      "en-US",
+      {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }
+    );
+    const updatedAtFormatted = new Date(
+      question.updatedAt || question.createdAt
+    ).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
 
     return (
-      <>
-      <div className='w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden'>
-            <div className="p-4 border rounded-md shadow-sm hover:shadow-md transition">
-              <h2 className="text-lg hover:underline font-semibold">{question?.title}</h2>
-        
-              <div className="mt-2 flex gap-2 flex-wrap">
-                {question?.tags?.map((tag) => (
-                  <span
-                    key={tag?._id}
-                    className="bg-gray-200 px-2 py-0.5 text-xs rounded-md"
-                  >
-                    {tag?.name}
+      <div className="w-full min-h-[calc(100vh-130px)] mt-20 flex justify-center items-start overflow-y-auto scrollbar-hidden">
+        <div
+          className={`w-full max-w-4xl bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-lg p-8`}
+        >
+          {/* Title */}
+          <h1 className="text-3xl lg:text-4xl font-bold font-mono mb-4 leading-tight text-zinc-800 dark:text-zinc-100">
+            {question.title}
+          </h1>
+
+          {/* Meta */}
+          <div className="flex flex-wrap items-center gap-4 text-sm font-mono mb-6">
+            <span className="text-zinc-600 dark:text-zinc-400">
+              Asked {createdAtFormatted}
+            </span>
+            <span className="text-zinc-600 dark:text-zinc-400">
+              Modified {updatedAtFormatted}
+            </span>
+            <span className="text-zinc-600 dark:text-zinc-400">
+              Viewed {question.views?.toLocaleString() || 0} times
+            </span>
+          </div>
+
+          {/* Content */}
+          <div
+            className="prose prose-lg max-w-none mb-8 dark:prose-invert"
+            dangerouslySetInnerHTML={{ __html: question.explanation }}
+          />
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2 mt-6 pt-6 border-t border-zinc-200 dark:border-zinc-700">
+            {question.tags?.map((tag: any) => (
+              <span
+                key={tag._id}
+                className="inline-flex items-center px-3 py-1 rounded-full text-sm font-mono bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors duration-200"
+              >
+                #{tag.name}
+              </span>
+            ))}
+          </div>
+
+          {/* Author Info */}
+          <div className="flex items-center justify-between mt-6 pt-6 border-t border-zinc-200 dark:border-zinc-700">
+            <div className="flex items-center gap-4">
+              <Image
+                src={
+                  question.author?.image ||
+                  "https://banner2.cleanpng.com/20180416/gbw/avfp7lvmb.webp"
+                }
+                alt={question.author?.name || "User"}
+                width={48}
+                height={48}
+                className="rounded-full border-2 border-orange-400"
+              />
+              <div>
+                <span className="font-semibold font-mono text-zinc-800 dark:text-zinc-100">
+                  {question.author?.name}
+                </span>
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-zinc-600 dark:text-zinc-400">
+                    @{question.author?.username || "user"}
                   </span>
-                ))}
-              </div>
-        
-              <div className="mt-3 flex justify-between text-sm text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Image
-                    src={
-                      question?.user?.image ||
-                      "https://banner2.cleanpng.com/20180416/gbw/avfp7lvmb.webp"
-                    }
-                    alt={question?.author?.name}
-                    width={24}
-                    height={24}
-                    className="w-6 h-6 rounded-full"
-                  />
-                  <span>{question?.author?.name}</span>
-                </div>
-        
-                <div className="flex gap-4 text-xs">
-                  <span>👍 {question?.upvotes}</span>
-                  <span>💬 {question?.answers}</span>
-                  <span>👁️ {question?.views}</span>
+                  {question.author?.reputation && (
+                    <span className="text-orange-500 font-semibold">
+                      {question.author.reputation.toLocaleString()} rep
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
+            <div className="text-sm text-zinc-500 dark:text-zinc-400 font-mono">
+              asked {createdAtFormatted}
+            </div>
+          </div>
+        </div>
       </div>
-      </>
     );
-    
   } catch (error) {
     console.error("Error loading question:", error);
     return (
@@ -86,7 +136,8 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
             Question Not Found
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mb-6">
-            The question you&apos;re looking for doesn&apos;t exist or has been removed.
+            The question you&apos;re looking for doesn&apos;t exist or has been
+            removed.
           </p>
           <div className="flex gap-4 justify-center">
             <Link

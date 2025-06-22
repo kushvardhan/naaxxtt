@@ -51,7 +51,7 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
     });
 
     return (
-      <div className="w-full h-[calc(screen-120px)]  mt-20 overflow-y-scroll scrollbar-hidden  bg-white dark:bg-zinc-900/50 text-black dark:text-white flex flex-col justify-center items-start">
+      <div className="w-full h-[calc(screen-120px)]  mt-20 overflow-y-scroll scrollbar-hidden  bg-white dark:bg-zinc-800/50 text-black dark:text-white flex flex-col justify-center items-start">
         <div className="flex items-center justify-between my-6 pt-6  ">
           <div className="flex items-center gap-4">
             <Link href={`/profile/${question?.author?.clerkId}`}>
@@ -67,18 +67,20 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
               />
             </Link>
             <div>
-              <span className="font-semibold font-mono text-zinc-800 dark:text-zinc-100">
+              <span className="font-semibold text-regular font-mono  dark:text-zinc-100">
                 {question?.author?.name}
               </span>
-              <div className="flex items-center gap-2 text-sm">
+
                 {
                   question?.author?.username && (
+                   <div className="flex items-center gap-2 text-sm">
                     <span className="text-zinc-600 dark:text-zinc-400">
                       @{question.author?.username || "user"}
                     </span>
+                  </div>
+
                   )
                 }
-              </div>
               {question.author?.reputation && (
                   <span className="text-orange-500 font-semibold">
                       {question.author.reputation.toLocaleString()} rep
@@ -92,13 +94,15 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
           {question?.title}
         </h1>
 
-        <div className="flex flex-wrap items-center flex-end gap-4 text-sm font-mono mb-6">
-          <span className="text-zinc-600 dark:text-zinc-400">
-            Asked {createdAtFormatted}
-          </span>
-          <span className="text-zinc-600 dark:text-zinc-400">
+        <div className="w-full bg-red-900 flex flex-wrap gap-4 text-sm font-mono mb-6">
+          <div className='ml-auto'>
+            <p className="block text-zinc-600 dark:text-zinc-400">
+            Asked on {createdAtFormatted}
+          </p>
+          <p className=" text-zinc-600 dark:text-zinc-400">
             Viewed {question.views?.toLocaleString() || 0} times
-          </span>
+          </p>
+          </div>
         </div>
       </div>
     );

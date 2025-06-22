@@ -101,30 +101,27 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
           </p>
           </div>
         </div>
-
         </div>
 
         <h1 className="text-3xl lg:text-4xl font-bold font-mono my-4 text-wrap leading-tight text-zinc-800 dark:text-zinc-100 break-words">
           {question?.title}
         </h1>
 
-        
-        
         <div
-              className="prose prose-lg max-w-none mt-6 dark:prose-invert break-words text-wrap"
-              style={{ wordBreak: "break-word", overflowWrap: "anywhere" }}
-              dangerouslySetInnerHTML={{ __html: question.explanation }}
-            />
+          className="prose prose-lg max-w-none mt-6 dark:prose-invert break-words text-wrap"
+          style={{ wordBreak: "break-word", overflowWrap: "anywhere" }}
+          dangerouslySetInnerHTML={{ __html: question.explanation }}
+        />
 
         <div className="flex flex-wrap gap-2 mt-6 pt-6 border-t border-zinc-200 dark:border-zinc-700">
-              {question.tags?.map((tag: any) => (
-                <span
-                  key={tag._id}
-                  className="inline-flex cursor-pointer items-center px-3 py-1 rounded-full text-sm font-mono bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors duration-200"
-                >
-                  #{tag.name}
-                </span>
-              ))}
+          {question.tags?.map((tag: any) => (
+            <span
+              key={tag._id}
+              className="inline-flex cursor-pointer items-center px-3 py-1 rounded-full text-sm font-mono bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors duration-200"
+            >
+             #{tag.name}
+            </span>
+          ))}
         </div>
       </div>
     );

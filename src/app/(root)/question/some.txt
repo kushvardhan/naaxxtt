@@ -7,7 +7,7 @@
             {/* Title */}
             <h1 className="text-3xl lg:text-4xl font-bold font-mono mb-4 leading-tight text-zinc-800 dark:text-zinc-100 break-words">
               {question.title}
-            </h1>
+            </h1>  
 
             {/* Meta */}
             <div className="flex flex-wrap items-center gap-4 text-sm font-mono mb-6">

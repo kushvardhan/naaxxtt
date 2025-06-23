@@ -1,19 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { getQuestionById } from "../../../../../lib/actions/question.action";
-
-interface QuestionCardProps {
-  question: {
-    _id: string;
-    title: string;
-    tags: { _id: string; name: string }[];
-    user: { name: string; image: string };
-    upvotes: number;
-    answers: number;
-    views: number;
-    createdAt: string;
-  };
-}
 
 interface QuestionDetailPageProps {
   params: {
@@ -24,26 +13,10 @@ interface QuestionDetailPageProps {
 const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
   try {
     const question = await getQuestionById({ questionId: params.id });
-    console.log(question);
 
-    if (!question) {
-      throw new Error("Question not found");
-    }
+    if (!question) throw new Error("Question not found");
 
-    const createdAtFormatted = new Date(question.createdAt).toLocaleDateString(
-      "en-US",
-      {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }
-    );
-
-    const updatedAtFormatted = new Date(
-      question.updatedAt || question.createdAt
-    ).toLocaleDateString("en-US", {
+    const createdAt = new Date(question.createdAt).toLocaleString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -52,108 +25,92 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
     });
 
     return (
-<div className="w-full h-[calc(100vh-120px)] mt-20 overflow-y-scroll scrollbar-hidden bg-white dark:bg-zinc-800/50 text-black dark:text-white flex flex-col">
-        {/* Author Info */}
-        <div className="flex items-center justify-between my-6 ">
-          <div className="flex items-center gap-4">
-            <Link href={`/profile/${question?.author?.clerkId}`}>
-              <Image
-                src={
-                  question.author?.image ||
-                  "https://banner2.cleanpng.com/20180416/gbw/avfp7lvmb.webp"
-                }
-                alt={question.author?.name || "Profile"}
-                width={34}
-                height={34}
-                className="rounded-full border-2 border-orange-400"
-              />
-            </Link>
-            <div>
-              <span className="font-semibold text-regular font-mono dark:text-zinc-100">
-                {question?.author?.name}
-              </span>
-
-              {question?.author?.username && (
-                <div className="flex items-center gap-2 text-sm">
-                  <span className="text-zinc-600 dark:text-zinc-400">
-                    @{question.author?.username || "user"}
-                  </span>
-                </div>
-              )}
-
-              {question.author?.reputation && (
-                <span className="text-orange-500 font-semibold">
-                  {question.author.reputation.toLocaleString()} rep
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-
-              {/** Question title */}
-        <h1 className="text-3xl lg:text-4xl font-bold font-mono my-4 text-wrap leading-tight text-zinc-800 dark:text-zinc-100 break-words">
-          {question?.title}
+      <section className="w-full h-[(100vh-120px)] overflow-y-auto scrollable-hidden max-w-5xl mx-auto px-4 py-10 text-black dark:text-white">
+        {/* Title */}
+        <h1 className="text-3xl md:text-4xl font-bold leading-snug break-words text-zinc-800 dark:text-zinc-100">
+          {question.title}
         </h1>
 
-        {/* Date and Views */}
-        <div className="w-full bg-red-900 flex flex-wrap gap-4 text-sm font-mono mb-6">
-          <div className="">
-            <p className="text-zinc-600 dark:text-zinc-400">
-              <span className='text-zinc-500 dark:text-zinc-zinc-500'>Asked on </span> {createdAtFormatted}
-            </p>
-            <p className=" text-zinc-600 dark:text-zinc-400">
-              <span className='text-zinc-500 dark:text-zinc-zinc-500'>Viewed </span> {question.views?.toLocaleString() || 0} times
-            </p>
+        {/* Meta Info */}
+        <div className="mt-3 flex flex-wrap justify-between items-center text-sm text-zinc-600 dark:text-zinc-400">
+          <p>Asked on {createdAt}</p>
+          <p>{question.views?.toLocaleString()} views</p>
+        </div>
+
+        {/* Author Info */}
+        <div className="mt-6 flex items-center gap-4">
+          <Link href={`/profile/${question?.author?.clerkId}`}>
+            <Image
+              src={question.author?.image || "/default-avatar.png"}
+              alt={question.author?.name || "User"}
+              width={40}
+              height={40}
+              className="rounded-full border-2 border-orange-400"
+            />
+          </Link>
+          <div>
+            <p className="font-semibold">{question.author?.name}</p>
+            {question.author?.username && (
+              <p className="text-xs">@{question.author.username}</p>
+            )}
           </div>
         </div>
 
         {/* Body */}
-        <div
-          className="prose prose-lg max-w-none mt-6 dark:prose-invert break-words text-wrap"
-          style={{ wordBreak: "break-word", overflowWrap: "anywhere" }}
+        <article
+          className="prose dark:prose-invert max-w-none mt-10 text-lg leading-relaxed"
           dangerouslySetInnerHTML={{ __html: question.explanation }}
         />
 
         {/* Tags */}
-        <div className="flex flex-wrap gap-2 mt-6 pt-6 border-t border-zinc-200 dark:border-zinc-700">
-          {question.tags?.map((tag: any) => (
+        <div className="mt-10 flex flex-wrap gap-2">
+          {question.tags.map((tag: any) => (
             <span
               key={tag._id}
-              className="inline-flex cursor-pointer items-center px-3 py-1 rounded-full text-sm font-mono bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-colors duration-200"
+              className="bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-300 px-3 py-1 rounded-full text-sm font-medium hover:bg-orange-200 dark:hover:bg-orange-800/60 transition"
             >
               #{tag.name}
             </span>
           ))}
         </div>
-      </div>
+
+        {/* Actions */}
+        <div className="mt-12 flex flex-col md:flex-row items-start md:items-center gap-4">
+          <Link
+            href="/"
+            className="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition"
+          >
+            Go Home
+          </Link>
+          <Link
+            href="/ask-question"
+            className="px-4 py-2 border border-orange-500 text-orange-500 rounded-md hover:bg-orange-100 dark:hover:bg-orange-900/30 transition"
+          >
+            Ask a Question
+          </Link>
+        </div>
+      </section>
     );
-  } catch (error) {
-    console.error("Error loading question:", error);
+  } catch (err) {
     return (
-      <div className="text-center py-20 px-4">
-        <div className="max-w-md mx-auto">
-          <div className="text-6xl mb-4">❓</div>
-          <h1 className="text-2xl font-bold text-red-500 mb-4">
-            Question Not Found
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
-            The question you&apos;re looking for doesn&apos;t exist or has been
-            removed.
-          </p>
-          <div className="flex gap-4 justify-center">
-            <Link
-              href="/"
-              className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
-            >
-              Go Home
-            </Link>
-            <Link
-              href="/ask-question"
-              className="px-4 py-2 border border-orange-500 text-orange-500 rounded-lg hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-colors"
-            >
-              Ask Question
-            </Link>
-          </div>
+      <div className="text-center py-24 px-4">
+        <h1 className="text-4xl font-bold text-red-600 mb-4">Question Not Found</h1>
+        <p className="text-zinc-600 dark:text-zinc-400 mb-6">
+          The question you are looking for does not exist or has been removed.
+        </p>
+        <div className="flex justify-center gap-4">
+          <Link
+            href="/"
+            className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600"
+          >
+            Go Home
+          </Link>
+          <Link
+            href="/ask-question"
+            className="px-4 py-2 border border-orange-500 text-orange-500 rounded hover:bg-orange-50 dark:hover:bg-orange-900/20"
+          >
+            Ask a Question
+          </Link>
         </div>
       </div>
     );

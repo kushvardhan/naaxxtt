@@ -25,9 +25,9 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
     });
 
     return (
-<section className="w-full h-[calc(100vh-120px)] mt-20 overflow-y-auto scrollbar-hidden max-w-5xl mx-auto px-4 pt-6 pb-10 text-black dark:text-white">
+<section className="w-full h-[calc(100vh-120px)] mt-18 overflow-y-auto scrollbar-hidden max-w-5xl mx-auto px-4 pt-6 pb-10 text-black dark:text-white">
 
-      <div className=" flex items-center gap-4">
+      <div className="mt-4 flex items-center gap-4">
           <Link href={`/profile/${question?.author?.clerkId}`}>
             <Image
               src={question.author?.image || "/default-avatar.png"}
@@ -46,7 +46,7 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
         </div>
 
         {/* Title */}
-        <h1 className="mt-6 text-4xl md:text-4xl font-bold leading-snug break-words text-zinc-800 dark:text-zinc-100">
+        <h1 className="mt-6 text-5xl md:text-4xl font-bold leading-snug break-words text-zinc-800 dark:text-zinc-100">
           {question.title}
         </h1>
 
@@ -85,7 +85,7 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
 
   {/* Generate AI Button */}
   <div className="flex justify-end mb-4">
-    <button className="flex items-center gap-2 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-800/50 px-4 py-2 rounded-md font-medium shadow-sm transition-all duration-200">
+    <button className="flex items-center cursor-pointer gap-2 bg-orange-100 dark:bg-orange-900/30 text-orange-600 hover:text-orange-800 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-800/50 px-4 py-2 rounded-md font-medium shadow-sm transition-all duration-200">
       <Sparkles className="w-5 h-5 text-orange-500" />
       Generate Answer with AI
     </button>
@@ -95,7 +95,7 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
   <form className="space-y-4">
     <textarea
       placeholder="Write your answer here..."
-      className="w-full min-h-[150px] p-4 border border-zinc-300 dark:border-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white resize-y"
+      className="w-full min-h-[150px] p-4 border border-zinc-300 placeholder:font-mono placeholder:text-regular dark:border-zinc-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white resize-y"
     />
 
     <button

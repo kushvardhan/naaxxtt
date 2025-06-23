@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { getQuestionById } from "../../../../../lib/actions/question.action";
@@ -25,20 +23,9 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
     });
 
     return (
-      <section className="w-full h-[(100vh-120px)] overflow-y-auto scrollable-hidden max-w-5xl mx-auto px-4 py-10 text-black dark:text-white">
-        {/* Title */}
-        <h1 className="text-3xl md:text-4xl font-bold leading-snug break-words text-zinc-800 dark:text-zinc-100">
-          {question.title}
-        </h1>
+<section className="w-full h-[calc(100vh-120px)] mt-20 overflow-y-auto scrollbar-hidden max-w-5xl mx-auto px-4 pt-6 pb-10 text-black dark:text-white">
 
-        {/* Meta Info */}
-        <div className="mt-3 flex flex-wrap justify-between items-center text-sm text-zinc-600 dark:text-zinc-400">
-          <p>Asked on {createdAt}</p>
-          <p>{question.views?.toLocaleString()} views</p>
-        </div>
-
-        {/* Author Info */}
-        <div className="mt-6 flex items-center gap-4">
+      <div className=" flex items-center gap-4">
           <Link href={`/profile/${question?.author?.clerkId}`}>
             <Image
               src={question.author?.image || "/default-avatar.png"}
@@ -49,28 +36,43 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
             />
           </Link>
           <div>
-            <p className="font-semibold">{question.author?.name}</p>
+            <p className="font-semibold dark:text-zinc-100 text-zinc-900 text-regular">{question.author?.name}</p>
             {question.author?.username && (
               <p className="text-xs">@{question.author.username}</p>
             )}
           </div>
         </div>
 
+        {/* Title */}
+        <h1 className="mt-6 text-4xl md:text-4xl font-bold leading-snug break-words text-zinc-800 dark:text-zinc-100">
+          {question.title}
+        </h1>
+
+        {/* Meta Info */}
+        <div className="mt-3 flex flex-wrap justify-between items-center text-sm text-zinc-800 dark:text-zinc-200">
+          <p> <span className='text-zinc-600 dark:text-zinc-400'>Asked on </span> {createdAt}</p>
+          <p>{question.views?.toLocaleString()} <span className='text-zinc-600 dark:text-zinc-400'> views</span></p>
+        </div>
+
+
         {/* Body */}
         <article
-          className="prose dark:prose-invert max-w-none mt-10 text-lg leading-relaxed"
+          className="prose dark:prose-invert max-w-none mt-10 text-regular font-mono leading-relaxed"
           dangerouslySetInnerHTML={{ __html: question.explanation }}
         />
 
         {/* Tags */}
         <div className="mt-10 flex flex-wrap gap-2">
           {question.tags.map((tag: any) => (
+            <Link href={`/tags/${tag._id}`}>
             <span
+            title={tag?.name}
               key={tag._id}
-              className="bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-300 px-3 py-1 rounded-full text-sm font-medium hover:bg-orange-200 dark:hover:bg-orange-800/60 transition"
+              className="bg-orange-100 dark:bg-orange-900/40 cursor-pointer text-orange-700 dark:text-orange-300 px-3 py-1 rounded-full text-md font-medium hover:bg-orange-200 dark:hover:bg-orange-800/60 transition"
             >
               #{tag.name}
             </span>
+            </Link>
           ))}
         </div>
 

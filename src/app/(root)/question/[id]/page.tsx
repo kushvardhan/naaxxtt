@@ -66,6 +66,7 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
         {/* Tags */}
         <div className="mt-10 flex flex-wrap gap-2">
           {question.tags.map((tag: any) => (
+            // eslint-disable-next-line react/jsx-key
             <Link href={`/tags/${tag._id}`}>
             <span
             title={tag?.name}

@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getQuestionById } from "../../../../../lib/actions/question.action";
+import { Sparkles } from "lucide-react";
+
 
 interface QuestionDetailPageProps {
   params: {
@@ -75,6 +77,35 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
             </Link>
           ))}
         </div>
+
+        {/* Answer Section */}
+<section className="mt-14 border-t pt-10">
+  <h2 className="text-2xl font-semibold mb-6">Your Answer</h2>
+
+  {/* Generate AI Button */}
+  <div className="flex justify-end mb-4">
+    <button className="flex items-center gap-2 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-800/50 px-4 py-2 rounded-md font-medium shadow-sm transition-all duration-200">
+      <Sparkles className="w-5 h-5 text-orange-500" />
+      Generate Answer with AI
+    </button>
+  </div>
+
+  {/* Answer Input */}
+  <form className="space-y-4">
+    <textarea
+      placeholder="Write your answer here..."
+      className="w-full min-h-[150px] p-4 border border-zinc-300 dark:border-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white resize-y"
+    />
+
+    <button
+      type="submit"
+      className="px-6 py-2 bg-orange-500 text-white font-medium rounded-md hover:bg-orange-600 transition"
+    >
+      Post Your Answer
+    </button>
+  </form>
+</section>
+
 
         {/* Actions */}
         <div className="mt-12 flex flex-col md:flex-row items-start md:items-center gap-4">

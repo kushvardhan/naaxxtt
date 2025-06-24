@@ -120,8 +120,8 @@ const Answer = ({ question, questionId, authorId }: Props) => {
                       "alignleft aligncenter alignright alignjustify | bullist numlist | codesample",
                     toolbar_mode: "wrap",
                     content_style: contentStyle,
-                    skin:'oxide-dark',
-                    content_css: 'dark'
+                    skin: isDark ? 'oxide-dark' : 'oxide',
+                    content_css: isDark ? 'dark' : 'light'
                   }}
                 />
               </FormControl>
@@ -138,12 +138,12 @@ const Answer = ({ question, questionId, authorId }: Props) => {
           )}
         />
 
-        <button
-          type="submit"
-          className="self-end px-6 py-2 bg-orange-500 text-white font-medium rounded-md hover:bg-orange-600 transition"
-        >
-          Post Your Answer
-        </button>
+          <button
+    type="submit"
+    className="px-6 py-2 bg-orange-500 text-white font-medium rounded-md hover:bg-orange-600 transition"
+  >
+    Post Your Answer
+  </button>
       </form>
     </Form>
   );

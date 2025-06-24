@@ -129,14 +129,9 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
           </div>
 
           <form className="space-y-4">
-  <Answer  />
+        <Answer  />
 
-  <button
-    type="submit"
-    className="px-6 py-2 bg-orange-500 text-white font-medium rounded-md hover:bg-orange-600 transition"
-  >
-    Post Your Answer
-  </button>
+
 </form>
 
         </section>

@@ -264,6 +264,8 @@ export function Question({ mongoUserId }: Props) {
                       "alignleft aligncenter alignright alignjustify | bullist numlist | codesample",
                     toolbar_mode: "wrap",
                     content_style: contentStyle,
+                    skin: isDark ? 'oxide-dark' : 'oxide',
+                    content_css: isDark ? 'dark' : 'light'
                   }}
                 />
               </FormControl>

@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { auth } from '@clerk/nextjs/server';
 import Votes from "../../../../components/Shared/Votes";
+import ParseHTML from "../../../../components/Shared/ParseHTML";
 import { formatAndDivideNumber, getTimestamp } from '../../../../../lib/utils';
 import { getQuestionById } from "../../../../../lib/actions/question.action";
 import { getUserById } from "../../../../../lib/actions/user.action";
@@ -27,15 +28,15 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
   if(clerkId) {
     mongoUser = await getUserById({ userId: clerkId })
   }
-
-    const question = await getQuestionById({ questionId: params.id });
+    const paramsId = await params.id;
+    const question = await getQuestionById({ questionId: paramsId });
 
     if (!question) throw new Error("Question not found");
 
 
     return (
       <section className="w-full h-[calc(100vh-120px)] mt-18 overflow-y-auto scrollbar-hidden max-w-5xl mx-auto px-4 pt-6 pb-10 text-black dark:text-white">
-        <div className="flex justify-end">
+        <div className="w-full flex justify-end">
             <Votes 
               type="Question"
               itemId={JSON.stringify(question?._id)}
@@ -47,7 +48,7 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
               hasSaved={mongoUser?.saved?.includes(question?._id)}
             />
           </div>
-        <div className="mt-4 flex justify-start items-center gap-4">
+        <div className="mt-4 flex  items-center gap-4">
           <Link href={`/profile/${question?.author?.clerkId}`}>
             <Image
               src={question.author?.image || "/default-avatar.png"}
@@ -72,36 +73,32 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
           {question.title}
         </h1>
 
-        <div className="mb-8 mt-5 flex flex-wrap gap-4">
+        <div className="mb-8 mt-5 flex items-center justify-around flex-wrap gap-6">
           <Metric 
             icon={<Clock />}
             alt="clock icon"
             value={` asked ${getTimestamp(question?.createdAt)}`}
             title=" Asked"
-            textStyles="small-medium text-dark400_light800"
+            textStyles="text-regular text-orange-700 dark:text-orange-500"
           />
           <Metric 
             icon={<MessageCircle />}
             alt="message"
             value={formatAndDivideNumber(question?.answers?.length)}
             title=" Answers"
-            textStyles="small-medium text-dark400_light800"
+            textStyles="text-regular text-orange-700 dark:text-orange-500"
           />
           <Metric 
             icon={<Eye />}
-            alt="eye"
+            alt="View"
             value={formatAndDivideNumber(question?.views)}
             title=" Views"
-            textStyles="small-medium text-dark400_light800"
+            textStyles="text-regular text-orange-700 dark:text-orange-500"
           />
       </div>
 
-
         {/* Body */}
-        <article
-          className="prose dark:prose-invert max-w-none mt-10 text-regular font-mono leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: question.explanation }}
-        />
+        <ParseHTML data={question?.explanation} />
 
         {/* Tags */}
         <div className="mt-10 flex flex-wrap gap-2">

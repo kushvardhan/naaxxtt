@@ -1,11 +1,10 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react'
+"use client"
 
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import Link from "next/link"
+import React from "react"
 
 interface MetricProps {
-  icon: string | StaticImport;
+  icon: React.ReactNode; // Now supports JSX icons like <Clock />
   alt: string;
   value: string | number;
   title: string;
@@ -25,37 +24,34 @@ const Metric = ({
 }: MetricProps) => {
   const metricContent = (
     <>
-      <Image 
-        src={icon}
-        width={16}
-        height={16}
-        alt={alt}
-        className={`object-contain ${href ? 'rounded-full' : ''}`}
-      />
+      <span
+        className="w-5 h-5 flex items-center justify-center text-orange-500"
+        aria-label={alt}
+        title={alt}
+      >
+        {icon}
+      </span>
 
-      <p className={`${textStyles} flex items-center gap-1`}>
+      <p className={`${textStyles} flex items-center justify-between gap-1`}>
         {value}
-
-        <span className={`small-regular line-clamp-1 ${isAuthor ?'max-sm:hidden' : ''}`}>
+        <span
+          className={`small-regular line-clamp-1 ${isAuthor ? "max-sm:hidden" : ""}`}
+        >
           {title}
         </span>
       </p>
     </>
   )
 
-  if(href) {
+  if (href) {
     return (
-      <Link href={href} className="flex-center  gap-1">
+      <Link href={href} className="flex justify-between items-center gap-1">
         {metricContent}
       </Link>
     )
   }
 
-  return (
-    <div className="flex-center flex-wrap gap-1">
-      {metricContent}
-    </div>
-  )
+  return <div className="flex items-center justify-between flex-wrap gap-1">{metricContent}</div>
 }
 
 export default Metric

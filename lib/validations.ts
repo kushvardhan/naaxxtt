@@ -15,3 +15,7 @@ import * as z from "zod"
 .min(1, { message: "At least one tag is required." })
 .max(5, { message: "Maximum 5 tags are allowed." }),
 })
+
+export const AnswerSchema = z.object({
+  answer: z.string().min(100),
+})

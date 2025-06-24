@@ -10,6 +10,7 @@ import ParseHTML from "../../../../components/Shared/ParseHTML";
 import { formatAndDivideNumber, getTimestamp } from '../../../../../lib/utils';
 import { getQuestionById } from "../../../../../lib/actions/question.action";
 import { getUserById } from "../../../../../lib/actions/user.action";
+import Answer from '../../../../components/forms/Answer';
 
 
 interface QuestionDetailPageProps {
@@ -127,20 +128,17 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
             </button>
           </div>
 
-          {/* Answer Input */}
           <form className="space-y-4">
-            <textarea
-              placeholder="Write your answer here..."
-              className="w-full min-h-[170px] p-4 border border-zinc-300 placeholder:font-mono placeholder:text-regular dark:border-zinc-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white resize-none"
-            />
+  <Answer />
 
-            <button
-              type="submit"
-              className="px-6 py-2 bg-orange-500 text-white font-medium rounded-md hover:bg-orange-600 transition"
-            >
-              Post Your Answer
-            </button>
-          </form>
+  <button
+    type="submit"
+    className="px-6 py-2 bg-orange-500 text-white font-medium rounded-md hover:bg-orange-600 transition"
+  >
+    Post Your Answer
+  </button>
+</form>
+
         </section>
       </section>
     );

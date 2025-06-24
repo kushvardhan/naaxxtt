@@ -1,9 +1,15 @@
 export const dynamic = "force-dynamic";
 
-import { Sparkles } from "lucide-react";
+import Metric from "../../../../components/Shared/Metric" ;
+import { Sparkles,Eye,Clock,MessageCircle} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { auth } from '@clerk/nextjs/server';
+import Votes from "../../../../components/Shared/Votes";
+import { formatAndDivideNumber, getTimestamp } from '../../../../../lib/utils';
 import { getQuestionById } from "../../../../../lib/actions/question.action";
+import { getUserById } from "../../../../../lib/actions/user.action";
+
 
 interface QuestionDetailPageProps {
   params: {
@@ -13,6 +19,15 @@ interface QuestionDetailPageProps {
 
 const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
   try {
+
+  const { userId: clerkId } = auth();
+
+  let mongoUser;
+
+  if(clerkId) {
+    mongoUser = await getUserById({ userId: clerkId })
+  }
+
     const question = await getQuestionById({ questionId: params.id });
 
     if (!question) throw new Error("Question not found");
@@ -27,7 +42,19 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
 
     return (
       <section className="w-full h-[calc(100vh-120px)] mt-18 overflow-y-auto scrollbar-hidden max-w-5xl mx-auto px-4 pt-6 pb-10 text-black dark:text-white">
-        <div className="mt-4 flex items-center gap-4">
+        <div className="flex justify-end">
+            <Votes 
+              type="Question"
+              itemId={JSON.stringify(result._id)}
+              userId={JSON.stringify(mongoUser._id)}
+              upvotes={question?.upvotes?.length}
+              hasupVoted={question?.upvotes?.includes(mongoUser._id)}
+              downvotes={question?.downvotes?.length}
+              hasdownVoted={question?.downvotes?.includes(mongoUser._id)}
+              hasSaved={mongoUser?.saved?.includes(result._id)}
+            />
+          </div>
+        <div className="mt-4 flex justify-start items-center gap-4">
           <Link href={`/profile/${question?.author?.clerkId}`}>
             <Image
               src={question.author?.image || "/default-avatar.png"}
@@ -52,20 +79,30 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
           {question.title}
         </h1>
 
-        {/* Meta Info */}
-        <div className="mt-3 flex flex-wrap justify-between items-center text-sm text-zinc-800 dark:text-zinc-200">
-          <p>
-            {" "}
-            <span className="text-zinc-600 dark:text-zinc-400">
-              Asked on{" "}
-            </span>{" "}
-            <span className='font-semibold'>{createdAt}</span>
-          </p>
-          <p>
-            <span className='font-semibold'>{question.views?.toLocaleString()}</span> {" "}
-            <span className="text-zinc-600 dark:text-zinc-400"> views</span>
-          </p>
-        </div>
+        <div className="mb-8 mt-5 flex flex-wrap gap-4">
+          <Metric 
+            imgUrl={<Clock />}
+            alt="clock icon"
+            value={` asked ${getTimestamp(question?.createdAt)}`}
+            title=" Asked"
+            textStyles="small-medium text-dark400_light800"
+          />
+          <Metric 
+            imgUrl={<MessageCircle />}
+            alt="message"
+            value={formatAndDivideNumber(question?.answers?.length)}
+            title=" Answers"
+            textStyles="small-medium text-dark400_light800"
+          />
+          <Metric 
+            imgUrl={<Eye/>}
+            alt="eye"
+            value={formatAndDivideNumber(question?.views)}
+            title=" Views"
+            textStyles="small-medium text-dark400_light800"
+          />
+      </div>
+
 
         {/* Body */}
         <article
@@ -77,15 +114,17 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
         <div className="mt-10 flex flex-wrap gap-2">
           {question.tags.map((tag: any) => (
             // eslint-disable-next-line react/jsx-key
-            <Link href={`/tags/${tag._id}`}>
-              <span
-                title={tag?.name}
-                key={tag._id}
-                className="bg-orange-100 dark:bg-orange-900/40 cursor-pointer text-orange-700 dark:text-orange-300 px-3 py-1 rounded-full text-md font-medium hover:bg-orange-200 dark:hover:bg-orange-800/60 transition"
-              >
-                #{tag.name}
-              </span>
-            </Link>
+            {question?.tags?.map((tag: any) => (
+  <Link href={`/tags/${tag._id}`} key={tag._id}>
+    <span
+      title={tag?.name}
+      className="bg-orange-100 dark:bg-orange-900/40 cursor-pointer text-orange-700 dark:text-orange-300 px-3 py-1 rounded-full text-md font-medium hover:bg-orange-200 dark:hover:bg-orange-800/60 transition"
+    >
+      #{tag.name}
+    </span>
+  </Link>
+))}
+
           ))}
         </div>
 

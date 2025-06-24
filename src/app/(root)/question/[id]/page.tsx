@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -57,10 +59,10 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
             <span className="text-zinc-600 dark:text-zinc-400">
               Asked on{" "}
             </span>{" "}
-            {createdAt}
+            <span className='font-semibold'>{createdAt}</span>
           </p>
           <p>
-            {question.views?.toLocaleString()}{" "}
+            <span className='font-semibold'>{question.views?.toLocaleString()}</span> {" "}
             <span className="text-zinc-600 dark:text-zinc-400"> views</span>
           </p>
         </div>
@@ -103,7 +105,7 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
           <form className="space-y-4">
             <textarea
               placeholder="Write your answer here..."
-              className="w-full min-h-[150px] p-4 border border-zinc-300 placeholder:font-mono placeholder:text-regular dark:border-zinc-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white resize-y"
+              className="w-full min-h-[170px] p-4 border border-zinc-300 placeholder:font-mono placeholder:text-regular dark:border-zinc-800 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white resize-none"
             />
 
             <button

@@ -1,16 +1,17 @@
 "use client"
 
-import Link from "next/link"
-import React from "react"
+import React, { useContext } from "react"
+import Link from "next/link";
+import {Thm}
 
 interface MetricProps {
-  icon: React.ReactNode; // Now supports JSX icons like <Clock />
-  alt: string;
-  value: string | number;
-  title: string;
-  href?: string;
-  textStyles?: string;
-  isAuthor?: boolean;
+  icon: React.ReactNode
+  alt: string
+  value: string | number
+  title: string
+  href?: string
+  textStyles?: string
+  isAuthor?: boolean
 }
 
 const Metric = ({
@@ -22,36 +23,34 @@ const Metric = ({
   textStyles,
   isAuthor,
 }: MetricProps) => {
+  const theme = useContext(ThemeContext);
+  const isDark = theme?.mode === "dark"
+
   const metricContent = (
-    <>
+    <div className="flex items-center gap-1">
       <span
-        className="w-5 h-5 flex items-center justify-center text-orange-500"
-        aria-label={alt}
+        className={`w-5 h-5 flex items-center justify-center ${
+          isDark ? "text-orange-500" : "text-orange-600"
+        }`}
         title={alt}
       >
         {icon}
       </span>
 
-      <p className={`${textStyles} flex items-center justify-between gap-1`}>
+      <p className={`${textStyles} flex items-center gap-1`}>
         {value}
-        <span
-          className={`small-regular line-clamp-1 ${isAuthor ? "max-sm:hidden" : ""}`}
-        >
+        <span className={`small-regular line-clamp-1 ${isAuthor ? "max-sm:hidden" : ""}`}>
           {title}
         </span>
       </p>
-    </>
+    </div>
   )
 
   if (href) {
-    return (
-      <Link href={href} className="flex justify-between items-center gap-1">
-        {metricContent}
-      </Link>
-    )
+    return <Link href={href}>{metricContent}</Link>
   }
 
-  return <div className="flex items-center justify-between flex-wrap gap-1">{metricContent}</div>
+  return metricContent
 }
 
 export default Metric

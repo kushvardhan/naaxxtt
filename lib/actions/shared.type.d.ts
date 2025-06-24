@@ -26,6 +26,11 @@ export interface CreateUserParams {
   about?: string;
 }
 
+export interface ViewQuestionParams {
+  questionId: string;
+  userId: string | undefined;
+}
+
 export interface UpdateUserParams {
   clerkId: string;
   updateData: Partial<IUser>;

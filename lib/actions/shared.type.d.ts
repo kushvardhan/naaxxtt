@@ -36,6 +36,8 @@ export interface DeleteUserParams {
   clerkId: string;
 }
 
+
+
 export interface GetAllUsersParams {
   page?: number;
   pageSize?: number;

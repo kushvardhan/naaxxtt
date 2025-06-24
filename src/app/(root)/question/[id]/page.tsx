@@ -20,7 +20,7 @@ interface QuestionDetailPageProps {
 const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
   try {
 
-  const { userId: clerkId } = auth();
+  const { userId: clerkId } = await auth();
 
   let mongoUser;
 
@@ -32,26 +32,19 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
 
     if (!question) throw new Error("Question not found");
 
-    const createdAt = new Date(question.createdAt).toLocaleString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
 
     return (
       <section className="w-full h-[calc(100vh-120px)] mt-18 overflow-y-auto scrollbar-hidden max-w-5xl mx-auto px-4 pt-6 pb-10 text-black dark:text-white">
         <div className="flex justify-end">
             <Votes 
               type="Question"
-              itemId={JSON.stringify(result._id)}
-              userId={JSON.stringify(mongoUser._id)}
+              itemId={JSON.stringify(question?._id)}
+              userId={JSON.stringify(mongoUser?._id)}
               upvotes={question?.upvotes?.length}
-              hasupVoted={question?.upvotes?.includes(mongoUser._id)}
+              hasupVoted={question?.upvotes?.includes(mongoUser?._id)}
               downvotes={question?.downvotes?.length}
-              hasdownVoted={question?.downvotes?.includes(mongoUser._id)}
-              hasSaved={mongoUser?.saved?.includes(result._id)}
+              hasdownVoted={question?.downvotes?.includes(mongoUser?._id)}
+              hasSaved={mongoUser?.saved?.includes(question?._id)}
             />
           </div>
         <div className="mt-4 flex justify-start items-center gap-4">
@@ -81,21 +74,21 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
 
         <div className="mb-8 mt-5 flex flex-wrap gap-4">
           <Metric 
-            imgUrl={<Clock />}
+            icon={<Clock />}
             alt="clock icon"
             value={` asked ${getTimestamp(question?.createdAt)}`}
             title=" Asked"
             textStyles="small-medium text-dark400_light800"
           />
           <Metric 
-            imgUrl={<MessageCircle />}
+            icon={<MessageCircle />}
             alt="message"
             value={formatAndDivideNumber(question?.answers?.length)}
             title=" Answers"
             textStyles="small-medium text-dark400_light800"
           />
           <Metric 
-            imgUrl={<Eye/>}
+            icon={<Eye />}
             alt="eye"
             value={formatAndDivideNumber(question?.views)}
             title=" Views"
@@ -112,8 +105,6 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
 
         {/* Tags */}
         <div className="mt-10 flex flex-wrap gap-2">
-          {question.tags.map((tag: any) => (
-            // eslint-disable-next-line react/jsx-key
             {question?.tags?.map((tag: any) => (
   <Link href={`/tags/${tag._id}`} key={tag._id}>
     <span
@@ -125,7 +116,6 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
   </Link>
 ))}
 
-          ))}
         </div>
 
         {/* Answer Section */}

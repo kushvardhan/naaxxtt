@@ -2,8 +2,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
 
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
+
 interface MetricProps {
-  imgUrl: string;
+  icon: string | StaticImport;
   alt: string;
   value: string | number;
   title: string;
@@ -13,7 +15,7 @@ interface MetricProps {
 }
 
 const Metric = ({
-  imgUrl,
+  icon,
   alt,
   value,
   title,
@@ -24,7 +26,7 @@ const Metric = ({
   const metricContent = (
     <>
       <Image 
-        src={imgUrl}
+        src={icon}
         width={16}
         height={16}
         alt={alt}

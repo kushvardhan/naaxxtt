@@ -129,7 +129,7 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
           </div>
 
           <form className="space-y-4">
-  <Answer />
+  <Answer  />
 
   <button
     type="submit"

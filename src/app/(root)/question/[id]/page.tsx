@@ -117,8 +117,16 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
 ))}
 
         </div>
+{/* 
+         <AllAnswers 
+        questionId={question?._id}
+        userId={mongoUser?._id}
+        totalAnswers={question?.answers.length}
+      /> */}
 
-        <h1 className='text-3xl text-purple-600'>Answers: {question?.answers?.length}</h1>
+      <h1 className='text-3xl text-purple-600'>Answers: {question?.answers?.length}</h1>
+
+
         {/* Answer Section */}
         <Answer question={question?.explanation}
         questionId = {JSON.stringify(question._id)}

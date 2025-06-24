@@ -2,7 +2,7 @@
 
 import React, { useContext } from "react"
 import Link from "next/link";
-import {Thm}
+import { ThemeContext } from "../../../context/ThemeContext";
 
 interface MetricProps {
   icon: React.ReactNode

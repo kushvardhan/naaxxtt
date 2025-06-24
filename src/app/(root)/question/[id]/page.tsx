@@ -79,7 +79,7 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
             alt="clock icon"
             value={` asked ${getTimestamp(question?.createdAt)}`}
             title=" Asked"
-            textStyles="text-regular text-orange-700 dark:text-orange-500"
+            textStyles="text-regular text-zinc-900 dark:text-zinc-200"
           />
           <Metric 
             icon={<MessageCircle />}

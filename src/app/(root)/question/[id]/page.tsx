@@ -73,7 +73,7 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
           {question.title}
         </h1>
 
-        <div className="mb-8 mt-5 flex items-center justify-around flex-wrap gap-6">
+        <div className="mb-8 mt-5 flex items-center justify-end flex-wrap gap-6">
           <Metric 
             icon={<Clock />}
             alt="clock icon"
@@ -83,17 +83,17 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
           />
           <Metric 
             icon={<MessageCircle />}
-            alt="message"
+            alt="Answer"
             value={formatAndDivideNumber(question?.answers?.length)}
             title=" Answers"
-            textStyles="text-regular text-orange-700 dark:text-orange-500"
+            textStyles="text-regular text-zinc-900 dark:text-zinc-200"
           />
           <Metric 
             icon={<Eye />}
             alt="View"
             value={formatAndDivideNumber(question?.views)}
             title=" Views"
-            textStyles="text-regular text-orange-700 dark:text-orange-500"
+            textStyles="text-regular text-zinc-900 dark:text-zinc-200"
           />
       </div>
 

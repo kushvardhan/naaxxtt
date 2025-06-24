@@ -2,7 +2,7 @@
 
 import Answer from "../../database/answer.model";
 import { connectToDatabase } from "../mongoose";
-import { AnswerVoteParams, CreateAnswerParams, DeleteAnswerParams, GetAnswersParams } from "./shared.types";
+import { AnswerVoteParams, CreateAnswerParams, DeleteAnswerParams, GetAnswersParams } from "./shared.type";
 import Question from "../../database/question.model";
 import { revalidatePath } from "next/cache";
 import Interaction from "../../database/interaction.model";
@@ -14,7 +14,7 @@ export async function createAnswer(params: CreateAnswerParams) {
 
     const { content, author, question, path } = params;
 
-    const newAnswer = await Answer.create({ content, author, question });
+    const [newAnswer] = await Answer.create([{ content, author, question }]);
     
     const questionObject = await Question.findByIdAndUpdate(question, {
       $push: { answers: newAnswer._id}

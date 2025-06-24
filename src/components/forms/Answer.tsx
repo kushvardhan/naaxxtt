@@ -4,13 +4,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { AnswerSchema } from "../../../lib/validations";
+import { Sparkles,Eye,Clock,MessageCircle} from "lucide-react";
 import {
   Form,
   FormControl,
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { ThemeContext } from "../../../context/ThemeContext";
@@ -27,7 +27,7 @@ interface Props {
 }
 
 const Answer = ({ question, questionId, authorId }: Props) => {
-  
+  console.log("Question: ", question , " , questionId: ", questionId, " ,authorId: ", authorId);
   const pathname = usePathname();
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmittingAI, setSetIsSubmittingAI] = useState(false);
@@ -89,7 +89,18 @@ const Answer = ({ question, questionId, authorId }: Props) => {
   }
 
   return (
-    <Form {...form}>
+        <div className="mt-14 border-t pt-10">
+          <h2 className="text-xl font-bold mb-6">Write your Answer here</h2>
+
+          {/* Generate AI Button */}
+          <div className="flex justify-end mb-4">
+            <button className="flex items-center cursor-pointer gap-2 bg-orange-100 dark:bg-orange-900/30 text-orange-600 hover:text-orange-800 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-800/50 px-4 py-2 rounded-md font-medium shadow-sm transition-all duration-200">
+              <Sparkles className="w-5 h-5 text-orange-500" />
+              Generate Answer with AI
+            </button>
+          </div>
+
+            <Form {...form}>
       <form
         className="mt-6 flex w-full flex-col gap-10"
         onSubmit={form.handleSubmit(handleCreateAnswer)}
@@ -138,14 +149,20 @@ const Answer = ({ question, questionId, authorId }: Props) => {
           )}
         />
 
+        <div className='flex justify-end'>
           <button
-    type="submit"
-    className="px-6 py-2 bg-orange-500 text-white font-medium rounded-md hover:bg-orange-600 transition"
-  >
-    Post Your Answer
-  </button>
+              type="submit"
+              className="px-6 py-2 bg-orange-500 text-white font-medium rounded-md hover:bg-orange-600 transition"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit'}
+            </button>
+        </div>
       </form>
     </Form>
+
+
+    </div>
   );
 };
 

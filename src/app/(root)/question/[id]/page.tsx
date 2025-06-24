@@ -1,11 +1,12 @@
 export const dynamic = "force-dynamic";
 
 import Metric from "../../../../components/Shared/Metric" ;
-import { Sparkles,Eye,Clock,MessageCircle} from "lucide-react";
+import { Eye,Clock,MessageCircle} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { auth } from '@clerk/nextjs/server';
 import Votes from "../../../../components/Shared/Votes";
+import AllAnswers from "../../../../components/Shared/AllAnswers";
 import ParseHTML from "../../../../components/Shared/ParseHTML";
 import { formatAndDivideNumber, getTimestamp } from '../../../../../lib/utils';
 import { getQuestionById } from "../../../../../lib/actions/question.action";
@@ -30,7 +31,8 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
     mongoUser = await getUserById({ userId: clerkId })
   }
     const paramsId = await params.id;
-    const question = await getQuestionById({ questionId: paramsId });
+    const question = await getQuestionById({ questionId: params.id });
+    console.log("QUEGEDY: ",question);
 
     if (!question) throw new Error("Question not found");
 
@@ -116,6 +118,7 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
 
         </div>
 
+        <h1 className='text-3xl text-purple-600'>Answers: {question?.answers?.length}</h1>
         {/* Answer Section */}
         <Answer question={question?.explanation}
         questionId = {JSON.stringify(question._id)}

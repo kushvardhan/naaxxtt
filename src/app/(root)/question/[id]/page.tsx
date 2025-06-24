@@ -104,7 +104,7 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
         <ParseHTML data={question?.explanation} />
 
         {/* Tags */}
-        <div className="mt-10 flex flex-wrap gap-2">
+        <div className="my-8 flex flex-wrap gap-2">
             {question?.tags?.map((tag: any) => (
   <Link href={`/tags/${tag._id}`} key={tag._id}>
     <span

@@ -141,7 +141,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
                   isDark ? "text-zinc-400" : "text-zinc-700/90"
                 }`}
               >
-                Explain your solution clearly and with enough details.
+                Explain your Answer clearly and with enough details.
                 Minimum 100 characters.
               </FormDescription>
               <FormMessage />

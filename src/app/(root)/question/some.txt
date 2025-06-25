@@ -103,7 +103,6 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
         //   className="prose dark:prose-invert max-w-none mt-10 text-regular font-mono leading-relaxed"
         //   dangerouslySetInnerHTML={{ __html: question.explanation }}
         // />
-
         <ParseHTML data={question?.explanation} />
 
         {/* Tags */}

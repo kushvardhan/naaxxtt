@@ -7,6 +7,8 @@ import ParseHTML from './ParseHTML';
 import Votes from './Votes';
 import Pagination from './Pagination';
 import Filter from './Filter';
+import { useSearchParams } from 'next/navigation';
+
 
 interface Props {
   questionId: string;

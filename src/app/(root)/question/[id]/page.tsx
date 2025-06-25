@@ -12,6 +12,8 @@ import { formatAndDivideNumber, getTimestamp } from '../../../../../lib/utils';
 import { getQuestionById } from "../../../../../lib/actions/question.action";
 import { getUserById } from "../../../../../lib/actions/user.action";
 import Answer from '../../../../components/forms/Answer';
+import { useSearchParams } from 'next/navigation';
+
 
 
 interface QuestionDetailPageProps {
@@ -23,6 +25,7 @@ interface QuestionDetailPageProps {
 const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
   try {
 
+    const searchParams = useSearchParams();
   const { userId: clerkId } = await auth();
 
   let mongoUser;
@@ -31,10 +34,13 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
     mongoUser = await getUserById({ userId: clerkId })
   }
     const paramsId = await params.id;
-    const question = await getQuestionById({ questionId: params.id });
+    const question = await getQuestionById({ questionId: params?.id });
     console.log("QUEGEDY: ",question);
 
-    if (!question) throw new Error("Question not found");
+    if (!question) {
+  return <div className="text-red-500 text-center p-10">No question found! Check console.</div>;
+}
+
 
 
     return (
@@ -117,12 +123,13 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
 ))}
 
         </div>
-{/* 
-         <AllAnswers 
+        <AllAnswers 
         questionId={question?._id}
         userId={mongoUser?._id}
-        totalAnswers={question?.answers.length}
-      /> */}
+        totalAnswers={question?.answers?.length}
+        page={searchParams?.page || 1}
+        filter={searchParams?.filter || 10}
+      />
 
       <h1 className='text-3xl text-purple-600'>Answers: {question?.answers?.length}</h1>
 
@@ -143,6 +150,7 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
         </h1>
         <p className="text-zinc-600 dark:text-zinc-400 mb-6">
           The question you are looking for does not exist or has been removed.
+          {err}
         </p>
         <div className="flex justify-center gap-4">
           <Link

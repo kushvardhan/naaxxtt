@@ -12,7 +12,6 @@ import { formatAndDivideNumber, getTimestamp } from '../../../../../lib/utils';
 import { getQuestionById } from "../../../../../lib/actions/question.action";
 import { getUserById } from "../../../../../lib/actions/user.action";
 import Answer from '../../../../components/forms/Answer';
-import { useSearchParams } from 'next/navigation';
 
 
 
@@ -22,10 +21,9 @@ interface QuestionDetailPageProps {
   };
 }
 
-const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
+const QuestionDetailPage = async ({ params,searchParams }: QuestionDetailPageProps) => {
   try {
 
-    const searchParams = useSearchParams();
   const { userId: clerkId } = await auth();
 
   let mongoUser;
@@ -127,8 +125,8 @@ const QuestionDetailPage = async ({ params }: QuestionDetailPageProps) => {
         questionId={question?._id}
         userId={mongoUser?._id}
         totalAnswers={question?.answers?.length}
-        page={searchParams?.page || 1}
-        filter={searchParams?.filter || 10}
+        page={Number(searchParams?.get('page')) || 1}
+        filter={searchParams?.get('filter') || "10"}
       />
 
       <h1 className='text-3xl text-purple-600'>Answers: {question?.answers?.length}</h1>

@@ -39,7 +39,7 @@ const AllAnswers = async ({ questionId, userId, totalAnswers, page, filter }: Pr
   return (
     <div className="mt-11">
       <div className='flex items-center justify-between'>
-        <h3 className='primary-text-gradient'>{totalAnswers} Answers</h3>
+        <h3 className='text-xl font-mono text-black dark:text-white'>{totalAnswers} <span className='text-lg font-regular text-zinc-900 dark:text-zinc-100' >Answers</span></h3>
 
         <Filter filters={ AnswerFilters } />
       </div>
@@ -56,12 +56,12 @@ const AllAnswers = async ({ questionId, userId, totalAnswers, page, filter }: Pr
                     alt="profile"
                     className="rounded-full object-cover max-sm:mt-0.5"
                   />
-                  <div className="flex flex-col sm:flex-row sm:items-center">
+                  <div className="flex items-center flex-col gap-3 sm:flex-row sm:items-center">
                     <p className="body-semibold text-dark300_light700">
                       {answer?.author?.name}
                     </p>
 
-                    <p className="small-regular text-light400_light500 ml-1 mt-0.5 line-clamp-1">
+                    <p className="small-regular text-light400_light500 ml-2 mt-0.5 line-clamp-1">
                       answered {" "}
                       {getTimestamp(answer.createdAt)}
                       </p>

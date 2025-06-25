@@ -39,7 +39,7 @@ const AllAnswers = async ({ questionId, userId, totalAnswers, page, filter }: Pr
   return (
     <div className="mt-11">
       <div className='flex items-center justify-between'>
-        <h3 className='text-xl font-mono text-black dark:text-white'>{totalAnswers} <span className='text-lg font-regular text-zinc-900 dark:text-zinc-100' >Answers</span></h3>
+        <h3 className='text-2xl font-mono text-black dark:text-white'>{totalAnswers} <span className='text-xl font-regular text-zinc-900 dark:text-zinc-100' >Answers</span></h3>
 
         <Filter filters={ AnswerFilters } />
       </div>
@@ -51,13 +51,13 @@ const AllAnswers = async ({ questionId, userId, totalAnswers, page, filter }: Pr
                 <Link href={`/profile/${answer.author.clerkId}`} className="flex flex-1 items-start gap-1 sm:items-center">
                   <Image
                     src={answer?.author?.image || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXdiU_9j45_WOVEx4pPhhIm7MaS1ju3RbXnt-k_mbz4XabjKhwDArh2jyExTXCl3IEVzw&usqp=CAU"}
-                    width={18}
-                    height={18}
+                    width={24}
+                    height={24}
                     alt="profile"
                     className="rounded-full object-cover max-sm:mt-0.5"
                   />
-                  <div className="flex items-center flex-col gap-3 sm:flex-row sm:items-center">
-                    <p className="body-semibold text-dark300_light700">
+                  <div className="flex items-center flex-col gap-3 ml-1 sm:flex-row sm:items-center">
+                    <p className="text-lg font-semibold ">
                       {answer?.author?.name}
                     </p>
 

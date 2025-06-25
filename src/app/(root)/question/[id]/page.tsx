@@ -19,7 +19,7 @@ interface QuestionDetailPageProps {
   params: {
     id: string;
   };
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: URLSearchParams | { [key: string]: string | string[] | undefined };
 }
 
 const QuestionDetailPage = async ({ params,searchParams }: QuestionDetailPageProps) => {
@@ -126,20 +126,8 @@ const QuestionDetailPage = async ({ params,searchParams }: QuestionDetailPagePro
         questionId={question?._id}
         userId={mongoUser?._id}
         totalAnswers={question?.answers?.length}
-        page={Number(
-          typeof searchParams?.page === "string"
-            ? searchParams.page
-            : Array.isArray(searchParams?.page)
-            ? searchParams.page[0]
-            : undefined
-        ) || 1}
-        filter={
-          typeof searchParams?.filter === "string"
-            ? searchParams.filter
-            : Array.isArray(searchParams?.filter)
-            ? searchParams.filter[0]
-            : "10"
-        }
+        page={Number(searchParams?.get('page')) || 1}
+        filter={searchParams?.get('filter') || "10"}
       />
 
       <h1 className='text-3xl text-purple-600'>Answers: {question?.answers?.length}</h1>

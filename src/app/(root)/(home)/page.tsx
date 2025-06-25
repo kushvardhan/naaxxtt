@@ -25,7 +25,7 @@ interface Question {
 export default async function Home() {
   try {
     const result = await getQuestions({});
-    console.log(result);
+    // console.log(result);
     const questions = result || [];
 
     const mappedQuestions = questions.map((q: Question) => ({

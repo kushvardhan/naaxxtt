@@ -126,26 +126,8 @@ const QuestionDetailPage = async ({ params,searchParams }: QuestionDetailPagePro
         questionId={question?._id}
         userId={mongoUser?._id}
         totalAnswers={question?.answers?.length}
-        page={
-          typeof searchParams?.get === "function"
-            ? Number(searchParams.get('page')) || 1
-            : Number(
-                typeof searchParams === "object" && searchParams?.page
-                  ? Array.isArray(searchParams.page)
-                    ? searchParams.page[0]
-                    : searchParams.page
-                  : 1
-              ) || 1
-        }
-        filter={
-          typeof searchParams?.get === "function"
-            ? searchParams.get('filter') || "10"
-            : typeof searchParams === "object" && searchParams?.filter
-              ? Array.isArray(searchParams.filter)
-                ? searchParams.filter[0]
-                : searchParams.filter
-              : "10"
-        }
+        page={Number(searchParams?.get('page')) || 1}
+        filter={searchParams?.get('filter') || "10"}
       />
 
       <h1 className='text-3xl text-purple-600'>Answers: {question?.answers?.length}</h1>

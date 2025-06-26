@@ -63,11 +63,41 @@ export interface AnswerVoteParams {
   path: string;
 }
 
+export interface AnswerVoteParams {
+  answerId: string;
+  userId: string;
+  hasupVoted: boolean;
+  hasdownVoted: boolean;
+  path: string;
+}
+
+export interface CreateQuestionParams {
+  title: string;
+  content: string;
+  tags: string[];
+  author: Schema.Types.ObjectId | IUser;
+  path: string;
+}
+
+export interface RecommendedParams {
+  userId: string;
+  page?: number;
+  pageSize?: number;
+  searchQuery?: string;
+}
+
 export interface DeleteAnswerParams {
   answerId: string;
   path: string;
 }
 
+export interface QuestionVoteParams {
+  questionId: string;
+  userId: string;
+  hasupVoted: boolean;
+  hasdownVoted: boolean;
+  path: string;
+}
 
 export interface GetAllUsersParams {
   page?: number;

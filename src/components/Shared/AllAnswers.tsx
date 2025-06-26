@@ -51,10 +51,10 @@ const AllAnswers = async ({ questionId, userId, totalAnswers, page, filter }: Pr
                 <Link href={`/profile/${answer.author.clerkId}`} className="flex flex-1 items-start gap-1 sm:items-center">
                   <Image
                     src={answer?.author?.image || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXdiU_9j45_WOVEx4pPhhIm7MaS1ju3RbXnt-k_mbz4XabjKhwDArh2jyExTXCl3IEVzw&usqp=CAU"}
-                    width={24}
-                    height={24}
+                    width={26}
+                    height={26}
                     alt="profile"
-                    className="rounded-full object-cover max-sm:mt-0.5"
+                    className="rounded-full object-cover max-sm:mt-0.5 border-1 border-orange-500"
                   />
                   <div className="flex items-center flex-col gap-3 ml-1 sm:flex-row sm:items-center">
                     <p className="text-lg font-semibold ">

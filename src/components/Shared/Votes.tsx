@@ -9,6 +9,7 @@ import {
   StarOff,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
+import { viewQuestion } from "../../../lib/actions/interaction.action";
 
 interface VotesProps {
   type: string;
@@ -36,49 +37,86 @@ const Votes = ({
   const pathname = usePathname();
   const router = useRouter();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const handleSave = async () => {
-    console.log("Save question:", { userId, itemId, hasSaved });
-  };
+    await toggleSaveQuestion({
+      userId: JSON.parse(userId),
+      questionId: JSON.parse(itemId),
+      path: pathname,
+    })
+
+    return toast({
+      title: `Question ${!hasSaved ? 'Saved in' : 'Removed from'} your collection`,
+      variant: !hasSaved ? 'default' : 'destructive'
+    })
+  }
 
   const handleVote = async (action: string) => {
-    if (!userId) {
-      console.log("Please log in to vote");
-      return;
+    if(!userId) {
+      return toast({
+        title: 'Please log in',
+        explanation: 'You must be logged in to perform this action',
+      })
     }
 
-    if (action === "upvote") {
-      console.log(`${type === "Question" ? "Upvote question" : "Upvote answer"}`, {
-        itemId,
-        userId,
-        hasupVoted,
-      });
+    if(action === 'upvote') {
+      if(type === 'Question') {
+        await upvoteQuestion({ 
+          questionId: JSON.parse(itemId),
+          userId: JSON.parse(userId),
+          hasupVoted,
+          hasdownVoted,
+          path: pathname,
+        })
+      } else if(type === 'Answer') {
+        await upvoteAnswer({ 
+          answerId: JSON.parse(itemId),
+          userId: JSON.parse(userId),
+          hasupVoted,
+          hasdownVoted,
+          path: pathname,
+        })
+      }
+
+      return toast({
+        title: `Upvote ${!hasupVoted ? 'Successful' : 'Removed'}`,
+        variant: !hasupVoted ? 'default' : 'destructive'
+      })
     }
 
-    if (action === "downvote") {
-      console.log(`${type === "Question" ? "Downvote question" : "Downvote answer"}`, {
-        itemId,
-        userId,
-        hasdownVoted,
-      });
-    }
-  };
+    if(action === 'downvote') {
+      if(type === 'Question') {
+        await downvoteQuestion({ 
+          questionId: JSON.parse(itemId),
+          userId: JSON.parse(userId),
+          hasupVoted,
+          hasdownVoted,
+          path: pathname,
+        })
+      } else if(type === 'Answer') {
+        await downvoteAnswer({ 
+          answerId: JSON.parse(itemId),
+          userId: JSON.parse(userId),
+          hasupVoted,
+          hasdownVoted,
+          path: pathname,
+        })
+      }
 
-  if (!mounted || !theme?.mounted) {
-    return (
-      <div className="flex gap-5">
-        {[...Array(3)].map((_, i) => (
-          <div
-            key={i}
-            className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-sm h-6 w-6"
-          />
-        ))}
-      </div>
-    );
+      return toast({
+        title: `Downvote ${!hasupVoted ? 'Successful' : 'Removed'}`,
+        variant: !hasupVoted ? 'default' : 'destructive'
+      })
+      
+    }
   }
+
+  useEffect(() => {
+    viewQuestion({
+      questionId: JSON.parse(itemId),
+      userId: userId ? JSON.parse(userId) : undefined,
+    })
+  }, [itemId, userId, pathname, router]);
+
 
   const iconSize = 22;
 
@@ -122,3 +160,27 @@ const Votes = ({
 };
 
 export default Votes;
+function toggleSaveQuestion(arg0: { userId: any; questionId: any; path: string; }) {
+  throw new Error("Function not implemented.");
+}
+
+function toast(arg0: { title: string; variant: string; }) {
+  throw new Error("Function not implemented.");
+}
+
+function upvoteQuestion(arg0: { questionId: any; userId: any; hasupVoted: boolean; hasdownVoted: boolean; path: string; }) {
+  throw new Error("Function not implemented.");
+}
+
+function upvoteAnswer(arg0: { answerId: any; userId: any; hasupVoted: boolean; hasdownVoted: boolean; path: string; }) {
+  throw new Error("Function not implemented.");
+}
+
+function downvoteQuestion(arg0: { questionId: any; userId: any; hasupVoted: boolean; hasdownVoted: boolean; path: string; }) {
+  throw new Error("Function not implemented.");
+}
+
+function downvoteAnswer(arg0: { answerId: any; userId: any; hasupVoted: boolean; hasdownVoted: boolean; path: string; }) {
+  throw new Error("Function not implemented.");
+}
+

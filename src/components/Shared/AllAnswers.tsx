@@ -61,7 +61,7 @@ const AllAnswers = async ({ questionId, userId, totalAnswers, page, filter }: Pr
                       {answer?.author?.name}
                     </p>
 
-                    <p className="small-regular text-light400_light500 ml-2 mt-0.5 line-clamp-1">
+                    <p className="text-md text-zinc-900 dark:text-zinc-300/50 ml-2 mt-0.5 line-clamp-1">
                       answered {" "}
                       {getTimestamp(answer.createdAt)}
                       </p>

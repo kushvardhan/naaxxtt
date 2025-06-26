@@ -80,7 +80,7 @@ const Votes = ({
     );
   }
 
-  const iconSize = 18;
+  const iconSize = 22;
 
   return (
     <div className="flex items-center gap-5">
@@ -91,7 +91,7 @@ const Votes = ({
           <button onClick={() => handleVote("upvote")} className="cursor-pointer">
             <ArrowBigUp size={iconSize} className={hasupVoted ? "text-orange-500" : ""} />
           </button>
-          <span className="subtle-medium text-dark400_light900 background-light700_dark400 min-w-[18px] rounded-sm p-1">
+          <span className="text-md font-medium text-gray-800 dark:text-gray-100 bg-gray-200 dark:bg-gray-700 min-w-[18px] rounded-sm p-1">
             {upvotes}
           </span>
         </div>
@@ -101,7 +101,7 @@ const Votes = ({
           <button onClick={() => handleVote("downvote")} className="cursor-pointer">
             <ArrowBigDown size={iconSize} className={hasdownVoted ? "text-red-500" : ""} />
           </button>
-          <span className="subtle-medium text-dark400_light900 background-light700_dark400 min-w-[18px] rounded-sm p-1">
+          <span className="text-md font-medium text-gray-800 dark:text-gray-100 bg-gray-200 dark:bg-gray-700 min-w-[18px] rounded-sm p-1">
             {downvotes}
           </span>
         </div>
@@ -113,7 +113,7 @@ const Votes = ({
           {hasSaved ? (
             <Star size={iconSize} className="text-yellow-500" />
           ) : (
-            <StarOff size={iconSize} className="text-gray-400" />
+            <StarOff size={iconSize} className="text-yellow-500" />
           )}
         </button>
       )}

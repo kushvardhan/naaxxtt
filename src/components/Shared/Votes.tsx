@@ -2,6 +2,11 @@
 
 import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
+import { downvoteAnswer, upvoteAnswer } from "../../../lib/actions/answer.action";
+import { viewQuestion } from "../../../lib/actions/interaction.action";
+import { downvoteQuestion, upvoteQuestion } from "../../../lib/actions/question.action";
+import { toggleSaveQuestion } from "../../../lib/actions/user.action";
+
 import {
   ArrowBigUp,
   ArrowBigDown,
@@ -9,7 +14,6 @@ import {
   StarOff,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { viewQuestion } from "../../../lib/actions/interaction.action";
 
 interface VotesProps {
   type: string;
@@ -54,7 +58,7 @@ const Votes = ({
     if(!userId) {
       return toast({
         title: 'Please log in',
-        explanation: 'You must be logged in to perform this action',
+        description: 'You must be logged in to perform this action',
       })
     }
 
@@ -160,27 +164,3 @@ const Votes = ({
 };
 
 export default Votes;
-function toggleSaveQuestion(arg0: { userId: any; questionId: any; path: string; }) {
-  throw new Error("Function not implemented.");
-}
-
-function toast(arg0: { title: string; variant: string; }) {
-  throw new Error("Function not implemented.");
-}
-
-function upvoteQuestion(arg0: { questionId: any; userId: any; hasupVoted: boolean; hasdownVoted: boolean; path: string; }) {
-  throw new Error("Function not implemented.");
-}
-
-function upvoteAnswer(arg0: { answerId: any; userId: any; hasupVoted: boolean; hasdownVoted: boolean; path: string; }) {
-  throw new Error("Function not implemented.");
-}
-
-function downvoteQuestion(arg0: { questionId: any; userId: any; hasupVoted: boolean; hasdownVoted: boolean; path: string; }) {
-  throw new Error("Function not implemented.");
-}
-
-function downvoteAnswer(arg0: { answerId: any; userId: any; hasupVoted: boolean; hasdownVoted: boolean; path: string; }) {
-  throw new Error("Function not implemented.");
-}
-

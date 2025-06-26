@@ -27,7 +27,7 @@ interface Props {
 }
 
 const Answer = ({ question, questionId, authorId }: Props) => {
-  console.log("Question: ", question , " , questionId: ", questionId, " ,authorId: ", authorId);
+  // console.log("Question: ", question , " , questionId: ", questionId, " ,authorId: ", authorId);
   const pathname = usePathname();
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmittingAI, setSetIsSubmittingAI] = useState(false);

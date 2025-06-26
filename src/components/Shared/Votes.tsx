@@ -3,8 +3,8 @@
 import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
 import {
-  ThumbsUp,
-  ThumbsDown,
+  ArrowBigUp,
+  ArrowBigDown,
   Star,
   StarOff,
 } from "lucide-react";
@@ -70,9 +70,12 @@ const Votes = ({
   if (!mounted || !theme?.mounted) {
     return (
       <div className="flex gap-5">
-        <div className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-sm h-6 w-6" />
-        <div className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-sm h-6 w-6" />
-        <div className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-sm h-6 w-6" />
+        {[...Array(3)].map((_, i) => (
+          <div
+            key={i}
+            className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-sm h-6 w-6"
+          />
+        ))}
       </div>
     );
   }
@@ -80,44 +83,37 @@ const Votes = ({
   const iconSize = 18;
 
   return (
-    <div className="flex items-center justify-around gap-5">
-      <div className="flex items-center justify-between gap-2.5">
+    <div className="flex items-center gap-5">
+      {/* Voting section */}
+      <div className="flex items-center gap-4">
         {/* Upvote */}
         <div className="flex items-center gap-1.5">
           <button onClick={() => handleVote("upvote")} className="cursor-pointer">
-            {hasupVoted ? (
-              <ThumbsUp size={iconSize} className="text-orange-500" />
-            ) : (
-              <ThumbsUp size={iconSize} />
-            )}
+            <ArrowBigUp size={iconSize} className={hasupVoted ? "text-orange-500" : ""} />
           </button>
-          <div className="flex items-center background-light700_dark400 min-w-[18px] rounded-sm p-1">
-            <p className="subtle-medium text-dark400_light900">{upvotes}</p>
-          </div>
+          <span className="subtle-medium text-dark400_light900 background-light700_dark400 min-w-[18px] rounded-sm p-1">
+            {upvotes}
+          </span>
         </div>
 
         {/* Downvote */}
         <div className="flex items-center gap-1.5">
           <button onClick={() => handleVote("downvote")} className="cursor-pointer">
-            {hasdownVoted ? (
-              <ThumbsDown size={iconSize} className="text-red-500" />
-            ) : (
-              <ThumbsDown size={iconSize} />
-            )}
+            <ArrowBigDown size={iconSize} className={hasdownVoted ? "text-red-500" : ""} />
           </button>
-          <div className="flex items-center background-light700_dark400 min-w-[18px] rounded-sm p-1">
-            <p className="subtle-medium text-dark400_light900">{downvotes}</p>
-          </div>
+          <span className="subtle-medium text-dark400_light900 background-light700_dark400 min-w-[18px] rounded-sm p-1">
+            {downvotes}
+          </span>
         </div>
       </div>
 
-      {/* Save */}
+      {/* Save button for Questions only */}
       {type === "Question" && (
         <button onClick={handleSave} className="cursor-pointer">
           {hasSaved ? (
             <Star size={iconSize} className="text-yellow-500" />
           ) : (
-            <StarOff size={iconSize} className="text-red-500" />
+            <StarOff size={iconSize} className="text-gray-400" />
           )}
         </button>
       )}

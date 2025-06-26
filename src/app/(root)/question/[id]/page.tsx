@@ -34,7 +34,7 @@ const QuestionDetailPage = async ({ params,searchParams }: QuestionDetailPagePro
   }
     const paramsId = await params.id;
     const question = await getQuestionById({ questionId: params?.id });
-    console.log("QUEGEDY: ",question);
+    // console.log("QUEGEDY: ",question);
 
     if (!question) {
   return <div className="text-red-500 text-center p-10">No question found! Check console.</div>;

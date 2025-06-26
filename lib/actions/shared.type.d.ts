@@ -31,16 +31,6 @@ export interface ViewQuestionParams {
   userId: string | undefined;
 }
 
-export interface UpdateUserParams {
-  clerkId: string;
-  updateData: Partial<IUser>;
-  path: string;
-}
-
-export interface DeleteUserParams {
-  clerkId: string;
-}
-
 export interface CreateAnswerParams {
   content: string;
   author: string; // User ID
@@ -99,13 +89,6 @@ export interface QuestionVoteParams {
   path: string;
 }
 
-export interface GetAllUsersParams {
-  page?: number;
-  pageSize?: number;
-  filter?: string;
-  searchQuery?: string;
-}
-
 export interface GetQuestionByIdParams {
   questionId: string;
 }
@@ -119,4 +102,37 @@ export interface ToggleSaveQuestionParams {
 export interface GetTopInteractedTagsParams{
   userId : string;
   limit? : number;
+}
+
+export interface GetAllUsersParams {
+  page?: number;
+  pageSize?: number;
+  filter?: string;
+  searchQuery?: string;
+}
+
+
+export interface ToggleSaveQuestionParams {
+  userId: string;
+  questionId: string;
+  path: string;
+}
+
+export interface GetSavedQuestionsParams {
+  clerkId: string;
+  page?: number;
+  pageSize?: number;
+  filter?: string;
+  searchQuery?: string;
+}
+
+
+export interface UpdateUserParams {
+  clerkId: string;
+  updateData: Partial<IUser>;
+  path: string;
+}
+
+export interface DeleteUserParams {
+  clerkId: string;
 }

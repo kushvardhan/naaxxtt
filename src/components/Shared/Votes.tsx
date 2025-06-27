@@ -41,6 +41,8 @@ const Votes = ({
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const [isSaved, setIsSaved] = useState(hasSaved || false);
+
 
 const handleSave = async () => {
   await toggleSaveQuestion({
@@ -49,10 +51,13 @@ const handleSave = async () => {
     path: pathname,
   });
 
+  setIsSaved((prev) => !prev);
+
   toast(
-    `Question ${!hasSaved ? "Saved in" : "Removed from"} your collection`
+    `Question ${!isSaved ? "Saved in" : "Removed from"} your collection`
   );
 };
+
 
 
   const handleVote = async (action: string) => {
@@ -144,15 +149,15 @@ const handleSave = async () => {
       </div>
 
       {/* Save button for Questions only */}
-      {type === "Question" && (
-        <button onClick={handleSave} className="cursor-pointer">
-          {hasSaved ? (
-            <Star size={iconSize} className="text-yellow-500" />
-          ) : (
-            <StarOff size={iconSize} className="text-yellow-500" />
-          )}
-        </button>
-      )}
+        {type === "Question" && (
+  <button onClick={handleSave} className="cursor-pointer">
+    {isSaved ? (
+      <Star size={iconSize} className="text-yellow-500" />
+    ) : (
+      <StarOff size={iconSize} className="text-yellow-500" />
+    )}
+  </button>
+)}
     </div>
   );
 };

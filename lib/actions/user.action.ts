@@ -31,9 +31,7 @@ export async function getAllUser(params?: GetAllUsersParams) {
   }
 }
 
-
-
-export async function toggleSaveQuestion(params: ToggleSaveQuestionParams) {
+export async function toggleSaveQuestion(params?: ToggleSaveQuestionParams) {
   try {
     connectToDatabase();
 

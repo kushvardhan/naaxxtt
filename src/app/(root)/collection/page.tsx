@@ -3,17 +3,17 @@ import { getSavedQuestions } from "../../../../lib/actions/user.action";
 import Link from "next/link";
 
 const Collection = async () => {
-  const { userId: clerkId } = auth();
+  const {  clerkId } = auth();
 
   if (!clerkId) return <div className="text-center mt-10">User not logged in</div>;
 
   const { questions, isNext } = await getSavedQuestions({ clerkId });
 
-  console.log("Saved Questions:", questions); // This logs in the terminal, not browser
+  console.log("Saved Questions:", questions); 
 
   return (
-    <section className="max-w-4xl mx-auto py-10 px-4">
-      <h1 className="text-2xl font-bold mb-6">Your Saved Questions</h1>
+    <section className="max-w-4xl mx-auto mt-20 py-10 px-4">
+      <h1 className="text-2xl font-bold mb-6 mt-20">Your Saved Questions</h1>
 
       {questions.length === 0 ? (
         <p className="text-gray-500">No saved questions found.</p>

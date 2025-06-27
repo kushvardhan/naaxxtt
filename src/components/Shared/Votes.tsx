@@ -6,6 +6,7 @@ import { downvoteAnswer, upvoteAnswer } from "../../../lib/actions/answer.action
 import { viewQuestion } from "../../../lib/actions/interaction.action";
 import { downvoteQuestion, upvoteQuestion } from "../../../lib/actions/question.action";
 import { toggleSaveQuestion } from "../../../lib/actions/user.action";
+import {toast} from "../ui/sooner";
 
 import {
   ArrowBigUp,
@@ -14,6 +15,7 @@ import {
   StarOff,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
+import { Toaster } from "../ui/sonner";
 
 interface VotesProps {
   type: string;
@@ -48,7 +50,7 @@ const Votes = ({
       path: pathname,
     })
 
-    return toast({
+    return Toaster({
       title: `Question ${!hasSaved ? 'Saved in' : 'Removed from'} your collection`,
       variant: !hasSaved ? 'default' : 'destructive'
     })
@@ -56,7 +58,7 @@ const Votes = ({
 
   const handleVote = async (action: string) => {
     if(!userId) {
-      return toast({
+      return Toaster({
         title: 'Please log in',
         description: 'You must be logged in to perform this action',
       })
@@ -81,7 +83,7 @@ const Votes = ({
         })
       }
 
-      return toast({
+      return Toaster({
         title: `Upvote ${!hasupVoted ? 'Successful' : 'Removed'}`,
         variant: !hasupVoted ? 'default' : 'destructive'
       })
@@ -106,7 +108,7 @@ const Votes = ({
         })
       }
 
-      return toast({
+      return Toaster({
         title: `Downvote ${!hasupVoted ? 'Successful' : 'Removed'}`,
         variant: !hasupVoted ? 'default' : 'destructive'
       })

@@ -45,18 +45,21 @@ const Votes = ({
 
 
 const handleSave = async () => {
+  const nextSavedState = !isSaved;
+
   await toggleSaveQuestion({
     userId: JSON.parse(userId),
     questionId: JSON.parse(itemId),
     path: pathname,
   });
 
-  setIsSaved((prev) => !prev);
+  setIsSaved(nextSavedState);
 
   toast(
-    `Question ${!isSaved ? "Saved in" : "Removed from"} your collection`
+    `Question ${nextSavedState ? "Saved in" : "Removed from"} your collection`
   );
 };
+
 
 
 

@@ -3,6 +3,7 @@ import { getAllUsers } from '../../../../lib/actions/user.action';
 import type { Metadata } from 'next';
 import CollectionPage from '../../../components/Shared/CollectionPage';
 
+
 interface SearchParamsProps {
   searchParams: { [key: string]: string | undefined };
 }

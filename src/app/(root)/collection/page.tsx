@@ -2,7 +2,6 @@
 import { getAllUsers } from '../../../../lib/actions/user.action';
 import type { Metadata } from 'next';
 import CollectionPage from '../../../components/Shared/CollectionPage';
-import { auth } from '@clerk/nextjs';
 
 
 interface SearchParamsProps {

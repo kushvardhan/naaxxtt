@@ -1,15 +1,15 @@
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs"; // ✅ Correct import for Server Components
 import { getSavedQuestions } from "../../../../lib/actions/user.action";
 import Link from "next/link";
 
 const Collection = async () => {
-  const { userId: clerkId } = await auth();
+  const { userId: clerkId } = auth(); // ✅ No `await` here
 
   if (!clerkId) return <div className="text-center mt-10">User not logged in</div>;
 
   const { questions, isNext } = await getSavedQuestions({ clerkId });
 
-  console.log("Saved Questions:", questions); 
+  console.log("Saved Questions:", questions); // This logs in the terminal, not browser
 
   return (
     <section className="max-w-4xl mx-auto py-10 px-4">
@@ -37,7 +37,6 @@ const Collection = async () => {
         </ul>
       )}
 
-      {/* Optional: Load More button if isNext is true */}
       {isNext && (
         <div className="mt-6 text-center">
           <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">

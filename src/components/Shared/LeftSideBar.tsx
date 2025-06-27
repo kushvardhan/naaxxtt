@@ -68,7 +68,7 @@ const sideBarLinks = [
       </svg>
     ),
     route: "/collection",
-    label: "Collections",
+    label: "Collection",
   },
   {
     icon: (

@@ -1,9 +1,9 @@
-import { auth } from "@clerk/nextjs"; // ✅ Correct import for Server Components
+import { auth } from "@clerk/nextjs/server";
 import { getSavedQuestions } from "../../../../lib/actions/user.action";
 import Link from "next/link";
 
 const Collection = async () => {
-  const { userId: clerkId } = auth(); // ✅ No `await` here
+  const { userId: clerkId } = auth();
 
   if (!clerkId) return <div className="text-center mt-10">User not logged in</div>;
 

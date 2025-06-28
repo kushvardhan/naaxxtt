@@ -1,5 +1,6 @@
 import { getQuestions } from "../../../../lib/actions/question.action";
 import ClientHomehh from "../../../components/Shared/ClientHomehh";
+import { auth } from "@clerk/nextjs/server";
 
 interface Tag {
   _id: string;

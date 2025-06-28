@@ -27,7 +27,7 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
     filter: searchParams.filter,
     page: searchParams.page ? +searchParams.page : 1,
   });
-  console.log(result);
+  console.log("Collection DOEFD: "result);
   return (
     <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">
       <CollectionPage result={result} />

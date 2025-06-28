@@ -30,7 +30,7 @@ type QuestionType = {
 };
 
 type Props = {
-  result: QuestionType[];
+  mappedQuestions: QuestionType[];
 };
 
 const QuestionFilters = [
@@ -72,7 +72,8 @@ function formatDate(dateString: string): string {
   return `${day}${suffix} ${month} ${year}`;
 }
 
-export default function ClientHomeQuestions({ result }: Props) {
+export default function ClientHomeQuestions({ mappedQuestions }: Props) {
+  console.log("mapped client queestion: ", mappedQuestions);
   const theme = useContext(ThemeContext);
   const isDark = theme?.mode === "dark";
   const [searchQuery, setSearchQuery] = useState("");
@@ -93,11 +94,11 @@ export default function ClientHomeQuestions({ result }: Props) {
         }`}
       >
         <h1
-          className={`text-2xl lg:text-5xl font-bold font-mono ${
+          className={`text-2xl lg:text-4xl font-bold font-mono ${
             isDark ? "text-zinc-100" : "text-black"
           }`}
         >
-          Co
+          Collection Page
         </h1>
         <Link href="/ask-question" className="flex justify-end items-center max-sm:w-full">
           <Button className="bg-orange-400 hover:bg-orange-500/100 text-md sm:text-sm sm:px-1/2 sm:py-1 font-mono tracking-tight min-h-[46px] px-3 py-2 font-bold transition-all text-center cursor-pointer">

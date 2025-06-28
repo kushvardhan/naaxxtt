@@ -100,14 +100,21 @@ export default function ClientHomeQuestions({ mappedQuestions }: Props) {
         >
           Collection Page
         </h1>
-        <Link href="/ask-question" className="flex justify-end items-center max-sm:w-full">
+        <Link
+          href="/ask-question"
+          className="flex justify-end items-center max-sm:w-full"
+        >
           <Button className="bg-orange-400 hover:bg-orange-500/100 text-md sm:text-sm sm:px-1/2 sm:py-1 font-mono tracking-tight min-h-[46px] px-3 py-2 font-bold transition-all text-center cursor-pointer">
             Ask Question
           </Button>
         </Link>
       </div>
 
-      <div className={`mt-8 flex gap-4 flex-wrap items-center ${isDark ? "bg-black" : "bg-white"}`}>
+      <div
+        className={`mt-8 flex gap-4 flex-wrap items-center ${
+          isDark ? "bg-black" : "bg-white"
+        }`}
+      >
         <LocalSearchBar
           route="/community"
           iconPosition="left"
@@ -116,7 +123,10 @@ export default function ClientHomeQuestions({ mappedQuestions }: Props) {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <Filter filters={QuestionFilters} otherClasses="min-h-[56px] sm:min-w-[170px]" />
+        <Filter
+          filters={QuestionFilters}
+          otherClasses="min-h-[56px] sm:min-w-[170px]"
+        />
       </div>
 
       <div className="mt-8 flex w-full flex-col gap-6">
@@ -131,28 +141,11 @@ export default function ClientHomeQuestions({ mappedQuestions }: Props) {
               }`}
             >
               <Link href={`/question/${que._id}`}>
-                <h2 className={`text-base sm:text-lg hover:underline font-semibold line-clamp-2 break-words ${
-                  isDark ? "text-zinc-100" : "text-zinc-800"
-                }`}>
-                  {que.title}
-                </h2>
-              </Link>
-
-                    <div className="mt-8 flex w-full flex-col gap-6">
-        {questions.length > 0 ? (
-          questions.map((que) => (
-             <div
-              key={que._id}
-              className={`w-full rounded-xl cursor-pointer border p-4 shadow-sm transition-all duration-200 hover:shadow-lg ${
-                isDark
-                  ? "bg-zinc-950 border-zinc-700 shadow-lg shadow-zinc-800"
-                  : "bg-white border-zinc-300 shadow-md shadow-zinc-400"
-              }`}
-            >
-              <Link href={`/question/${que._id}`}>
-                <h2 className={`text-base sm:text-lg hover:underline font-semibold line-clamp-2 break-words ${
-                  isDark ? "text-zinc-100" : "text-zinc-800"
-                }`}>
+                <h2
+                  className={`text-base sm:text-lg hover:underline font-semibold line-clamp-2 break-words ${
+                    isDark ? "text-zinc-100" : "text-zinc-800"
+                  }`}
+                >
                   {que.title}
                 </h2>
               </Link>
@@ -172,9 +165,11 @@ export default function ClientHomeQuestions({ mappedQuestions }: Props) {
                 ))}
               </div>
 
-              <div className={`mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm ${
-                isDark ? "text-zinc-400" : "text-zinc-500"
-              }`}>
+              <div
+                className={`mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm ${
+                  isDark ? "text-zinc-400" : "text-zinc-500"
+                }`}
+              >
                 <div className="flex items-center gap-3">
                   <Image
                     src={que.user.image}
@@ -274,7 +269,9 @@ export default function ClientHomeQuestions({ mappedQuestions }: Props) {
         ) : (
           <div
             className={`relative max-w-xl mx-auto p-8 rounded-3xl transition-all duration-300 overflow-hidden shadow-md
-              ${isDark ? "bg-zinc-900 text-zinc-100" : "bg-white text-zinc-800"}`}
+              ${
+                isDark ? "bg-zinc-900 text-zinc-100" : "bg-white text-zinc-800"
+              }`}
           >
             <div className="absolute -top-6 -left-6 w-24 h-24 bg-orange-100 dark:bg-orange-900 text-orange-600 dark:text-orange-300 rounded-xl shadow-md flex items-center justify-center text-3xl font-bold rotate-[-12deg]">
               ?
@@ -285,9 +282,11 @@ export default function ClientHomeQuestions({ mappedQuestions }: Props) {
             <p className="text-center text-2xl font-bold font-mono tracking-tighter">
               No Questions Found
             </p>
-            <p className={`text-center mt-2 text-base font-medium select-none ${
-              isDark ? "text-zinc-300/80" : "text-zinc-700"
-            }`}>
+            <p
+              className={`text-center mt-2 text-base font-medium select-none ${
+                isDark ? "text-zinc-300/80" : "text-zinc-700"
+              }`}
+            >
               Be the first to break the silence! 🚀 Ask a Question and kickstart
               the discussion. Your query could be the next big thing others
               learn from. Get involved!
@@ -308,7 +307,6 @@ export default function ClientHomeQuestions({ mappedQuestions }: Props) {
           </div>
         )}
       </div>
-
     </div>
-  )
+  );
 }

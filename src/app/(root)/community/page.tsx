@@ -16,6 +16,10 @@ export interface User {
   joinedAt: string;
 }
 
+export const metadata: Metadata = {
+  title: 'NullPointer | Community',
+};
+
 const CommunityPage = async () => {
   const result = await getAllUser();
   console.log("result of getAllUser: ", result);

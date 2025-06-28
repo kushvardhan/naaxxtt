@@ -310,5 +310,5 @@ export default function ClientHomeQuestions({ mappedQuestions }: Props) {
       </div>
 
     </div>
-  );
+  )
 }

@@ -86,7 +86,7 @@ const QuestionDetailPage = async ({ params,searchParams }: QuestionDetailPagePro
             icon={<Clock />}
             alt="clock icon"
             value={` asked ${getTimestamp(question?.createdAt)}`}
-            title=" Asked"
+            title=""
             textStyles="text-regular text-zinc-900 dark:text-zinc-200"
           />
           <Metric 
@@ -147,9 +147,6 @@ const QuestionDetailPage = async ({ params,searchParams }: QuestionDetailPagePro
               : "10"
         }
       />
-
-      <h1 className='text-3xl text-purple-600'>Answers: {question?.answers?.length}</h1>
-
 
         {/* Answer Section */}
         <Answer question={question?.explanation}

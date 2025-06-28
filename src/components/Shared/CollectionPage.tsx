@@ -176,9 +176,9 @@ export default function ClientHomeQuestions({ mappedQuestions }: Props) {
                     alt={que.user.name}
                     width={24}
                     height={24}
-                    className="h-8 w-8 rounded-full object-cover"
+                    className="h-8 w-8 rounded-full object-cover border-1 border-orange-800"
                   />
-                  <span className="text-sm font-medium">{que.user.name}</span>
+                  <span className="text-md font-medium">{que.user.name}</span>
                 </div>
                 <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm">
                   {/* Upvotes */}

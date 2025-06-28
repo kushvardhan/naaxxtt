@@ -41,7 +41,9 @@ const AllAnswers = async ({ questionId, userId, totalAnswers, page, filter }: Pr
       <div className='flex items-center justify-between'>
         <h3 className='text-2xl font-mono text-black dark:text-white'>{totalAnswers} <span className='text-xl font-regular text-zinc-900 dark:text-zinc-100' >Answers</span></h3>
 
-        <Filter filters={ AnswerFilters } />
+        {result.answers && result.answers.length > 0 && (
+  <Filter filters={AnswerFilters} />
+)}
       </div>
 
       <div>

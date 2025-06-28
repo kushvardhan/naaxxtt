@@ -89,7 +89,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
   }
 
   return (
-        <div className="mt-14 border-t pt-10">
+        <div className="mt-14 pt-10">
           <h2 className="text-2xl font-semibold mb-6">Write your Answer here</h2>
 
           {/* Generate AI Button */}

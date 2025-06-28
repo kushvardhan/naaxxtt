@@ -8,7 +8,7 @@ interface SearchParamsProps {
 }
 
 export const metadata: Metadata = {
-  title: 'nullPointer | Collection',
+  title: 'NullFlow | Collection',
 };
 
 const Page = async ({ searchParams }: SearchParamsProps) => {
@@ -23,26 +23,25 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
 
   const result = await getSavedQuestions({
     clerkId,
-    searchQuery: searchParams.q,
-    filter: searchParams.filter,
-    page: searchParams.page ? +searchParams.page : 1,
+    searchQuery: searchParams?.q,
+    filter: searchParams?.filter,
+    page: searchParams?.page ? +searchParams?.page : 1,
   });
   console.log("Collection DOEFD: ", result);
 
-const mappedQuestions = Array.isArray(result.questions)
-  ? result.questions.map((q: any) => ({
-      _id: q._id.toString(),
-      title: q.title || "No Title",
+const mappedQuestions = Array.isArray(result?.questions)
+  ? result?.questions?.map((q: any) => ({
+      _id: q?._id?.toString(),
+      title: q?.title || "No Title",
       tags:
         q.tags?.map((tag) => ({
-          _id: tag._id.toString(),
-          name: tag.name || "Unknown",
+          _id: tag?._id?.toString(),
+          name: tag?.name || "Unknown",
         })) || [],
       user: {
-        name: q.author?.name || "Unknown User",
+        name: q?.author?.name || "Unknown User",
         image:
-          q.author?.image ||
-          "https://banner2.cleanpng.com/20180416/gbw/avfp7lvmb.webp",
+          q?.author?.image,
       },
       upvotes: Array.isArray(q.upvotes) ? q.upvotes.length : 0,
       answers: Array.isArray(q.answers) ? q.answers.length : 0,

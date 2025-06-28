@@ -2,6 +2,10 @@ import Question from "@/components/forms/Question";
 import { redirect } from "next/navigation";
 import { getOrCreateUser } from "../../../../lib/utils/user";
 
+export const metadata: Metadata = {
+  title: 'nullPointer | Ask-Question',
+};
+
 const Page = async () => {
   try {
     const mongoUser = await getOrCreateUser();

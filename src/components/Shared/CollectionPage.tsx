@@ -98,7 +98,7 @@ export default function ClientHomeQuestions({ mappedQuestions }: Props) {
             isDark ? "text-zinc-100" : "text-black"
           }`}
         >
-          Collection Page
+          Saved Collection
         </h1>
         <Link
           href="/ask-question"

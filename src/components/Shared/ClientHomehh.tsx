@@ -236,7 +236,7 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
               <Link href={`/question/${que._id}`}>
                 <h2
                 className={`text-base sm:text-lg hover:underline font-semibold line-clamp-2 break-words
-                  ${isDark ? "text-zinc-100" : "text-zinc-800"}
+                  ${isDark ? "text-zinc-100 hover:text-blue-300" : "text-zinc-800 hover:text-blue-700"}
                 `}
               >
                 {que.title}
@@ -248,6 +248,7 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
                 {que.tags.map((tag) => (
                   <span
                     key={tag._id}
+                    title={tag.name}
                     className={`rounded-md cursor-pointer px-2 py-1 text-xs font-mono
                       ${
                         isDark
@@ -274,7 +275,7 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
                     alt={que.user.name}
                     width={24}
                     height={24}
-                    className="h-8 w-8 rounded-full object-cover"
+                    className={`h-8 w-8 rounded-full object-cover ${isDark ? "border-1 border-orange-700" : "border-2 border-orange-500" } `}
                   />
                   <span className="text-sm font-medium">{que.user.name}</span>
                 </div>

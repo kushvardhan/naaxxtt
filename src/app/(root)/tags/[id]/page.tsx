@@ -1,105 +1,215 @@
-import { notFound } from "next/navigation";
-import { getTagById } from "../../../../../lib/actions/tag.action";
 
-interface TagDetailPageProps {
-  params: {
-    id: string;
-  };
+import NoResult from '../../../../components/Shared/NoResult'
+import Pagination from '../../../../components/Shared/Pagination'
+import LocalSearchbar from '../../../../components/Shared/Search/LocalSearchbar'
+import { getQuestionsByTagId } from '../../../../../lib/actions/tag.action'
+
+
+export interface URLProps {
+  params: { id: string };
+  searchParams: { [key: string]: string | undefined };
 }
 
-const TagDetailPage = async ({ params }: TagDetailPageProps) => {
-  try {
-    const tag = await getTagById({ tagId: params.id });
+const Page = async ({ params, searchParams }: URLProps) => {
+  const result = await getQuestionsByTagId({
+    tagId: params.id,
+    page: searchParams.page ? +searchParams.page : 1,
+    searchQuery: searchParams.q
+  })
 
-    if (!tag) {
-      notFound();
-    }
+  return (
+    <>
+      <h1 className="h1-bold text-dark100_light900">{result.tagTitle}</h1> 
 
-    return (
-      <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden" suppressHydrationWarning>
-        <div className="mb-8">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="inline-flex items-center px-6 py-3 rounded-full text-white font-mono font-bold text-2xl bg-gradient-to-r from-orange-500 to-orange-600 shadow-lg">
-              #{tag.name}
-            </div>
-          </div>
-
-          <p className="text-lg text-zinc-600 dark:text-zinc-300 mb-6">
-            {tag.description || "No description available for this tag."}
-          </p>
-
-          <div className="flex gap-6 text-sm font-mono text-zinc-500 dark:text-zinc-400">
-            <span>
-              <strong className="text-orange-500">
-                {tag.questions?.length || 0}
-              </strong>{" "}
-              questions
-            </span>
-            <span>
-              <strong className="text-orange-500">
-                {tag.followers?.length || 0}
-              </strong>{" "}
-              followers
-            </span>
-          </div>
-        </div>
-
-        <div>
-          <h2 className="text-2xl font-bold font-mono mb-6 text-zinc-800 dark:text-zinc-100">
-            Questions tagged with #{tag.name}
-          </h2>
-
-          {tag.questions && tag.questions.length > 0 ? (
-            <div className="space-y-4">
-              {tag.questions.map((question: any) => (
-                <div
-                  key={question._id || Math.random()}
-                  className="p-6 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 hover:shadow-lg transition-shadow duration-300"
-                >
-                  <h3 className="text-lg font-semibold font-mono mb-2 text-zinc-800 dark:text-zinc-100">
-                    {question.title || "Untitled Question"}
-                  </h3>
-
-                  <div className="flex items-center gap-4 text-sm text-zinc-500 dark:text-zinc-400">
-                    <span>By {question.author?.name || "Unknown"}</span>
-                    <span>{question.upvotes?.length || 0} upvotes</span>
-                    <span>{question.answers?.length || 0} answers</span>
-                    <span>{question.views || 0} views</span>
-                  </div>
-
-                  {question.tags && question.tags.length > 0 && (
-                    <div className="flex gap-2 mt-3">
-                      {question.tags.map((questionTag: any) => (
-                        <span
-                          key={questionTag._id || Math.random()}
-                          className="px-3 py-1 text-xs font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 rounded-full"
-                        >
-                          {questionTag.name || "Unknown Tag"}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-20 text-zinc-400">
-              <div className="text-6xl mb-4">📝</div>
-              <h3 className="text-xl font-mono font-semibold mb-2">
-                No questions yet
-              </h3>
-              <p className="text-sm">
-                Be the first to ask a question with this tag!
-              </p>
-            </div>
-          )}
-        </div>
+      <div className="mt-11 w-full">
+        <LocalSearchBar
+          route={`/tags/${params.id}`}
+          iconPosition="left"
+          placeholder="Search tags questions"
+          otherClasses="flex-1 "
+        />
       </div>
-    );
-  } catch (error) {
-    console.error("Error loading tag:", error);
-    notFound();
-  }
-};
 
-export default TagDetailPage;
+      <div className="mt-10 flex w-full flex-col gap-6">
+        {result.questions.length > 0 ?
+          result.questions.map((que: any) => (
+<div
+              key={que._id}
+              className={`w-full rounded-xl cursor-pointer border p-4 shadow-sm transition-all duration-200 hover:shadow-lg
+                ${
+                  isDark
+                    ? "bg-zinc-950 border-zinc-700 shadow-lg shadow-zinc-800"
+                    : "bg-white border-zinc-300 shadow-md shadow-zinc-400"
+                }
+              `}
+            >
+              {/* Title */}
+              
+              <Link href={`/question/${que._id}`}>
+                <h2
+                className={`text-base sm:text-lg hover:underline font-semibold line-clamp-2 break-words
+                  ${isDark ? "text-zinc-100 hover:text-blue-300" : "text-zinc-800 hover:text-blue-700"}
+                `}
+              >
+                {que.title}
+              </h2>
+              </Link>
+
+              {/* Tags */}
+              <div className="mt-3 flex flex-wrap gap-2">
+                {que.tags.map((tag) => (
+                  <span
+                    key={tag._id}
+                    title={tag.name}
+                    className={`rounded-md cursor-pointer px-2 py-1 text-xs font-mono
+                      ${
+                        isDark
+                          ? "bg-zinc-700 text-white hover:bg-zinc-600 transition-all"
+                          : "bg-zinc-200 text-zinc-950 hover:bg-zinc-300 transition-all "
+                      }
+                    `}
+                  >
+                    {tag.name}
+                  </span>
+                ))}
+              </div>
+
+              {/* Meta Info */}
+              <div
+                className={`mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm
+                  ${isDark ? "text-zinc-400" : "text-zinc-500"}
+                `}
+              >
+                {/* User */}
+                <div className="flex items-center gap-3">
+                  <Image
+                    src={que.user.image}
+                    alt={que.user.name}
+                    width={24}
+                    height={24}
+                    className={`h-8 w-8 rounded-full object-cover ${isDark ? "border-1 border-orange-700" : "border-2 border-orange-500" } `}
+                  />
+                  <span className="text-sm font-medium">{que.user.name}</span>
+                </div>
+
+                {/* Stats */}
+                <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm">
+                  {/* Upvotes */}
+                  <span
+                    title="Upvote"
+                    className={`flex items-center gap-1 ${
+                      isDark ? "text-white" : "text-red-600"
+                    }`}
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      stroke="none"
+                    >
+                      <path d="M12.781 2.375c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10zM15 12h-1v8h-4v-8H6.081L12 4.601 17.919 12H15z" />
+                    </svg>
+                    {que.upvotes}
+                  </span>
+
+                  {/* Comments */}
+                  <span
+                    title="Answer"
+                    className={`flex items-center gap-1 ${
+                      isDark ? "text-zinc-100" : "text-zinc-700"
+                    }`}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="size-4.5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
+                      />
+                    </svg>
+                    {que.answers}
+                  </span>
+
+                  {/* Views */}
+                  <span
+                    title="Views"
+                    className={`flex items-center gap-1 ${
+                      isDark ? "text-zinc-100" : "text-zinc-700"
+                    }`}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                      />
+                    </svg>
+                    {que.views}
+                  </span>
+
+                  {/* Like */}
+                  {/* If you want to show likes, you can add a likes property to mappedQuestions */}
+                  {/* <span
+                    title="Like"
+                    className={`flex items-center gap-1 ${
+                      isDark ? "text-zinc-100" : "text-zinc-700"
+                    }`}
+                  >
+                    <svg ... />
+                    {que.likes}
+                  </span> */}
+
+                  {/* Date */}
+                  <span
+                    title="Created At"
+                    className={`text-xs spacing-tighter font-semibold select-none ${
+                      isDark ? "text-zinc-300" : "text-zinc-700"
+                    }`}
+                  >
+                    {formatDate(que.createdAt)}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+        </div>
+
+          ))
+          : <NoResult 
+            title="There’s no tag question saved to show"
+            description="Be the first to break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved! 💡"
+            link="/ask-question"
+            linkTitle="Ask a Question"
+          />}
+      </div>
+
+      <div className="mt-10">
+        <Pagination 
+          pageNumber={searchParams?.page ? +searchParams.page : 1}
+          isNext={result.isNext}
+        />
+      </div>
+    </>
+  )
+}
+
+export default Page

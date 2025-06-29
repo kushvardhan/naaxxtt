@@ -16,7 +16,7 @@ const Page = async ({ params, searchParams }: URLProps) => {
     page: searchParams.page ? +searchParams.page : 1,
     searchQuery: searchParams.q
   });
-  
+
   console.log("TAGS RES: ", result);
 
   function formatDate(dateString: string): string {
@@ -93,13 +93,13 @@ const Page = async ({ params, searchParams }: URLProps) => {
             <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm text-zinc-500 dark:text-zinc-400">
               <div className="flex items-center gap-3">
                 <Image
-                  src={que.user.image}
-                  alt={que.user.name}
+                  src={que?.author?.image}
+                  alt={que?.author?.name}
                   width={24}
                   height={24}
                   className="h-8 w-8 rounded-full object-cover border-2 border-orange-500 dark:border-orange-700"
                 />
-                <span className="text-sm font-medium">{que.user.name}</span>
+                <span className="text-sm font-medium">{que?.author?.name}</span>
               </div>
 
               <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm">

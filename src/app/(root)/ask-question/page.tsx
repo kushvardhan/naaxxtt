@@ -1,6 +1,6 @@
 import Question from "@/components/forms/Question";
 import { redirect } from "next/navigation";
-import { getOrCreateUser } from "../../../../lib/utils/user";
+import { getOrCreateUser } from "../../../../lib/helpers/user";
 
 export const metadata: Metadata = {
   title: 'nullPointer | Ask-Question',

@@ -85,40 +85,70 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
     const { tagId, page = 1, pageSize = 10, searchQuery } = params;
     const skipAmount = (page - 1) * pageSize;
 
-    const tagFilter: FilterQuery<ITag> = { _id: tagId};
+    const tagFilter: FilterQuery<ITag> = { _id: tagId };
 
-    const tag = await Tag.findOne(tagFilter).populate({
-      path: 'questions',
-      model: Question,
-      match: searchQuery
-        ? { title: { $regex: searchQuery, $options: 'i' }}
-        : {},
-      options: {
-        sort: { createdAt: -1 },
-        skip: skipAmount,
-        limit: pageSize + 1 ,
-      },
-      populate: [
-        { path: 'tags', model: Tag, select: "_id name" },
-        { path: 'author', model: User, select: '_id clerkId name image'}
-      ]
-    }).lean();
+    const tag = await Tag.findOne(tagFilter)
+      .populate({
+        path: 'questions',
+        model: Question,
+        match: searchQuery ? { title: { $regex: searchQuery, $options: 'i' } } : {},
+        options: {
+          sort: { createdAt: -1 },
+          skip: skipAmount,
+          limit: pageSize + 1,
+        },
+        populate: [
+          {
+            path: 'tags',
+            model: Tag,
+            select: '_id name',
+            options: { lean: true },
+          },
+          {
+            path: 'author',
+            model: User,
+            select: '_id clerkId name image',
+            options: { lean: true },
+          },
+        ],
+      })
+      .lean(); 
 
-    if(!tag) {
+    if (!tag) {
       throw new Error('Tag not found');
     }
 
-    const isNext = tag.questions.length > pageSize;
-    
-    const questions = tag.questions;
+    // Manually ensure populated data is plain objects
+    const rawQuestions = (tag.questions as any[]).map((q: any) => ({
+      ...q,
+      _id: q._id.toString(),
+      tags: q.tags.map((t: any) => ({
+        _id: t._id.toString(),
+        name: t.name,
+      })),
+      author: q.author
+        ? {
+            _id: q.author._id.toString(),
+            name: q.author.name,
+            clerkId: q.author.clerkId,
+            image: q.author.image,
+          }
+        : null,
+      createdAt: q.createdAt?.toString() || '',
+      updatedAt: q.updatedAt?.toString() || '',
+    }));
 
-    return { tagTitle: tag.name, questions, isNext };
-
+    return {
+      tagTitle: tag.name,
+      questions: rawQuestions.slice(0, pageSize), // ensure pagination
+      isNext: rawQuestions.length > pageSize,
+    };
   } catch (error) {
-    console.log(error);
+    console.log('Error in getQuestionsByTagId:', error);
     throw error;
   }
 }
+
 
 export async function getTopPopularTags() {
   try {

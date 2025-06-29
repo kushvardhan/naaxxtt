@@ -66,7 +66,8 @@ export async function getAllTags(params: GetAllTagsParams) {
     const tags = await Tag.find(query)
       .sort(sortOptions)
       .skip(skipAmount)
-      .limit(pageSize);
+      .limit(pageSize)
+      .lean();
 
       const isNext = totalTags > skipAmount + tags.length;
 

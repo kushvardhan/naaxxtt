@@ -21,7 +21,7 @@ export interface CreateUserParams {
   name: string;
   username: string;
   email: string;
-  picture?: string;
+  image?: string;
   image?: string;
   about?: string;
 }

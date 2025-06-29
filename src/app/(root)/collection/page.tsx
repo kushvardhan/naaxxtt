@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 const Page = async ({ searchParams }: SearchParamsProps) => {
     const {userId: clerkId} = await auth();
-    console.log("CLERKID COLLECTION: ",clerkId);
+    // console.log("CLERKID COLLECTION: ",clerkId);
 
   if (!clerkId) {
     return <div className="mt-20 text-center text-lg">
@@ -27,7 +27,7 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
     filter: searchParams?.filter,
     page: searchParams?.page ? +searchParams?.page : 1,
   });
-  console.log("Collection DOEFD: ", result);
+  // console.log("Collection DOEFD: ", result);
 
 const mappedQuestions = Array.isArray(result?.questions)
   ? result?.questions?.map((q: any) => ({
@@ -53,7 +53,7 @@ const mappedQuestions = Array.isArray(result?.questions)
   : [];
 
 
-console.log('mapped collection: ', mappedQuestions);
+// console.log('mapped collection: ', mappedQuestions);
 
   return (
     <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">

@@ -29,7 +29,7 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
 
 export async function getAllTags(params: GetAllTagsParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const { searchQuery, filter, page = 1, pageSize = 10 } = params;
     const skipAmount = (page - 1) * pageSize;
@@ -99,7 +99,7 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
       },
       populate: [
         { path: 'tags', model: Tag, select: "_id name" },
-        { path: 'author', model: User, select: '_id clerkId name picture'}
+        { path: 'author', model: User, select: '_id clerkId name image'}
       ]
     })
 

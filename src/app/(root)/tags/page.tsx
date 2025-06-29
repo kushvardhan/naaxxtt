@@ -13,8 +13,13 @@ export interface Tag {
 
 const TagsPage = async () => {
   try {
-    const result = await getAllTags();
-    console.log("result of getAllTags: ", result);
+    const result = await getAllTags({
+      searchQuery: "",
+      filter: "popular",
+      page: 1,
+      pageSize: 10,
+    });
+    // console.log("result of getAllTags: ", result);
 
     return (
       <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">

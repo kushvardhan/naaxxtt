@@ -15,7 +15,9 @@ const Page = async ({ params, searchParams }: URLProps) => {
     tagId: params.id,
     page: searchParams.page ? +searchParams.page : 1,
     searchQuery: searchParams.q
-  })
+  });
+  
+  console.log("TAGS RES: ", result);
 
   function formatDate(dateString: string): string {
     const date = new Date(dateString);

@@ -1,126 +1,137 @@
-"use server";
+"use server"
 
-import Tag from "../../database/tag.model";
+import User from "../../database/user.model";
 import { connectToDatabase } from "../mongoose";
-import { GetTopInteractedTagsParams } from "./shared.type.d";
+import { GetAllTagsParams, GetQuestionsByTagIdParams, GetTopInteractedTagsParams } from "./shared.type.d";
+import Tag, { ITag } from "../../database/tag.model";
+import Question from "../../database/question.model";
+import { FilterQuery } from "mongoose";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   try {
-    await connectToDatabase();
-    const { limit = 3 } = params;
+    connectToDatabase();
 
-    // Return mock data for now to prevent deployment issues
-    return [
-      { _id: "1", name: "javascript", count: 5 },
-      { _id: "2", name: "react", count: 3 },
-      { _id: "3", name: "nextjs", count: 2 },
-      { _id: "4", name: "typescript", count: 4 },
-      { _id: "5", name: "nodejs", count: 1 },
-    ].slice(0, limit);
-  } catch (err) {
-    console.log("Error getting top interacted tags: ", err);
-    return [];
+    const { userId } = params;
+
+    const user = await User.findById(userId);
+
+    if(!user) throw new Error("User not found");
+
+    // Find interactions for the user and group by tags...
+    // Interaction...
+
+    return [ {_id: '1', name: 'tag'}, {_id: '2', name: 'tag2'}]
+  } catch (error) {
+    console.log(error);
+    throw error;
   }
 }
 
-export async function getAllTags() {
+export async function getAllTags(params: GetAllTagsParams) {
   try {
-    await connectToDatabase();
-    const tags = await Tag.find({}).sort({ createdOn: -1 }).lean();
+    connectToDatabase();
 
-    const serializedTags = tags.map(tag => ({
-      ...tag,
-      _id: tag._id.toString(),
-      name: tag.name.toLowerCase(), // ✅ force lowercase
-      createdOn: new Date(tag.createdOn).toISOString(),
-      questions: tag.questions.map((q: any) => q.toString()),
-      followers: tag.followers.map((f: any) => f.toString()),
-    }));
+    const { searchQuery, filter, page = 1, pageSize = 10 } = params;
+    const skipAmount = (page - 1) * pageSize;
 
-    return { tags: serializedTags, isNext: false };
+    const query: FilterQuery<typeof Tag> = {};
+
+    if(searchQuery) {
+      const escapedSearchQuery = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      query.$or = [{name: { $regex: new RegExp(escapedSearchQuery, 'i')}}]
+    }
+
+    let sortOptions = {};
+
+    switch (filter) {
+      case "popular":
+        sortOptions = { questions: -1 }
+        break;
+      case "recent":
+        sortOptions = { createdAt: -1 }
+        break;
+      case "name":
+        sortOptions = { name: 1 }
+        break;
+      case "old":
+        sortOptions = { createdAt: 1 }
+        break;
+    
+      default:
+        break;
+    }
+
+    const totalTags = await Tag.countDocuments(query);
+
+    const tags = await Tag.find(query)
+      .sort(sortOptions)
+      .skip(skipAmount)
+      .limit(pageSize);
+
+      const isNext = totalTags > skipAmount + tags.length;
+
+    return { tags, isNext }
   } catch (error) {
-    console.log("Error getting all tags: ", error);
-    return { tags: [], isNext: false };
+    console.log(error);
+    throw error;
   }
 }
 
-
-
-
-export async function getTagById(params: { tagId: string }) {
+export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
   try {
-    await connectToDatabase();
+    connectToDatabase();
 
-    const { tagId } = params;
+    const { tagId, page = 1, pageSize = 10, searchQuery } = params;
+    const skipAmount = (page - 1) * pageSize;
 
-    // Return mock data for now to prevent deployment issues
-    const mockTag = {
-      _id: tagId,
-      name: "javascript",
-      description: "JavaScript programming language for web development",
-      questions: [
-        {
-          _id: "q1",
-          title: "How to use async/await in JavaScript?",
-          author: {
-            _id: "u1",
-            name: "John Doe",
-            clerkId: "user_123",
-            image: "https://example.com/avatar.jpg",
-          },
-          upvotes: ["u2", "u3"],
-          answers: ["a1", "a2"],
-          views: 150,
-          tags: [
-            { _id: "1", name: "javascript" },
-            { _id: "2", name: "async" },
-          ],
-        },
-        {
-          _id: "q2",
-          title: "What are JavaScript closures?",
-          author: {
-            _id: "u2",
-            name: "Jane Smith",
-            clerkId: "user_456",
-            image: "https://example.com/avatar2.jpg",
-          },
-          upvotes: ["u1", "u3", "u4"],
-          answers: ["a3"],
-          views: 200,
-          tags: [
-            { _id: "1", name: "javascript" },
-            { _id: "3", name: "closures" },
-          ],
-        },
-      ],
-      followers: ["u1", "u2", "u3"],
-      createdOn: new Date().toISOString(),
-    };
+    const tagFilter: FilterQuery<ITag> = { _id: tagId};
 
-    return mockTag;
+    const tag = await Tag.findOne(tagFilter).populate({
+      path: 'questions',
+      model: Question,
+      match: searchQuery
+        ? { title: { $regex: searchQuery, $options: 'i' }}
+        : {},
+      options: {
+        sort: { createdAt: -1 },
+        skip: skipAmount,
+        limit: pageSize + 1 // +1 to check if there is next page
+      },
+      populate: [
+        { path: 'tags', model: Tag, select: "_id name" },
+        { path: 'author', model: User, select: '_id clerkId name picture'}
+      ]
+    })
+
+    if(!tag) {
+      throw new Error('Tag not found');
+    }
+
+    const isNext = tag.questions.length > pageSize;
+    
+    const questions = tag.questions;
+
+    return { tagTitle: tag.name, questions, isNext };
+
   } catch (error) {
-    console.log("Error getting tag by id: ", error);
-    return null;
+    console.log(error);
+    throw error;
   }
 }
 
 export async function getTopPopularTags() {
   try {
-    await connectToDatabase();
+    connectToDatabase();
 
-    // Return mock data for now to prevent deployment issues
-    const popularTags = [
-      { _id: "1", name: "javascript", numberOfQuestions: 15 },
-      { _id: "2", name: "react", numberOfQuestions: 12 },
-      { _id: "3", name: "typescript", numberOfQuestions: 10 },
-      { _id: "4", name: "nextjs", numberOfQuestions: 8 },
-      { _id: "5", name: "nodejs", numberOfQuestions: 6 },
-    ];
+    const popularTags = await Tag.aggregate([
+      { $project: { name: 1, numberOfQuestions: { $size: "$questions" }}},
+      { $sort: { numberOfQuestions: -1 }}, 
+      { $limit: 5 }
+    ])
 
     return popularTags;
   } catch (error) {
-    console.log("Error getting top popular tags: ", error);
-    return [];
+    console.log(error);
+    throw error;
   }
 }

@@ -93,6 +93,26 @@ export interface GetQuestionByIdParams {
   questionId: string;
 }
 
+export interface GetQuestionsByTagIdParams {
+  tagId: string;
+  page?: number;
+  pageSize?: number;
+  searchQuery?: string;
+}
+
+export interface GetAllTagsParams {
+  page?: number;
+  pageSize?: number;
+  filter?: string;
+  searchQuery?: string;
+}
+
+export interface GetTopInteractedTagsParams {
+  userId: string;
+  limit?: number;
+}
+
+
 export interface ToggleSaveQuestionParams {
   userId: string;
   questionId: string;

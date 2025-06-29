@@ -59,8 +59,9 @@ const Page = async ({ params, searchParams }: URLProps) => {
           route={`/tags/${params.id}`}
           iconPosition="left"
           placeholder="Search tags questions"
-          otherClasses="flex-1"
-        />
+          otherClasses="flex-1" value={""} onChange={function (e: React.ChangeEvent<HTMLInputElement>): void {
+            throw new Error("Function not implemented.")
+          } }        />
       </div>
 
       <div className="mt-10 flex w-full flex-col gap-6">

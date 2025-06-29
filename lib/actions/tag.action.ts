@@ -102,7 +102,7 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
         { path: 'tags', model: Tag, select: "_id name" },
         { path: 'author', model: User, select: '_id clerkId name image'}
       ]
-    })
+    }).lean();
 
     if(!tag) {
       throw new Error('Tag not found');

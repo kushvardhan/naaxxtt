@@ -69,6 +69,8 @@ export async function getAllTags(params: GetAllTagsParams) {
       .limit(pageSize)
       .lean();
 
+      console.log("GetAllTags from DB: ", tags);
+
       const isNext = totalTags > skipAmount + tags.length;
 
     return { tags, isNext }
@@ -113,6 +115,7 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
         ],
       })
       .lean(); 
+            console.log("GetQuestionbyID from DB: ", tag);
 
     if (!tag) {
       throw new Error('Tag not found');

@@ -17,38 +17,44 @@ const Page = async ({ params, searchParams }: URLProps) => {
     searchQuery: searchParams.q,
   });
 
-  function formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diff = now.getTime() - date.getTime();
+function formatDate(dateInput: string | Date): string {
+  const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput;
 
+  if (isNaN(date.getTime())) return "Invalid date";
+
+  const now = new Date();
+  const diff = now.getTime() - date.getTime();
+
+  const minute = 60 * 1000;
+  const hour = 60 * minute;
+  const day = 24 * hour;
+  const week = 7 * day;
+  const month = 30 * day;
+  const year = 365 * day;
+
+  if (diff < minute) {
     const seconds = Math.floor(diff / 1000);
-    const minutes = Math.floor(diff / (1000 * 60));
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const weeks = Math.floor(days / 7);
-
-    if (minutes < 1) return `${seconds} seconds ago`;
-    if (hours < 1) return `${minutes} minutes ago`;
-    if (days < 1) return `${hours} hours ago`;
-    if (days < 7) return `${days} days ago`;
-    if (days < 30) return `${weeks} weeks ago`;
-
-    const day = date.getDate();
-    const suffix =
-      day % 10 === 1 && day !== 11
-        ? "st"
-        : day % 10 === 2 && day !== 12
-        ? "nd"
-        : day % 10 === 3 && day !== 13
-        ? "rd"
-        : "th";
-
-    const month = date.toLocaleString("default", { month: "short" });
-    const year = date.getFullYear();
-
-    return `${day}${suffix} ${month} ${year}`;
+    return `${seconds} ${seconds === 1 ? "second" : "seconds"} ago`;
+  } else if (diff < hour) {
+    const minutes = Math.floor(diff / minute);
+    return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
+  } else if (diff < day) {
+    const hours = Math.floor(diff / hour);
+    return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
+  } else if (diff < week) {
+    const days = Math.floor(diff / day);
+    return `${days} ${days === 1 ? "day" : "days"} ago`;
+  } else if (diff < month) {
+    const weeks = Math.floor(diff / week);
+    return `${weeks} ${weeks === 1 ? "week" : "weeks"} ago`;
+  } else if (diff < year) {
+    const months = Math.floor(diff / month);
+    return `${months} ${months === 1 ? "month" : "months"} ago`;
+  } else {
+    const years = Math.floor(diff / year);
+    return `${years} ${years === 1 ? "year" : "years"} ago`;
   }
+}
 
   return (
     <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">
@@ -110,7 +116,7 @@ const Page = async ({ params, searchParams }: URLProps) => {
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
                     </svg>
-                    {getTimestamp(que.answers)}
+                    {que.answers}
                   </span>
 
                   <span title="Views" className="flex items-center gap-1 text-zinc-700 dark:text-zinc-100">

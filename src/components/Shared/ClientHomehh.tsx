@@ -272,7 +272,6 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
               >
                 {/* User */}
                 <div className="flex items-center gap-3">
-                  <Link href={`/profile/${que?.user?._id}`}>
                     <Image
                     src={que.user.image}
                     alt={que.user.name}
@@ -280,8 +279,10 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
                     height={24}
                     className={`h-8 w-8 rounded-full object-cover ${isDark ? "border-1 border-orange-700" : "border-2 border-orange-500" } `}
                   />
-                  </Link>
+                  
+                <Link title={`clerkId: ${que?.user?.clerkId}`} href={`/profile/${que?.user?.clerkId}`}>
                   <span className="text-sm font-medium">{que.user.name}</span>
+                </Link>
                 </div>
 
                 {/* Stats */}

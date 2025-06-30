@@ -71,7 +71,6 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
     connectToDatabase();
 
     const { clerkId, searchQuery, filter, page = 1, pageSize = 20 } = params;
-    console.log(clerkId, searchQuery, filter);
 
     const skipAmount = (page - 1) * pageSize;
     
@@ -114,9 +113,11 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
       },
       populate: [
         { path: 'tags', model: Tag, select: "_id name" },
-        { path: 'author', model: User, select: '_id clerkId name image'}
+        { path: 'author', model: User, select: '_id clerkId name picture'}
       ]
-    })
+    }).lean();
+
+    console.log("user from DB : ", user);
 
     const isNext = user.saved.length > pageSize;
     

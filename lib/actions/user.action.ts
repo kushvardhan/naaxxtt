@@ -3,15 +3,99 @@
 import { FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
 import Question from "../../database/question.model";
+import Answer from "../../database/answer.model";
 import User from "../../database/user.model";
 import Tag from "../../database/tag.model";
 import { connectToDatabase } from "../mongoose";
 import { CreateUserParams, DeleteUserParams, GetAllUsersParams, GetSavedQuestionsParams, GetUserByIdParams, GetUserStatsParams, ToggleSaveQuestionParams, UpdateUserParams } from "./shared.type";
 
 
+export async function getUserById(params: any) {
+  try {
+    connectToDatabase();
+
+    const { userId } = params;
+
+    const user = await User.findOne({ clerkId: userId });
+
+    return user;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getUserInfo(params: GetUserByIdParams) {
+  try {
+    connectToDatabase();
+
+    const { userId } = params;
+
+    const user = await User.findOne({ clerkId: userId });
+
+    if(!user) {
+      throw new Error('User not found');
+    }
+
+    const totalQuestions = await Question.countDocuments({ author: user._id })
+    const totalAnswers = await Answer.countDocuments({ author: user._id });
+
+    const [questionUpvotes] = await Question.aggregate([
+      { $match: { author: user._id }},
+      { $project: {
+        _id: 0, upvotes: { $size: "$upvotes" }
+      }},
+      { $group: {
+        _id: null,
+        totalUpvotes: { $sum: "$upvotes" }
+      }}
+    ])
+
+    const [answerUpvotes] = await Answer.aggregate([
+      { $match: { author: user._id }},
+      { $project: {
+        _id: 0, upvotes: { $size: "$upvotes" }
+      }},
+      { $group: {
+        _id: null,
+        totalUpvotes: { $sum: "$upvotes" }
+      }}
+    ])
+
+    const [questionViews] = await Answer.aggregate([
+      { $match: { author: user._id }},
+      { $group: {
+        _id: null,
+        totalViews: { $sum: "$views" }
+      }}
+    ])
+
+    const criteria = [
+      { type: 'QUESTION_COUNT' as BadgeCriteriaType, count: totalQuestions },
+      { type: 'ANSWER_COUNT' as BadgeCriteriaType, count: totalAnswers },
+      { type: 'QUESTION_UPVOTES' as BadgeCriteriaType, count: questionUpvotes?.totalUpvotes || 0 },
+      { type: 'ANSWER_UPVOTES' as BadgeCriteriaType, count: answerUpvotes?.totalUpvotes || 0 },
+      { type: 'TOTAL_VIEWS' as BadgeCriteriaType, count: questionViews?.totalViews || 0 },
+    ]
+
+    const badgeCounts = assignBadges({ criteria });
+
+    return {
+      user,
+      totalQuestions,
+      totalAnswers,
+      badgeCounts,
+      reputation: user.reputation,
+    }    
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
 export async function getAllUser(params?: GetAllUsersParams) {
   try {
-    await connectToDatabase();
+    connectToDatabase();
 
     // const {page=1, pageSize=20, filter, searchQuery} = params;
 
@@ -134,25 +218,7 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
   }
 }
 
-export async function getUserById(params: { userId: string }) {
-  try {
-    await connectToDatabase();
-    console.log("Fetching USERRR");
 
-    const { userId } = params;
-
-    const user = await User.findOne({ clerkId: userId }).lean();
-
-    console.log("User fetched: ", user);
-
-    if (!user) return null;
-
-    return user;
-  } catch (error) {
-    console.error("Error fetching user:", error);
-    throw error;
-  }
-}
 
 export async function createUser(userData: CreateUserParams) {
   try {

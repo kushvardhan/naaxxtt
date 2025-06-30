@@ -74,3 +74,4 @@ export const formUrlQuery = ({ params, key, value}: UrlQueryParams) => {
   },
   { skipNull: true})
 }
+

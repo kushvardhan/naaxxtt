@@ -89,6 +89,8 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
 
   const questions = mappedQuestions || [];
 
+  console.log("mp que: ", mappedQuestions);
+
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
@@ -270,13 +272,14 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
               >
                 {/* User */}
                 <div className="flex items-center gap-3">
-                  <Image
+                    <Image
                     src={que.user.image}
                     alt={que.user.name}
                     width={24}
                     height={24}
                     className={`h-8 w-8 rounded-full object-cover ${isDark ? "border-1 border-orange-700" : "border-2 border-orange-500" } `}
                   />
+                  
                   <span className="text-sm font-medium">{que.user.name}</span>
                 </div>
 

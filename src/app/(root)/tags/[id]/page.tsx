@@ -3,7 +3,7 @@ import Image from "next/image";
 import NoResult from '../../../../components/Shared/NoResult';
 import Pagination from '../../../../components/Shared/Pagination';
 import { getQuestionsByTagId } from '../../../../../lib/actions/tag.action';
-import { formatAndDivideNumber, getTimestamp } from '../../../../../lib/utils';
+import { formatAndDivideNumber } from '../../../../../lib/utils';
 
 interface URLProps {
   params: { id: string };

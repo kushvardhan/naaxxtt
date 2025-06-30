@@ -28,6 +28,7 @@ export default async function Home() {
     const result = await getQuestions({});
     // console.log(result);
     const questions = result || [];
+    console.log(result);
 
     const mappedQuestions = questions.map((q: Question) => ({
       _id: q._id.toString(),
@@ -38,6 +39,8 @@ export default async function Home() {
           name: tag.name || "Unknown",
         })) || [],
       user: {
+        clerkId : q.author?.clerkId,
+        userId: q.author?._id,
         name: q.author?.name || "Unknown User",
         image:
           q.author?.image ||
@@ -50,6 +53,8 @@ export default async function Home() {
         ? new Date(q.createdAt).toISOString()
         : new Date().toISOString(),
     }));
+
+ 
 
     return (
       <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">

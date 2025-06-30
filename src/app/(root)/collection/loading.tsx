@@ -3,7 +3,7 @@ import React from 'react'
 
 const Loading = () => {
   return (
-    <section className='overflow-y-auto scrollbar-hidden'>
+    <section className='w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden'>
       <h1 className="h1-bold text-dark100_light900">All Users</h1>
 
       <div className="mb-12 mt-11 flex flex-wrap gap-5">

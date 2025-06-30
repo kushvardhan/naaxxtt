@@ -21,6 +21,8 @@ type Tag = {
 type Author = {
   name: string;
   image: string;
+  clerkId: string;
+  userId: string;
 };
 
 type Question = {

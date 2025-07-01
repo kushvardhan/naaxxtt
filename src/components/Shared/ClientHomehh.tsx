@@ -91,7 +91,7 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
 
   const questions = mappedQuestions || [];
 
-  console.log("mp que: ", mappedQuestions);
+  // console.log("mp que: ", mappedQuestions);
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>

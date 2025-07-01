@@ -28,7 +28,7 @@ export default async function Home() {
     const result = await getQuestions({});
     // console.log(result);
     const questions = result || [];
-    console.log(result);
+    // console.log(result);
 
     const mappedQuestions = questions.map((q: Question) => ({
       _id: q._id.toString(),

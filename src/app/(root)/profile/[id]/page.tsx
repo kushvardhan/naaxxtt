@@ -20,7 +20,7 @@ export default async function Page({ params }: URLProps) {
   }
 
   return (
-    <div className="w-full min-h-[calc(100vh-130px)] mt-20 px-4 sm:px-6 md:px-10 lg:px-24 py-8 bg-gradient-to-br from-[#f9fafb] to-[#e9eff5] dark:from-gray-900 dark:to-gray-800">
+    <div className="w-full min-h-[calc(100vh-130px)]  mt-20 overflow-y-scroll scrollbar-hidden px-4 sm:px-6 md:px-10 lg:px-24 py-8 bg-gradient-to-br from-[#f9fafb] to-[#e9eff5] dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-8 space-y-8 transition-all">
         {/* Profile Header */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-6">

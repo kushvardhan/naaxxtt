@@ -1,5 +1,4 @@
-import { formatAndDivideNumber } from "@/lib/utils"
-import { BadgeCounts } from "@/lib/utils";
+import { formatAndDivideNumber, BadgeCounts } from "../../../lib/utils";
 import Image from "next/image";
 
 interface StatsCardProps {

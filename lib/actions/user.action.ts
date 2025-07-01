@@ -8,6 +8,7 @@ import User from "../../database/user.model";
 import Tag from "../../database/tag.model";
 import { connectToDatabase } from "../mongoose";
 import { CreateUserParams, DeleteUserParams, GetAllUsersParams, GetSavedQuestionsParams, GetUserByIdParams, GetUserStatsParams, ToggleSaveQuestionParams, UpdateUserParams } from "./shared.type";
+import { assignBadges, BadgeCriteriaType } from "../utils";
 
 
 export async function getUserById(params: any) {
@@ -79,6 +80,12 @@ export async function getUserInfo(params: GetUserByIdParams) {
     ]
 
     const badgeCounts = assignBadges({ criteria });
+
+    console.log(user,
+      totalQuestions,
+      totalAnswers,
+      badgeCounts,
+      user.reputation);
 
     return {
       user,

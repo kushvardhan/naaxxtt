@@ -4,7 +4,9 @@ import React from 'react'
 const Loading = () => {
   return (
     <section className='w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden'>
-      <h1 className="h1-bold text-dark100_light900">All Users</h1>
+      <h1 className="text-2xl lg:text-4xl font-bold font-mono dark:text-zinc-100 text-black">
+                Tags..
+              </h1>
 
       <div className="mb-12 mt-11 flex flex-wrap gap-5">
         <Skeleton className="h-14 flex-1" />

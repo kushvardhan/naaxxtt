@@ -8,7 +8,7 @@ interface URLProps {
 }
 
 export default async function Page({ params }: URLProps) {
-  const { userId: clerkId } = auth()
+  const { userId: clerkId } = await auth()
   const user = await getUserById({ userId: params.id })
 
   if (!user) {

@@ -1,5 +1,6 @@
 import { getUserById, getUserInfo } from '../../../../../lib/actions/user.action'
-import {  SignedIn,auth } from '@clerk/nextjs/server'
+import {  auth } from '@clerk/nextjs/server';
+import {  SignedIn } from '@clerk/nextjs';
 import Image from 'next/image'
 import Link from 'next/link'
 

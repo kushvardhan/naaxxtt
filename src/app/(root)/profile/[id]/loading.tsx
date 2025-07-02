@@ -3,8 +3,8 @@ import React from 'react'
 
 const Loading = () => {
   return (
-    <section className='w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden'>
-      <h1 className="text-2xl lg:text-4xl font-bold font-mono dark:text-zinc-100 text-black">
+    <section className='w-full h-[calc(100vh-120px)] mt-20 overflow-y-scroll scrollbar-hidden'>
+      <h1 className="text-xl lg:text-3xl font-bold font-mono dark:text-zinc-100 text-black mt-3">
                 User Profile
               </h1>
 

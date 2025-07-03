@@ -115,10 +115,11 @@ export default async function Page({ params }: URLProps) {
           </TabsList>
           <TabsContent value="top-posts" className="mt-5 flex w-full flex-col gap-6">
             <QuestionTab 
-              searchParams={params.searchParams}
-              userId={userInfo.user._id}
-              clerkId={clerkId}
-            />
+  searchParams={params.searchParams}
+  userId={userInfo.user._id.toString()}
+  clerkId={clerkId}
+/>
+
           </TabsContent>
           {/* <TabsContent value="answers" className="flex w-full flex-col gap-6">
             <AnswersTab 

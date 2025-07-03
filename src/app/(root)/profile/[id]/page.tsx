@@ -28,7 +28,7 @@ const getJoinedDate = (date: Date): string => {
 }
 
 
-export default async function Page({ params }: URLProps) {
+export default async function Page({ params, searchParams }: URLProps) {
   const { userId: clerkId } = await auth()
   const userInfo = await getUserInfo({ userId: params.id })
 
@@ -114,11 +114,12 @@ export default async function Page({ params }: URLProps) {
             <TabsTrigger value="answers" className="tab">Answers</TabsTrigger>
           </TabsList>
           <TabsContent value="top-posts" className="mt-5 flex w-full flex-col gap-6">
-            <QuestionTab 
-  searchParams={params.searchParams}
+           <QuestionTab 
+  searchParams={searchParams}
   userId={userInfo.user._id.toString()}
   clerkId={clerkId}
 />
+
 
           </TabsContent>
           {/* <TabsContent value="answers" className="flex w-full flex-col gap-6">

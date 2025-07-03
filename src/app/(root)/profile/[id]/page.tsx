@@ -7,9 +7,14 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import ProfileLink from '@/components/Shared/ProfileLink';
 import Stats from '@/components/Shared/Stats';
+import QuestionTab from '@/components/Shared/QuestionTab';
+
+
 
 interface URLProps {
-  params: { id: string }
+  params: {
+    searchParams: { [key: string]: string; }; id: string 
+}
   searchParams: { [key: string]: string | undefined }
 }
 
@@ -110,18 +115,18 @@ export default async function Page({ params }: URLProps) {
           </TabsList>
           <TabsContent value="top-posts" className="mt-5 flex w-full flex-col gap-6">
             <QuestionTab 
-              searchParams={searchParams}
+              searchParams={params.searchParams}
               userId={userInfo.user._id}
               clerkId={clerkId}
             />
           </TabsContent>
-          <TabsContent value="answers" className="flex w-full flex-col gap-6">
+          {/* <TabsContent value="answers" className="flex w-full flex-col gap-6">
             <AnswersTab 
               searchParams={searchParams}
               userId={userInfo.user._id}
               clerkId={clerkId}
             />
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </div>
 

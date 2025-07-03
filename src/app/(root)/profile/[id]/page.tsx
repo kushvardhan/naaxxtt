@@ -4,6 +4,7 @@ import {  SignedIn } from '@clerk/nextjs';
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import ProfileLink from '@/components/Shared/ProfileLink';
 import Stats from '@/components/Shared/Stats';
 
@@ -101,7 +102,28 @@ export default async function Page({ params }: URLProps) {
         totalAnswers={userInfo.totalAnswers}
         badges={userInfo.badgeCounts}
       />
-
+    <div className="mt-10 flex gap-10">
+        <Tabs defaultValue="top-posts" className="flex-1">
+          <TabsList className="background-light800_dark400 min-h-[42px] p-1">
+            <TabsTrigger value="top-posts" className="tab">Top Posts</TabsTrigger>
+            <TabsTrigger value="answers" className="tab">Answers</TabsTrigger>
+          </TabsList>
+          <TabsContent value="top-posts" className="mt-5 flex w-full flex-col gap-6">
+            <QuestionTab 
+              searchParams={searchParams}
+              userId={userInfo.user._id}
+              clerkId={clerkId}
+            />
+          </TabsContent>
+          <TabsContent value="answers" className="flex w-full flex-col gap-6">
+            <AnswersTab 
+              searchParams={searchParams}
+              userId={userInfo.user._id}
+              clerkId={clerkId}
+            />
+          </TabsContent>
+        </Tabs>
+      </div>
 
     </div>
   )

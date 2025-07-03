@@ -146,6 +146,13 @@ export interface GetSavedQuestionsParams {
   searchQuery?: string;
 }
 
+export interface GetUserStatsParams {
+  userId: string;
+  page?: number;
+  pageSize?: number;
+}
+
+
 export interface GetUserByIdParams {
   userId: string;
 }

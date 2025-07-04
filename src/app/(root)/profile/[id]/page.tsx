@@ -36,7 +36,7 @@ export default async function Page({ params, searchParams }: URLProps) {
   }
 
   return (
-    <div className="w-full h-[calc(100vh-120px)] overflow-y-auto scrollbar-hidden  px-4 sm:px-10 md:px-20 mt-20 bg-white dark:bg-zinc-950 text-black dark:text-white transition-colors duration-300">
+    <div className="w-full h-[calc(100vh-120px)] overflow-y-auto scrollbar-hidden  px-4 sm:px-10 md:px-20 mt-18 bg-white dark:bg-zinc-950 text-black dark:text-white transition-colors duration-300">
       {/* Profile Header */}
       <div className="flex flex-col-reverse sm:flex-row justify-between items-start sm:items-center gap-6">
         <div className="flex items-start gap-6">
@@ -86,7 +86,7 @@ export default async function Page({ params, searchParams }: URLProps) {
         <SignedIn>
           {clerkId === userInfo.user.clerkId && (
             <Link href="/profile/edit">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-5 rounded-md shadow-md">
+              <Button className="bg-blue-600 text-sm cursor-pointer hover:bg-blue-700 text-white py-3 px-5 rounded-md shadow-md">
                 Edit Profile
               </Button>
             </Link>

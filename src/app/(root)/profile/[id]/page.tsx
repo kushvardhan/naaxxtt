@@ -3,11 +3,11 @@ import {  auth } from '@clerk/nextjs/server';
 import {  SignedIn } from '@clerk/nextjs';
 import Image from 'next/image'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button';
+import { Button } from '../../../../components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import ProfileLink from '@/components/Shared/ProfileLink';
-import Stats from '@/components/Shared/Stats';
-import QuestionTab from '@/components/Shared/QuestionTab';
+import ProfileLink from '../../../../components/Shared/ProfileLink';
+import Stats from '../../../../components/Shared/Stats';
+import QuestionTab from '../../../../components/Shared/QuestionTab';
 
 interface URLProps {
   params: {
@@ -36,7 +36,7 @@ export default async function Page({ params, searchParams }: URLProps) {
   }
 
   return (
-    <div className="w-full min-h-screen px-4 sm:px-10 md:px-20 mt-20 bg-white dark:bg-zinc-900 text-black dark:text-white transition-colors duration-300">
+    <div className="w-full h-[calc(100vh-120px)] overflow-y-auto scrollbar-hidden  px-4 sm:px-10 md:px-20 mt-20 bg-white dark:bg-zinc-950 text-black dark:text-white transition-colors duration-300">
       {/* Profile Header */}
       <div className="flex flex-col-reverse sm:flex-row justify-between items-start sm:items-center gap-6">
         <div className="flex items-start gap-6">

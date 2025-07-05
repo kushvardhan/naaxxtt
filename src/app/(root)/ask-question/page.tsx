@@ -1,9 +1,10 @@
 import Question from "@/components/forms/Question";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getOrCreateUser } from "../../../../lib/helpers/user";
 
 export const metadata: Metadata = {
-  title: 'nullPointer | Ask-Question',
+  title: "nullPointer | Ask-Question",
 };
 
 const Page = async () => {
@@ -20,7 +21,7 @@ const Page = async () => {
           Ask a Question
         </h1>
         <div className="mt-8 px-2">
-          <Question mongoUserId={mongoUser._id} />
+          <Question mongoUserId={mongoUser._id.toString()} />
         </div>
       </div>
     );

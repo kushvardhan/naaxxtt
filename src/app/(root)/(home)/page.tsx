@@ -1,6 +1,5 @@
 import { getQuestions } from "../../../../lib/actions/question.action";
 import ClientHomehh from "../../../components/Shared/ClientHomehh";
-import { auth } from "@clerk/nextjs/server";
 
 interface Tag {
   _id: string;
@@ -39,8 +38,8 @@ export default async function Home() {
           name: tag.name || "Unknown",
         })) || [],
       user: {
-        clerkId : q.author?.clerkId,
-        userId: q.author?._id,
+        clerkId: q.author?.clerkId,
+        userId: q.author?._id?.toString(),
         name: q.author?.name || "Unknown User",
         image:
           q.author?.image ||
@@ -53,8 +52,6 @@ export default async function Home() {
         ? new Date(q.createdAt).toISOString()
         : new Date().toISOString(),
     }));
-
- 
 
     return (
       <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">

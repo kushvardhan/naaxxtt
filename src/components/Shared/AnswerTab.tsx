@@ -14,21 +14,34 @@ interface SearchParamsProps {
 }
 
 function formatDate(dateString: string): string {
+  if (!dateString || isNaN(Date.parse(dateString))) return "Unknown date";
+
   const date = new Date(dateString);
   const now = new Date();
   const diff = now.getTime() - date.getTime();
+
   const seconds = Math.floor(diff / 1000);
   const minutes = Math.floor(diff / (1000 * 60));
   const hours = Math.floor(diff / (1000 * 60 * 60));
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   const weeks = Math.floor(days / 7);
+
   if (minutes < 1) return `${seconds} seconds ago`;
   if (hours < 1) return `${minutes} minutes ago`;
   if (days < 1) return `${hours} hours ago`;
   if (days < 7) return `${days} days ago`;
   if (days < 30) return `${weeks} weeks ago`;
+
   const day = date.getDate();
-  const suffix = day % 10 === 1 && day !== 11 ? "st" : day % 10 === 2 && day !== 12 ? "nd" : day % 10 === 3 && day !== 13 ? "rd" : "th";
+  const suffix =
+    day % 10 === 1 && day !== 11
+      ? "st"
+      : day % 10 === 2 && day !== 12
+      ? "nd"
+      : day % 10 === 3 && day !== 13
+      ? "rd"
+      : "th";
+
   const month = date.toLocaleString("default", { month: "short" });
   const year = date.getFullYear();
   return `${day}${suffix} ${month} ${year}`;
@@ -103,8 +116,11 @@ function AnswerCard({ _id, question, content, author, upvotes, createdAt }: Answ
       )}
 
       {/* Answer Content */}
-      <p className="mt-3 line-clamp-3 text-sm dark:text-zinc-300 text-zinc-700" dangerouslySetInnerHTML={{ __html: content }} />
-
+{/* Answer Content */}
+      <p
+        className="mt-3 line-clamp-3 text-sm dark:text-zinc-300 text-zinc-700"
+        dangerouslySetInnerHTML={{ __html: content || "" }}
+      />
       {/* Meta Info */}
       <div className="mt-4 flex justify-between text-xs sm:text-sm dark:text-zinc-400 text-zinc-500">
         <div className="flex items-center gap-2">
@@ -132,7 +148,7 @@ function AnswerCard({ _id, question, content, author, upvotes, createdAt }: Answ
         </div>
 
         <div className="flex items-center gap-4">
-          <span title="Upvotes">⬆ {upvotes.length}</span>
+          {/* <span title="Upvotes">⬆ {upvotes.length}</span> */}
           <span title="Created At">{formatDate(createdAt)}</span>
         </div>
       </div>

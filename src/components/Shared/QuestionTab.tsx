@@ -211,7 +211,7 @@ const QuestionTab = async ({ searchParams, userId, clerkId }: Props) => {
   console.log("Quest Tab: ", result );
 
   return (
-    <>
+    <div className='w-full h-full '>
       {result.questions.map((question) => (
         <QuestionCard 
           key={question._id}
@@ -234,7 +234,7 @@ const QuestionTab = async ({ searchParams, userId, clerkId }: Props) => {
           />
 
         </div>
-    </>
+    </div>
   )
 }
 

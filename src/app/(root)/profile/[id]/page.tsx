@@ -45,7 +45,7 @@ export default async function Page({ params, searchParams }: URLProps) {
             alt="profile picture"
             width={130}
             height={130}
-            className="rounded-full object-cover border-4 border-zinc-300 dark:border-zinc-700"
+            className="rounded-full object-cover border-2 border-orange-300 dark:border-orange-700"
           />
           <div className="space-y-2">
             <h2 className="text-2xl sm:text-3xl font-bold text-zinc-800 dark:text-zinc-100">

@@ -1,4 +1,4 @@
-import { getUserById, getUserInfo } from '../../../../../lib/actions/user.action'
+import {  getUserInfo } from '../../../../../lib/actions/user.action'
 import {  auth } from '@clerk/nextjs/server';
 import {  SignedIn } from '@clerk/nextjs';
 import Image from 'next/image'
@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import ProfileLink from '../../../../components/Shared/ProfileLink';
 import Stats from '../../../../components/Shared/Stats';
 import QuestionTab from '../../../../components/Shared/QuestionTab';
+import AnswerTab from '../../../../components/Shared/AnswerTab';
 
 interface URLProps {
   params: {
@@ -129,9 +130,11 @@ export default async function Page({ params, searchParams }: URLProps) {
           </TabsContent>
 
           {/* Future implementation */}
-          {/* <TabsContent value="answers" className="mt-6">
-            <AnswersTab ... />
-          </TabsContent> */}
+          <TabsContent value="answers" className="mt-6">
+            <AnswerTab searchParams={searchParams}
+              userId={userInfo.user._id.toString()}
+              clerkId={clerkId} />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

@@ -52,28 +52,42 @@ interface AnswerCardProps {
 }
 
 function AnswerCard({ _id, question, content, author, upvotes, createdAt }: AnswerCardProps) {
+  if (!question) {
+    return (
+      <div className="p-4 border rounded-xl dark:bg-zinc-950 bg-white text-red-600 dark:text-red-300">
+        <p>This answer is linked to a deleted question.</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full rounded-xl cursor-pointer border p-4 shadow-sm transition-all duration-200 hover:shadow-lg bg-white border-zinc-300 shadow-md shadow-zinc-400 dark:bg-zinc-950 dark:border-zinc-700 dark:shadow-lg dark:shadow-zinc-800">
+    <div className="w-full rounded-xl cursor-pointer border p-4 shadow-sm transition-all duration-200 hover:shadow-lg 
+      bg-white border-zinc-300 shadow-md shadow-zinc-400
+      dark:bg-zinc-950 dark:border-zinc-700 dark:shadow-lg dark:shadow-zinc-800">
+      
       {/* Question Title */}
-      <Link href={`/#`}>
-        <h2 className="text-base sm:text-lg hover:underline font-semibold line-clamp-2 break-words dark:text-zinc-100 dark:hover:text-blue-200 text-zinc-800 hover:text-blue-800">
+      <Link href={`/question/${question._id}`}>
+        <h2 className="text-base sm:text-lg hover:underline font-semibold line-clamp-2 break-words 
+          dark:text-zinc-100 dark:hover:text-blue-200 text-zinc-800 hover:text-blue-800">
           {question.title}
         </h2>
       </Link>
 
       {/* Tags */}
-      <div className="mt-2 flex flex-wrap gap-2">
-        {question.tags.map((tag) => (
-          <span key={tag._id} className="rounded-md sm:text-xs cursor-pointer px-2 py-1 text-xs font-mono bg-zinc-200 text-zinc-950 hover:bg-zinc-300 dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
-            {tag.name}
-          </span>
-        ))}
-      </div>
+      {question.tags?.length > 0 && (
+        <div className="mt-2 flex flex-wrap gap-2">
+          {question.tags.map((tag) => (
+            <span key={tag._id} className="rounded-md sm:text-xs cursor-pointer px-2 py-1 text-xs font-mono bg-zinc-200 text-zinc-950 hover:bg-zinc-300 dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
+              {tag.name}
+            </span>
+          ))}
+        </div>
+      )}
 
-      {/* Answer Content Preview */}
+      {/* Answer Content */}
       <p className="mt-3 line-clamp-3 text-sm dark:text-zinc-300 text-zinc-700" dangerouslySetInnerHTML={{ __html: content }} />
 
-      {/* Footer */}
+      {/* Meta Info */}
       <div className="mt-4 flex justify-between text-xs sm:text-sm dark:text-zinc-400 text-zinc-500">
         <div className="flex items-center gap-2">
           {author.image ? (
@@ -97,6 +111,7 @@ function AnswerCard({ _id, question, content, author, upvotes, createdAt }: Answ
   );
 }
 
+
 const AnswerTab = async ({ searchParams, userId }: Props) => {
   const result = await getUserAnswers({
     userId,
@@ -109,9 +124,12 @@ const AnswerTab = async ({ searchParams, userId }: Props) => {
       <div className="mt-8 flex w-full flex-col gap-6">
         {result.answers.length > 0 ? (
           <>
-            {result.answers.map((ans) => (
-              <AnswerCard key={ans._id} {...ans} />
-            ))}
+            {result.answers
+  .filter((a) => a.question) // only include answers with valid question
+  .map((ans) => (
+    <AnswerCard key={ans._id} {...ans} />
+))}
+
             <div className="mt-10">
               <Pagination pageNumber={searchParams.page ? +searchParams.page : 1} isNext={result.isNextAnswer} />
             </div>

@@ -54,9 +54,27 @@ interface AnswerCardProps {
 function AnswerCard({ _id, question, content, author, upvotes, createdAt }: AnswerCardProps) {
   if (!question) {
     return (
-      <div className="p-4 border rounded-xl dark:bg-zinc-950 bg-white text-red-600 dark:text-red-300">
-        <p>This answer is linked to a deleted question.</p>
-      </div>
+      <div
+  className="relative max-w-xl mx-auto p-6 mb-6 rounded-3xl transition-all duration-300 overflow-hidden shadow-md
+    bg-white text-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+>
+  {/* Floating Badge */}
+  <div className="absolute -top-5 -left-5 w-20 h-20 bg-zinc-200 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 rounded-xl shadow-md flex items-center justify-center text-2xl font-semibold rotate-[-10deg]">
+    ⚠️
+  </div>
+  <div className="absolute -bottom-5 -right-5 w-20 h-20 bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400 rounded-xl shadow-md flex items-center justify-center text-xl font-semibold rotate-[8deg]">
+    🗑️
+  </div>
+
+  {/* Message */}
+  <p className="text-center text-xl font-bold font-mono tracking-tight">
+    Linked Question Not Found
+  </p>
+  <p className="text-center mt-2 text-base font-medium select-none text-zinc-700 dark:text-zinc-300/80">
+    This answer was originally posted under a question that has been removed or no longer exists.
+  </p>
+</div>
+
     );
   }
 

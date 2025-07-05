@@ -105,16 +105,16 @@ export default async function Page({ params, searchParams }: URLProps) {
       {/* Questions Tabs */}
       <div className="mt-12">
         <Tabs defaultValue="top-posts" className="w-full">
-          <TabsList className="flex bg-zinc-100 dark:bg-zinc-800 rounded-md p-1 w-fit">
+          <TabsList className="flex bg-zinc-400 text-black dark:text-white dark:bg-black rounded-md p-1 w-fit">
             <TabsTrigger
               value="top-posts"
-              className="px-4 py-2 text-sm rounded-md transition-all data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+              className="px-4 py-2 text-sm rounded-md transition-all dark:data-[state=active]:bg-blue-800 dark:data-[state=active]:text-white data-[state=active]:bg-blue-600 data-[state=active]:text-white"
             >
               Top Posts
             </TabsTrigger>
             <TabsTrigger
               value="answers"
-              className="px-4 py-2 text-sm rounded-md transition-all data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+              className="px-4 py-2 text-sm rounded-md transition-all dark:data-[state=active]:bg-blue-800 dark:data-[state=active]:text-white data-[state=active]:bg-blue-600 data-[state=active]:text-white"
             >
               Answers
             </TabsTrigger>

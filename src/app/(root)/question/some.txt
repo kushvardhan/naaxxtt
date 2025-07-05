@@ -106,6 +106,58 @@ export default async function Page({ params }: URLProps) {
     )
   }
 
+
+<div
+            className={`relative max-w-xl mx-auto p-8 rounded-3xl transition-all duration-300 overflow-hidden shadow-md
+              ${isDark ? "bg-zinc-900 text-zinc-100" : "bg-white text-zinc-800"}
+            `}
+          >
+            {/* Mini Floating Cards */}
+            <div className="absolute -top-6 -left-6 w-24 h-24 bg-orange-100 dark:bg-orange-900 text-orange-600 dark:text-orange-300 rounded-xl shadow-md flex items-center justify-center text-3xl font-bold rotate-[-12deg]">
+              ?
+            </div>
+            <div className="absolute -bottom-6 -right-6 w-20 h-20 bg-pink-100 dark:bg-pink-900 text-pink-600 dark:text-pink-300 rounded-xl shadow-md flex items-center justify-center text-2xl font-bold rotate-[10deg]">
+              ???
+            </div>
+
+            {/* SVG Illustration */}
+            <div className="flex justify-center mb-6">
+              {/* your SVG code */}
+            </div>
+
+            {/* Message */}
+            <p className="text-center text-2xl font-bold font-mono tracking-tighter">
+              No Questions Found
+            </p>
+            <p
+              className={`text-center mt-2 text-base font-medium select-none ${
+                isDark ? "text-zinc-300/80" : "text-zinc-700"
+              }`}
+            >
+              Be the first to break the silence! 🚀 Ask a Question and kickstart
+              the discussion. Your query could be the next big thing others
+              learn from. Get involved!
+            </p>
+
+            {/* Ask a Question Button */}
+            <div className="mt-8 flex justify-center">
+              <Link
+                href="/ask-question"
+                className={`
+                  px-6 py-3 rounded-lg font-bold text-lg
+                  bg-gradient-to-r from-orange-400 to-orange-600
+                  hover:from-orange-500 hover:to-orange-700
+                  text-white shadow-md transition
+                  focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2
+                  dark:from-orange-700 dark:to-orange-900 dark:hover:from-orange-800 dark:hover:to-orange-950
+                `}
+              >
+                Ask a Question
+              </Link>
+            </div>
+          </div>
+
+
   return (
     <div
               key={que._id}

@@ -212,22 +212,50 @@ const QuestionTab = async ({ searchParams, userId, clerkId }: Props) => {
 
   return (
     <div className='w-full h-full '>
-      <div className="mt-8 flex w-full flex-col gap-6">
-        {result.questions.map((question) => (
-        <QuestionCard 
-          key={question._id}
-          _id={question._id}
-          clerkId={clerkId}
-          title={question.title}
-          tags={question.tags}
-          author={question.author}
-          upvotes={question.upvotes}
-          views={question.views}
-          answers={question.answers}
-          createdAt={question.createdAt}
-        />
-      ))}
+<div className="mt-8 flex w-full flex-col gap-6">
+  {result.questions.length > 0 ? (
+    result.questions.map((question) => (
+      <QuestionCard 
+        key={question._id}
+        _id={question._id}
+        clerkId={clerkId}
+        title={question.title}
+        tags={question.tags}
+        author={question.author}
+        upvotes={question.upvotes}
+        views={question.views}
+        answers={question.answers}
+        createdAt={question.createdAt}
+      />
+    ))
+  ) : (
+    <div
+      className="relative max-w-xl mx-auto p-8 rounded-3xl transition-all duration-300 overflow-hidden shadow-md
+        bg-white text-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+    >
+      {/* Mini Floating Cards */}
+      <div className="absolute -top-6 -left-6 w-24 h-24 bg-orange-100 text-orange-600 dark:bg-orange-900 dark:text-orange-300 rounded-xl shadow-md flex items-center justify-center text-3xl font-bold rotate-[-12deg]">
+        ?
       </div>
+      <div className="absolute -bottom-6 -right-6 w-20 h-20 bg-pink-100 text-pink-600 dark:bg-pink-900 dark:text-pink-300 rounded-xl shadow-md flex items-center justify-center text-2xl font-bold rotate-[10deg]">
+        ???
+      </div>
+
+      {/* SVG Illustration */}
+      <div className="flex justify-center mb-6">
+        {/* your SVG code */}
+      </div>
+
+      {/* Message */}
+      <p className="text-center text-2xl font-bold font-mono tracking-tighter">
+        No Questions Found
+      </p>
+      <p className="text-center mt-2 text-base font-medium select-none text-zinc-700 dark:text-zinc-300/80">
+  No questions have been asked yet. 🚀 Start the conversation by posting your query — chances are, others are wondering the same!
+</p>
+    </div>
+  )}
+</div>
 
         <div className="mt-10">
           <Pagination 

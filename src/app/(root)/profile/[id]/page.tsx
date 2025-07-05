@@ -26,7 +26,7 @@ const getJoinedDate = (date: Date): string => {
 
 export default async function Page({ params, searchParams }: URLProps) {
   const { userId: clerkId } = await auth();
-  const userInfo = await getUserInfo({ userId: params.id });
+  const userInfo = await getUserInfo({ userId: params?.id });
 
   if (!userInfo) {
     return (

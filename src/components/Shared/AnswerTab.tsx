@@ -39,7 +39,7 @@ interface AnswerCardProps {
   question: {
     _id: string;
     title: string;
-    tags: { _id: string; name: string }[];
+    tags?: { _id: string; name: string }[]; // <-- tags optional
   };
   content: string;
   author: {
@@ -74,7 +74,7 @@ function AnswerCard({ _id, question, content, author, upvotes, createdAt }: Answ
       </Link>
 
       {/* Tags */}
-      {question.tags?.length > 0 && (
+      {Array.isArray(question.tags) && question.tags.length > 0 && (
         <div className="mt-2 flex flex-wrap gap-2">
           {question.tags.map((tag) => (
             <span key={tag._id} className="rounded-md sm:text-xs cursor-pointer px-2 py-1 text-xs font-mono bg-zinc-200 text-zinc-950 hover:bg-zinc-300 dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600">
@@ -111,13 +111,12 @@ function AnswerCard({ _id, question, content, author, upvotes, createdAt }: Answ
   );
 }
 
-
 const AnswerTab = async ({ searchParams, userId }: Props) => {
   const result = await getUserAnswers({
     userId,
     page: searchParams.page ? +searchParams.page : 1,
   });
-  console.log("Ans res: ", result);
+  console.log("Answer resss: ", result);
 
   return (
     <div className="w-full h-full">
@@ -125,17 +124,47 @@ const AnswerTab = async ({ searchParams, userId }: Props) => {
         {result.answers.length > 0 ? (
           <>
             {result.answers
-  .filter((a) => a.question) // only include answers with valid question
-  .map((ans) => (
-    <AnswerCard key={ans._id} {...ans} />
-))}
+              .filter((a) => a.question)
+              .map((ans) => (
+                <AnswerCard
+                  key={ans._id}
+                  {...ans}
+                  question={{
+                    ...ans.question,
+                    tags: Array.isArray(ans.question.tags) ? ans.question.tags : [],
+                  }}
+                />
+              ))}
 
             <div className="mt-10">
-              <Pagination pageNumber={searchParams.page ? +searchParams.page : 1} isNext={result.isNextAnswer} />
+              <Pagination
+                pageNumber={searchParams.page ? +searchParams.page : 1}
+                isNext={result.isNextAnswer}
+              />
             </div>
           </>
         ) : (
-          <div className="text-center py-10 text-zinc-600 dark:text-zinc-400">No answers posted yet.</div>
+          <div
+            className="relative max-w-xl mx-auto p-8 mb-6 rounded-3xl transition-all duration-300 overflow-hidden shadow-md
+              bg-white text-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+          >
+            {/* Floating Cards */}
+            <div className="absolute -top-6 -left-6 w-24 h-24 bg-blue-200 text-blue-600 dark:bg-blue-900 dark:text-blue-300 rounded-xl shadow-md flex items-center justify-center text-3xl font-bold rotate-[-12deg]">
+              💭
+            </div>
+            <div className="absolute -bottom-6 -right-6 w-20 h-20 bg-purple-200 text-purple-600 dark:bg-purple-900 dark:text-purple-300 rounded-xl shadow-md flex items-center justify-center text-2xl font-bold rotate-[10deg]">
+              💬
+            </div>
+
+            {/* Message */}
+            <p className="text-center text-2xl font-bold font-mono tracking-tighter">
+              No Answers Yet
+            </p>
+            <p className="text-center mt-2 text-base font-medium select-none text-zinc-700 dark:text-zinc-300/80">
+              You haven’t shared your thoughts yet. ✍️ Dive in and start answering —
+              your insights might be exactly what someone needs to move forward!
+            </p>
+          </div>
         )}
       </div>
     </div>

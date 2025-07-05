@@ -80,8 +80,8 @@ function QuestionCard({
 
   return (
     <div className="w-full rounded-xl cursor-pointer border p-4 mt-4 shadow-sm transition-all duration-200 hover:shadow-lg 
-  dark:bg-zinc-950 dark:border-zinc-700 dark:shadow-lg shadow-zinc-800 hover:bg-zinc-950 dark:hover:shadow-[inset_0px_1px_1px_0px_rgba(255,165,2,0.7)] dark:hover:shadow-lg dark:hover:shadow-zinc-700 dark:transition-all dark:duration-400
-  bg-white border-zinc-300 shadow-md shadow-zinc-400 hover:bg-zinc-950 hover:shadow-[inset_0px_2px_2px_0px_rgba(555,165,2,0.8)] hover:bg-yellow-100/30 hover:shadow-lg hover:shadow-zinc-400  text-black  transition-all duration-400  ">
+  dark:bg-zinc-950 dark:border-zinc-700 dark:shadow-lg shadow-zinc-800 hover:bg-zinc-950 dark:bg-zinc-950 dark:border-zinc-700 dark:shadow-lg dark:shadow-zinc-800
+  bg-white border-zinc-300 shadow-md shadow-zinc-400 bg-white border-zinc-300 shadow-md shadow-zinc-400 ">
 
   {/* Title */}
   {title && (
@@ -212,7 +212,8 @@ const QuestionTab = async ({ searchParams, userId, clerkId }: Props) => {
 
   return (
     <div className='w-full h-full '>
-      {result.questions.map((question) => (
+      <div className="mt-8 flex w-full flex-col gap-6">
+        {result.questions.map((question) => (
         <QuestionCard 
           key={question._id}
           _id={question._id}
@@ -226,6 +227,7 @@ const QuestionTab = async ({ searchParams, userId, clerkId }: Props) => {
           createdAt={question.createdAt}
         />
       ))}
+      </div>
 
         <div className="mt-10">
           <Pagination 

@@ -79,7 +79,7 @@ function QuestionCard({
   const isDark = false;
 
   return (
-    <div className="w-full rounded-xl cursor-pointer border p-4 mt-2 shadow-sm transition-all duration-200 hover:shadow-lg 
+    <div className="w-full rounded-xl cursor-pointer border p-4 mt-4 shadow-sm transition-all duration-200 hover:shadow-lg 
   dark:bg-zinc-950 dark:border-zinc-700 dark:shadow-lg shadow-zinc-800 
   bg-white border-zinc-300 shadow-md shadow-zinc-400">
 

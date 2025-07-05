@@ -51,7 +51,7 @@ export default async function Page({ params, searchParams }: URLProps) {
             <h2 className="text-2xl sm:text-3xl font-bold text-zinc-800 dark:text-zinc-100">
               {userInfo.user.name}
             </h2>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">
+            <p className="text-md text-zinc-700 dark:text-zinc-300">
               @{userInfo.user.username}
             </p>
 

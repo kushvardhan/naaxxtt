@@ -100,7 +100,7 @@ function QuestionCard({
         <span
           key={tag?._id}
           title={tag?.name}
-          className="rounded-md cursor-pointer px-2 py-1 text-xs font-mono 
+          className="rounded-md sm:text-xs cursor-pointer px-2 py-1 text-xs font-mono 
             dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600 dark:transition-all 
             bg-zinc-200 text-zinc-950 hover:bg-zinc-300 transition-all"
         >

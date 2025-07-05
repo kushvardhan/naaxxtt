@@ -9,7 +9,7 @@ interface ProfileLinkProps {
 
 const ProfileLink = ({ imgUrl, href, title }: ProfileLinkProps) => {
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-1 dark:text-zinc-400 text-zinc-800">
       <Image src={imgUrl} alt="icon" width={20} height={20} />
 
       {href ? (

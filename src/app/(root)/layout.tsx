@@ -34,8 +34,8 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   // Show loading state until mounted and theme is ready
   if (!mounted || !theme || !theme.mounted) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-white dark:bg-black">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+      <div className="flex items-center justify-center min-h-screen bg-white dark:bg-black" suppressHydrationWarning>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500" suppressHydrationWarning></div>
       </div>
     );
   }

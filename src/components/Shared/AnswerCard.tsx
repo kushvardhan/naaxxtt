@@ -1,9 +1,9 @@
 "use client";
 
-import { useContext, useState, useEffect } from "react";
-import { ThemeContext } from "../../../context/ThemeContext";
 import Image from "next/image";
 import Link from "next/link";
+import { useContext, useEffect, useState } from "react";
+import { ThemeContext } from "../../../context/ThemeContext";
 
 interface Author {
   _id: string;
@@ -38,13 +38,28 @@ const AnswerCard = ({ answer }: AnswerCardProps) => {
 
   if (!mounted || !theme || !theme.mounted) {
     return (
-      <div className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-2xl h-48">
-        <div className="p-6 flex gap-4">
-          <div className="w-8 h-20 bg-gray-300 dark:bg-gray-600 rounded"></div>
-          <div className="flex-1 space-y-4">
-            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-full"></div>
-            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-3/4"></div>
-            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+      <div
+        className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-2xl h-48"
+        suppressHydrationWarning
+      >
+        <div className="p-6 flex gap-4" suppressHydrationWarning>
+          <div
+            className="w-8 h-20 bg-gray-300 dark:bg-gray-600 rounded"
+            suppressHydrationWarning
+          ></div>
+          <div className="flex-1 space-y-4" suppressHydrationWarning>
+            <div
+              className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-full"
+              suppressHydrationWarning
+            ></div>
+            <div
+              className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-3/4"
+              suppressHydrationWarning
+            ></div>
+            <div
+              className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2"
+              suppressHydrationWarning
+            ></div>
           </div>
         </div>
       </div>
@@ -55,13 +70,26 @@ const AnswerCard = ({ answer }: AnswerCardProps) => {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    const month = monthNames[date.getMonth()];
+    const day = date.getDate();
+    const year = date.getFullYear();
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    return `${month} ${day}, ${year} at ${hours}:${minutes}`;
   };
 
   const handleVote = (type: "upvote" | "downvote") => {
@@ -125,7 +153,12 @@ const AnswerCard = ({ answer }: AnswerCardProps) => {
                   : "text-zinc-600 hover:text-red-600 hover:bg-red-50"
               }`}
             >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" transform="rotate(180)">
+              <svg
+                className="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                transform="rotate(180)"
+              >
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
               </svg>
             </button>
@@ -160,7 +193,9 @@ const AnswerCard = ({ answer }: AnswerCardProps) => {
                     {answer.author.name}
                   </Link>
                   <div className="flex items-center gap-2 text-sm">
-                    <span className={isDark ? "text-zinc-400" : "text-zinc-600"}>
+                    <span
+                      className={isDark ? "text-zinc-400" : "text-zinc-600"}
+                    >
                       @{answer.author.username}
                     </span>
                     <span className="text-orange-500 font-semibold">

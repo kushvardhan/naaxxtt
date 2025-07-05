@@ -1,17 +1,17 @@
 "use client";
 
-import { useContext, useState, useEffect, useMemo } from "react";
-import { ThemeContext } from "../../../context/ThemeContext";
-import Link from "next/link";
-import Image from "next/image";
 import LocalSearchBar from "@/components/Shared/Search/LocalSearchBar";
+import { Button } from "@/components/Shared/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/Shared/dropdown-menu";
-import { Button } from "@/components/Shared/button";
+import Image from "next/image";
+import Link from "next/link";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { ThemeContext } from "../../../context/ThemeContext";
 
 interface Author {
   _id: string;
@@ -64,8 +64,12 @@ const QuestionsClient = ({ questions }: QuestionsClientProps) => {
         (question) =>
           question.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
           question.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          question.author.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          question.tags.some(tag => tag.name.toLowerCase().includes(searchQuery.toLowerCase()))
+          question.author.name
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          question.tags.some((tag) =>
+            tag.name.toLowerCase().includes(searchQuery.toLowerCase())
+          )
       );
     }
 
@@ -74,13 +78,21 @@ const QuestionsClient = ({ questions }: QuestionsClientProps) => {
       const primaryFilter = selectedFilters[0];
       switch (primaryFilter) {
         case "Newest":
-          filtered = filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+          filtered = filtered.sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
           break;
         case "Oldest":
-          filtered = filtered.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+          filtered = filtered.sort(
+            (a, b) =>
+              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
           break;
         case "Most Voted":
-          filtered = filtered.sort((a, b) => b.upvotes.length - a.upvotes.length);
+          filtered = filtered.sort(
+            (a, b) => b.upvotes.length - a.upvotes.length
+          );
           break;
         case "Most Answered":
           filtered = filtered.sort((a, b) => b.answers - a.answers);
@@ -98,8 +110,14 @@ const QuestionsClient = ({ questions }: QuestionsClientProps) => {
 
   if (!mounted || !theme || !theme.mounted) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+      <div
+        className="flex items-center justify-center h-64"
+        suppressHydrationWarning
+      >
+        <div
+          className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"
+          suppressHydrationWarning
+        ></div>
       </div>
     );
   }
@@ -124,15 +142,31 @@ const QuestionsClient = ({ questions }: QuestionsClientProps) => {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const month = monthNames[date.getMonth()];
+    const day = date.getDate();
+    const year = date.getFullYear();
+    return `${month} ${day}, ${year}`;
   };
 
   return (
-    <div className="h-[calc(screen-120px)] w-full overflow-y-scroll scrollbar-hidden">
+    <div
+      className="h-[calc(screen-120px)] w-full overflow-y-scroll scrollbar-hidden"
+      suppressHydrationWarning
+    >
       {/* Header */}
       <div className="mb-8">
         <h1
@@ -164,8 +198,8 @@ const QuestionsClient = ({ questions }: QuestionsClientProps) => {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="font-mono px-4 py-2 text-sm flex items-center gap-2 min-w-[140px]"
             >
               Sort By
@@ -193,7 +227,9 @@ const QuestionsClient = ({ questions }: QuestionsClientProps) => {
 
           <DropdownMenuContent
             className={`w-48 rounded-lg py-2 px-1 ${
-              isDark ? "bg-zinc-900 border-zinc-700" : "bg-white border-zinc-200"
+              isDark
+                ? "bg-zinc-900 border-zinc-700"
+                : "bg-white border-zinc-200"
             }`}
           >
             {Filters.map((item, idx) => (
@@ -224,8 +260,8 @@ const QuestionsClient = ({ questions }: QuestionsClientProps) => {
       {/* Stats Bar */}
       <div
         className={`mb-6 p-4 rounded-lg border ${
-          isDark 
-            ? "bg-zinc-900/50 border-zinc-800 text-zinc-300" 
+          isDark
+            ? "bg-zinc-900/50 border-zinc-800 text-zinc-300"
             : "bg-zinc-50 border-zinc-200 text-zinc-600"
         }`}
       >
@@ -268,22 +304,40 @@ const QuestionsClient = ({ questions }: QuestionsClientProps) => {
               }`}
               style={{
                 animationDelay: `${index * 50}ms`,
-                animationFillMode: 'both'
+                animationFillMode: "both",
               }}
             >
               <div className="flex gap-6">
                 {/* Stats */}
                 <div className="flex flex-col items-center gap-2 min-w-[80px]">
-                  <div className={`text-center ${isDark ? "text-zinc-300" : "text-zinc-700"}`}>
-                    <div className="text-lg font-bold font-mono">{question.upvotes.length}</div>
+                  <div
+                    className={`text-center ${
+                      isDark ? "text-zinc-300" : "text-zinc-700"
+                    }`}
+                  >
+                    <div className="text-lg font-bold font-mono">
+                      {question.upvotes.length}
+                    </div>
                     <div className="text-xs font-mono">votes</div>
                   </div>
-                  <div className={`text-center ${isDark ? "text-zinc-300" : "text-zinc-700"}`}>
-                    <div className="text-lg font-bold font-mono">{question.answers}</div>
+                  <div
+                    className={`text-center ${
+                      isDark ? "text-zinc-300" : "text-zinc-700"
+                    }`}
+                  >
+                    <div className="text-lg font-bold font-mono">
+                      {question.answers}
+                    </div>
                     <div className="text-xs font-mono">answers</div>
                   </div>
-                  <div className={`text-center ${isDark ? "text-zinc-300" : "text-zinc-700"}`}>
-                    <div className="text-lg font-bold font-mono">{question.views}</div>
+                  <div
+                    className={`text-center ${
+                      isDark ? "text-zinc-300" : "text-zinc-700"
+                    }`}
+                  >
+                    <div className="text-lg font-bold font-mono">
+                      {question.views}
+                    </div>
                     <div className="text-xs font-mono">views</div>
                   </div>
                 </div>
@@ -350,7 +404,9 @@ const QuestionsClient = ({ questions }: QuestionsClientProps) => {
           }`}
         >
           <div className="text-6xl mb-4">❓</div>
-          <h3 className="text-xl font-mono font-semibold mb-2">No questions found</h3>
+          <h3 className="text-xl font-mono font-semibold mb-2">
+            No questions found
+          </h3>
           <p className="text-sm">
             {searchQuery || selectedFilters.length > 0
               ? "Try adjusting your search or filters"

@@ -61,31 +61,45 @@ const QuestionClient = ({ question }: QuestionClientProps) => {
 
   useEffect(() => {
     if (mounted) {
-      const created = new Date(question.createdAt).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
+      const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        const monthNames = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+        const month = monthNames[date.getMonth()];
+        const day = date.getDate();
+        const year = date.getFullYear();
+        const hours = date.getHours().toString().padStart(2, "0");
+        const minutes = date.getMinutes().toString().padStart(2, "0");
+        return `${month} ${day}, ${year} at ${hours}:${minutes}`;
+      };
 
-      const updated = new Date(question.updatedAt).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-
-      setCreatedAtFormatted(created);
-      setUpdatedAtFormatted(updated);
+      setCreatedAtFormatted(formatDate(question.createdAt));
+      setUpdatedAtFormatted(formatDate(question.updatedAt));
     }
   }, [question.createdAt, question.updatedAt, mounted]);
 
   if (!mounted || !theme || !theme.mounted) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+      <div
+        className="flex items-center justify-center h-64"
+        suppressHydrationWarning
+      >
+        <div
+          className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"
+          suppressHydrationWarning
+        ></div>
       </div>
     );
   }
@@ -104,7 +118,10 @@ const QuestionClient = ({ question }: QuestionClientProps) => {
   };
 
   return (
-    <div className="h-[calc(screen-120px)] w-full overflow-y-scroll scrollbar-hidden " suppressHydrationWarning>
+    <div
+      className="h-[calc(screen-120px)] w-full overflow-y-scroll scrollbar-hidden"
+      suppressHydrationWarning
+    >
       {/* Question Header */}
       <div className="mb-8">
         <h1
@@ -124,7 +141,9 @@ const QuestionClient = ({ question }: QuestionClientProps) => {
             Modified {updatedAtFormatted}
           </span>
           <span className={isDark ? "text-zinc-400" : "text-zinc-600"}>
-            Viewed {question.views.toLocaleString()} times
+            Viewed{" "}
+            {question.views.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+            times
           </span>
         </div>
       </div>

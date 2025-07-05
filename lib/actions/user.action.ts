@@ -1,5 +1,5 @@
 "use server";
-
+import mongoose from 'mongoose';
 import { FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
 import Answer from "../../database/answer.model";

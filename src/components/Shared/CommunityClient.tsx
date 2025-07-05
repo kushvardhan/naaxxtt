@@ -66,8 +66,14 @@ const CommunityClient = ({ users }: CommunityClientProps) => {
 
   if (!mounted || !theme || !theme.mounted) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+      <div
+        className="flex items-center justify-center h-64"
+        suppressHydrationWarning
+      >
+        <div
+          className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"
+          suppressHydrationWarning
+        ></div>
       </div>
     );
   }
@@ -87,7 +93,10 @@ const CommunityClient = ({ users }: CommunityClientProps) => {
   };
 
   return (
-    <div className="h-[calc(screen-120px)] w-full overflow-y-scroll scrollbar-hidden">
+    <div
+      className="h-[calc(screen-120px)] w-full overflow-y-scroll scrollbar-hidden"
+      suppressHydrationWarning
+    >
       {/* Header */}
       <div className="mb-8">
         <h1

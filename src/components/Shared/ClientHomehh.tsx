@@ -66,7 +66,7 @@ function formatDate(dateString: string): string {
   if (days < 7) return `${days} days ago`;
   if (days < 30) return `${weeks} weeks ago`;
 
-  // If older than a month
+  // If older than a month - use fixed month names to avoid locale issues
   const day = date.getDate();
   const suffix =
     day % 10 === 1 && day !== 11
@@ -77,7 +77,21 @@ function formatDate(dateString: string): string {
       ? "rd"
       : "th";
 
-  const month = date.toLocaleString("default", { month: "short" });
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const month = monthNames[date.getMonth()];
   const year = date.getFullYear();
 
   return `${day}${suffix} ${month} ${year}`;
@@ -236,15 +250,19 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
               `}
             >
               {/* Title */}
-              
+
               <Link href={`/question/${que._id}`}>
                 <h2
-                className={`text-base sm:text-lg hover:underline font-semibold line-clamp-2 break-words
-                  ${isDark ? "text-zinc-100 hover:text-blue-300" : "text-zinc-800 hover:text-blue-700"}
+                  className={`text-base sm:text-lg hover:underline font-semibold line-clamp-2 break-words
+                  ${
+                    isDark
+                      ? "text-zinc-100 hover:text-blue-300"
+                      : "text-zinc-800 hover:text-blue-700"
+                  }
                 `}
-              >
-                {que.title}
-              </h2>
+                >
+                  {que.title}
+                </h2>
               </Link>
 
               {/* Tags */}
@@ -274,17 +292,24 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
               >
                 {/* User */}
                 <div className="flex items-center gap-3">
-                    <Image
+                  <Image
                     src={que.user.image}
                     alt={que.user.name}
                     width={24}
                     height={24}
-                    className={`h-8 w-8 rounded-full object-cover ${isDark ? "border-1 border-orange-700" : "border-2 border-orange-500" } `}
+                    className={`h-8 w-8 rounded-full object-cover ${
+                      isDark
+                        ? "border-1 border-orange-700"
+                        : "border-2 border-orange-500"
+                    } `}
                   />
-                  
-                <Link title={`clerkId: ${que?.user?.clerkId}`} href={`/profile/${que?.user?.clerkId}`}>
-                  <span className="text-sm font-medium">{que.user.name}</span>
-                </Link>
+
+                  <Link
+                    title={`clerkId: ${que?.user?.clerkId}`}
+                    href={`/profile/${que?.user?.clerkId}`}
+                  >
+                    <span className="text-sm font-medium">{que.user.name}</span>
+                  </Link>
                 </div>
 
                 {/* Stats */}

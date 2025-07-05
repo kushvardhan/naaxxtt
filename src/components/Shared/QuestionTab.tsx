@@ -76,7 +76,6 @@ function QuestionCard({
   answers,
   createdAt,
 }: QuestionCardProps) {
-  // You may want to get isDark from context or props, for now let's assume false
   const isDark = false;
 
   return (

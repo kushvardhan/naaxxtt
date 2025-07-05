@@ -213,8 +213,8 @@ const QuestionTab = async ({ searchParams, userId, clerkId }: Props) => {
   return (
 <div className="w-full h-full">
   <div className="mt-8 flex w-full flex-col gap-6">
-    {result.questions.length < 0 ? (
-      <>
+    {result.questions.length > 0 ? (
+      <div className='w-full h-full'>
         {result.questions.map((question) => (
           <QuestionCard 
             key={question._id}
@@ -236,10 +236,10 @@ const QuestionTab = async ({ searchParams, userId, clerkId }: Props) => {
             isNext={result.isNextQuestions}
           />
         </div>
-      </>
+      </div>
     ) : (
       <div
-        className="relative max-w-xl mx-auto p-8 rounded-3xl transition-all duration-300 overflow-hidden shadow-md
+        className="relative max-w-xl mx-auto p-8 mb-6 rounded-3xl transition-all duration-300 overflow-hidden shadow-md
           bg-white text-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
       >
         {/* Mini Floating Cards */}

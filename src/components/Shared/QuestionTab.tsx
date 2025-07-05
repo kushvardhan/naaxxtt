@@ -81,13 +81,14 @@ function QuestionCard({
   return (
     <div className="w-full rounded-xl cursor-pointer border p-4 shadow-sm transition-all duration-200 hover:shadow-lg 
   bg-white border-zinc-300 shadow-md shadow-zinc-400
-  dark:bg-zinc-950 dark:border-zinc-700 dark:shadow-lg dark:shadow-zinc-800">
+  dark:bg-zinc-950 dark:border-zinc-700 dark:shadow-lg dark:shadow-zinc-800"
+>
 
   {/* Title */}
   {title && (
     <Link href={`/question/${_id}`}>
       <h2 className="text-base sm:text-lg hover:underline font-semibold line-clamp-2 break-words 
-        dark:text-zinc-100 dark:hover:text-blue-300 text-zinc-800 hover:text-blue-700">
+        dark:text-zinc-100 dark:hover:text-blue-200 text-zinc-800 hover:text-blue-800">
         {title}
       </h2>
     </Link>
@@ -228,7 +229,7 @@ const QuestionTab = async ({ searchParams, userId, clerkId }: Props) => {
 <div className="w-full h-full">
   <div className="mt-8 flex w-full flex-col gap-10">
     {result.questions.length > 0 ? (
-      <div className='w-full h-full gap-6'>
+      <div className=' h-full flex w-full flex-col gap-6'>
         {result.questions.map((question) => (
           <QuestionCard 
             key={question._id}

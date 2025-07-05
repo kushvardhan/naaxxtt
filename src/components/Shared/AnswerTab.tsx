@@ -108,16 +108,27 @@ function AnswerCard({ _id, question, content, author, upvotes, createdAt }: Answ
       {/* Meta Info */}
       <div className="mt-4 flex justify-between text-xs sm:text-sm dark:text-zinc-400 text-zinc-500">
         <div className="flex items-center gap-2">
-          {author.image ? (
-            <Image src={author.image} alt="user" width={24} height={24} className="h-6 w-6 rounded-full object-cover" />
-          ) : (
-            <div className="h-6 w-6 rounded-full bg-zinc-400 flex items-center justify-center text-xs font-bold text-white">
-              {author.name[0]}
-            </div>
-          )}
-          <Link href={`/profile/${author.clerkId ?? "#"}`}>
-            <span className="font-medium">{author.name}</span>
-          </Link>
+         {author?.image ? (
+  <Image
+    src={author.image}
+    alt="user"
+    width={24}
+    height={24}
+    className="h-6 w-6 rounded-full object-cover"
+  />
+) : (
+  <div className="h-6 w-6 rounded-full bg-zinc-400 flex items-center justify-center text-xs font-bold text-white">
+    {author?.name?.[0]?.toUpperCase() ?? "?"}
+  </div>
+)}
+
+          {author && (
+  <Link href={`/profile/${author.clerkId ?? "#"}`}>
+    <span className="font-medium">{author.name ?? "Anonymous"}</span>
+  </Link>
+)}
+
+
         </div>
 
         <div className="flex items-center gap-4">
@@ -142,17 +153,17 @@ const AnswerTab = async ({ searchParams, userId }: Props) => {
         {result.answers.length > 0 ? (
           <>
             {result.answers
-              .filter((a) => a.question)
-              .map((ans) => (
-                <AnswerCard
-                  key={ans._id}
-                  {...ans}
-                  question={{
-                    ...ans.question,
-                    tags: Array.isArray(ans.question.tags) ? ans.question.tags : [],
-                  }}
-                />
-              ))}
+  .filter((a) => a.question && a.author && typeof a.author === "object")
+  .map((ans) => (
+    <AnswerCard
+      key={ans._id}
+      {...ans}
+      question={{
+        ...ans.question,
+        tags: Array.isArray(ans.question.tags) ? ans.question.tags : [],
+      }}
+    />
+  ))}
 
             <div className="mt-10">
               <Pagination

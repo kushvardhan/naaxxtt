@@ -2,14 +2,22 @@
 
 import { FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
-import Question from "../../database/question.model";
 import Answer from "../../database/answer.model";
-import User from "../../database/user.model";
+import Question from "../../database/question.model";
 import Tag from "../../database/tag.model";
+import User from "../../database/user.model";
 import { connectToDatabase } from "../mongoose";
-import { CreateUserParams, DeleteUserParams, GetAllUsersParams, GetSavedQuestionsParams, GetUserByIdParams, GetUserStatsParams, ToggleSaveQuestionParams, UpdateUserParams } from "./shared.type";
 import { assignBadges, BadgeCriteriaType } from "../utils";
-
+import {
+  CreateUserParams,
+  DeleteUserParams,
+  GetAllUsersParams,
+  GetSavedQuestionsParams,
+  GetUserByIdParams,
+  GetUserStatsParams,
+  ToggleSaveQuestionParams,
+  UpdateUserParams,
+} from "./shared.type";
 
 export async function getUserById(params: any) {
   try {
@@ -34,58 +42,81 @@ export async function getUserInfo(params: GetUserByIdParams) {
 
     const user = await User.findOne({ clerkId: userId });
 
-    if(!user) {
-      throw new Error('User not found');
+    if (!user) {
+      throw new Error("User not found");
     }
 
-    const totalQuestions = await Question.countDocuments({ author: user._id })
+    const totalQuestions = await Question.countDocuments({ author: user._id });
     const totalAnswers = await Answer.countDocuments({ author: user._id });
 
     const [questionUpvotes] = await Question.aggregate([
-      { $match: { author: user._id }},
-      { $project: {
-        _id: 0, upvotes: { $size: "$upvotes" }
-      }},
-      { $group: {
-        _id: null,
-        totalUpvotes: { $sum: "$upvotes" }
-      }}
-    ])
+      { $match: { author: user._id } },
+      {
+        $project: {
+          _id: 0,
+          upvotes: { $size: "$upvotes" },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalUpvotes: { $sum: "$upvotes" },
+        },
+      },
+    ]);
 
     const [answerUpvotes] = await Answer.aggregate([
-      { $match: { author: user._id }},
-      { $project: {
-        _id: 0, upvotes: { $size: "$upvotes" }
-      }},
-      { $group: {
-        _id: null,
-        totalUpvotes: { $sum: "$upvotes" }
-      }}
-    ])
+      { $match: { author: user._id } },
+      {
+        $project: {
+          _id: 0,
+          upvotes: { $size: "$upvotes" },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalUpvotes: { $sum: "$upvotes" },
+        },
+      },
+    ]);
 
     const [questionViews] = await Answer.aggregate([
-      { $match: { author: user._id }},
-      { $group: {
-        _id: null,
-        totalViews: { $sum: "$views" }
-      }}
-    ])
+      { $match: { author: user._id } },
+      {
+        $group: {
+          _id: null,
+          totalViews: { $sum: "$views" },
+        },
+      },
+    ]);
 
     const criteria = [
-      { type: 'QUESTION_COUNT' as BadgeCriteriaType, count: totalQuestions },
-      { type: 'ANSWER_COUNT' as BadgeCriteriaType, count: totalAnswers },
-      { type: 'QUESTION_UPVOTES' as BadgeCriteriaType, count: questionUpvotes?.totalUpvotes || 0 },
-      { type: 'ANSWER_UPVOTES' as BadgeCriteriaType, count: answerUpvotes?.totalUpvotes || 0 },
-      { type: 'TOTAL_VIEWS' as BadgeCriteriaType, count: questionViews?.totalViews || 0 },
-    ]
+      { type: "QUESTION_COUNT" as BadgeCriteriaType, count: totalQuestions },
+      { type: "ANSWER_COUNT" as BadgeCriteriaType, count: totalAnswers },
+      {
+        type: "QUESTION_UPVOTES" as BadgeCriteriaType,
+        count: questionUpvotes?.totalUpvotes || 0,
+      },
+      {
+        type: "ANSWER_UPVOTES" as BadgeCriteriaType,
+        count: answerUpvotes?.totalUpvotes || 0,
+      },
+      {
+        type: "TOTAL_VIEWS" as BadgeCriteriaType,
+        count: questionViews?.totalViews || 0,
+      },
+    ];
 
     const badgeCounts = assignBadges({ criteria });
 
-    console.log(user,
+    console.log(
+      user,
       totalQuestions,
       totalAnswers,
       badgeCounts,
-      user.reputation);
+      user.reputation
+    );
 
     return {
       user,
@@ -93,7 +124,7 @@ export async function getUserInfo(params: GetUserByIdParams) {
       totalAnswers,
       badgeCounts,
       reputation: user.reputation,
-    }    
+    };
   } catch (error) {
     console.log(error);
     throw error;
@@ -108,10 +139,13 @@ export async function getAllUser(params?: GetAllUsersParams) {
 
     const users = await User.find({}).sort({ createdAt: -1 }).lean();
 
-    const plainUsers = users.map((user) => ({
+    const plainUsers = users.map((user: any) => ({
       ...user,
       _id: user._id.toString(),
-      joinedAt: user.joinedAt instanceof Date ? user.joinedAt.toISOString() : user.joinedAt,
+      joinedAt:
+        user.joinedAt instanceof Date
+          ? user.joinedAt.toISOString()
+          : user.joinedAt,
       saved: user.saved?.map((id: any) => id.toString()) || [],
     }));
 
@@ -130,27 +164,29 @@ export async function toggleSaveQuestion(params?: ToggleSaveQuestionParams) {
 
     const user = await User.findById(userId);
 
-    if(!user) {
-      throw new Error('User not found');
+    if (!user) {
+      throw new Error("User not found");
     }
 
     const isQuestionSaved = user.saved.includes(questionId);
 
-    if(isQuestionSaved) {
+    if (isQuestionSaved) {
       // remove question from saved
-      await User.findByIdAndUpdate(userId, 
-        { $pull: { saved: questionId }},
+      await User.findByIdAndUpdate(
+        userId,
+        { $pull: { saved: questionId } },
         { new: true }
-      )
+      );
     } else {
       // add question to saved
-      await User.findByIdAndUpdate(userId, 
-        { $addToSet: { saved: questionId }},
+      await User.findByIdAndUpdate(
+        userId,
+        { $addToSet: { saved: questionId } },
         { new: true }
-      )
+      );
     }
 
-    revalidatePath(path)
+    revalidatePath(path);
   } catch (error) {
     console.log(error);
     throw error;
@@ -164,56 +200,56 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
     const { clerkId, searchQuery, filter, page = 1, pageSize = 20 } = params;
 
     const skipAmount = (page - 1) * pageSize;
-    
+
     const query: FilterQuery<typeof Question> = searchQuery
-      ? { title: { $regex: new RegExp(searchQuery, 'i') } }
-      : { };
+      ? { title: { $regex: new RegExp(searchQuery, "i") } }
+      : {};
 
-      let sortOptions = {};
+    let sortOptions = {};
 
-      switch (filter) {
-        case "most_recent":
-          sortOptions = { createdAt: -1 }
-          break;
-        case "oldest":
-          sortOptions = { createdAt: 1 }
-          break;
-        case "most_voted":
-          sortOptions = { upvotes: -1 }
-          break;
-        case "most_viewed":
-          sortOptions = { views: -1 }
-          break;
-        case "most_answered":
-          sortOptions = { answers: -1 }
-          break;
-      
-        default:
-          break;
-      }
+    switch (filter) {
+      case "most_recent":
+        sortOptions = { createdAt: -1 };
+        break;
+      case "oldest":
+        sortOptions = { createdAt: 1 };
+        break;
+      case "most_voted":
+        sortOptions = { upvotes: -1 };
+        break;
+      case "most_viewed":
+        sortOptions = { views: -1 };
+        break;
+      case "most_answered":
+        sortOptions = { answers: -1 };
+        break;
 
-    const user = await User
-    .findOne({ clerkId })
-    .populate({
-      path: 'saved',
-      match: query,
-      options: {
-        sort: sortOptions,
-        skip: skipAmount,
-        limit: pageSize + 1,
-      },
-      populate: [
-        { path: 'tags', model: Tag, select: "_id name" },
-        { path: 'author', model: User, select: '_id clerkId name image'}
-      ]
-    }).lean();
+      default:
+        break;
+    }
+
+    const user = await User.findOne({ clerkId })
+      .populate({
+        path: "saved",
+        match: query,
+        options: {
+          sort: sortOptions,
+          skip: skipAmount,
+          limit: pageSize + 1,
+        },
+        populate: [
+          { path: "tags", model: Tag, select: "_id name" },
+          { path: "author", model: User, select: "_id clerkId name image" },
+        ],
+      })
+      .lean();
 
     console.log("user from DB : ", user);
 
     const isNext = user.saved.length > pageSize;
-    
-    if(!user) {
-      throw new Error('User not found');
+
+    if (!user) {
+      throw new Error("User not found");
     }
 
     const savedQuestions = user.saved;
@@ -224,8 +260,6 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
     throw error;
   }
 }
-
-
 
 export async function createUser(userData: CreateUserParams) {
   try {
@@ -302,7 +336,6 @@ export async function deleteUser(params: DeleteUserParams) {
   }
 }
 
-
 export async function getUserQuestions(params: GetUserStatsParams) {
   try {
     connectToDatabase();
@@ -311,16 +344,16 @@ export async function getUserQuestions(params: GetUserStatsParams) {
 
     const skipAmount = (page - 1) * pageSize;
 
-    const totalQuestions = await Question.countDocuments({ author: userId})
+    const totalQuestions = await Question.countDocuments({ author: userId });
 
     const userQuestions = await Question.find({ author: userId })
-      .sort({ createdAt: -1, views: -1, upvotes: -1, })
+      .sort({ createdAt: -1, views: -1, upvotes: -1 })
       .skip(skipAmount)
       .limit(pageSize)
-      .populate('tags', '_id name')
-      .populate('author', '_id clerkId name image')
+      .populate("tags", "_id name")
+      .populate("author", "_id clerkId name image");
 
-      const isNextQuestions = totalQuestions > skipAmount + userQuestions.length;
+    const isNextQuestions = totalQuestions > skipAmount + userQuestions.length;
 
     return { totalQuestions, questions: userQuestions, isNextQuestions };
   } catch (error) {
@@ -337,24 +370,23 @@ export async function getUserAnswers(params: GetUserStatsParams) {
 
     const skipAmount = (page - 1) * pageSize;
 
-    const totalAnswers = await Answer.countDocuments({ author: userId})
+    const totalAnswers = await Answer.countDocuments({ author: userId });
 
     const userAnswers = await Answer.find({ author: userId })
       .sort({ upvotes: -1 })
       .skip(skipAmount)
       .limit(pageSize)
-      .populate('question', '_id title')
-      .populate('author', '_id clerkId name image')
+      .populate("question", "_id title")
+      .populate("author", "_id clerkId name image");
 
-      const isNextAnswer = totalAnswers > skipAmount + userAnswers.length;
-      
+    const isNextAnswer = totalAnswers > skipAmount + userAnswers.length;
+
     return { totalAnswers, answers: userAnswers, isNextAnswer };
   } catch (error) {
     console.log(error);
     throw error;
   }
 }
-
 
 // export async function User(params:GetAllUsersParams){
 //   try{

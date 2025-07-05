@@ -147,7 +147,11 @@ export function Question({ mongoUserId }: Props) {
         author: mongoUserId,
         path: pathname,
       });
-      console.log(mongoUserId," has created a new question of title: ", values.title);
+      console.log(
+        mongoUserId,
+        " has created a new question of title: ",
+        values.title
+      );
       router.push("/");
     } catch (error) {
       console.error("Error posting question:", error);
@@ -264,8 +268,8 @@ export function Question({ mongoUserId }: Props) {
                       "alignleft aligncenter alignright alignjustify | bullist numlist | codesample",
                     toolbar_mode: "wrap",
                     content_style: contentStyle,
-                    skin: isDark ? 'oxide-dark' : 'oxide',
-                    content_css: isDark ? 'dark' : 'light'
+                    skin: isDark ? "oxide-dark" : "oxide",
+                    content_css: isDark ? "dark" : "light",
                   }}
                 />
               </FormControl>
@@ -275,7 +279,7 @@ export function Question({ mongoUserId }: Props) {
                 }`}
               >
                 Introduce the problem and expand on what you put in the title.
-                Mininum 100 characters.
+                Minimum 100 characters.
               </FormDescription>
               <FormMessage />
             </FormItem>

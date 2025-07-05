@@ -318,7 +318,7 @@ export async function getUserQuestions(params: GetUserStatsParams) {
       .skip(skipAmount)
       .limit(pageSize)
       .populate('tags', '_id name')
-      .populate('author', '_id clerkId name picture')
+      .populate('author', '_id clerkId name image')
 
       const isNextQuestions = totalQuestions > skipAmount + userQuestions.length;
 
@@ -344,7 +344,7 @@ export async function getUserAnswers(params: GetUserStatsParams) {
       .skip(skipAmount)
       .limit(pageSize)
       .populate('question', '_id title')
-      .populate('author', '_id clerkId name picture')
+      .populate('author', '_id clerkId name image')
 
       const isNextAnswer = totalAnswers > skipAmount + userAnswers.length;
       

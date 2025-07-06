@@ -225,7 +225,7 @@ const QuestionTab = async ({ searchParams, userId, clerkId }: Props) => {
     userId,
     page: searchParams.page ? +searchParams.page : 1,
   })
-  console.log("Quest Tab: ", result );
+  // console.log("Quest Tab: ", result );
 
   return (
 <div className="w-full h-full">

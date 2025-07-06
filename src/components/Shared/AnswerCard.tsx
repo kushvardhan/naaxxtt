@@ -167,11 +167,12 @@ const AnswerCard = ({ answer }: AnswerCardProps) => {
           {/* Answer Content */}
           <div className="flex-1">
             <div
-              className={`prose prose-lg max-w-none mb-6 ${
-                isDark ? "prose-invert" : ""
-              }`}
-              dangerouslySetInnerHTML={{ __html: answer.content }}
-            />
+  className={`text-sm sm:text-base leading-relaxed tracking-normal break-words mb-6 ${
+    isDark ? "text-zinc-300" : "text-zinc-800"
+  }`}
+  dangerouslySetInnerHTML={{ __html: answer.content }}
+/>
+
 
             {/* Author Info */}
             <div className="flex items-center justify-between pt-6 border-t border-zinc-200 dark:border-zinc-700">

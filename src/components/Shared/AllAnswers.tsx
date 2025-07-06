@@ -1,14 +1,11 @@
-import React from 'react'
-import { getAnswers } from '../../../lib/actions/answer.action';
-import Link from 'next/link';
-import Image from 'next/image';
-import { getTimestamp } from '../../../lib/utils';
-import ParseHTML from './ParseHTML';
-import Votes from './Votes';
-import Pagination from './Pagination';
-import Filter from './Filter';
-import { useSearchParams } from 'next/navigation';
-
+import Image from "next/image";
+import Link from "next/link";
+import { getAnswers } from "../../../lib/actions/answer.action";
+import { getTimestamp } from "../../../lib/utils";
+import Filter from "./Filter";
+import Pagination from "./Pagination";
+import ParseHTML from "./ParseHTML";
+import Votes from "./Votes";
 
 interface Props {
   questionId: string;
@@ -18,41 +15,61 @@ interface Props {
   filter?: string;
 }
 
-
-
-const AllAnswers = async ({ questionId, userId, totalAnswers, page, filter }: Props) => {
+const AllAnswers = async ({
+  questionId,
+  userId,
+  totalAnswers,
+  page,
+  filter,
+}: Props) => {
   const result = await getAnswers({
     questionId,
     page: page ? +page : 1,
     sortBy: filter,
-  })
-  console.log("AnswerJFJB : ", result);
+  });
+  console.log("Server Answer resss: ", result);
 
   const AnswerFilters = [
-  { name: "Highest Upvotes", value: "highestUpvotes" },
-  { name: "Lowest Upvotes", value: "lowestUpvotes" },
-  { name: "Most Recent", value: "recent" },
-  { name: "Oldest", value: "old" },
-];
-
+    { name: "Highest Upvotes", value: "highestUpvotes" },
+    { name: "Lowest Upvotes", value: "lowestUpvotes" },
+    { name: "Most Recent", value: "recent" },
+    { name: "Oldest", value: "old" },
+  ];
 
   return (
-    <div className="mt-11">
-      <div className='flex items-center justify-between'>
-        <h3 className='text-2xl font-mono text-black dark:text-white'>{totalAnswers} <span className='text-xl font-regular text-zinc-900 dark:text-zinc-100' >Answers</span></h3>
+    <div className="mt-8 mb-12">
+      {/* Header Section */}
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-2xl font-mono font-semibold text-black dark:text-white">
+          {totalAnswers}{" "}
+          <span className="text-xl font-normal text-zinc-700 dark:text-zinc-300">
+            Answer{totalAnswers !== 1 ? "s" : ""}
+          </span>
+        </h3>
 
         {result.answers && result.answers.length > 0 && (
-  <Filter filters={AnswerFilters} />
-)}
+          <Filter filters={AnswerFilters} />
+        )}
       </div>
 
-      <div>
-        {result.answers.map((answer) => (
-          <article key={answer._id} className='light-border border-b py-10'>
-              <div className='mb-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2'>
-                <Link href={`/profile/${answer.author.clerkId}`} className="flex flex-1 items-start gap-1 sm:items-center">
+      {/* Answers List */}
+      <div className="space-y-8">
+        {result.answers && result.answers.length > 0 ? (
+          result.answers.map((answer) => (
+            <article
+              key={answer._id}
+              className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:border-zinc-300 dark:hover:border-zinc-700"
+            >
+              <div className="mb-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
+                <Link
+                  href={`/profile/${answer.author.clerkId}`}
+                  className="flex flex-1 items-start gap-1 sm:items-center"
+                >
                   <Image
-                    src={answer?.author?.image || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXdiU_9j45_WOVEx4pPhhIm7MaS1ju3RbXnt-k_mbz4XabjKhwDArh2jyExTXCl3IEVzw&usqp=CAU"}
+                    src={
+                      answer?.author?.image ||
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXdiU_9j45_WOVEx4pPhhIm7MaS1ju3RbXnt-k_mbz4XabjKhwDArh2jyExTXCl3IEVzw&usqp=CAU"
+                    }
                     width={28}
                     height={28}
                     alt="profile"
@@ -64,13 +81,12 @@ const AllAnswers = async ({ questionId, userId, totalAnswers, page, filter }: Pr
                     </p>
 
                     <p className="text-md text-zinc-900 dark:text-zinc-300/50 ml-2 mt-0.5 line-clamp-1">
-                      answered {" "}
-                      {getTimestamp(answer.createdAt)}
-                      </p>
+                      answered {getTimestamp(answer.createdAt)}
+                    </p>
                   </div>
                 </Link>
                 <div className="flex justify-end">
-                  <Votes 
+                  <Votes
                     type="Answer"
                     itemId={JSON.stringify(answer._id)}
                     userId={JSON.stringify(userId)}
@@ -80,21 +96,32 @@ const AllAnswers = async ({ questionId, userId, totalAnswers, page, filter }: Pr
                     hasdownVoted={answer.downvotes.includes(userId)}
                   />
                 </div>
-
-            </div>
+              </div>
               <ParseHTML data={answer.content} />
-          </article>
-        ))}
+            </article>
+          ))
+        ) : (
+          <div className="text-center py-12 text-zinc-600 dark:text-zinc-400">
+            <div className="text-6xl mb-4">💭</div>
+            <h3 className="text-xl font-mono font-semibold mb-2">
+              No answers yet
+            </h3>
+            <p className="text-sm">Be the first to answer this question!</p>
+          </div>
+        )}
       </div>
 
-      <div className="mt-10 w-full">
-        <Pagination 
-          pageNumber={page ? +page : 1}
-          isNext={result.isNextAnswer}
-        />
-      </div>
+      {/* Pagination - Show only if there are more than 3 answers */}
+      {totalAnswers > 3 && (
+        <div className="mt-10 w-full">
+          <Pagination
+            pageNumber={page ? +page : 1}
+            isNext={result.isNextAnswer}
+          />
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default AllAnswers
+export default AllAnswers;

@@ -1,6 +1,7 @@
 import {  getUserInfo } from '../../../../../lib/actions/user.action'
 import {  auth } from '@clerk/nextjs/server';
 import {  SignedIn } from '@clerk/nextjs';
+import type { Metadata } from 'next';
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '../../../../components/ui/button';
@@ -10,6 +11,10 @@ import Stats from '../../../../components/Shared/Stats';
 import QuestionTab from '../../../../components/Shared/QuestionTab';
 import AnswerTab from '../../../../components/Shared/AnswerTab';
 
+export const metadata: Metadata = {
+  title: 'NullFlow | Profile',
+};
+
 interface URLProps {
   params: {
     searchParams: { [key: string]: string };
@@ -17,6 +22,7 @@ interface URLProps {
   };
   searchParams: { [key: string]: string | undefined };
 }
+
 
 const getJoinedDate = (date: Date): string => {
   const month = date.toLocaleString('default', { month: 'long' });

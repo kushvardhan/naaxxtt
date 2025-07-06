@@ -1,61 +1,65 @@
 export const dynamic = "force-dynamic";
 
-import Metric from "../../../../components/Shared/Metric" ;
-import { Eye,Clock,MessageCircle} from "lucide-react";
+import { auth } from "@clerk/nextjs/server";
+import { Clock, Eye, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { auth } from '@clerk/nextjs/server';
-import Votes from "../../../../components/Shared/Votes";
-import AllAnswers from "../../../../components/Shared/AllAnswers";
-import ParseHTML from "../../../../components/Shared/ParseHTML";
-import { formatAndDivideNumber, getTimestamp } from '../../../../../lib/utils';
 import { getQuestionById } from "../../../../../lib/actions/question.action";
 import { getUserById } from "../../../../../lib/actions/user.action";
-import Answer from '../../../../components/forms/Answer';
-
-
+import { formatAndDivideNumber, getTimestamp } from "../../../../../lib/utils";
+import Answer from "../../../../components/forms/Answer";
+import AllAnswers from "../../../../components/Shared/AllAnswers";
+import Metric from "../../../../components/Shared/Metric";
+import ParseHTML from "../../../../components/Shared/ParseHTML";
+import Votes from "../../../../components/Shared/Votes";
 
 interface QuestionDetailPageProps {
   params: {
     id: string;
   };
-  searchParams?: URLSearchParams | { [key: string]: string | string[] | undefined };
+  searchParams?:
+    | URLSearchParams
+    | { [key: string]: string | string[] | undefined };
 }
 
-const QuestionDetailPage = async ({ params,searchParams }: QuestionDetailPageProps) => {
+const QuestionDetailPage = async ({
+  params,
+  searchParams,
+}: QuestionDetailPageProps) => {
   try {
+    const { userId: clerkId } = await auth();
 
-  const { userId: clerkId } = await auth();
+    let mongoUser: any = null;
 
-  let mongoUser;
+    if (clerkId) {
+      mongoUser = await getUserById({ userId: clerkId });
+    }
 
-  if(clerkId) {
-    mongoUser = await getUserById({ userId: clerkId })
-  }
-    const paramsId = await params.id;
     const question = await getQuestionById({ questionId: params?.id });
     // console.log("QUEGEDY: ",question);
 
     if (!question) {
-  return <div className="text-red-500 text-center p-10">No question found! Check console.</div>;
-}
-
-
+      return (
+        <div className="text-red-500 text-center p-10">
+          No question found! Check console.
+        </div>
+      );
+    }
 
     return (
       <section className="w-full h-[calc(100vh-120px)] mt-18 overflow-y-auto scrollbar-hidden max-w-5xl mx-auto px-4 pt-6 pb-10 text-black dark:text-white">
         <div className="w-full flex justify-end">
-            <Votes 
-              type="Question"
-              itemId={JSON.stringify(question?._id)}
-              userId={JSON.stringify(mongoUser?._id)}
-              upvotes={question?.upvotes?.length}
-              hasupVoted={question?.upvotes?.includes(mongoUser?._id)}
-              downvotes={question?.downvotes?.length}
-              hasdownVoted={question?.downvotes?.includes(mongoUser?._id)}
-              hasSaved={mongoUser?.saved?.includes(question?._id)}
-            />
-          </div>
+          <Votes
+            type="Question"
+            itemId={JSON.stringify(question?._id)}
+            userId={JSON.stringify(mongoUser?._id)}
+            upvotes={question?.upvotes?.length}
+            hasupVoted={question?.upvotes?.includes(mongoUser?._id)}
+            downvotes={question?.downvotes?.length}
+            hasdownVoted={question?.downvotes?.includes(mongoUser?._id)}
+            hasSaved={mongoUser?.saved?.includes(question?._id)}
+          />
+        </div>
         <div className="mt-4 flex  items-center gap-4">
           <Link href={`/profile/${question?.author?.clerkId}`}>
             <Image
@@ -82,78 +86,83 @@ const QuestionDetailPage = async ({ params,searchParams }: QuestionDetailPagePro
         </h1>
 
         <div className="mb-8 mt-5 flex items-center justify-end flex-wrap gap-6">
-          <Metric 
+          <Metric
             icon={<Clock />}
             alt="clock icon"
             value={` asked ${getTimestamp(question?.createdAt)}`}
             title=""
             textStyles="text-regular text-zinc-900 dark:text-zinc-200"
           />
-          <Metric 
+          <Metric
             icon={<MessageCircle />}
             alt="Answer"
             value={formatAndDivideNumber(question?.answers?.length)}
             title=" Answers"
             textStyles="text-regular text-zinc-900 dark:text-zinc-200"
           />
-          <Metric 
+          <Metric
             icon={<Eye />}
             alt="View"
             value={formatAndDivideNumber(question?.views)}
             title=" Views"
             textStyles="text-regular text-zinc-900 dark:text-zinc-200"
           />
-      </div>
+        </div>
 
         {/* Body */}
         <ParseHTML data={question?.explanation} />
 
         {/* Tags */}
         <div className="my-8 flex flex-wrap gap-2">
-            {question?.tags?.map((tag: any) => (
-  <Link href={`/tags/${tag._id}`} key={tag._id}>
-    <span
-      title={tag?.name}
-      className="bg-orange-100 dark:bg-orange-900/40 cursor-pointer text-orange-700 dark:text-orange-300 px-3 py-1 rounded-full text-md font-medium hover:bg-orange-200 dark:hover:bg-orange-800/60 transition"
-    >
-      #{tag.name}
-    </span>
-  </Link>
-))}
-
+          {question?.tags?.map((tag: any) => (
+            <Link href={`/tags/${tag._id}`} key={tag._id}>
+              <span
+                title={tag?.name}
+                className="bg-orange-100 dark:bg-orange-900/40 cursor-pointer text-orange-700 dark:text-orange-300 px-3 py-1 rounded-full text-md font-medium hover:bg-orange-200 dark:hover:bg-orange-800/60 transition"
+              >
+                #{tag.name}
+              </span>
+            </Link>
+          ))}
         </div>
-        <AllAnswers 
-        questionId={question?._id}
-        userId={mongoUser?._id}
-        totalAnswers={question?.answers?.length}
-        page={
-          Number(
-            searchParams instanceof URLSearchParams
-              ? searchParams.get('page')
-              : typeof searchParams === 'object' && searchParams?.page
-                ? Array.isArray(searchParams.page)
-                  ? searchParams.page[0]
-                  : searchParams.page
-                : undefined
-          ) || 1
-        }
-        filter={
-          searchParams instanceof URLSearchParams
-            ? searchParams.get('filter') || "10"
-            : typeof searchParams === 'object' && searchParams?.filter
-              ? Array.isArray(searchParams.filter)
-                ? searchParams.filter[0]
-                : searchParams.filter
-              : "10"
-        }
-      />
 
-        {/* Answer Section */}
-        <Answer question={question?.explanation}
-        questionId = {JSON.stringify(question._id)}
-        authorId = {JSON.stringify(mongoUser._id)}
-        />
+        {/* Answers Section */}
+        <div className="mt-12 mb-16">
+          <AllAnswers
+            questionId={question?._id}
+            userId={mongoUser?._id}
+            totalAnswers={question?.answers?.length}
+            page={
+              Number(
+                searchParams instanceof URLSearchParams
+                  ? searchParams.get("page")
+                  : typeof searchParams === "object" && searchParams?.page
+                  ? Array.isArray(searchParams.page)
+                    ? searchParams.page[0]
+                    : searchParams.page
+                  : undefined
+              ) || 1
+            }
+            filter={
+              searchParams instanceof URLSearchParams
+                ? searchParams.get("filter") || "10"
+                : typeof searchParams === "object" && searchParams?.filter
+                ? Array.isArray(searchParams.filter)
+                  ? searchParams.filter[0]
+                  : searchParams.filter
+                : "10"
+            }
+          />
+        </div>
 
+        {/* Answer Form Section */}
+        <div className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+          <Answer
+            question={question?.explanation}
+            questionId={JSON.stringify(question._id)}
+            authorId={JSON.stringify(mongoUser._id)}
+          />
+        </div>
       </section>
     );
   } catch (err) {

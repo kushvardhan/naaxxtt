@@ -13,7 +13,7 @@ const AllAnswers = async ({ userId, searchParams }: Props) => {
     page: searchParams.page ? +searchParams.page : 1,
   });
 
-  console.log(result);
+  console.log("idj  ihdforJPFR: ",result);
 
   return (
     <div className="w-full">

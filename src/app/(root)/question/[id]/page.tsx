@@ -14,12 +14,12 @@ import ParseHTML from "../../../../components/Shared/ParseHTML";
 import Votes from "../../../../components/Shared/Votes";
 
 interface QuestionDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
-  searchParams?:
-    | URLSearchParams
-    | { [key: string]: string | string[] | undefined };
+  }>;
+  searchParams?: Promise<
+    URLSearchParams | { [key: string]: string | string[] | undefined }
+  >;
 }
 
 const QuestionDetailPage = async ({
@@ -150,21 +150,21 @@ const QuestionDetailPage = async ({
 
         {/* Answers Section */}
         <AllAnswers
-  questionId={question._id}
-  userId={mongoUser._id}
-  totalAnswers={question.answers.length}
-  page={page}
-  filter={filter}
-/>
+          questionId={question._id}
+          userId={mongoUser._id}
+          totalAnswers={question.answers.length}
+          page={page}
+          filter={filter}
+        />
 
-{/* Answer Form */}
-<div className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-800">
-  <Answer
-    question={question?.explanation}
-    questionId={JSON.stringify(question._id)}
-    authorId={JSON.stringify(mongoUser._id)}
-  />
-</div>
+        {/* Answer Form */}
+        <div className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+          <Answer
+            question={question?.explanation}
+            questionId={JSON.stringify(question._id)}
+            authorId={JSON.stringify(mongoUser._id)}
+          />
+        </div>
       </section>
     );
   } catch (err) {

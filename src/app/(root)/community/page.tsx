@@ -1,4 +1,5 @@
 import CommunityClient from "@/components/Shared/CommunityClient";
+import type { Metadata } from "next";
 import { getAllUser } from "../../../../lib/actions/user.action";
 
 export interface User {
@@ -17,7 +18,7 @@ export interface User {
 }
 
 export const metadata: Metadata = {
-  title: 'NullPointer | Community',
+  title: "NullPointer | Community",
 };
 
 const CommunityPage = async () => {

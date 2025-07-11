@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import { getSavedQuestions } from "../../../../lib/actions/user.action";
 import CollectionPage from "../../../components/Shared/CollectionPage";
 
-interface SearchParamsProps {
-  searchParams: { [key: string]: string | undefined };
+export interface SearchParamsProps {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
 export const metadata: Metadata = {

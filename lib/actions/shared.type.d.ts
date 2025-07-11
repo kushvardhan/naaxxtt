@@ -166,3 +166,8 @@ export interface UpdateUserParams {
 export interface DeleteUserParams {
   clerkId: string;
 }
+
+export interface SearchParams {
+  query?: string | null;
+  type?: string | null;
+}

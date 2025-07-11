@@ -16,15 +16,28 @@ export const metadata: Metadata = {
 };
 
 interface URLProps {
-  params: {
-    searchParams: { [key: string]: string };
+  params: Promise<{
     id: string;
-  };
-  searchParams: { [key: string]: string | undefined };
+  }>;
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
 const getJoinedDate = (date: Date): string => {
-  const month = date.toLocaleString("default", { month: "long" });
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const month = monthNames[date.getMonth()];
   const year = date.getFullYear();
   return `${month} ${year}`;
 };
@@ -129,18 +142,30 @@ export default async function Page({ params, searchParams }: URLProps) {
           </TabsList>
 
           <TabsContent value="top-posts" className="mt-6">
-            <QuestionTab
-              searchParams={resolvedSearchParams}
-              userId={userInfo.user._id.toString()}
-            />
+            {userInfo?.user?._id ? (
+              <QuestionTab
+                searchParams={resolvedSearchParams}
+                userId={userInfo.user._id.toString()}
+              />
+            ) : (
+              <div className="text-center py-8 text-zinc-600 dark:text-zinc-400">
+                Unable to load questions. Please try again.
+              </div>
+            )}
           </TabsContent>
 
           {/* Future implementation */}
           <TabsContent value="answers" className="mt-6">
-            <AnswerTab
-              searchParams={resolvedSearchParams}
-              userId={userInfo.user._id.toString()}
-            />
+            {userInfo?.user?._id ? (
+              <AnswerTab
+                searchParams={resolvedSearchParams}
+                userId={userInfo.user._id.toString()}
+              />
+            ) : (
+              <div className="text-center py-8 text-zinc-600 dark:text-zinc-400">
+                Unable to load answers. Please try again.
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </div>

@@ -6,8 +6,8 @@ import NoResult from "../../../../components/Shared/NoResult";
 import Pagination from "../../../../components/Shared/Pagination";
 
 interface URLProps {
-  params: { id: string };
-  searchParams: { [key: string]: string | undefined };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
 const Page = async ({ params, searchParams }: URLProps) => {

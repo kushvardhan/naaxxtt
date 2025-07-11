@@ -1,18 +1,18 @@
-import {  getUserInfo } from '../../../../../lib/actions/user.action'
-import {  auth } from '@clerk/nextjs/server';
-import {  SignedIn } from '@clerk/nextjs';
-import type { Metadata } from 'next';
-import Image from 'next/image'
-import Link from 'next/link'
-import { Button } from '../../../../components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import ProfileLink from '../../../../components/Shared/ProfileLink';
-import Stats from '../../../../components/Shared/Stats';
-import QuestionTab from '../../../../components/Shared/QuestionTab';
-import AnswerTab from '../../../../components/Shared/AnswerTab';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SignedIn } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { getUserInfo } from "../../../../../lib/actions/user.action";
+import AnswerTab from "../../../../components/Shared/AnswerTab";
+import ProfileLink from "../../../../components/Shared/ProfileLink";
+import QuestionTab from "../../../../components/Shared/QuestionTab";
+import Stats from "../../../../components/Shared/Stats";
+import { Button } from "../../../../components/ui/button";
 
 export const metadata: Metadata = {
-  title: 'NullFlow | Profile',
+  title: "NullFlow | Profile",
 };
 
 interface URLProps {
@@ -23,16 +23,17 @@ interface URLProps {
   searchParams: { [key: string]: string | undefined };
 }
 
-
 const getJoinedDate = (date: Date): string => {
-  const month = date.toLocaleString('default', { month: 'long' });
+  const month = date.toLocaleString("default", { month: "long" });
   const year = date.getFullYear();
   return `${month} ${year}`;
 };
 
 export default async function Page({ params, searchParams }: URLProps) {
   const { userId: clerkId } = await auth();
-  const userInfo = await getUserInfo({ userId: params?.id });
+  const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
+  const userInfo = await getUserInfo({ userId: resolvedParams?.id });
 
   if (!userInfo) {
     return (
@@ -129,17 +130,17 @@ export default async function Page({ params, searchParams }: URLProps) {
 
           <TabsContent value="top-posts" className="mt-6">
             <QuestionTab
-              searchParams={searchParams}
+              searchParams={resolvedSearchParams}
               userId={userInfo.user._id.toString()}
-              clerkId={clerkId}
             />
           </TabsContent>
 
           {/* Future implementation */}
           <TabsContent value="answers" className="mt-6">
-            <AnswerTab searchParams={searchParams}
+            <AnswerTab
+              searchParams={resolvedSearchParams}
               userId={userInfo.user._id.toString()}
-              clerkId={clerkId} />
+            />
           </TabsContent>
         </Tabs>
       </div>

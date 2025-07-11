@@ -149,24 +149,22 @@ const QuestionDetailPage = async ({
         </div>
 
         {/* Answers Section */}
-        <div className="mt-12 mb-16">
-          <AllAnswers
-            questionId={question?._id}
-            userId={mongoUser?._id}
-            totalAnswers={question?.answers?.length}
-            page={page}
-            filter={filter}
-          />
-        </div>
+        <AllAnswers
+  questionId={question._id}
+  userId={mongoUser._id}
+  totalAnswers={question.answers.length}
+  page={page}
+  filter={filter}
+/>
 
-        {/* Answer Form Section */}
-        <div className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-800">
-          <Answer
-            question={question?.explanation}
-            questionId={JSON.stringify(question._id)}
-            authorId={JSON.stringify(mongoUser._id)}
-          />
-        </div>
+{/* Answer Form */}
+<div className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+  <Answer
+    question={question?.explanation}
+    questionId={JSON.stringify(question._id)}
+    authorId={JSON.stringify(mongoUser._id)}
+  />
+</div>
       </section>
     );
   } catch (err) {

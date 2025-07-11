@@ -1,9 +1,9 @@
-import Link from "next/link";
 import Image from "next/image";
-import NoResult from '../../../../components/Shared/NoResult';
-import Pagination from '../../../../components/Shared/Pagination';
-import { getQuestionsByTagId } from '../../../../../lib/actions/tag.action';
-import { formatAndDivideNumber } from '../../../../../lib/utils';
+import Link from "next/link";
+import { getQuestionsByTagId } from "../../../../../lib/actions/tag.action";
+import { formatAndDivideNumber } from "../../../../../lib/utils";
+import NoResult from "../../../../components/Shared/NoResult";
+import Pagination from "../../../../components/Shared/Pagination";
 
 interface URLProps {
   params: { id: string };
@@ -11,50 +11,53 @@ interface URLProps {
 }
 
 const Page = async ({ params, searchParams }: URLProps) => {
+  const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
   const result = await getQuestionsByTagId({
-    tagId: params.id,
-    page: searchParams.page ? +searchParams.page : 1,
-    searchQuery: searchParams.q,
+    tagId: resolvedParams.id,
+    page: resolvedSearchParams.page ? +resolvedSearchParams.page : 1,
+    searchQuery: resolvedSearchParams.q,
   });
 
-function formatDate(dateInput: string | Date): string {
-  const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput;
+  function formatDate(dateInput: string | Date): string {
+    const date =
+      typeof dateInput === "string" ? new Date(dateInput) : dateInput;
 
-  if (isNaN(date.getTime())) return "Invalid date";
+    if (isNaN(date.getTime())) return "Invalid date";
 
-  const now = new Date();
-  const diff = now.getTime() - date.getTime();
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
 
-  const minute = 60 * 1000;
-  const hour = 60 * minute;
-  const day = 24 * hour;
-  const week = 7 * day;
-  const month = 30 * day;
-  const year = 365 * day;
+    const minute = 60 * 1000;
+    const hour = 60 * minute;
+    const day = 24 * hour;
+    const week = 7 * day;
+    const month = 30 * day;
+    const year = 365 * day;
 
-  if (diff < minute) {
-    const seconds = Math.floor(diff / 1000);
-    return `${seconds} ${seconds === 1 ? "second" : "seconds"} ago`;
-  } else if (diff < hour) {
-    const minutes = Math.floor(diff / minute);
-    return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
-  } else if (diff < day) {
-    const hours = Math.floor(diff / hour);
-    return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
-  } else if (diff < week) {
-    const days = Math.floor(diff / day);
-    return `${days} ${days === 1 ? "day" : "days"} ago`;
-  } else if (diff < month) {
-    const weeks = Math.floor(diff / week);
-    return `${weeks} ${weeks === 1 ? "week" : "weeks"} ago`;
-  } else if (diff < year) {
-    const months = Math.floor(diff / month);
-    return `${months} ${months === 1 ? "month" : "months"} ago`;
-  } else {
-    const years = Math.floor(diff / year);
-    return `${years} ${years === 1 ? "year" : "years"} ago`;
+    if (diff < minute) {
+      const seconds = Math.floor(diff / 1000);
+      return `${seconds} ${seconds === 1 ? "second" : "seconds"} ago`;
+    } else if (diff < hour) {
+      const minutes = Math.floor(diff / minute);
+      return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
+    } else if (diff < day) {
+      const hours = Math.floor(diff / hour);
+      return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
+    } else if (diff < week) {
+      const days = Math.floor(diff / day);
+      return `${days} ${days === 1 ? "day" : "days"} ago`;
+    } else if (diff < month) {
+      const weeks = Math.floor(diff / week);
+      return `${weeks} ${weeks === 1 ? "week" : "weeks"} ago`;
+    } else if (diff < year) {
+      const months = Math.floor(diff / month);
+      return `${months} ${months === 1 ? "month" : "months"} ago`;
+    } else {
+      const years = Math.floor(diff / year);
+      return `${years} ${years === 1 ? "year" : "years"} ago`;
+    }
   }
-}
 
   return (
     <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">
@@ -105,29 +108,71 @@ function formatDate(dateInput: string | Date): string {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm">
-                  <span title="Upvote" className="flex items-center gap-1 text-red-600 dark:text-white">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <span
+                    title="Upvote"
+                    className="flex items-center gap-1 text-red-600 dark:text-white"
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
                       <path d="M12.781 2.375c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10zM15 12h-1v8h-4v-8H6.081L12 4.601 17.919 12H15z" />
                     </svg>
                     {formatAndDivideNumber(que.upvotes)}
                   </span>
 
-                  <span title="Answer" className="flex items-center gap-1 text-zinc-700 dark:text-zinc-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+                  <span
+                    title="Answer"
+                    className="flex items-center gap-1 text-zinc-700 dark:text-zinc-100"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-4 h-4"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
+                      />
                     </svg>
                     {que.answers}
                   </span>
 
-                  <span title="Views" className="flex items-center gap-1 text-zinc-700 dark:text-zinc-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  <span
+                    title="Views"
+                    className="flex items-center gap-1 text-zinc-700 dark:text-zinc-100"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                      />
                     </svg>
                     {que.views}
                   </span>
 
-                  <span title="Created At" className="text-xs font-semibold select-none text-zinc-700 dark:text-zinc-300">
+                  <span
+                    title="Created At"
+                    className="text-xs font-semibold select-none text-zinc-700 dark:text-zinc-300"
+                  >
                     {formatDate(que.createdAt)}
                   </span>
                 </div>
@@ -146,7 +191,9 @@ function formatDate(dateInput: string | Date): string {
 
       <div className="mt-10">
         <Pagination
-          pageNumber={searchParams?.page ? +searchParams.page : 1}
+          pageNumber={
+            resolvedSearchParams?.page ? +resolvedSearchParams.page : 1
+          }
           isNext={result.isNext}
         />
       </div>

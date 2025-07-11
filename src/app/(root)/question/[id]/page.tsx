@@ -35,7 +35,8 @@ const QuestionDetailPage = async ({
       mongoUser = await getUserById({ userId: clerkId });
     }
 
-    const question = await getQuestionById({ questionId: params?.id });
+    const resolvedParams = await params;
+    const question = await getQuestionById({ questionId: resolvedParams?.id });
     // console.log("QUEGEDY: ",question);
 
     if (!question) {
@@ -46,25 +47,26 @@ const QuestionDetailPage = async ({
       );
     }
 
-    const getParamValue = (
-  paramName: string,
-  defaultValue: string
-): string => {
-  if (searchParams instanceof URLSearchParams) {
-    return searchParams.get(paramName) || defaultValue;
-  }
+    const resolvedSearchParams = await searchParams;
 
-  if (typeof searchParams === "object" && searchParams?.[paramName]) {
-    const value = searchParams[paramName];
-    return Array.isArray(value) ? value[0] : value;
-  }
+    const getParamValue = (paramName: string, defaultValue: string): string => {
+      if (resolvedSearchParams instanceof URLSearchParams) {
+        return resolvedSearchParams.get(paramName) || defaultValue;
+      }
 
-  return defaultValue;
-};
+      if (
+        typeof resolvedSearchParams === "object" &&
+        resolvedSearchParams?.[paramName]
+      ) {
+        const value = resolvedSearchParams[paramName];
+        return Array.isArray(value) ? value[0] : value;
+      }
 
-const page = Number(getParamValue("page", "1"));
-const filter = getParamValue("filter", "10");
+      return defaultValue;
+    };
 
+    const page = Number(getParamValue("page", "1"));
+    const filter = getParamValue("filter", "10");
 
     return (
       <section className="w-full h-[calc(100vh-120px)] mt-18 overflow-y-auto scrollbar-hidden max-w-5xl mx-auto px-4 pt-6 pb-10 text-black dark:text-white">
@@ -149,13 +151,12 @@ const filter = getParamValue("filter", "10");
         {/* Answers Section */}
         <div className="mt-12 mb-16">
           <AllAnswers
-  questionId={question?._id}
-  userId={mongoUser?._id}
-  totalAnswers={question?.answers?.length}
-  page={page}
-  filter={filter}
-/>
-
+            questionId={question?._id}
+            userId={mongoUser?._id}
+            totalAnswers={question?.answers?.length}
+            page={page}
+            filter={filter}
+          />
         </div>
 
         {/* Answer Form Section */}

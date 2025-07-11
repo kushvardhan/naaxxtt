@@ -2,7 +2,7 @@
 
 import Answer from "../../database/answer.model";
 import { connectToDatabase } from "../mongoose";
-import { AnswerVoteParams, CreateAnswerParams, DeleteAnswerParams, GetAnswersParams } from "./shared.types";
+import { AnswerVoteParams, CreateAnswerParams, DeleteAnswerParams, GetAnswersParams } from "./shared.type";
 import Question from "../../database/question.model";
 import { revalidatePath } from "next/cache";
 import Interaction from "../../database/interaction.model";

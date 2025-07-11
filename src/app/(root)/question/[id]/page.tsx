@@ -46,6 +46,26 @@ const QuestionDetailPage = async ({
       );
     }
 
+    const getParamValue = (
+  paramName: string,
+  defaultValue: string
+): string => {
+  if (searchParams instanceof URLSearchParams) {
+    return searchParams.get(paramName) || defaultValue;
+  }
+
+  if (typeof searchParams === "object" && searchParams?.[paramName]) {
+    const value = searchParams[paramName];
+    return Array.isArray(value) ? value[0] : value;
+  }
+
+  return defaultValue;
+};
+
+const page = Number(getParamValue("page", "1"));
+const filter = getParamValue("filter", "10");
+
+
     return (
       <section className="w-full h-[calc(100vh-120px)] mt-18 overflow-y-auto scrollbar-hidden max-w-5xl mx-auto px-4 pt-6 pb-10 text-black dark:text-white">
         <div className="w-full flex justify-end">
@@ -129,30 +149,13 @@ const QuestionDetailPage = async ({
         {/* Answers Section */}
         <div className="mt-12 mb-16">
           <AllAnswers
-            questionId={question?._id}
-            userId={mongoUser?._id}
-            totalAnswers={question?.answers?.length}
-            page={
-              Number(
-                searchParams instanceof URLSearchParams
-                  ? searchParams.get("page")
-                  : typeof searchParams === "object" && searchParams?.page
-                  ? Array.isArray(searchParams.page)
-                    ? searchParams.page[0]
-                    : searchParams.page
-                  : undefined
-              ) || 1
-            }
-            filter={
-              searchParams instanceof URLSearchParams
-                ? searchParams.get("filter") || "10"
-                : typeof searchParams === "object" && searchParams?.filter
-                ? Array.isArray(searchParams.filter)
-                  ? searchParams.filter[0]
-                  : searchParams.filter
-                : "10"
-            }
-          />
+  questionId={question?._id}
+  userId={mongoUser?._id}
+  totalAnswers={question?.answers?.length}
+  page={page}
+  filter={filter}
+/>
+
         </div>
 
         {/* Answer Form Section */}

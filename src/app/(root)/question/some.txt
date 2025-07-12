@@ -1,219 +1,73 @@
-"use client";
-
-import Image from "next/image";
-import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
-import { ThemeContext } from "../../../context/ThemeContext";
-
-interface Author {
-  _id: string;
-  clerkId: string;
-  name: string;
-  username: string;
-  image: string;
-  reputation: number;
-}
-
-interface Answer {
-  _id: string;
-  content: string;
-  author: Author;
-  upvotes: string[];
-  downvotes: string[];
-  createdAt: string;
-}
-
-interface AnswerCardProps {
-  answer: Answer;
-}
-
-const AnswerCard = ({ answer }: AnswerCardProps) => {
-  const theme = useContext(ThemeContext);
-  const [mounted, setMounted] = useState(false);
-  const [userVote, setUserVote] = useState<"upvote" | "downvote" | null>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted || !theme || !theme.mounted) {
-    return (
-      <div
-        className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-2xl h-48"
-        suppressHydrationWarning
-      >
-        <div className="p-6 flex gap-4" suppressHydrationWarning>
-          <div
-            className="w-8 h-20 bg-gray-300 dark:bg-gray-600 rounded"
-            suppressHydrationWarning
-          ></div>
-          <div className="flex-1 space-y-4" suppressHydrationWarning>
-            <div
-              className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-full"
-              suppressHydrationWarning
-            ></div>
-            <div
-              className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-3/4"
-              suppressHydrationWarning
-            ></div>
-            <div
-              className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2"
-              suppressHydrationWarning
-            ></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const isDark = theme?.mode === "dark";
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const month = monthNames[date.getMonth()];
-    const day = date.getDate();
-    const year = date.getFullYear();
-    const hours = date.getHours().toString().padStart(2, "0");
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-    return `${month} ${day}, ${year} at ${hours}:${minutes}`;
-  };
-
-  const handleVote = (type: "upvote" | "downvote") => {
-    if (userVote === type) {
-      setUserVote(null);
-    } else {
-      setUserVote(type);
-    }
-  };
-
-  const voteScore = answer.upvotes.length - answer.downvotes.length;
-
-  return (
-    <div
-      className={`rounded-2xl border transition-all duration-300 hover:shadow-lg ${
-        isDark
-          ? "bg-zinc-900/50 border-zinc-800 hover:border-zinc-700"
-          : "bg-white border-zinc-200 hover:border-zinc-300"
-      }`}
-    >
-      <div className="p-8">
-        <div className="flex gap-6">
-          {/* Vote Section */}
-          <div className="flex flex-col items-center gap-2">
-            <button
-              onClick={() => handleVote("upvote")}
-              className={`p-2 rounded-lg transition-all duration-200 hover:scale-110 ${
-                userVote === "upvote"
-                  ? "bg-orange-500 text-white"
-                  : isDark
-                  ? "text-zinc-400 hover:text-orange-400 hover:bg-zinc-800"
-                  : "text-zinc-600 hover:text-orange-600 hover:bg-orange-50"
-              }`}
-            >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-              </svg>
-            </button>
-
-            <div
-              className={`text-lg font-bold font-mono ${
-                voteScore > 0
-                  ? "text-green-500"
-                  : voteScore < 0
-                  ? "text-red-500"
-                  : isDark
-                  ? "text-zinc-400"
-                  : "text-zinc-600"
-              }`}
-            >
-              {voteScore}
-            </div>
-
-            <button
-              onClick={() => handleVote("downvote")}
-              className={`p-2 rounded-lg transition-all duration-200 hover:scale-110 ${
-                userVote === "downvote"
-                  ? "bg-red-500 text-white"
-                  : isDark
-                  ? "text-zinc-400 hover:text-red-400 hover:bg-zinc-800"
-                  : "text-zinc-600 hover:text-red-600 hover:bg-red-50"
-              }`}
-            >
-              <svg
-                className="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-                transform="rotate(180)"
-              >
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Answer Content */}
-          <div className="flex-1">
-            <div
-  className={`text-sm sm:text-base leading-relaxed tracking-normal break-words mb-6 ${
-    isDark ? "text-zinc-300" : "text-zinc-800"
-  }`}
-  dangerouslySetInnerHTML={{ __html: answer.content }}
-/>
-
-
-            {/* Author Info */}
-            <div className="flex items-center justify-between pt-6 border-t border-zinc-200 dark:border-zinc-700">
-              <div className="flex items-center gap-4">
-                <Image
-                  src={answer.author.image}
-                  alt={answer.author.name}
-                  width={40}
-                  height={40}
-                  className="rounded-full border-2 border-orange-400"
-                />
-                <div>
-                  <Link
-                    href={`/profile/${answer.author.clerkId}`}
-                    className={`font-semibold font-mono hover:text-orange-500 transition-colors ${
-                      isDark ? "text-zinc-100" : "text-zinc-800"
-                    }`}
-                  >
-                    {answer.author.name}
-                  </Link>
-                  <div className="flex items-center gap-2 text-sm">
-                    <span
-                      className={isDark ? "text-zinc-400" : "text-zinc-600"}
-                    >
-                      @{answer.author.username}
-                    </span>
-                    <span className="text-orange-500 font-semibold">
-                      {answer.author.reputation.toLocaleString()} rep
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className="text-sm text-zinc-500 dark:text-zinc-400 font-mono">
-                answered {formatDate(answer.createdAt)}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default AnswerCardProfile;
+Object
+answers
+: 
+Array(6)
+0
+: 
+author
+: 
+clerkId
+: 
+"user_2xEKcZSe243Mc1VCCkHKoP6GC4F"
+image
+: 
+"https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yeEVLY2JidHR0MU5PVmIxMkE4OXNkTTNQbkwifQ"
+name
+: 
+"Kush Vardhan"
+_id
+: 
+"6832fa771b910827531cb309"
+[[Prototype]]
+: 
+Object
+content
+: 
+"<p>Move the heading &amp; AI button into the component and export</p>\n<p>&nbsp;just <code data-start=\"1607\" data-end=\"1621\">&lt;Answer &hellip; /&gt;</code> from the page. Here&rsquo;s the starter skeleton:&nbsp; &nbsp; &nbsp;&nbsp;</p>\n<pre class=\"language-javascript\"><code>// inside Answer.tsx &ndash; wrap current form with a section\nexport default function Answer({ question, questionId, authorId }: Props) {\n  /* &hellip;existing hooks &amp; editor config&hellip; */\n\n  return (\n    &lt;section className=\"space-y-6\"&gt;\n      &lt;h2 className=\"text-2xl font-semibold\"&gt;Your Answer&lt;/h2&gt;\n\n      &lt;div className=\"flex justify-end\"&gt;\n        &lt;button /* AI button styles */&gt;\n          &lt;Sparkles className=\"w-5 h-5 text-orange-500\" /&gt;\n          Generate Answer with AI\n        &lt;/button&gt;\n      &lt;/div&gt;\n\n      {/* existing &lt;Form&gt; &hellip; &lt;form&gt; &hellip; &lt;/form&gt; block */}\n      &lt;Form {...form}&gt;\n        &lt;form\n          className=\"flex w-full flex-col gap-10\"\n          onSubmit={form.handleSubmit(handleCreateAnswer)}\n        &gt;\n          {/* &hellip;rest of fields&hellip; */}\n        &lt;/form&gt;\n      &lt;/Form&gt;\n    &lt;/section&gt;\n  );\n}\n</code></pre>"
+createdAt
+: 
+Tue Jun 24 2025 23:05:42 GMT+0530 (India Standard Time) {}
+downvotes
+: 
+[]
+question
+: 
+title
+: 
+"Updated & Fixed Code (only the modified section):"
+_id
+: 
+"68542bdaab5d8dd52f503e98"
+[[Prototype]]
+: 
+Object
+upvotes
+: 
+[]
+__v
+: 
+0
+_id
+: 
+"685ae1ee44112d3780b013b4"
+[[Prototype]]
+: 
+Object
+1
+: 
+{_id: '685c0f2347bbc9922b3212c8', author: {…}, question: {…}, content: '<p>Import it like this:&nbsp;&nbsp;</p>\n<pre class… );\n};\n\nexport default MyComponent;\n</code></pre>', upvotes: Array(0), …}
+2
+: 
+{_id: '686a663fd64f6384a4ac866d', author: {…}, question: {…}, content: '<h3 data-start="283" data-end="302">✅ Fixes needed… ${month} ${year}`;\n}\n</code></pre>\n</div>\n</div>', upvotes: Array(0), …}
+3
+: 
+{_id: '686a66c2d64f6384a4ac8694', author: {…}, question: {…}, content: '<article class="text-token-text-primary w-full" di…[],\n      }}\n    /&gt;\n  ))}\n</code></pre>\n</div>', upvotes: Array(0), …}
+4
+: 
+{_id: '686a6711d64f6384a4ac86a5', author: {…}, question: {…}, content: '<article class="text-token-text-primary w-full" di…[],\n      }}\n    /&gt;\n  ))}\n</code></pre>\n</div>', upvotes: Array(0), …}
+5
+: 
+{_id: '687140eafd2b317aa4f1cf2f', author: {…}, question: {…}, content: '<h3 data-start="1646" data-end="1682">How to Fix I…ongoUser._id)}\n  /&gt;\n&lt;/div&gt;\n</code></pre>', upvotes: Array(0), …}
+length
+: 
+6

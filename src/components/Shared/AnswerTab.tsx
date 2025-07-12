@@ -18,6 +18,7 @@ const AllAnswers = async ({ userId, searchParams }: Props) => {
   return (
     <div className="w-full">
       <div className="mt-8 flex w-full flex-col gap-6">
+        <h1>ANSWER TAB</h1>
         {result.answers && result.answers.length > 0 ? (
           <>
             {result.answers

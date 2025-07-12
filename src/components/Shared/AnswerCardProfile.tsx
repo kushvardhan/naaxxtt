@@ -27,10 +27,11 @@ interface AnswerCardProps {
   answer: Answer;
 }
 
-const AnswerCard = ({ answer }: AnswerCardProps) => {
+const AnswerCardProfile = ({ answer }: AnswerCardProps) => {
   const theme = useContext(ThemeContext);
   const [mounted, setMounted] = useState(false);
   const [userVote, setUserVote] = useState<"upvote" | "downvote" | null>(null);
+  console.log("answer from Profile Ans: ", answer);
 
   useEffect(() => {
     setMounted(true);

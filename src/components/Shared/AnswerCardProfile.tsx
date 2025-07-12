@@ -1,220 +1,241 @@
-"use client";
+"use client"
 
-import Image from "next/image";
-import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
-import { ThemeContext } from "../../../context/ThemeContext";
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  HandThumbUpIcon,
+  HandThumbDownIcon,
+  ChatBubbleLeftIcon,
+  ShareIcon,
+  BookmarkIcon,
+  CalendarIcon,
+} from "@heroicons/react/24/outline"
+import {
+  HandThumbUpIcon as HandThumbUpSolidIcon,
+  HandThumbDownIcon as HandThumbDownSolidIcon,
+  BookmarkIcon as BookmarkSolidIcon,
+} from "@heroicons/react/24/solid"
+import parse from "html-react-parser"
+import { clsx } from "clsx"
+import Image from "next/image"
 
 interface Author {
-  _id: string;
-  clerkId: string;
-  name: string;
-  username: string;
-  image: string;
-  reputation: number;
+  clerkId: string
+  image: string
+  name: string
+  _id: string
+}
+
+interface Question {
+  title: string
+  _id: string
 }
 
 interface Answer {
-  _id: string;
-  content: string;
-  author: Author;
-  upvotes: string[];
-  downvotes: string[];
-  createdAt: string;
+  _id: string
+  author: Author
+  content: string
+  createdAt: Date | string
+  downvotes: string[]
+  question: Question
+  upvotes: string[]
+  __v: number
 }
 
-interface AnswerCardProps {
-  answer: Answer;
+interface AnswerCardProfileProps {
+  answer: Answer
+  currentUserId?: string
+  onVote?: (answerId: string, voteType: "upvote" | "downvote") => void
+  onBookmark?: (answerId: string) => void
+  isBookmarked?: boolean
 }
 
-const AnswerCardProfile = ({ answer }: AnswerCardProps) => {
-  const theme = useContext(ThemeContext);
-  const [mounted, setMounted] = useState(false);
-  const [userVote, setUserVote] = useState<"upvote" | "downvote" | null>(null);
-  console.log("answer from Profile Ans: ", answer);
+export default function AnswerCardProfile({
+  answer,
+  currentUserId,
+  onVote,
+  onBookmark,
+  isBookmarked = false,
+}: AnswerCardProfileProps) {
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [isVoting, setIsVoting] = useState(false)
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const upvotesArray = Array.isArray(answer.upvotes) ? answer.upvotes : []
+  const downvotesArray = Array.isArray(answer.downvotes) ? answer.downvotes : []
 
-  if (!mounted || !theme || !theme.mounted) {
-    return (
-      <div
-        className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-2xl h-48"
-        suppressHydrationWarning
-      >
-        <div className="p-6 flex gap-4" suppressHydrationWarning>
-          <div
-            className="w-8 h-20 bg-gray-300 dark:bg-gray-600 rounded"
-            suppressHydrationWarning
-          ></div>
-          <div className="flex-1 space-y-4" suppressHydrationWarning>
-            <div
-              className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-full"
-              suppressHydrationWarning
-            ></div>
-            <div
-              className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-3/4"
-              suppressHydrationWarning
-            ></div>
-            <div
-              className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2"
-              suppressHydrationWarning
-            ></div>
-          </div>
-        </div>
-      </div>
-    );
+  const hasUpvoted = currentUserId ? upvotesArray.includes(currentUserId) : false
+  const hasDownvoted = currentUserId ? downvotesArray.includes(currentUserId) : false
+
+  const formatDate = (date: Date | string) => {
+    const dateObj = typeof date === "string" ? new Date(date) : date
+    return dateObj.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    })
   }
 
-  const isDark = theme?.mode === "dark";
+  const truncateContent = (content: string, maxLength = 300) => {
+    const textContent = content
+      .replace(/<[^>]*>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+    if (textContent.length <= maxLength) return content
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const month = monthNames[date.getMonth()];
-    const day = date.getDate();
-    const year = date.getFullYear();
-    const hours = date.getHours().toString().padStart(2, "0");
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-    return `${month} ${day}, ${year} at ${hours}:${minutes}`;
-  };
+    // Find a good breaking point
+    const truncated = textContent.substring(0, maxLength)
+    const lastSpace = truncated.lastIndexOf(" ")
+    const breakPoint = lastSpace > maxLength * 0.8 ? lastSpace : maxLength
 
-  const handleVote = (type: "upvote" | "downvote") => {
-    if (userVote === type) {
-      setUserVote(null);
-    } else {
-      setUserVote(type);
+    return textContent.substring(0, breakPoint) + "..."
+  }
+
+  const handleVote = async (voteType: "upvote" | "downvote") => {
+    if (!onVote || !currentUserId || isVoting) return
+
+    setIsVoting(true)
+    try {
+      await onVote(answer._id, voteType)
+    } finally {
+      setIsVoting(false)
     }
-  };
+  }
 
-  const voteScore = answer.upvotes.length - answer.downvotes.length;
+  const handleBookmark = () => {
+    if (!onBookmark || !currentUserId) return
+    onBookmark(answer._id)
+  }
+
+  const displayContent = isExpanded ? answer.content : truncateContent(answer.content)
+  const shouldShowExpand = answer.content.replace(/<[^>]*>/g, "").length > 300
 
   return (
-    <div
-      className={`rounded-2xl border transition-all duration-300 hover:shadow-lg ${
-        isDark
-          ? "bg-zinc-900/50 border-zinc-800 hover:border-zinc-700"
-          : "bg-white border-zinc-200 hover:border-zinc-300"
-      }`}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden"
     >
-      <div className="p-8">
-        <div className="flex gap-6">
-          {/* Vote Section */}
-          <div className="flex flex-col items-center gap-2">
-            <button
-              onClick={() => handleVote("upvote")}
-              className={`p-2 rounded-lg transition-all duration-200 hover:scale-110 ${
-                userVote === "upvote"
-                  ? "bg-orange-500 text-white"
-                  : isDark
-                  ? "text-zinc-400 hover:text-orange-400 hover:bg-zinc-800"
-                  : "text-zinc-600 hover:text-orange-600 hover:bg-orange-50"
-              }`}
-            >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-              </svg>
-            </button>
-
-            <div
-              className={`text-lg font-bold font-mono ${
-                voteScore > 0
-                  ? "text-green-500"
-                  : voteScore < 0
-                  ? "text-red-500"
-                  : isDark
-                  ? "text-zinc-400"
-                  : "text-zinc-600"
-              }`}
-            >
-              {voteScore}
-            </div>
-
-            <button
-              onClick={() => handleVote("downvote")}
-              className={`p-2 rounded-lg transition-all duration-200 hover:scale-110 ${
-                userVote === "downvote"
-                  ? "bg-red-500 text-white"
-                  : isDark
-                  ? "text-zinc-400 hover:text-red-400 hover:bg-zinc-800"
-                  : "text-zinc-600 hover:text-red-600 hover:bg-red-50"
-              }`}
-            >
-              <svg
-                className="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-                transform="rotate(180)"
-              >
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Answer Content */}
+      {/* Header */}
+      <div className="p-6 pb-4">
+        <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
-            <div
-  className={`text-sm sm:text-base leading-relaxed tracking-normal break-words mb-6 ${
-    isDark ? "text-zinc-300" : "text-zinc-800"
-  }`}
-  dangerouslySetInnerHTML={{ __html: answer.content }}
-/>
-
-
-            {/* Author Info */}
-            <div className="flex items-center justify-between pt-6 border-t border-zinc-200 dark:border-zinc-700">
-              <div className="flex items-center gap-4">
+            <h2 className="text-xl font-semibold text-gray-800 mb-3 leading-tight">{answer.question.title}</h2>
+            <div className="flex items-center gap-4 text-sm text-gray-600">
+              <div className="flex items-center gap-2">
                 <Image
-                  src={answer.author.image}
+                  src={answer.author.image || "/placeholder.svg"}
                   alt={answer.author.name}
-                  width={40}
-                  height={40}
-                  className="rounded-full border-2 border-orange-400"
+                  width={32}
+                  height={32}
+                  className="w-8 h-8 rounded-full object-cover"
                 />
                 <div>
-                  <Link
-                    href={`/profile/${answer.author.clerkId}`}
-                    className={`font-semibold font-mono hover:text-orange-500 transition-colors ${
-                      isDark ? "text-zinc-100" : "text-zinc-800"
-                    }`}
-                  >
-                    {answer.author.name}
-                  </Link>
-                  <div className="flex items-center gap-2 text-sm">
-                    <span
-                      className={isDark ? "text-zinc-400" : "text-zinc-600"}
-                    >
-                      @{answer.author.username}
-                    </span>
-                    <span className="text-orange-500 font-semibold">
-                      {answer.author.reputation.toLocaleString()} rep
-                    </span>
-                  </div>
+                  <span className="font-medium text-gray-700">{answer.author.name}</span>
                 </div>
               </div>
-              <div className="text-sm text-zinc-500 dark:text-zinc-400 font-mono">
-                answered {formatDate(answer.createdAt)}
+              <div className="flex items-center gap-1">
+                <CalendarIcon className="w-4 h-4" />
+                <span>{formatDate(answer.createdAt)}</span>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  );
-};
 
-export default AnswerCardProfile;
+        {/* Content */}
+        <div className="mb-6">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={isExpanded ? "expanded" : "collapsed"}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="prose prose-gray max-w-none"
+            >
+              <div className="text-gray-700 leading-relaxed [&>pre]:bg-gray-900 [&>pre]:text-gray-100 [&>pre]:p-4 [&>pre]:rounded-lg [&>pre]:overflow-x-auto [&>code]:bg-gray-100 [&>code]:px-1 [&>code]:py-0.5 [&>code]:rounded [&>code]:text-sm">
+                {parse(displayContent)}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+          <div className="flex items-center gap-4">
+            {/* Voting */}
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => handleVote("upvote")}
+                disabled={isVoting || !currentUserId}
+                className={clsx(
+                  "flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all duration-200",
+                  hasUpvoted ? "bg-green-100 text-green-700" : "text-gray-600 hover:bg-green-50 hover:text-green-600",
+                  isVoting && "opacity-50 cursor-not-allowed",
+                )}
+              >
+                {hasUpvoted ? <HandThumbUpSolidIcon className="w-4 h-4" /> : <HandThumbUpIcon className="w-4 h-4" />}
+                <span className="text-sm font-medium">{upvotesArray.length}</span>
+              </button>
+
+              <button
+                onClick={() => handleVote("downvote")}
+                disabled={isVoting || !currentUserId}
+                className={clsx(
+                  "flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all duration-200",
+                  hasDownvoted ? "bg-red-100 text-red-700" : "text-gray-600 hover:bg-red-50 hover:text-red-600",
+                  isVoting && "opacity-50 cursor-not-allowed",
+                )}
+              >
+                {hasDownvoted ? (
+                  <HandThumbDownSolidIcon className="w-4 h-4" />
+                ) : (
+                  <HandThumbDownIcon className="w-4 h-4" />
+                )}
+                <span className="text-sm font-medium">{downvotesArray.length}</span>
+              </button>
+            </div>
+
+            {/* Other actions */}
+            <button className="flex items-center gap-1 px-3 py-1.5 text-gray-600 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-all duration-200">
+              <ChatBubbleLeftIcon className="w-4 h-4" />
+              <span className="text-sm">Comment</span>
+            </button>
+
+            <button
+              onClick={handleBookmark}
+              disabled={!currentUserId}
+              className={clsx(
+                "flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all duration-200",
+                isBookmarked ? "bg-blue-100 text-blue-700" : "text-gray-600 hover:bg-blue-50 hover:text-blue-600",
+              )}
+            >
+              {isBookmarked ? <BookmarkSolidIcon className="w-4 h-4" /> : <BookmarkIcon className="w-4 h-4" />}
+              <span className="text-sm">Save</span>
+            </button>
+
+            <button className="flex items-center gap-1 px-3 py-1.5 text-gray-600 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-all duration-200">
+              <ShareIcon className="w-4 h-4" />
+              <span className="text-sm">Share</span>
+            </button>
+          </div>
+
+          {/* Expand/Collapse */}
+          {shouldShowExpand && (
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="flex items-center gap-1 px-3 py-1.5 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-all duration-200"
+            >
+              <span className="text-sm font-medium">{isExpanded ? "Show Less" : "Show More"}</span>
+              {isExpanded ? <ChevronUpIcon className="w-4 h-4" /> : <ChevronDownIcon className="w-4 h-4" />}
+            </button>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  )
+}

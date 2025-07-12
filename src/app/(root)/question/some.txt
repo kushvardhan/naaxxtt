@@ -1,73 +1,367 @@
-Object
-answers
-: 
-Array(6)
-0
-: 
-author
-: 
-clerkId
-: 
-"user_2xEKcZSe243Mc1VCCkHKoP6GC4F"
-image
-: 
-"https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yeEVLY2JidHR0MU5PVmIxMkE4OXNkTTNQbkwifQ"
-name
-: 
-"Kush Vardhan"
-_id
-: 
-"6832fa771b910827531cb309"
-[[Prototype]]
-: 
-Object
-content
-: 
-"<p>Move the heading &amp; AI button into the component and export</p>\n<p>&nbsp;just <code data-start=\"1607\" data-end=\"1621\">&lt;Answer &hellip; /&gt;</code> from the page. Here&rsquo;s the starter skeleton:&nbsp; &nbsp; &nbsp;&nbsp;</p>\n<pre class=\"language-javascript\"><code>// inside Answer.tsx &ndash; wrap current form with a section\nexport default function Answer({ question, questionId, authorId }: Props) {\n  /* &hellip;existing hooks &amp; editor config&hellip; */\n\n  return (\n    &lt;section className=\"space-y-6\"&gt;\n      &lt;h2 className=\"text-2xl font-semibold\"&gt;Your Answer&lt;/h2&gt;\n\n      &lt;div className=\"flex justify-end\"&gt;\n        &lt;button /* AI button styles */&gt;\n          &lt;Sparkles className=\"w-5 h-5 text-orange-500\" /&gt;\n          Generate Answer with AI\n        &lt;/button&gt;\n      &lt;/div&gt;\n\n      {/* existing &lt;Form&gt; &hellip; &lt;form&gt; &hellip; &lt;/form&gt; block */}\n      &lt;Form {...form}&gt;\n        &lt;form\n          className=\"flex w-full flex-col gap-10\"\n          onSubmit={form.handleSubmit(handleCreateAnswer)}\n        &gt;\n          {/* &hellip;rest of fields&hellip; */}\n        &lt;/form&gt;\n      &lt;/Form&gt;\n    &lt;/section&gt;\n  );\n}\n</code></pre>"
-createdAt
-: 
-Tue Jun 24 2025 23:05:42 GMT+0530 (India Standard Time) {}
-downvotes
-: 
-[]
-question
-: 
-title
-: 
-"Updated & Fixed Code (only the modified section):"
-_id
-: 
-"68542bdaab5d8dd52f503e98"
-[[Prototype]]
-: 
-Object
-upvotes
-: 
-[]
-__v
-: 
-0
-_id
-: 
-"685ae1ee44112d3780b013b4"
-[[Prototype]]
-: 
-Object
-1
-: 
-{_id: '685c0f2347bbc9922b3212c8', author: {…}, question: {…}, content: '<p>Import it like this:&nbsp;&nbsp;</p>\n<pre class… );\n};\n\nexport default MyComponent;\n</code></pre>', upvotes: Array(0), …}
-2
-: 
-{_id: '686a663fd64f6384a4ac866d', author: {…}, question: {…}, content: '<h3 data-start="283" data-end="302">✅ Fixes needed… ${month} ${year}`;\n}\n</code></pre>\n</div>\n</div>', upvotes: Array(0), …}
-3
-: 
-{_id: '686a66c2d64f6384a4ac8694', author: {…}, question: {…}, content: '<article class="text-token-text-primary w-full" di…[],\n      }}\n    /&gt;\n  ))}\n</code></pre>\n</div>', upvotes: Array(0), …}
-4
-: 
-{_id: '686a6711d64f6384a4ac86a5', author: {…}, question: {…}, content: '<article class="text-token-text-primary w-full" di…[],\n      }}\n    /&gt;\n  ))}\n</code></pre>\n</div>', upvotes: Array(0), …}
-5
-: 
-{_id: '687140eafd2b317aa4f1cf2f', author: {…}, question: {…}, content: '<h3 data-start="1646" data-end="1682">How to Fix I…ongoUser._id)}\n  /&gt;\n&lt;/div&gt;\n</code></pre>', upvotes: Array(0), …}
-length
-: 
-6
+"use client"
+
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import {
+  ChevronDown,
+  ChevronUp,
+  ThumbsUp,
+  ThumbsDown,
+  MessageCircle,
+  Share2,
+  Bookmark,
+  Calendar,
+  Award,
+} from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+
+// Sample data structure based on typical Q&A platforms
+const sampleAnswers = [
+  {
+    id: 1,
+    question: "How to implement authentication in Next.js 14 with App Router?",
+    answer:
+      "To implement authentication in Next.js 14 with App Router, you have several options. The most popular approaches include NextAuth.js (now Auth.js), Supabase Auth, or custom JWT implementation. Here's a comprehensive guide:\n\n1. **Using NextAuth.js/Auth.js**: This is the most straightforward approach. Install the package and configure your providers in the app directory.\n\n2. **Setting up the configuration**: Create an auth.ts file in your project root and configure your providers, callbacks, and session strategies.\n\n3. **Protecting routes**: Use middleware.ts to protect your routes or implement route-level protection using server components.\n\n4. **Session management**: Leverage the useSession hook for client components and getServerSession for server components.",
+    author: {
+      name: "Sarah Chen",
+      avatar: "/placeholder.svg?height=40&width=40",
+      reputation: 15420,
+      badges: ["Expert", "Top Contributor"],
+    },
+    stats: {
+      upvotes: 234,
+      downvotes: 12,
+      comments: 45,
+      views: 12500,
+      bookmarks: 89,
+    },
+    tags: ["nextjs", "authentication", "app-router", "javascript"],
+    createdAt: "2024-01-15T10:30:00Z",
+    updatedAt: "2024-01-16T14:20:00Z",
+    isAccepted: true,
+    codeSnippets: [
+      {
+        language: "typescript",
+        code: `// auth.ts
+import NextAuth from 'next-auth'
+import GitHub from 'next-auth/providers/github'
+
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  providers: [GitHub],
+  callbacks: {
+    session({ session, token }) {
+      return session
+    }
+  }
+})`,
+      },
+    ],
+  },
+  {
+    id: 2,
+    question: "What's the difference between Server Components and Client Components in React?",
+    answer:
+      "Server Components and Client Components represent a fundamental shift in how React applications are architected. Here's a detailed breakdown:\n\n**Server Components:**\n- Render on the server during build time or request time\n- Have direct access to server-side resources (databases, file system)\n- Cannot use browser-only APIs or event handlers\n- Reduce bundle size as they don't ship JavaScript to the client\n- Perfect for data fetching and static content\n\n**Client Components:**\n- Render in the browser\n- Can use hooks, event handlers, and browser APIs\n- Required for interactivity and state management\n- Marked with 'use client' directive\n- Should be used sparingly to maintain performance benefits",
+    author: {
+      name: "Alex Rodriguez",
+      avatar: "/placeholder.svg?height=40&width=40",
+      reputation: 8750,
+      badges: ["React Expert", "Community Leader"],
+    },
+    stats: {
+      upvotes: 189,
+      downvotes: 8,
+      comments: 32,
+      views: 8900,
+      bookmarks: 67,
+    },
+    tags: ["react", "server-components", "client-components", "nextjs"],
+    createdAt: "2024-01-14T16:45:00Z",
+    updatedAt: "2024-01-14T16:45:00Z",
+    isAccepted: false,
+    codeSnippets: [
+      {
+        language: "tsx",
+        code: `// Server Component (default)
+async function ServerComponent() {
+  const data = await fetch('https://api.example.com/data')
+  return <div>{data}</div>
+}
+
+// Client Component
+'use client'
+import { useState } from 'react'
+
+function ClientComponent() {
+  const [count, setCount] = useState(0)
+  return <button onClick={() => setCount(count + 1)}>{count}</button>
+}`,
+      },
+    ],
+  },
+  {
+    id: 3,
+    question: "How to optimize performance in React applications?",
+    answer:
+      "Performance optimization in React is crucial for delivering smooth user experiences. Here are the key strategies:\n\n1. **Memoization**: Use React.memo, useMemo, and useCallback to prevent unnecessary re-renders\n2. **Code Splitting**: Implement lazy loading with React.lazy and Suspense\n3. **Bundle Analysis**: Use tools like webpack-bundle-analyzer to identify large dependencies\n4. **Image Optimization**: Use next/image or similar optimized image components\n5. **Virtual Scrolling**: For large lists, implement virtualization\n6. **Profiling**: Use React DevTools Profiler to identify performance bottlenecks",
+    author: {
+      name: "Emma Thompson",
+      avatar: "/placeholder.svg?height=40&width=40",
+      reputation: 12300,
+      badges: ["Performance Expert", "Senior Developer"],
+    },
+    stats: {
+      upvotes: 156,
+      downvotes: 5,
+      comments: 28,
+      views: 6700,
+      bookmarks: 45,
+    },
+    tags: ["react", "performance", "optimization", "memoization"],
+    createdAt: "2024-01-13T09:15:00Z",
+    updatedAt: "2024-01-13T11:30:00Z",
+    isAccepted: true,
+    codeSnippets: [
+      {
+        language: "tsx",
+        code: `// Memoization example
+const ExpensiveComponent = React.memo(({ data }) => {
+  const expensiveValue = useMemo(() => {
+    return data.reduce((acc, item) => acc + item.value, 0)
+  }, [data])
+  
+  return <div>{expensiveValue}</div>
+})`,
+      },
+    ],
+  },
+]
+
+const ITEMS_PER_PAGE = 2
+
+export default function AnswersPage() {
+  const [currentPage, setCurrentPage] = useState(1)
+  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set())
+
+  const totalPages = Math.ceil(sampleAnswers.length / ITEMS_PER_PAGE)
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+  const currentAnswers = sampleAnswers.slice(startIndex, startIndex + ITEMS_PER_PAGE)
+
+  const toggleCard = (id: number) => {
+    const newExpanded = new Set(expandedCards)
+    if (newExpanded.has(id)) {
+      newExpanded.delete(id)
+    } else {
+      newExpanded.add(id)
+    }
+    setExpandedCards(newExpanded)
+  }
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    })
+  }
+
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length <= maxLength) return text
+    return text.substring(0, maxLength) + "..."
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4">
+      <div className="max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+          <h1 className="text-4xl font-bold text-slate-800 mb-2">Community Answers</h1>
+          <p className="text-slate-600">Discover expert solutions and insights from our community</p>
+        </motion.div>
+
+        <div className="space-y-6">
+          {currentAnswers.map((answer, index) => {
+            const isExpanded = expandedCards.has(answer.id)
+            const displayText = isExpanded ? answer.answer : truncateText(answer.answer, 300)
+
+            return (
+              <motion.div
+                key={answer.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <h2 className="text-xl font-semibold text-slate-800 mb-3 leading-tight">{answer.question}</h2>
+                        <div className="flex items-center gap-4 text-sm text-slate-600">
+                          <div className="flex items-center gap-2">
+                            <Avatar className="w-8 h-8">
+                              <AvatarImage src={answer.author.avatar || "/placeholder.svg"} />
+                              <AvatarFallback>
+                                {answer.author.name
+                                  .split(" ")
+                                  .map((n) => n[0])
+                                  .join("")}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <span className="font-medium text-slate-700">{answer.author.name}</span>
+                              <div className="flex items-center gap-1">
+                                <Award className="w-3 h-3 text-amber-500" />
+                                <span>{answer.author.reputation.toLocaleString()}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Calendar className="w-4 h-4" />
+                            <span>{formatDate(answer.createdAt)}</span>
+                          </div>
+                        </div>
+                      </div>
+                      {answer.isAccepted && (
+                        <Badge className="bg-green-100 text-green-800 border-green-200">✓ Accepted</Badge>
+                      )}
+                    </div>
+                  </CardHeader>
+
+                  <CardContent className="pt-0">
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {answer.tags.map((tag) => (
+                        <Badge key={tag} variant="secondary" className="text-xs">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {answer.author.badges.map((badge) => (
+                        <Badge key={badge} className="bg-blue-100 text-blue-800 border-blue-200 text-xs">
+                          {badge}
+                        </Badge>
+                      ))}
+                    </div>
+
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={isExpanded ? "expanded" : "collapsed"}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="prose prose-slate max-w-none"
+                      >
+                        <p className="text-slate-700 leading-relaxed whitespace-pre-line">{displayText}</p>
+                      </motion.div>
+                    </AnimatePresence>
+
+                    {isExpanded && answer.codeSnippets && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="mt-4"
+                      >
+                        {answer.codeSnippets.map((snippet, idx) => (
+                          <div key={idx} className="bg-slate-900 rounded-lg p-4 overflow-x-auto">
+                            <pre className="text-sm text-slate-100">
+                              <code>{snippet.code}</code>
+                            </pre>
+                          </div>
+                        ))}
+                      </motion.div>
+                    )}
+
+                    <div className="flex items-center justify-between mt-6 pt-4 border-t border-slate-200">
+                      <div className="flex items-center gap-6">
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-green-600 hover:text-green-700 hover:bg-green-50"
+                          >
+                            <ThumbsUp className="w-4 h-4 mr-1" />
+                            {answer.stats.upvotes}
+                          </Button>
+                          <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700 hover:bg-red-50">
+                            <ThumbsDown className="w-4 h-4 mr-1" />
+                            {answer.stats.downvotes}
+                          </Button>
+                        </div>
+                        <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-700">
+                          <MessageCircle className="w-4 h-4 mr-1" />
+                          {answer.stats.comments}
+                        </Button>
+                        <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-700">
+                          <Bookmark className="w-4 h-4 mr-1" />
+                          {answer.stats.bookmarks}
+                        </Button>
+                        <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-700">
+                          <Share2 className="w-4 h-4 mr-1" />
+                          Share
+                        </Button>
+                      </div>
+                      <Button
+                        onClick={() => toggleCard(answer.id)}
+                        variant="ghost"
+                        size="sm"
+                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                      >
+                        {isExpanded ? (
+                          <>
+                            Show Less <ChevronUp className="w-4 h-4 ml-1" />
+                          </>
+                        ) : (
+                          <>
+                            Show More <ChevronDown className="w-4 h-4 ml-1" />
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )
+          })}
+        </div>
+
+        {/* Pagination */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="flex justify-center items-center gap-2 mt-8"
+        >
+          <Button
+            variant="outline"
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </Button>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <Button
+              key={page}
+              variant={currentPage === page ? "default" : "outline"}
+              onClick={() => setCurrentPage(page)}
+              className="w-10"
+            >
+              {page}
+            </Button>
+          ))}
+          <Button
+            variant="outline"
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </Button>
+        </motion.div>
+      </div>
+    </div>
+  )
+}

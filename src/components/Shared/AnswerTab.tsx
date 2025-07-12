@@ -1,4 +1,4 @@
-import AnswerCard from './AnswerCard';
+import AnswerCardProfile from './AnswerCardProfile';
 import { getUserAnswers } from  '../../../lib/actions/user.action';
 import Pagination from "./Pagination";
 
@@ -18,7 +18,6 @@ const AllAnswers = async ({ userId, searchParams }: Props) => {
   return (
     <div className="w-full">
       <div className="mt-8 flex w-full flex-col gap-6">
-        <h1>ANSWER TAB</h1>
         {result.answers && result.answers.length > 0 ? (
           <>
             {result.answers
@@ -26,7 +25,7 @@ const AllAnswers = async ({ userId, searchParams }: Props) => {
                 (ans) => ans.question && ans.author && typeof ans.author === "object"
               )
               .map((ans: any) => (
-                <AnswerCard key={ans._id} answer={ans} />
+                <AnswerCardProfile key={ans._id} answer={ans} />
               ))}
 
             <div className="mt-10">

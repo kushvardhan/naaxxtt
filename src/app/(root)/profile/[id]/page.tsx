@@ -1,13 +1,11 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SignedIn } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getUserInfo } from "../../../../../lib/actions/user.action";
-import AnswerTab from "../../../../components/Shared/AnswerTab";
 import ProfileLink from "../../../../components/Shared/ProfileLink";
-import QuestionTab from "../../../../components/Shared/QuestionTab";
+import ProfileTabs from "../../../../components/Shared/ProfileTabs";
 import Stats from "../../../../components/Shared/Stats";
 import { Button } from "../../../../components/ui/button";
 
@@ -124,51 +122,16 @@ export default async function Page({ params, searchParams }: URLProps) {
       />
 
       {/* Questions Tabs */}
-      <div className="mt-12">
-        <Tabs defaultValue="top-posts" className="w-full">
-          <TabsList className="flex bg-zinc-300 text-black dark:bg-black dark:text-white rounded-md p-1 w-fit">
-            <TabsTrigger
-              value="top-posts"
-              className="px-4 py-2 text-sm rounded-md transition-all dark:data-[state=active]:bg-blue-800 dark:data-[state=active]:text-white data-[state=active]:bg-blue-600 data-[state=active]:text-white"
-            >
-              Top Posts
-            </TabsTrigger>
-            <TabsTrigger
-              value="answers"
-              className="px-4 py-2 text-sm rounded-md transition-all dark:data-[state=active]:bg-blue-800 dark:data-[state=active]:text-white data-[state=active]:bg-blue-600 data-[state=active]:text-white"
-            >
-              Answers
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="top-posts" className="mt-6">
-            {userInfo?.user?._id ? (
-              <QuestionTab
-                searchParams={resolvedSearchParams}
-                userId={userInfo.user._id.toString()}
-              />
-            ) : (
-              <div className="text-center py-8 text-zinc-600 dark:text-zinc-400">
-                Unable to load questions. Please try again.
-              </div>
-            )}
-          </TabsContent>
-
-          {/* Future implementation */}
-          <TabsContent value="answers" className="mt-6">
-            {userInfo?.user?._id ? (
-              <AnswerTab
-                searchParams={resolvedSearchParams}
-                userId={userInfo.user._id.toString()}
-              />
-            ) : (
-              <div className="text-center py-8 text-zinc-600 dark:text-zinc-400">
-                Unable to load answers. Please try again.
-              </div>
-            )}
-          </TabsContent>
-        </Tabs>
-      </div>
+      {userInfo?.user?._id ? (
+        <ProfileTabs
+          userId={userInfo.user._id.toString()}
+          searchParams={resolvedSearchParams}
+        />
+      ) : (
+        <div className="text-center py-8 text-zinc-600 dark:text-zinc-400">
+          Unable to load profile data. Please try again.
+        </div>
+      )}
     </div>
   );
 }

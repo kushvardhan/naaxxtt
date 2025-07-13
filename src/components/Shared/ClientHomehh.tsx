@@ -1,12 +1,12 @@
 "use client";
 
-import LocalSearchBar from "@/components/Shared/Search/LocalSearchBar";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/Shared/dropdown-menu";
+import LocalSearchBar from "@/components/Shared/Search/LocalSearchBar";
 import Image from "next/image";
 import Link from "next/link";
 import { useContext, useState } from "react";
@@ -102,6 +102,35 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
   const isDark = theme?.mode === "dark";
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || !theme || !theme.mounted) {
+    return (
+      <div className="w-full h-full" suppressHydrationWarning>
+        <div className="animate-pulse space-y-6" suppressHydrationWarning>
+          <div
+            className="h-12 bg-gray-200 dark:bg-gray-700 rounded"
+            suppressHydrationWarning
+          ></div>
+          <div
+            className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3"
+            suppressHydrationWarning
+          ></div>
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="h-32 bg-gray-200 dark:bg-gray-700 rounded"
+              suppressHydrationWarning
+            ></div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   const questions = mappedQuestions || [];
 
@@ -120,6 +149,7 @@ export default function ClientHomehh({ mappedQuestions }: Props) {
       className={`h-[calc(screen-120px)] w-full overflow-y-scroll scrollbar-hidden ${
         isDark ? "bg-black" : "bg-white"
       }`}
+      suppressHydrationWarning
     >
       {/* Header */}
       <div

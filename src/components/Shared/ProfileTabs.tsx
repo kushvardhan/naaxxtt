@@ -24,7 +24,10 @@ const ProfileTabs = ({ userId, searchParams }: ProfileTabsProps) => {
             <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded mb-6"></div>
             <div className="space-y-4">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                <div
+                  key={i}
+                  className="h-32 bg-gray-200 dark:bg-gray-700 rounded"
+                ></div>
               ))}
             </div>
           </div>
@@ -82,44 +85,74 @@ const ProfileTabs = ({ userId, searchParams }: ProfileTabsProps) => {
 };
 
 // Client-side wrapper for QuestionTab
-const QuestionTabClient = ({ userId, searchParams }: { userId: string; searchParams: any }) => {
+const QuestionTabClient = ({
+  userId,
+  searchParams,
+}: {
+  userId: string;
+  searchParams: any;
+}) => {
   const [questions, setQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     const loadQuestions = async () => {
       try {
+        if (!isMounted) return;
+
         setLoading(true);
         setError(null);
-        
+
+        // Add a small delay to prevent rapid re-renders
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+        if (!isMounted) return;
+
         // Import the action dynamically to avoid SSR issues
-        const { getUserQuestions } = await import("../../../lib/actions/user.action");
-        
+        const { getUserQuestions } = await import(
+          "../../../lib/actions/user.action"
+        );
+
         const result = await getUserQuestions({
           userId,
-          page: searchParams.page ? +searchParams.page : 1,
+          page: searchParams?.page ? +searchParams.page : 1,
         });
-        
-        setQuestions(result.questions || []);
+
+        if (isMounted) {
+          setQuestions(result?.questions || []);
+        }
       } catch (err) {
         console.error("Error loading questions:", err);
-        setError("Failed to load questions");
+        if (isMounted) {
+          setError("Failed to load questions");
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
-    if (userId) {
+    if (userId && isMounted) {
       loadQuestions();
     }
-  }, [userId, searchParams.page]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [userId, searchParams?.page]);
 
   if (loading) {
     return (
       <div className="space-y-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-2xl h-32"></div>
+          <div
+            key={i}
+            className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-2xl h-32"
+          ></div>
         ))}
       </div>
     );
@@ -165,44 +198,74 @@ const QuestionTabClient = ({ userId, searchParams }: { userId: string; searchPar
 };
 
 // Client-side wrapper for AnswerTab
-const AnswerTabClient = ({ userId, searchParams }: { userId: string; searchParams: any }) => {
+const AnswerTabClient = ({
+  userId,
+  searchParams,
+}: {
+  userId: string;
+  searchParams: any;
+}) => {
   const [answers, setAnswers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     const loadAnswers = async () => {
       try {
+        if (!isMounted) return;
+
         setLoading(true);
         setError(null);
-        
+
+        // Add a small delay to prevent rapid re-renders
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+        if (!isMounted) return;
+
         // Import the action dynamically to avoid SSR issues
-        const { getUserAnswers } = await import("../../../lib/actions/user.action");
-        
+        const { getUserAnswers } = await import(
+          "../../../lib/actions/user.action"
+        );
+
         const result = await getUserAnswers({
           userId,
-          page: searchParams.page ? +searchParams.page : 1,
+          page: searchParams?.page ? +searchParams.page : 1,
         });
-        
-        setAnswers(result.answers || []);
+
+        if (isMounted) {
+          setAnswers(result?.answers || []);
+        }
       } catch (err) {
         console.error("Error loading answers:", err);
-        setError("Failed to load answers");
+        if (isMounted) {
+          setError("Failed to load answers");
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
-    if (userId) {
+    if (userId && isMounted) {
       loadAnswers();
     }
-  }, [userId, searchParams.page]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [userId, searchParams?.page]);
 
   if (loading) {
     return (
       <div className="space-y-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-2xl h-32"></div>
+          <div
+            key={i}
+            className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-2xl h-32"
+          ></div>
         ))}
       </div>
     );

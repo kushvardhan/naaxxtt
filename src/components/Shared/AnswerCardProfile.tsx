@@ -17,10 +17,10 @@ import {
 } from "@heroicons/react/24/solid";
 import { clsx } from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
-import parse from "html-react-parser";
 import Image from "next/image";
 import { useContext, useState } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
+import ParseHTML from "./ParseHTML";
 
 interface Author {
   clerkId: string;
@@ -63,7 +63,6 @@ export default function AnswerCardProfile({
   const [isExpanded, setIsExpanded] = useState(false);
   const [isVoting, setIsVoting] = useState(false);
 
-  // Add theme context for dynamic colors
   const theme = useContext(ThemeContext);
   const isDark = theme?.mode === "dark";
 
@@ -110,7 +109,6 @@ export default function AnswerCardProfile({
       .trim();
     if (textContent.length <= maxLength) return content;
 
-    // Find a good breaking point
     const truncated = textContent.substring(0, maxLength);
     const lastSpace = truncated.lastIndexOf(" ");
     const breakPoint = lastSpace > maxLength * 0.8 ? lastSpace : maxLength;
@@ -144,13 +142,12 @@ export default function AnswerCardProfile({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className={`rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border overflow-hidden max-w-full ${
+      className={`w-full sm:w-[100%] md:w-[100%] max-w-4xl rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border overflow-hidden ${
         isDark
           ? "bg-zinc-900 border-zinc-700 shadow-zinc-800"
           : "bg-white border-gray-100"
       }`}
     >
-      {/* Header */}
       <div className="p-6 pb-4">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1 min-w-0">
@@ -175,7 +172,7 @@ export default function AnswerCardProfile({
                   className="w-8 h-8 rounded-full object-cover"
                 />
                 <div>
-                  <span className="font-medium text-gray-700">
+                  <span className="font-medium text-gray-500">
                     {answer.author.name}
                   </span>
                 </div>
@@ -197,7 +194,7 @@ export default function AnswerCardProfile({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className={`prose max-w-none overflow-hidden ${
+              className={`prose max-w-none ${
                 isDark ? "prose-invert" : "prose-gray"
               }`}
             >
@@ -206,9 +203,10 @@ export default function AnswerCardProfile({
                   isDark
                     ? "text-zinc-300 [&>pre]:bg-zinc-800 [&>pre]:text-zinc-100 [&>code]:bg-zinc-700 [&>code]:text-zinc-200"
                     : "text-gray-700 [&>pre]:bg-gray-900 [&>pre]:text-gray-100 [&>code]:bg-gray-100 [&>code]:text-gray-800"
-                } [&>pre]:p-4 [&>pre]:rounded-lg [&>pre]:overflow-x-auto [&>pre]:max-w-full [&>code]:px-1 [&>code]:py-0.5 [&>code]:rounded [&>code]:text-sm [&>*]:max-w-full [&>*]:overflow-hidden`}
+                } [&>pre]:p-4 [&>pre]:rounded-lg [&>pre]:overflow-x-auto [&>code]:px-1 [&>code]:py-0.5 [&>code]:rounded [&>code]:text-sm`}
+                style={{ overflowX: "auto" }}
               >
-                {parse(displayContent)}
+                <ParseHTML data={displayContent} />
               </div>
             </motion.div>
           </AnimatePresence>

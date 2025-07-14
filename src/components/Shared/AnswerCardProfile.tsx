@@ -186,31 +186,22 @@ export default function AnswerCardProfile({
         </div>
 
         {/* Content */}
-        <div className="mb-6">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={isExpanded ? "expanded" : "collapsed"}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className={`prose max-w-none ${
-                isDark ? "prose-invert" : "prose-gray"
-              }`}
-            >
-              <div
-                className={`leading-relaxed break-words overflow-wrap-anywhere ${
-                  isDark
-                    ? "text-zinc-300 [&>pre]:bg-zinc-800 [&>pre]:text-zinc-100 [&>code]:bg-zinc-700 [&>code]:text-zinc-200"
-                    : "text-gray-700 [&>pre]:bg-gray-900 [&>pre]:text-gray-100 [&>code]:bg-gray-100 [&>code]:text-gray-800"
-                } [&>pre]:p-4 [&>pre]:rounded-lg [&>pre]:overflow-x-auto [&>code]:px-1 [&>code]:py-0.5 [&>code]:rounded [&>code]:text-sm`}
-                style={{ overflowX: "auto" }}
-              >
-                <ParseHTML data={displayContent} />
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+        <div className="w-full overflow-x-auto rounded-lg">
+  <div
+    className={clsx(
+      "min-w-full prose max-w-none",
+      isDark ? "prose-invert text-zinc-300" : "prose-gray text-gray-700",
+      "[&>pre]:p-4 [&>pre]:rounded-lg [&>pre]:overflow-x-auto",
+      "[&>code]:px-1 [&>code]:py-0.5 [&>code]:rounded [&>code]:text-sm",
+      isDark
+        ? "[&>pre]:bg-zinc-800 [&>pre]:text-zinc-100 [&>code]:bg-zinc-700 [&>code]:text-zinc-200"
+        : "[&>pre]:bg-gray-900 [&>pre]:text-gray-100 [&>code]:bg-gray-100 [&>code]:text-gray-800"
+    )}
+  >
+    <ParseHTML data={displayContent} />
+  </div>
+</div>
+
 
         {/* Actions */}
         <div

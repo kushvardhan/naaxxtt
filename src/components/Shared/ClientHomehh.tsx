@@ -9,7 +9,7 @@ import {
 import LocalSearchBar from "@/components/Shared/Search/LocalSearchBar";
 import Image from "next/image";
 import Link from "next/link";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
 import { Button } from "./button";
 

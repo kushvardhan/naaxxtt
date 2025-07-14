@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect, useState } from "react";
 import ErrorBoundary from "./ErrorBoundary";
 import SimpleAnswerTab from "./SimpleAnswerTab";
+import QuestionTab from "./QuestionTab";
 
 interface ProfileTabsProps {
   userId: string;

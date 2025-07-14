@@ -85,7 +85,6 @@ const ProfileTabs = ({ userId, searchParams }: ProfileTabsProps) => {
   );
 };
 
-
 const QuestionTabContent = ({
   userId,
   searchParams,
@@ -96,71 +95,55 @@ const QuestionTabContent = ({
   const [questions, setQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted || !userId) return;
-
-    let cancelled = false;
+    let isMounted = true;
 
     const loadQuestions = async () => {
       try {
+        if (!isMounted) return;
+
         setLoading(true);
         setError(null);
 
-        // Use API route instead of server action to prevent infinite loops
-        const response = await fetch(
-          `/api/user-questions?userId=${userId}&page=${searchParams?.page || 1}`
+        // Add a small delay to prevent rapid re-renders
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+        if (!isMounted) return;
+
+        // Import the action dynamically to avoid SSR issues
+        const { getUserQuestions } = await import(
+          "../../../lib/actions/user.action"
         );
 
-        if (cancelled) return;
+        const result = await getUserQuestions({
+          userId,
+          page: searchParams?.page ? +searchParams.page : 1,
+        });
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch questions");
-        }
-
-        const data = await response.json();
-
-        if (!cancelled) {
-          setQuestions(data.questions || []);
+        if (isMounted) {
+          setQuestions(result?.questions || []);
         }
       } catch (err) {
         console.error("Error loading questions:", err);
-        if (!cancelled) {
+        if (isMounted) {
           setError("Failed to load questions");
         }
       } finally {
-        if (!cancelled) {
+        if (isMounted) {
           setLoading(false);
         }
       }
     };
 
-    const timeoutId = setTimeout(loadQuestions, 100);
+    if (userId && isMounted) {
+      loadQuestions();
+    }
 
     return () => {
-      cancelled = true;
-      clearTimeout(timeoutId);
+      isMounted = false;
     };
-  }, [userId, searchParams?.page, mounted]);
-
-  if (!mounted) {
-    return (
-      <div className="space-y-4" suppressHydrationWarning>
-        {[1, 2, 3].map((i) => (
-          <div
-            key={i}
-            className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-2xl h-32"
-            suppressHydrationWarning
-          ></div>
-        ))}
-      </div>
-    );
-  }
+  }, [userId, searchParams?.page]);
 
   if (loading) {
     return (
@@ -177,14 +160,8 @@ const QuestionTabContent = ({
 
   if (error) {
     return (
-      <div className="text-center py-8">
-        <div className="text-red-600 dark:text-red-400 mb-4">{error}</div>
-        <button
-          onClick={() => window.location.reload()}
-          className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
-        >
-          Refresh Page
-        </button>
+      <div className="text-center py-8 text-red-600 dark:text-red-400">
+        {error}
       </div>
     );
   }

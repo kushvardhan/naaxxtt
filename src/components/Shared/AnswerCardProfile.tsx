@@ -19,7 +19,8 @@ import { clsx } from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import parse from "html-react-parser";
 import Image from "next/image";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ThemeContext } from "../../../context/ThemeContext";
 
 interface Author {
   clerkId: string;
@@ -61,6 +62,10 @@ export default function AnswerCardProfile({
 }: AnswerCardProfileProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isVoting, setIsVoting] = useState(false);
+
+  // Add theme context for dynamic colors
+  const theme = useContext(ThemeContext);
+  const isDark = theme?.mode === "dark";
 
   const upvotesArray = Array.isArray(answer.upvotes) ? answer.upvotes : [];
   const downvotesArray = Array.isArray(answer.downvotes)
@@ -139,16 +144,28 @@ export default function AnswerCardProfile({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden"
+      className={`rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border overflow-hidden max-w-full ${
+        isDark
+          ? "bg-zinc-900 border-zinc-700 shadow-zinc-800"
+          : "bg-white border-gray-100"
+      }`}
     >
       {/* Header */}
       <div className="p-6 pb-4">
         <div className="flex items-start justify-between mb-4">
-          <div className="flex-1">
-            <h2 className="text-xl font-semibold text-gray-800 mb-3 leading-tight">
+          <div className="flex-1 min-w-0">
+            <h2
+              className={`text-xl font-semibold mb-3 leading-tight break-words ${
+                isDark ? "text-zinc-100" : "text-gray-800"
+              }`}
+            >
               {answer.question.title}
             </h2>
-            <div className="flex items-center gap-4 text-sm text-gray-600">
+            <div
+              className={`flex items-center gap-4 text-sm ${
+                isDark ? "text-zinc-400" : "text-gray-600"
+              }`}
+            >
               <div className="flex items-center gap-2">
                 <Image
                   src={answer.author.image || "/placeholder.svg"}
@@ -180,9 +197,17 @@ export default function AnswerCardProfile({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="prose prose-gray max-w-none"
+              className={`prose max-w-none overflow-hidden ${
+                isDark ? "prose-invert" : "prose-gray"
+              }`}
             >
-              <div className="text-gray-700 leading-relaxed [&>pre]:bg-gray-900 [&>pre]:text-gray-100 [&>pre]:p-4 [&>pre]:rounded-lg [&>pre]:overflow-x-auto [&>code]:bg-gray-100 [&>code]:px-1 [&>code]:py-0.5 [&>code]:rounded [&>code]:text-sm">
+              <div
+                className={`leading-relaxed break-words overflow-wrap-anywhere ${
+                  isDark
+                    ? "text-zinc-300 [&>pre]:bg-zinc-800 [&>pre]:text-zinc-100 [&>code]:bg-zinc-700 [&>code]:text-zinc-200"
+                    : "text-gray-700 [&>pre]:bg-gray-900 [&>pre]:text-gray-100 [&>code]:bg-gray-100 [&>code]:text-gray-800"
+                } [&>pre]:p-4 [&>pre]:rounded-lg [&>pre]:overflow-x-auto [&>pre]:max-w-full [&>code]:px-1 [&>code]:py-0.5 [&>code]:rounded [&>code]:text-sm [&>*]:max-w-full [&>*]:overflow-hidden`}
+              >
                 {parse(displayContent)}
               </div>
             </motion.div>
@@ -190,7 +215,11 @@ export default function AnswerCardProfile({
         </div>
 
         {/* Actions */}
-        <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+        <div
+          className={`flex items-center justify-between pt-4 border-t ${
+            isDark ? "border-zinc-700" : "border-gray-200"
+          }`}
+        >
           <div className="flex items-center gap-4">
             {/* Voting */}
             <div className="flex items-center gap-1">
@@ -200,7 +229,11 @@ export default function AnswerCardProfile({
                 className={clsx(
                   "flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all duration-200",
                   hasUpvoted
-                    ? "bg-green-100 text-green-700"
+                    ? isDark
+                      ? "bg-green-900 text-green-300"
+                      : "bg-green-100 text-green-700"
+                    : isDark
+                    ? "text-zinc-400 hover:bg-green-900/30 hover:text-green-400"
                     : "text-gray-600 hover:bg-green-50 hover:text-green-600",
                   isVoting && "opacity-50 cursor-not-allowed"
                 )}
@@ -221,7 +254,11 @@ export default function AnswerCardProfile({
                 className={clsx(
                   "flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all duration-200",
                   hasDownvoted
-                    ? "bg-red-100 text-red-700"
+                    ? isDark
+                      ? "bg-red-900 text-red-300"
+                      : "bg-red-100 text-red-700"
+                    : isDark
+                    ? "text-zinc-400 hover:bg-red-900/30 hover:text-red-400"
                     : "text-gray-600 hover:bg-red-50 hover:text-red-600",
                   isVoting && "opacity-50 cursor-not-allowed"
                 )}
@@ -238,7 +275,13 @@ export default function AnswerCardProfile({
             </div>
 
             {/* Other actions */}
-            <button className="flex items-center gap-1 px-3 py-1.5 text-gray-600 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-all duration-200">
+            <button
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all duration-200 ${
+                isDark
+                  ? "text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800"
+                  : "text-gray-600 hover:text-gray-700 hover:bg-gray-50"
+              }`}
+            >
               <ChatBubbleLeftIcon className="w-4 h-4" />
               <span className="text-sm">Comment</span>
             </button>
@@ -249,7 +292,11 @@ export default function AnswerCardProfile({
               className={clsx(
                 "flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all duration-200",
                 isBookmarked
-                  ? "bg-blue-100 text-blue-700"
+                  ? isDark
+                    ? "bg-blue-900 text-blue-300"
+                    : "bg-blue-100 text-blue-700"
+                  : isDark
+                  ? "text-zinc-400 hover:bg-blue-900/30 hover:text-blue-400"
                   : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
               )}
             >
@@ -261,7 +308,13 @@ export default function AnswerCardProfile({
               <span className="text-sm">Save</span>
             </button>
 
-            <button className="flex items-center gap-1 px-3 py-1.5 text-gray-600 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-all duration-200">
+            <button
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all duration-200 ${
+                isDark
+                  ? "text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800"
+                  : "text-gray-600 hover:text-gray-700 hover:bg-gray-50"
+              }`}
+            >
               <ShareIcon className="w-4 h-4" />
               <span className="text-sm">Share</span>
             </button>
@@ -271,7 +324,11 @@ export default function AnswerCardProfile({
           {shouldShowExpand && (
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="flex items-center gap-1 px-3 py-1.5 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-all duration-200"
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all duration-200 ${
+                isDark
+                  ? "text-blue-400 hover:text-blue-300 hover:bg-blue-900/30"
+                  : "text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+              }`}
             >
               <span className="text-sm font-medium">
                 {isExpanded ? "Show Less" : "Show More"}

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { connectToDatabase } from "../../../../lib/mongoose";
 import Answer from "../../../../database/answer.model";
+import { connectToDatabase } from "../../../../lib/mongoose";
 
 export async function GET(request: NextRequest) {
   try {
@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId");
     const page = parseInt(searchParams.get("page") || "1");
-    const pageSize = 10;
+    const pageSize = parseInt(searchParams.get("pageSize") || "10");
 
     if (!userId) {
       return NextResponse.json(
@@ -39,16 +39,20 @@ export async function GET(request: NextRequest) {
       upvotes: answer.upvotes || [],
       downvotes: answer.downvotes || [],
       createdAt: answer.createdAt ? answer.createdAt.toISOString() : null,
-      question: answer.question ? {
-        _id: answer.question._id.toString(),
-        title: answer.question.title || "Unknown Question"
-      } : null,
-      author: answer.author ? {
-        _id: answer.author._id.toString(),
-        clerkId: answer.author.clerkId || "",
-        name: answer.author.name || "Unknown User",
-        image: answer.author.image || ""
-      } : null
+      question: answer.question
+        ? {
+            _id: answer.question._id.toString(),
+            title: answer.question.title || "Unknown Question",
+          }
+        : null,
+      author: answer.author
+        ? {
+            _id: answer.author._id.toString(),
+            clerkId: answer.author.clerkId || "",
+            name: answer.author.name || "Unknown User",
+            image: answer.author.image || "",
+          }
+        : null,
     }));
 
     return NextResponse.json({

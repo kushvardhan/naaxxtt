@@ -324,8 +324,8 @@ export default function AnswerCardProfile({
               onClick={() => setIsExpanded(!isExpanded)}
               className={`flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all duration-200 ${
                 isDark
-                  ? "text-blue-400 hover:text-blue-300 hover:bg-blue-900/30"
-                  : "text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                  ? "text-blue-400 hover:text-blue-300 hover:bg-blue-900/20"
+                  : "text-blue-600 hover:text-blue-700 hover:bg-blue-200"
               }`}
             >
               <span className="text-sm font-medium">

@@ -57,7 +57,7 @@ export default async function Page({ params, searchParams }: URLProps) {
   return (
     <div className="w-full h-[calc(100vh-130px)] overflow-y-auto scrollbar-hidden  px-4 sm:px-10 md:px-20 mt-20 bg-white dark:bg-black text-black dark:text-white transition-colors duration-300">
       {/* Profile Header */}
-      <div className="flex flex-col-reverse sm:flex-row justify-between items-start sm:items-center gap-6">
+      <div className="flex flex-col-reverse mt-3 sm:flex-row justify-between items-start sm:items-center gap-6">
         <div className="flex items-start gap-6">
           <Image
             src={userInfo.user.image}

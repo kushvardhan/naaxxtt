@@ -426,7 +426,7 @@ const AnswerTabContent = ({
 
   if (loading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-8 flex flex-col gap-4">
         {[1, 2].map((i) => (
           <div
             key={i}
@@ -466,7 +466,7 @@ const AnswerTabContent = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-space-y-6  flex flex-col gap-4">
       {answers.map((answer) => (
         <AnswerCardProfile
           key={answer._id}

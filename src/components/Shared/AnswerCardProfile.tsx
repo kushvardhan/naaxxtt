@@ -176,14 +176,15 @@ export default function AnswerCardProfile({
             >
               <div className="w-full overflow-x-auto rounded-lg">
                 <div className={clsx(
-                  "min-w-full prose max-w-none",
-                  isDark ? "prose-invert text-zinc-300" : "prose-gray text-gray-700",
-                  "[&>pre]:p-4 [&>pre]:rounded-lg [&>pre]:overflow-x-auto",
-                  "[&>code]:px-1 [&>code]:py-0.5 [&>code]:rounded [&>code]:text-sm",
-                  isDark
-                    ? "[&>pre]:bg-zinc-800 [&>pre]:text-zinc-100 [&>code]:bg-zinc-700 [&>code]:text-zinc-200"
-                    : "[&>pre]:bg-gray-900 [&>pre]:text-gray-100 [&>code]:bg-gray-100 [&>code]:text-gray-800"
-                )}>
+  "min-w-full prose break-words break-all max-w-none",
+  isDark ? "prose-invert text-zinc-300" : "prose-gray text-gray-700",
+  "[&>pre]:p-4 [&>pre]:rounded-lg [&>pre]:overflow-x-auto [&>pre]:max-w-full",
+  "[&>code]:px-1 [&>code]:py-0.5 [&>code]:rounded [&>code]:text-sm [&>code]:break-words",
+  isDark
+    ? "[&>pre]:bg-zinc-800 [&>pre]:text-zinc-100 [&>code]:bg-zinc-700 [&>code]:text-zinc-200"
+    : "[&>pre]:bg-gray-900 [&>pre]:text-gray-100 [&>code]:bg-gray-100 [&>code]:text-gray-800"
+)}>
+
                   <ParseHTML data={displayContent} />
                 </div>
               </div>

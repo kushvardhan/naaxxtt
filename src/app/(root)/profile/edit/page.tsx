@@ -22,8 +22,8 @@ const Page = async ({ params }: ParamsProps) => {
   console.log("mongoUser: ", mongoUser);
 
   return (
-    <>
-      <h1 className="h1-bold text-dark100_light900">Edit Profile</h1>
+    <div className='w-full h-[calc(100vh-120px)] mt-20 overflow-y-scroll scrollbar-hidden'>
+      <h1 className="text-xl mt-2 lg:text-4xl font-bold font-mono lg:text-5xl font-bold dark:text-zinc-100 text-black">Edit Profile</h1>
       
       <div className="mt-9">
         <Profile 
@@ -31,7 +31,7 @@ const Page = async ({ params }: ParamsProps) => {
           user={JSON.stringify(mongoUser)}
         />
       </div>
-    </>
+    </div>
   )
 }
 

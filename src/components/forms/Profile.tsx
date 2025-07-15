@@ -66,13 +66,13 @@ const Profile = ({ clerkId, user }: Props) => {
           name="name"
           render={({ field }) => (
             <FormItem className="space-y-3.5">
-              <FormLabel className="paragraph-semibold text-dark400_light800">
-                Name <span className="text-primary-500">*</span>
+              <FormLabel className="text-regular font-semibold text-zinc-900 dark:text-zinc-100">
+                Name <span className="text-red-400">*</span>
               </FormLabel>
               <FormControl>
                 <Input 
                   placeholder="Your name" 
-                  className="no-focus paragraph-regular light-border-2 background-light800_dark300 text-dark300_light700 min-h-[56px] border"
+                  className="no-focus  text-[16px] font-normal leading-[22.4px] border-light-700 dark:border-dark-400 bg-light-800 dark:bg-dark-300 text-dark-300 dark:text-light-700 min-h-[56px] border"
                   {...field} 
                 />
               </FormControl>
@@ -85,8 +85,8 @@ const Profile = ({ clerkId, user }: Props) => {
           name="username"
           render={({ field }) => (
             <FormItem className="space-y-3.5">
-              <FormLabel className="paragraph-semibold text-dark400_light800">
-                Username <span className="text-primary-500">*</span>
+              <FormLabel className="text-regular font-semibold text-zinc-900 dark:text-zinc-100">
+                Username <span className="text-red-400">*</span>
               </FormLabel>
               <FormControl>
                 <Input 
@@ -104,7 +104,7 @@ const Profile = ({ clerkId, user }: Props) => {
           name="portfolioWebsite"
           render={({ field }) => (
             <FormItem className="space-y-3.5">
-              <FormLabel className="paragraph-semibold text-dark400_light800">
+              <FormLabel className="text-regular font-semibold text-zinc-900 dark:text-zinc-100">
                 Portfolio Link
               </FormLabel>
               <FormControl>
@@ -125,7 +125,7 @@ const Profile = ({ clerkId, user }: Props) => {
           name="location"
           render={({ field }) => (
             <FormItem className="space-y-3.5">
-              <FormLabel className="paragraph-semibold text-dark400_light800">
+              <FormLabel className="text-regular font-semibold text-zinc-900 dark:text-zinc-100">
                 Location 
               </FormLabel>
               <FormControl>
@@ -145,8 +145,8 @@ const Profile = ({ clerkId, user }: Props) => {
           name="about"
           render={({ field }) => (
             <FormItem className="space-y-3.5">
-              <FormLabel className="paragraph-semibold text-dark400_light800">
-                Bio <span className="text-primary-500">*</span>
+              <FormLabel className="text-regular font-semibold text-zinc-900 dark:text-zinc-100">
+                Bio <span className="text-red-400">*</span>
               </FormLabel>
               <FormControl>
                 <Textarea 

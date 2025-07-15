@@ -170,4 +170,4 @@ const Profile = ({ clerkId, user }: Props) => {
   )
 }
 
-export default Profile
+export default Profile;

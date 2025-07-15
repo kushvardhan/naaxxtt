@@ -19,3 +19,11 @@ import * as z from "zod"
 export const AnswerSchema = z.object({
   answer: z.string().min(100)
 })
+
+export const ProfileSchema = z.object({
+  name: z.string().min(5).max(50),
+  username: z.string().min(5).max(50),
+  about: z.string().min(10).max(150),
+  portfolioWebsite: z.string().url(),
+  location: z.string().min(5).max(50),
+})

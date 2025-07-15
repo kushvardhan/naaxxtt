@@ -94,9 +94,9 @@ export default async function Page({ params, searchParams }: URLProps) {
               />
             </div>
 
-            {userInfo.user.bio && (
+            {userInfo.user.about && (
               <p className="mt-4 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
-                {userInfo.user.bio}
+                {userInfo.user.about}
               </p>
             )}
           </div>

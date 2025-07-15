@@ -99,6 +99,9 @@ const QuestionTabContent = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   const theme = useContext(ThemeContext);
   const isDark = theme?.mode === "dark";
 
@@ -117,48 +120,41 @@ const QuestionTabContent = ({
         setError(null);
 
         const response = await fetch(
-          `/api/user-questions?userId=${userId}&page=${searchParams?.page || 1}`
+          `/api/user-questions?userId=${userId}&page=${currentPage}&pageSize=4`
         );
 
-        if (cancelled) return;
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch questions");
-        }
+        if (!response.ok) throw new Error("Failed to fetch questions");
 
         const data = await response.json();
 
         if (!cancelled) {
           setQuestions(data.questions || []);
+          setTotalPages(Math.ceil((data.totalQuestions || 0) / 4));
         }
       } catch (err) {
-        console.error("Error loading questions:", err);
-        if (!cancelled) {
-          setError("Failed to load questions");
-        }
+        if (!cancelled) setError("Failed to load questions");
       } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
+        if (!cancelled) setLoading(false);
       }
     };
 
-    const timeoutId = setTimeout(loadQuestions, 100);
-
+    const timeout = setTimeout(loadQuestions, 100);
     return () => {
       cancelled = true;
-      clearTimeout(timeoutId);
+      clearTimeout(timeout);
     };
-  }, [userId, searchParams?.page, mounted]);
+  }, [userId, currentPage, mounted]);
 
-  if (loading) {
+  const handlePageChange = (page: number) => setCurrentPage(page);
+
+  if (!mounted || loading) {
     return (
-      <div className="space-y-4">
-        {[1, 2, 3].map((i) => (
+      <div className="space-y-4" suppressHydrationWarning>
+        {[1, 2, 3, 4].map((i) => (
           <div
             key={i}
             className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-2xl h-32"
-          ></div>
+          />
         ))}
       </div>
     );
@@ -187,55 +183,45 @@ const QuestionTabContent = ({
       {questions.map((question) => (
         <div
           key={question._id}
-          className={`w-full rounded-xl cursor-pointer border p-4 shadow-sm transition-all duration-200 hover:shadow-lg
-            ${
-              isDark
-                ? "bg-zinc-950 border-zinc-700 shadow-lg shadow-zinc-800"
-                : "bg-white border-zinc-300 shadow-md shadow-zinc-400"
-            }
-          `}
+          className={`w-full rounded-xl cursor-pointer border p-4 shadow-sm transition-all duration-200 hover:shadow-lg ${
+            isDark
+              ? "bg-zinc-950 border-zinc-700 shadow-lg shadow-zinc-800"
+              : "bg-white border-zinc-300 shadow-md shadow-zinc-400"
+          }`}
         >
-          {/* Title */}
           <Link href={`/question/${question._id}`}>
             <h2
-              className={`text-base sm:text-lg hover:underline font-semibold line-clamp-2 break-words
-              ${
+              className={`text-base sm:text-lg hover:underline font-semibold line-clamp-2 break-words ${
                 isDark
                   ? "text-zinc-100 hover:text-blue-300"
                   : "text-zinc-800 hover:text-blue-700"
-              }
-            `}
+              }`}
             >
               {question.title}
             </h2>
           </Link>
 
-          {/* Tags */}
           <div className="mt-3 flex flex-wrap gap-2">
             {question.tags?.map((tag: any) => (
               <span
                 key={tag._id}
                 title={tag.name}
-                className={`rounded-md cursor-pointer px-2 py-1 text-xs font-mono
-                  ${
-                    isDark
-                      ? "bg-zinc-700 text-white hover:bg-zinc-600 transition-all"
-                      : "bg-zinc-200 text-zinc-950 hover:bg-zinc-300 transition-all"
-                  }
-                `}
+                className={`rounded-md cursor-pointer px-2 py-1 text-xs font-mono ${
+                  isDark
+                    ? "bg-zinc-700 text-white hover:bg-zinc-600 transition-all"
+                    : "bg-zinc-200 text-zinc-950 hover:bg-zinc-300 transition-all"
+                }`}
               >
                 {tag.name}
               </span>
             ))}
           </div>
 
-          {/* Meta Info */}
           <div
-            className={`mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm
-              ${isDark ? "text-zinc-400" : "text-zinc-500"}
-            `}
+            className={`mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm ${
+              isDark ? "text-zinc-400" : "text-zinc-500"
+            }`}
           >
-            {/* User */}
             <div className="flex items-center gap-3">
               <Image
                 src={
@@ -247,101 +233,83 @@ const QuestionTabContent = ({
                 height={24}
                 className={`h-8 w-8 rounded-full object-cover ${
                   isDark
-                    ? "border-1 border-orange-700"
+                    ? "border border-orange-700"
                     : "border-2 border-orange-500"
-                } `}
+                }`}
               />
-
-              <Link
-                title={`clerkId: ${question.author?.clerkId}`}
-                href={`/profile/${question.author?.clerkId}`}
-              >
+              <Link href={`/profile/${question.author?.clerkId}`}>
                 <span className="text-sm font-medium">
                   {question.author?.name || "Unknown User"}
                 </span>
               </Link>
             </div>
 
-            {/* Stats */}
             <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm">
-              {/* Upvotes */}
               <span
                 title="Upvote"
                 className={`flex items-center gap-1 ${
                   isDark ? "text-white" : "text-red-600"
                 }`}
               >
-                <svg
-                  className="w-4 h-4"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  stroke="none"
-                >
-                  <path d="M12.781 2.375c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10zM15 12h-1v8h-4v-8H6.081L12 4.601 17.919 12H15z" />
-                </svg>
-                {question.upvotes?.length || 0}
+                👍 {question.upvotes?.length || 0}
               </span>
-
-              {/* Answers */}
               <span
                 title="Answer"
                 className={`flex items-center gap-1 ${
                   isDark ? "text-zinc-100" : "text-zinc-700"
                 }`}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-4.5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z"
-                  />
-                </svg>
-                {question.answers?.length || 0}
+                💬 {question.answers?.length || 0}
               </span>
-
-              {/* Views */}
               <span
                 title="Views"
                 className={`flex items-center gap-1 ${
                   isDark ? "text-zinc-100" : "text-zinc-700"
                 }`}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                  />
-                </svg>
-                {question.views || 0}
+                👁️ {question.views || 0}
               </span>
             </div>
           </div>
         </div>
       ))}
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-4 mt-8">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage <= 1}
+            className={`px-4 py-2 rounded-lg font-mono transition-colors ${
+              currentPage <= 1
+                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                : "bg-orange-500 text-white hover:bg-orange-600"
+            }`}
+          >
+            Previous
+          </button>
+
+          <span className="text-sm text-zinc-600 dark:text-zinc-400">
+            Page {currentPage} of {totalPages}
+          </span>
+
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage >= totalPages}
+            className={`px-4 py-2 rounded-lg font-mono transition-colors ${
+              currentPage >= totalPages
+                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                : "bg-orange-500 text-white hover:bg-orange-600"
+            }`}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };
+
 
 // AnswerTabContent - Using AnswerCardProfile with pagination (2 answers per page)
 const AnswerTabContent = ({

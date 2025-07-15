@@ -67,7 +67,7 @@ const Profile = ({ clerkId, user }: Props) => {
           render={({ field }) => (
             <FormItem className="space-y-3.5">
               <FormLabel className="text-regular font-semibold text-zinc-900 dark:text-zinc-100">
-                Name <span className="text-red-400">*</span>
+                Name <span className="text-red-600 dark:text-red-400 text-regular">*</span>
               </FormLabel>
               <FormControl>
                 <Input 
@@ -86,7 +86,7 @@ const Profile = ({ clerkId, user }: Props) => {
           render={({ field }) => (
             <FormItem className="space-y-3.5">
               <FormLabel className="text-regular font-semibold text-zinc-900 dark:text-zinc-100">
-                Username <span className="text-red-400">*</span>
+                Username <span className="text-red-600 dark:text-red-400 text-regular">*</span>
               </FormLabel>
               <FormControl>
                 <Input 
@@ -146,7 +146,7 @@ const Profile = ({ clerkId, user }: Props) => {
           render={({ field }) => (
             <FormItem className="space-y-3.5">
               <FormLabel className="text-regular font-semibold text-zinc-900 dark:text-zinc-100">
-                Bio <span className="text-red-400">*</span>
+                Bio <span className="text-red-600 dark:text-red-400 text-regular">*</span>
               </FormLabel>
               <FormControl>
                 <Textarea 
@@ -161,9 +161,16 @@ const Profile = ({ clerkId, user }: Props) => {
         />
 
         <div className="mt-7 flex justify-end">
-          <Button type="submit" className="primary-gradient w-fit" disabled={isSubmitting}>
-            {isSubmitting ? "Saving..." : "Save"}
-          </Button>
+            <Button
+  type="submit"
+  className="w-fit text-white px-4 py-2 rounded-md font-mono"
+  style={{
+    background: "linear-gradient(129deg, #ff7000 0%, #e2995f 100%)",
+  }}
+  disabled={isSubmitting}
+>
+  {isSubmitting ? "Saving..." : "Save"}
+</Button>
         </div>
       </form>
     </Form>

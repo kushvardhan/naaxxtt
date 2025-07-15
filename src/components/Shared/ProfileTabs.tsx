@@ -183,10 +183,10 @@ const QuestionTabContent = ({
         {questions.map((question) => (
   <div
     key={question._id}
-    className={`w-full rounded-xl cursor-pointer border p-4 shadow-sm transition-all duration-200 hover:shadow-lg ${
+    className={`w-full rounded-xl cursor-pointer border p-4 shadow-sm transition-all duration-200  ${
       isDark
-        ? "bg-zinc-950 border-zinc-700 shadow-lg shadow-zinc-800"
-        : "bg-white border-zinc-300 shadow-md shadow-zinc-400"
+        ? "bg-zinc-950 border-zinc-700 shadow-regular hover:shadow-xl shadow-zinc-800"
+        : "bg-white border-zinc-300 shadow-md hover:shadow-lg shadow-zinc-400"
     }`}
   >
     {/* Title */}

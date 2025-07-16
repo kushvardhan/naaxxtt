@@ -1,3 +1,4 @@
+import { SignedIn } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { getAnswers } from "../../../lib/actions/answer.action";
@@ -102,7 +103,7 @@ const AllAnswers = async ({
                       </p>
                     </div>
                   </Link>
-                  <div className="flex justify-end">
+                  <div className="flex justify-end gap-3">
                     <Votes
                       type="Answer"
                       itemId={JSON.stringify(answer._id)}
@@ -112,6 +113,11 @@ const AllAnswers = async ({
                       downvotes={answer.downvotes.length}
                       hasdownVoted={answer.downvotes.includes(userId)}
                     />
+                    <SignedIn>
+                      {answer?.author?.clerkId && clerkId === answer?.author?.clerkId && (
+                        <EditDeleteAction type="Answer" itemId={JSON.stringify(answer?._id)} />
+                      )}
+                    </SignedIn>
                   </div>
                 </div>
                 <ParseHTML data={answer.content} />

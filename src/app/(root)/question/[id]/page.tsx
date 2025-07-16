@@ -71,7 +71,7 @@ const QuestionDetailPage = async ({
 
     return (
       <section className="w-full h-[calc(100vh-120px)] mt-18 overflow-y-auto scrollbar-hidden max-w-5xl mx-auto px-4 pt-6 pb-10 text-black dark:text-white">
-        <div className="w-full flex justify-end">
+        <div className="w-full flex justify-end gap-3">
           <Votes
             type="Question"
             itemId={JSON.stringify(question?._id)}
@@ -112,7 +112,7 @@ const QuestionDetailPage = async ({
         </div>
 
         {/* Title */}
-        <h1 className="mt-6 text-5xl md:text-4xl font-bold leading-snug break-words text-zinc-800 dark:text-zinc-100">
+        <h1 className="mt-6 sm:xl text-5xl md:text-4xl font-bold leading-snug break-words text-zinc-800 dark:text-zinc-100">
           {question.title}
         </h1>
 

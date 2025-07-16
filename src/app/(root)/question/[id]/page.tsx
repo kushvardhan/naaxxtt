@@ -112,7 +112,7 @@ const QuestionDetailPage = async ({
         </div>
 
         {/* Title */}
-        <h1 className="mt-6 sm:xl text-5xl md:text-4xl font-bold leading-snug break-words text-zinc-800 dark:text-zinc-100">
+        <h1 className="mt-6 text-2xl sm:text-xl lg:text-5xl md:text-4xl font-bold leading-snug break-words text-zinc-800 dark:text-zinc-100">
           {question.title}
         </h1>
 

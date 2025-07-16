@@ -25,6 +25,7 @@ const EditDeleteAction = ({ type, itemId }: Props) => {
         questionId: JSON.parse(itemId), 
         path: pathname 
       })
+      console.log("qUESTION Deleted");
     } else if(type === 'Answer') {
       // Delete answer
       await deleteAnswer({ 
@@ -41,8 +42,8 @@ const EditDeleteAction = ({ type, itemId }: Props) => {
           src="/assets/icons/edit.svg"
           title="Edit"
           alt="Edit"
-          width={20}
-          height={20}
+          width={21}
+          height={21}
           className="cursor-pointer object-contain"
           onClick={handleEdit}
         />
@@ -52,8 +53,8 @@ const EditDeleteAction = ({ type, itemId }: Props) => {
           src="/assets/icons/trash.svg"
           title="Delete"
           alt="Delete"
-          width={20}
-          height={20}
+          width={21}
+          height={21}
           className="cursor-pointer object-contain "
           onClick={handleDelete}
         />

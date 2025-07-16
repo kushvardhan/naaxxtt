@@ -52,7 +52,7 @@ const Profile = ({ clerkId, user }: Props) => {
         },
         path: pathname
       })
-      toast("Profile Updated")
+      toast.success("Profile Updated")
 
       router.back();
     } catch (error) {
@@ -70,17 +70,24 @@ useEffect(() => {
 if (!mounted) {
   return (
     <div className="w-full h-full" suppressHydrationWarning>
-      <div className="animate-pulse space-y-6">
-        <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded"></div>
-        <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
-        {[1, 2, 3].map((i) => (
+        <div className="animate-pulse space-y-6" suppressHydrationWarning>
           <div
-            key={i}
-            className="h-32 bg-gray-200 dark:bg-gray-700 rounded"
+            className="h-12 bg-gray-200 dark:bg-gray-700 rounded"
+            suppressHydrationWarning
           ></div>
-        ))}
+          <div
+            className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3"
+            suppressHydrationWarning
+          ></div>
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="h-32 bg-gray-200 dark:bg-gray-700 rounded"
+              suppressHydrationWarning
+            ></div>
+          ))}
+        </div>
       </div>
-    </div>
   );
 }
 

@@ -65,7 +65,7 @@ const handleSave = async () => {
 
   const handleVote = async (action: string) => {
   if (!userId) {
-    toast("You must be logged in to perform this action", { type: "error" });
+    toast("You must be logged in to perform this action");
     return;
   }
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
+import Profile from '../../../../components/forms/Profile';
 import { auth } from "@clerk/nextjs/server";
 import { getUserById } from "../../../../../lib/actions/user.action";
 
@@ -7,14 +7,10 @@ interface ParamsProps {
   params: { id: string };
 }
 
+
 export const metadata: Metadata = {
   title: "NullFlow | Edit Profile",
 };
-
-const Profile = dynamic(() => import('../../../../components/forms/Profile'), {
-  ssr: false,
-  loading: () => <p>Loading...</p>,
-});
 
 const Page = async ({ params }: ParamsProps) => {
   const { userId } = await auth();
@@ -39,4 +35,4 @@ const Page = async ({ params }: ParamsProps) => {
   )
 }
 
-export default Page;
+export default Page

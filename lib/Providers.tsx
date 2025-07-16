@@ -1,8 +1,8 @@
-// app/Providers.tsx
 "use client";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -22,6 +22,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         disableTransitionOnChange
       >
         {children}
+        <Toaster /> 
       </ThemeProvider>
     </ClerkProvider>
   );

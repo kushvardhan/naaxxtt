@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 
+import { SignedIn } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { Clock, Eye, MessageCircle } from "lucide-react";
 import Image from "next/image";
@@ -12,6 +13,7 @@ import AllAnswers from "../../../../components/Shared/AllAnswers";
 import Metric from "../../../../components/Shared/Metric";
 import ParseHTML from "../../../../components/Shared/ParseHTML";
 import Votes from "../../../../components/Shared/Votes";
+import EditDeleteAction from "@/components/Shared/EditDeleteAction";
 
 interface QuestionDetailPageProps {
   params: Promise<{
@@ -34,7 +36,6 @@ const QuestionDetailPage = async ({
     if (clerkId) {
       mongoUser = await getUserById({ userId: clerkId });
     }
-
     const resolvedParams = await params;
     const question = await getQuestionById({ questionId: resolvedParams?.id });
     // console.log("QUEGEDY: ",question);
@@ -81,6 +82,14 @@ const QuestionDetailPage = async ({
             hasdownVoted={question?.downvotes?.includes(mongoUser?._id)}
             hasSaved={mongoUser?.saved?.includes(question?._id)}
           />
+
+        <SignedIn>
+  {question?.author?.clerkId && clerkId === question.author.clerkId && (
+    <EditDeleteAction type="Question" itemId={JSON.stringify(question?._id)} />
+  )}
+</SignedIn>
+
+
         </div>
         <div className="mt-4 flex  items-center gap-4">
           <Link href={`/profile/${question?.author?.clerkId}`}>

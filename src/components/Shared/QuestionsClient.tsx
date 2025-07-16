@@ -54,7 +54,6 @@ const QuestionsClient = ({ questions }: QuestionsClientProps) => {
     setMounted(true);
   }, []);
 
-  // Move useMemo before any conditional returns to follow Rules of Hooks
   const filteredQuestions = useMemo(() => {
     let filtered = questions;
 

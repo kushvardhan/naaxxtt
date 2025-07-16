@@ -69,6 +69,19 @@ export interface CreateQuestionParams {
   path: string;
 }
 
+
+export interface DeleteQuestionParams {
+  questionId: string;
+  path: string;
+}
+
+export interface EditQuestionParams {
+  questionId: string;
+  title: string;
+  content: string;
+  path: string;
+}
+
 export interface RecommendedParams {
   userId: string;
   page?: number;

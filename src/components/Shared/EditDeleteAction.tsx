@@ -1,29 +1,29 @@
 "use client";
 
-import { deleteAnswer } from "../../../lib/actions/answer.action"; 
-import { deleteQuestion } from "../../../lib/actions/question.action"; 
+import { deleteAnswer } from "../../../lib/actions/answer.action";
+import { deleteQuestion } from "../../../lib/actions/question.action";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { toast } from "../ui/sonner"; // ✅ adjust this import path as needed
+import { toast } from "../ui/sonner";
+import ConfirmModal from "../ui/ConfirmModal";
+import { useState } from "react";
 
 interface Props {
   type: "Question" | "Answer";
   itemId: string;
-  questionId?: string; // needed for deleting an Answer
+  questionId?: string;
 }
 
 const EditDeleteAction = ({ type, itemId, questionId }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleEdit = () => {
     router.push(`/question/edit/${JSON.parse(itemId)}`);
   };
 
-  const handleDelete = async () => {
-    const confirmDelete = confirm("Are you sure you want to delete this?");
-    if (!confirmDelete) return;
-
+  const handleConfirmDelete = async () => {
     try {
       if (type === "Question") {
         await deleteQuestion({ questionId: JSON.parse(itemId), path: pathname });
@@ -37,32 +37,44 @@ const EditDeleteAction = ({ type, itemId, questionId }: Props) => {
     } catch (error) {
       toast.error("Something went wrong while deleting");
       console.error(error);
+    } finally {
+      setIsModalOpen(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-end gap-3 max-sm:w-full">
-      {type === "Question" && (
-        <Image 
-          src="/assets/icons/edit.svg"
-          title="Edit"
-          alt="Edit"
+    <>
+      <div className="flex items-center justify-end gap-3 max-sm:w-full">
+        {type === "Question" && (
+          <Image
+            src="/assets/icons/edit.svg"
+            title="Edit"
+            alt="Edit"
+            width={20}
+            height={20}
+            className="cursor-pointer object-contain"
+            onClick={handleEdit}
+          />
+        )}
+        <Image
+          src="/assets/icons/trash.svg"
+          title="Delete"
+          alt="Delete"
           width={20}
           height={20}
           className="cursor-pointer object-contain"
-          onClick={handleEdit}
+          onClick={() => setIsModalOpen(true)}
         />
-      )}
-      <Image 
-        src="/assets/icons/trash.svg"
-        title="Delete"
-        alt="Delete"
-        width={20}
-        height={20}
-        className="cursor-pointer object-contain"
-        onClick={handleDelete}
+      </div>
+
+      <ConfirmModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title={`Delete ${type}`}
+        message={`Are you sure you want to delete this ${type.toLowerCase()}? This action cannot be undone.`}
       />
-    </div>
+    </>
   );
 };
 

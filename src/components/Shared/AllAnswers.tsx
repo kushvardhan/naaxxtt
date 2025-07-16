@@ -7,6 +7,7 @@ import Filter from "./Filter";
 import Pagination from "./Pagination";
 import ParseHTML from "./ParseHTML";
 import Votes from "./Votes";
+import EditDeleteAction from "./EditDeleteAction";
 
 interface Props {
   questionId: string;
@@ -14,6 +15,7 @@ interface Props {
   totalAnswers: number;
   page?: number;
   filter?: string;
+  clerkId: string;
 }
 
 const AllAnswers = async ({
@@ -22,6 +24,7 @@ const AllAnswers = async ({
   totalAnswers,
   page,
   filter,
+  clerkId,
 }: Props) => {
   const result = await getAnswers({
     questionId,

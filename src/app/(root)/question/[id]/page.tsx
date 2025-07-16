@@ -164,6 +164,7 @@ const QuestionDetailPage = async ({
           totalAnswers={question.answers.length}
           page={page}
           filter={filter}
+          clerkId={question.author.clerkId}
         />
 
         {/* Answer Form */}

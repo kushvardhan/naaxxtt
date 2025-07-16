@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { ProfileSchema } from "../../../lib/validations"
 import { usePathname, useRouter } from "next/navigation"
 import { updateUser } from "../../../lib/actions/user.action"
+import { toast } from "../ui/sonner";
 
 interface Props {
   clerkId: string;
@@ -24,28 +25,6 @@ const Profile = ({ clerkId, user }: Props) => {
   const pathname = usePathname()
 
   const [mounted, setMounted] = useState(false);
-
-useEffect(() => {
-  setMounted(true);
-}, []);
-
-if (!mounted) {
-  return (
-    <div className="w-full h-full" suppressHydrationWarning>
-      <div className="animate-pulse space-y-6">
-        <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded"></div>
-        <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
-        {[1, 2, 3].map((i) => (
-          <div
-            key={i}
-            className="h-32 bg-gray-200 dark:bg-gray-700 rounded"
-          ></div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 
   const form = useForm<z.infer<typeof ProfileSchema>>({
     resolver: zodResolver(ProfileSchema),
@@ -73,6 +52,7 @@ if (!mounted) {
         },
         path: pathname
       })
+      toast("Profile Updated")
 
       router.back();
     } catch (error) {
@@ -81,6 +61,31 @@ if (!mounted) {
       setIsSubmitting(false);
     }
   }
+
+
+useEffect(() => {
+  setMounted(true);
+}, []);
+
+if (!mounted) {
+  return (
+    <div className="w-full h-full" suppressHydrationWarning>
+      <div className="animate-pulse space-y-6">
+        <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded"></div>
+        <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+        {[1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className="h-32 bg-gray-200 dark:bg-gray-700 rounded"
+          ></div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+
+
 
   return (
     <Form {...form}>

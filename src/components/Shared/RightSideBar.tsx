@@ -1,9 +1,22 @@
-Only plain objects can be passed to Client Components from Server Components. Objects with toJSON methods are not supported. Convert it manually to a simple value before passing it to props.
-  {_id: {buffer: ...}, name: "JS", numberOfQuestions: ...}
-        ^^^^^^^^^^^^^
-Only plain objects can be passed to Client Components from Server Components. Objects with toJSON methods are not supported. Convert it manually to a simple value before passing it to props.
-  {_id: {buffer: ...}, name: "react", numberOfQuestions: ...}
-        ^^^^^^^^^^^^^
-Only plain objects can be passed to Client Components from Server Components. Objects with toJSON methods are not supported. Convert it manually to a simple value before passing it to props.
-  {_id: {buffer: ...}, name: "Vercel", numberOfQuestions: ...}
-        ^^^^^^^^^^^^^
+import RightSideBarClient from "./RightSideBarClient";
+import { getHotQuestions } from "../../../lib/actions/question.action";
+import { getTopPopularTags } from "../../../lib/actions/tag.action";
+
+const RightSideBar = async () => {
+  const hotQuestions = await getHotQuestions();
+  const popularTags = await getTopPopularTags();
+
+  const cleanTags = (popularTags || []).map((tag: any) => ({
+    tag: tag.name ?? tag.tag ?? "Unknown",
+    count: tag.numberOfQuestions ?? tag.count ?? 0,
+  }));
+
+  return (
+    <RightSideBarClient
+      hotQuestions={hotQuestions || []}
+      popularTags={cleanTags}
+    />
+  );
+};
+
+export default RightSideBar;

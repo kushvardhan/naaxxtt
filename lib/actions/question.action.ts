@@ -251,15 +251,15 @@ export async function editQuestion(params: EditQuestionParams) {
 
     const question = await Question.findById(questionId).populate("tags");
 
-    if(!question) {
+    if (!question) {
       throw new Error("Question not found");
     }
 
     question.title = title;
-    question.content = content;
+    question.explanation = content; 
 
-    console.log("question title: ", title);
-    console.log("Content: ", content);
+    console.log("Updated Title: ", title);
+    console.log("Updated Explanation: ", content);
 
     await question.save();
 

@@ -21,7 +21,7 @@ const Page = async () => {
           Ask a Question
         </h1>
         <div className="mt-8 px-2">
-          <Question mongoUserId={mongoUser._id.toString()} />
+          <Question  type="Create" questionDetails={undefined} mongoUserId={mongoUser._id.toString()} />
         </div>
       </div>
     );

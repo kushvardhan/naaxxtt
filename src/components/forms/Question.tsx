@@ -25,9 +25,11 @@ const type: unknown = "create";
 
 interface Props {
   mongoUserId: string;
+  type:string;
+  questionDetails?: string;
 }
 
-export function Question({ mongoUserId }: Props) {
+export function Question({ mongoUserId,type,questionDetails }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const editorRef = useRef(null);

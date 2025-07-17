@@ -200,7 +200,7 @@ if (!mounted) {
 <Button
   type="submit"
   disabled={isSubmitting}
-  className="w-fit text-white px-5 py-2.5 rounded-md transition-all duration-300 ease-in-out font-semibold"
+  className="w-fit text-black px-5 py-2.5 rounded-md transition-all duration-300 ease-in-out font-semibold"
   style={{
     background: isSubmitting
       ? "linear-gradient(129deg, #ff6a00 0%, #ff9900 100%)"

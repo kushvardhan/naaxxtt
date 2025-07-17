@@ -18,16 +18,17 @@ const Page = async ({ params }: ParamsProps) => {
   const result = await getQuestionById({ questionId: params.id})
 
   return (
-    <div className="w-full h-[calc(100vh-120px)] mt-20 overflow-y-auto scrollbar-hidden max-w-5xl mx-auto px-4 pt-6 pb-10 text-black dark:text-white">
-      <h1 className="h1-bold text-dark100_light900">Edit Question</h1>
+    <div className="w-full h-[calc(100vh-120px)] mt-18 overflow-y-auto scrollbar-hidden max-w-5xl mx-auto px-4 pt-6 pb-10 text-black dark:text-white">
+      <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold font-mono text-black dark:text-white">Edit Question</h1>
 
       <div className="mt-9">
 
         <Question 
-          type="Edit"
-          mongoUserId={mongoUser._id}
-          questionDetails={JSON.stringify(result)}
-        />
+  type="Edit"
+  mongoUserId={mongoUser._id.toString()}
+  questionDetails={JSON.stringify(result)}
+/>
+
       </div>
     </div>
   )

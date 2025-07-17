@@ -258,6 +258,9 @@ export async function editQuestion(params: EditQuestionParams) {
     question.title = title;
     question.content = content;
 
+    console.log("question title: ", title);
+    console.log("Content: ", content);
+
     await question.save();
 
     revalidatePath(path);

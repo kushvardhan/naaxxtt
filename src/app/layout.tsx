@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
 import Providers from "../../lib/Providers";
+import "../../style/prism.css";
 import "./globals.css";
-import "../../style/prism.css"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,11 +32,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head suppressHydrationWarning>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1"
+          suppressHydrationWarning
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} antialiased`}
         suppressHydrationWarning
       >
-        <Providers>{children}</Providers>
+        <div suppressHydrationWarning>
+          <Providers>{children}</Providers>
+        </div>
       </body>
     </html>
   );

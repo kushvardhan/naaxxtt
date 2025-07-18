@@ -6,7 +6,7 @@ import {
   ThemeContextProvider,
 } from "../../../context/ThemeContext";
 import LeftSidebar from "../../components/Shared/LeftSideBar";
-import RightSideBar from "../../components/Shared/RightSideBar";
+import RightSideBarSelfFetching from "../../components/Shared/RightSideBarSelfFetching";
 import TopNav from "../../components/Shared/TopNav";
 import "../globals.css";
 
@@ -34,8 +34,14 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   // Show loading state until mounted and theme is ready
   if (!mounted || !theme || !theme.mounted) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-white dark:bg-black" suppressHydrationWarning>
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500" suppressHydrationWarning></div>
+      <div
+        className="flex items-center justify-center min-h-screen bg-white dark:bg-black"
+        suppressHydrationWarning
+      >
+        <div
+          className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"
+          suppressHydrationWarning
+        ></div>
       </div>
     );
   }
@@ -47,7 +53,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
       }`}
       suppressHydrationWarning
     >
-      <div ref={navRef}>
+      <div ref={navRef} suppressHydrationWarning>
         <TopNav />
       </div>
 
@@ -58,12 +64,18 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
           height: `calc(100vh - ${navHeight}px)`,
           overflow: "hidden",
         }}
+        suppressHydrationWarning
       >
         <LeftSidebar />
-        <section className="flex flex-1 flex-col px-2 pb-6 pt-6 max-md:pb-14 scrollbar-hidden sm:px-4 overflow-auto">
-          <div className="mx-auto w-full max-w-5xl">{children}</div>
+        <section
+          className="flex flex-1 flex-col px-2 pb-6 pt-6 max-md:pb-14 scrollbar-hidden sm:px-4 overflow-auto"
+          suppressHydrationWarning
+        >
+          <div className="mx-auto w-full max-w-5xl" suppressHydrationWarning>
+            {children}
+          </div>
         </section>
-        <RightSideBar />
+        <RightSideBarSelfFetching />
       </div>
     </main>
   );

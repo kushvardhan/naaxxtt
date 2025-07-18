@@ -3,25 +3,36 @@ import { getTopPopularTags } from "../../../lib/actions/tag.action";
 import RightSideBarClient from "./RightSideBarClient";
 
 const RightSideBar = async () => {
-  const hotQuestionsRaw = await getHotQuestions();
-  const tagsRaw = await getTopPopularTags();
+  try {
+    const hotQuestionsRaw = await getHotQuestions();
+    const tagsRaw = await getTopPopularTags();
 
-  const hotQuestions = hotQuestionsRaw.map((q: any) => ({
-    slug: `/question/${q._id?.toString() || ""}`,
-    question: q.title || "Untitled",
-  }));
+    // Extra serialization safety - ensure no MongoDB objects leak through
+    const safeHotQuestions = JSON.parse(JSON.stringify(hotQuestionsRaw));
+    const safeTags = JSON.parse(JSON.stringify(tagsRaw));
 
-  const popularTags = tagsRaw.map((tag: any) => ({
-    tag: tag.name || tag.tag || "Unknown",
-    count: Number(tag.numberOfQuestions || tag.count || 0),
-    _id: tag._id?.toString?.() || String(tag._id) || undefined,
-  }));
+    // Map to clean data structure
+    const hotQuestions = safeHotQuestions.map((q: any) => ({
+      slug: `/question/${q._id}`,
+      question: q.title,
+    }));
 
-  console.log("from right bar: ", hotQuestions, popularTags);
+    const popularTags = safeTags.map((tag: any) => ({
+      tag: tag.name,
+      count: tag.numberOfQuestions,
+    }));
 
-  return (
-    <RightSideBarClient hotQuestions={hotQuestions} popularTags={popularTags} />
-  );
+    return (
+      <RightSideBarClient
+        hotQuestions={hotQuestions}
+        popularTags={popularTags}
+      />
+    );
+  } catch (error) {
+    console.error("RightSideBar error:", error);
+    // Return empty data on error
+    return <RightSideBarClient hotQuestions={[]} popularTags={[]} />;
+  }
 };
 
 export default RightSideBar;

@@ -1,11 +1,15 @@
-"use server"
+"use server";
 
+import { FilterQuery } from "mongoose";
+import Question from "../../database/question.model";
+import Tag, { ITag } from "../../database/tag.model";
 import User from "../../database/user.model";
 import { connectToDatabase } from "../mongoose";
-import { GetAllTagsParams, GetQuestionsByTagIdParams, GetTopInteractedTagsParams } from "./shared.type.d";
-import Tag, { ITag } from "../../database/tag.model";
-import Question from "../../database/question.model";
-import { FilterQuery } from "mongoose";
+import {
+  GetAllTagsParams,
+  GetQuestionsByTagIdParams,
+  GetTopInteractedTagsParams,
+} from "./shared.type.d";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   try {
@@ -15,12 +19,15 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
 
     const user = await User.findById(userId);
 
-    if(!user) throw new Error("User not found");
+    if (!user) throw new Error("User not found");
 
     // Find interactions for the user and group by tags...
     // Interaction...
 
-    return [ {_id: '1', name: 'tag'}, {_id: '2', name: 'tag2'}]
+    return [
+      { _id: "1", name: "tag" },
+      { _id: "2", name: "tag2" },
+    ];
   } catch (error) {
     console.log(error);
     throw error;
@@ -36,27 +43,30 @@ export async function getAllTags(params: GetAllTagsParams) {
 
     const query: FilterQuery<typeof Tag> = {};
 
-    if(searchQuery) {
-      const escapedSearchQuery = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-      query.$or = [{name: { $regex: new RegExp(escapedSearchQuery, 'i')}}]
+    if (searchQuery) {
+      const escapedSearchQuery = searchQuery.replace(
+        /[.*+?^${}()|[\]\\]/g,
+        "\\$&"
+      );
+      query.$or = [{ name: { $regex: new RegExp(escapedSearchQuery, "i") } }];
     }
 
     let sortOptions = {};
 
     switch (filter) {
       case "popular":
-        sortOptions = { questions: -1 }
+        sortOptions = { questions: -1 };
         break;
       case "recent":
-        sortOptions = { createdAt: -1 }
+        sortOptions = { createdAt: -1 };
         break;
       case "name":
-        sortOptions = { name: 1 }
+        sortOptions = { name: 1 };
         break;
       case "old":
-        sortOptions = { createdAt: 1 }
+        sortOptions = { createdAt: 1 };
         break;
-    
+
       default:
         break;
     }
@@ -69,11 +79,11 @@ export async function getAllTags(params: GetAllTagsParams) {
       .limit(pageSize)
       .lean();
 
-      console.log("GetAllTags from DB: ", tags);
+    console.log("GetAllTags from DB: ", tags);
 
-      const isNext = totalTags > skipAmount + tags.length;
+    const isNext = totalTags > skipAmount + tags.length;
 
-    return { tags, isNext }
+    return { tags, isNext };
   } catch (error) {
     console.log(error);
     throw error;
@@ -91,9 +101,11 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
 
     const tag = await Tag.findOne(tagFilter)
       .populate({
-        path: 'questions',
+        path: "questions",
         model: Question,
-        match: searchQuery ? { title: { $regex: searchQuery, $options: 'i' } } : {},
+        match: searchQuery
+          ? { title: { $regex: searchQuery, $options: "i" } }
+          : {},
         options: {
           sort: { createdAt: -1 },
           skip: skipAmount,
@@ -101,24 +113,24 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
         },
         populate: [
           {
-            path: 'tags',
+            path: "tags",
             model: Tag,
-            select: '_id name',
+            select: "_id name",
             options: { lean: true },
           },
           {
-            path: 'author',
+            path: "author",
             model: User,
-            select: '_id clerkId name image',
+            select: "_id clerkId name image",
             options: { lean: true },
           },
         ],
       })
-      .lean(); 
-            console.log("GetQuestionbyID from DB: ", tag);
+      .lean();
+    console.log("GetQuestionbyID from DB: ", tag);
 
     if (!tag) {
-      throw new Error('Tag not found');
+      throw new Error("Tag not found");
     }
 
     // Manually ensure populated data is plain objects
@@ -137,8 +149,8 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
             image: q.author.image,
           }
         : null,
-      createdAt: q.createdAt?.toString() || '',
-      updatedAt: q.updatedAt?.toString() || '',
+      createdAt: q.createdAt?.toString() || "",
+      updatedAt: q.updatedAt?.toString() || "",
     }));
 
     return {
@@ -147,11 +159,10 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
       isNext: rawQuestions.length > pageSize,
     };
   } catch (error) {
-    console.log('Error in getQuestionsByTagId:', error);
+    console.log("Error in getQuestionsByTagId:", error);
     throw error;
   }
 }
-
 
 export async function getTopPopularTags() {
   try {
@@ -160,12 +171,25 @@ export async function getTopPopularTags() {
     const popularTags = await Tag.aggregate([
       { $project: { name: 1, numberOfQuestions: { $size: "$questions" } } },
       { $sort: { numberOfQuestions: -1 } },
-      { $limit: 5 }
+      { $limit: 5 },
     ]);
 
-    return popularTags;
+    // Complete serialization to ensure no MongoDB objects leak through
+    const cleanTags = JSON.parse(JSON.stringify(popularTags));
+
+    // Map to plain objects with explicit typing
+    const serializedTags = cleanTags.map((tag: any) => {
+      return {
+        _id: String(tag._id || ""),
+        name: String(tag.name || "Unknown"),
+        numberOfQuestions: Number(tag.numberOfQuestions || 0),
+      };
+    });
+
+    return serializedTags;
   } catch (error) {
     console.error("getTopPopularTags error:", error);
-    throw error;
+    // Return empty array on error instead of throwing
+    return [];
   }
 }

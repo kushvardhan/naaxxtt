@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../../../context/ThemeContext";
 
 function cn(...classes: (string | boolean | undefined | null)[]) {
@@ -46,12 +46,32 @@ const Input = ({
 
 const GlobalSearch = () => {
   const theme = useContext(ThemeContext);
+  const [mounted, setMounted] = useState(false);
 
-  // Bulletproof null check with explicit return
-  if (!theme || typeof theme === "undefined") {
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Hydration-safe loading state
+  if (!mounted || !theme || !theme.mounted) {
     return (
-      <div className="relative w-full max-w-[600px] max-lg:hidden">
-        Loading...
+      <div
+        className="relative w-full max-w-[600px] max-lg:hidden"
+        suppressHydrationWarning
+      >
+        <div
+          className="relative min-h-[48px] rounded-xl flex items-center gap-2 px-4 bg-gray-200 dark:bg-gray-700"
+          suppressHydrationWarning
+        >
+          <div
+            className="animate-pulse bg-gray-300 dark:bg-gray-600 h-6 w-6 rounded"
+            suppressHydrationWarning
+          ></div>
+          <div
+            className="animate-pulse bg-gray-300 dark:bg-gray-600 h-6 flex-1 rounded"
+            suppressHydrationWarning
+          ></div>
+        </div>
       </div>
     );
   }
@@ -60,12 +80,16 @@ const GlobalSearch = () => {
   const isDark = theme?.mode === "dark" || false;
 
   return (
-    <div className="relative w-full max-w-[600px] max-lg:hidden">
+    <div
+      className="relative w-full max-w-[600px] max-lg:hidden"
+      suppressHydrationWarning
+    >
       <div
         className={cn(
           "relative min-h-[48px] rounded-xl flex items-center  gap-2 px-4",
           isDark ? "bg-black" : "bg-zinc-200"
         )}
+        suppressHydrationWarning
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

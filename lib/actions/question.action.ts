@@ -1,14 +1,22 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { FilterQuery } from "mongoose";
+import { revalidatePath } from "next/cache";
+import Answer from "../../database/answer.model";
+import Interaction from "../../database/interaction.model";
 import Question from "../../database/question.model";
 import Tag from "../../database/tag.model";
 import User from "../../database/user.model";
 import { connectToDatabase } from "../mongoose";
-import { CreateQuestionParams, DeleteQuestionParams, EditQuestionParams, GetQuestionByIdParams, GetQuestionsParams, QuestionVoteParams, RecommendedParams } from "./shared.type";
-import Interaction from "../../database/interaction.model";
-import Answer from "../../database/answer.model";
+import {
+  CreateQuestionParams,
+  DeleteQuestionParams,
+  EditQuestionParams,
+  GetQuestionByIdParams,
+  GetQuestionsParams,
+  QuestionVoteParams,
+  RecommendedParams,
+} from "./shared.type";
 
 export async function getQuestions(params: GetQuestionsParams) {
   try {
@@ -129,18 +137,22 @@ export async function createQuestion(params: CreateQuestionParams) {
 }
 
 export async function getQuestionById(params: GetQuestionByIdParams) {
-  try{
+  try {
     await connectToDatabase();
 
-    const {questionId} = params;
+    const { questionId } = params;
 
     const questionById = await Question.findById(questionId)
-                                .populate({path:'tags', model: Tag, select: '_id name'})
-                                .populate({path:'author', model: User, select: '_id clerkId name image'})
+      .populate({ path: "tags", model: Tag, select: "_id name" })
+      .populate({
+        path: "author",
+        model: User,
+        select: "_id clerkId name image",
+      });
     return questionById;
-  }catch(error){
+  } catch (error) {
     console.log(error);
-    throw error; 
+    throw error;
   }
 }
 
@@ -152,32 +164,34 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
 
     let updateQuery = {};
 
-    if(hasupVoted) {
-      updateQuery = { $pull: { upvotes: userId }}
+    if (hasupVoted) {
+      updateQuery = { $pull: { upvotes: userId } };
     } else if (hasdownVoted) {
-      updateQuery = { 
+      updateQuery = {
         $pull: { downvotes: userId },
-        $push: { upvotes: userId }
-      }
+        $push: { upvotes: userId },
+      };
     } else {
-      updateQuery = { $addToSet: { upvotes: userId }}
+      updateQuery = { $addToSet: { upvotes: userId } };
     }
 
-    const question = await Question.findByIdAndUpdate(questionId, updateQuery, { new: true });
+    const question = await Question.findByIdAndUpdate(questionId, updateQuery, {
+      new: true,
+    });
 
-    if(!question) {
+    if (!question) {
       throw new Error("Question not found");
     }
 
     // Increment author's reputation by +1/-1 for upvoting/revoking an upvote to the question
     await User.findByIdAndUpdate(userId, {
-      $inc: { reputation: hasupVoted ? -1 : 1}
-    })
+      $inc: { reputation: hasupVoted ? -1 : 1 },
+    });
 
     // Increment author's reputation by +10/-10 for recieving an upvote/downvote to the question
     await User.findByIdAndUpdate(question.author, {
-      $inc: { reputation: hasupVoted ? -10 : 10}
-    })
+      $inc: { reputation: hasupVoted ? -10 : 10 },
+    });
 
     revalidatePath(path);
   } catch (error) {
@@ -194,31 +208,33 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
 
     let updateQuery = {};
 
-    if(hasdownVoted) {
-      updateQuery = { $pull: { downvotes: userId }}
+    if (hasdownVoted) {
+      updateQuery = { $pull: { downvotes: userId } };
     } else if (hasupVoted) {
-      updateQuery = { 
+      updateQuery = {
         $pull: { upvotes: userId },
-        $push: { downvotes: userId }
-      }
+        $push: { downvotes: userId },
+      };
     } else {
-      updateQuery = { $addToSet: { downvotes: userId }}
+      updateQuery = { $addToSet: { downvotes: userId } };
     }
 
-    const question = await Question.findByIdAndUpdate(questionId, updateQuery, { new: true });
+    const question = await Question.findByIdAndUpdate(questionId, updateQuery, {
+      new: true,
+    });
 
-    if(!question) {
+    if (!question) {
       throw new Error("Question not found");
     }
 
     // Increment author's reputation
-    await User.findByIdAndUpdate(userId, { 
-      $inc: { reputation: hasdownVoted ? -2 : 2 }
-    })
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasdownVoted ? -2 : 2 },
+    });
 
-    await User.findByIdAndUpdate(question.author, { 
-      $inc: { reputation: hasdownVoted ? -10 : 10 }
-    })
+    await User.findByIdAndUpdate(question.author, {
+      $inc: { reputation: hasdownVoted ? -10 : 10 },
+    });
 
     revalidatePath(path);
   } catch (error) {
@@ -236,7 +252,10 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
     await Question.deleteOne({ _id: questionId });
     await Answer.deleteMany({ question: questionId });
     await Interaction.deleteMany({ question: questionId });
-    await Tag.updateMany({ questions: questionId }, { $pull: { questions: questionId }});
+    await Tag.updateMany(
+      { questions: questionId },
+      { $pull: { questions: questionId } }
+    );
 
     revalidatePath(path);
   } catch (error) {
@@ -257,7 +276,7 @@ export async function editQuestion(params: EditQuestionParams) {
     }
 
     question.title = title;
-    question.explanation = content; 
+    question.explanation = content;
 
     console.log("Updated Title: ", title);
     console.log("Updated Explanation: ", content);
@@ -279,14 +298,24 @@ export async function getHotQuestions() {
       .limit(5)
       .lean();
 
-    return hotQuestions;
+    // Complete serialization to ensure no MongoDB objects leak through
+    const cleanQuestions = JSON.parse(JSON.stringify(hotQuestions));
+
+    // Map to plain objects with explicit typing
+    const serializedQuestions = cleanQuestions.map((question: any) => {
+      return {
+        _id: String(question._id || ""),
+        title: String(question.title || "Untitled Question"),
+      };
+    });
+
+    return serializedQuestions;
   } catch (error) {
     console.error("getHotQuestions error:", error);
-    throw error;
+    // Return empty array on error instead of throwing
+    return [];
   }
 }
-
-
 
 export async function getRecommendedQuestions(params: RecommendedParams) {
   try {

@@ -1,32 +1,81 @@
 "use client";
 
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
 
 interface RightSideBarClientProps {
   hotQuestions: { slug: string; question: string }[];
   popularTags: { tag: string; count: number }[];
 }
-const RightSideBarClient = ({ hotQuestions, popularTags }: RightSideBarClientProps) => {
+const RightSideBarClient = ({
+  hotQuestions,
+  popularTags,
+}: RightSideBarClientProps) => {
   const theme = useContext(ThemeContext);
+  const [mounted, setMounted] = useState(false);
 
-  console.log("from right bar client ", hotQuestions, popularTags);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  if (!theme) return <div>Loading...</div>;
+  if (!mounted || !theme || !theme.mounted) {
+    return (
+      <section
+        className="sticky right-0 top-0 h-screen border-l p-6 pt-28 hidden lg:block lg:w-[300px] xl:w-[330px] bg-gray-200 dark:bg-gray-800"
+        suppressHydrationWarning
+      >
+        <div
+          className="h-full overflow-y-auto hide-scrollbar flex flex-col gap-6"
+          suppressHydrationWarning
+        >
+          <div className="animate-pulse space-y-4" suppressHydrationWarning>
+            <div
+              className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-1/2"
+              suppressHydrationWarning
+            ></div>
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="h-16 bg-gray-300 dark:bg-gray-600 rounded"
+                suppressHydrationWarning
+              ></div>
+            ))}
+          </div>
+          <div className="animate-pulse space-y-4" suppressHydrationWarning>
+            <div
+              className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-1/3"
+              suppressHydrationWarning
+            ></div>
+            <div className="flex flex-wrap gap-2" suppressHydrationWarning>
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="h-8 bg-gray-300 dark:bg-gray-600 rounded-full w-16"
+                  suppressHydrationWarning
+                ></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const bgColor =
     theme.mode === "dark"
       ? "bg-zinc-900 text-white border-zinc-800"
       : "bg-gradient-to-l from-white to-zinc-100/30 text-black border-zinc-200";
 
-  const hoverBg = theme.mode === "dark" ? "hover:bg-black" : "hover:bg-zinc-300";
+  const hoverBg =
+    theme.mode === "dark" ? "hover:bg-black" : "hover:bg-zinc-300";
 
   return (
     <section
       className={`${bgColor} ${
         theme.mode === "light" ? "shadow-xl shadow-zinc-400/60" : ""
       } sticky right-0 top-0 h-screen border-l p-6 pt-28 hidden lg:block lg:w-[300px] xl:w-[330px]`}
+      suppressHydrationWarning
     >
       <div className="h-full overflow-y-auto hide-scrollbar flex flex-col gap-6">
         <div>

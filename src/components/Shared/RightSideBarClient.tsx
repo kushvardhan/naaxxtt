@@ -4,12 +4,11 @@ import Link from "next/link";
 import { useContext } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
 
-interface Props {
+interface RightSideBarClientProps {
   hotQuestions: { slug: string; question: string }[];
   popularTags: { tag: string; count: number }[];
 }
-
-const RightSideBarClient = ({ hotQuestions, popularTags }: Props) => {
+const RightSideBarClient = ({ hotQuestions, popularTags }: RightSideBarClientProps) => {
   const theme = useContext(ThemeContext);
 
   

@@ -6,21 +6,23 @@ const RightSideBar = async () => {
   const hotQuestionsRaw = await getHotQuestions();
   const tagsRaw = await getTopPopularTags();
 
+  // Convert hotQuestions to plain objects
   const hotQuestions = (hotQuestionsRaw || []).slice(0, 5).map((q: any) => ({
     slug: `/question/${q._id?.toString() ?? ""}`,
     question: q.title ?? "Untitled",
   }));
 
+  // Convert tags to plain objects
   const popularTags = (tagsRaw || []).map((tag: any) => ({
     tag: tag.name ?? tag.tag ?? "Unknown",
-    count: tag.numberOfQuestions ?? tag.count ?? 0,
+    count: Number(tag.numberOfQuestions ?? tag.count ?? 0),
   }));
 
+  console.log(hotQuestions, popularTags);
+
   return (
-    <RightSideBarClient
-      hotQuestions={hotQuestions}
-      popularTags={popularTags}
-    />
+    <h1>HWJOEJ</h1>
+    
   );
 };
 

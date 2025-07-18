@@ -12,6 +12,8 @@ interface Props {
 const RightSideBarClient = ({ hotQuestions, popularTags }: Props) => {
   const theme = useContext(ThemeContext);
 
+  
+
   if (!theme) return <div>Loading...</div>;
 
   const bgColor =

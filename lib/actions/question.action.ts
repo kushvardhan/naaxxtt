@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { FilterQuery } from "mongoose";
 import Question from "../../database/question.model";
 import Tag from "../../database/tag.model";
 import User from "../../database/user.model";
@@ -273,16 +274,18 @@ export async function getHotQuestions() {
   try {
     connectToDatabase();
 
-    const hotQuestions = await Question.find({})
-      .sort({ views: -1, upvotes: -1 }) 
-      .limit(5).lean();
+    const hotQuestions = await Question.find({}, "_id title") // Select only necessary fields
+      .sort({ views: -1, upvotes: -1 })
+      .limit(5)
+      .lean();
 
-      return hotQuestions;
+    return hotQuestions;
   } catch (error) {
-    console.log(error);
+    console.error("getHotQuestions error:", error);
     throw error;
   }
 }
+
 
 
 export async function getRecommendedQuestions(params: RecommendedParams) {

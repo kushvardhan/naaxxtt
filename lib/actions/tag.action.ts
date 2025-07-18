@@ -158,14 +158,14 @@ export async function getTopPopularTags() {
     connectToDatabase();
 
     const popularTags = await Tag.aggregate([
-      { $project: { name: 1, numberOfQuestions: { $size: "$questions" }}},
-      { $sort: { numberOfQuestions: -1 }}, 
+      { $project: { name: 1, numberOfQuestions: { $size: "$questions" } } },
+      { $sort: { numberOfQuestions: -1 } },
       { $limit: 5 }
-    ]).lean();
+    ]);
 
     return popularTags;
   } catch (error) {
-    console.log(error);
+    console.error("getTopPopularTags error:", error);
     throw error;
   }
 }

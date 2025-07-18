@@ -11,7 +11,7 @@ interface RightSideBarClientProps {
 const RightSideBarClient = ({ hotQuestions, popularTags }: RightSideBarClientProps) => {
   const theme = useContext(ThemeContext);
 
-  
+  console.log("from right bar client ", hotQuestions, popularTags);
 
   if (!theme) return <div>Loading...</div>;
 

@@ -7,6 +7,8 @@ interface Tag {
 }
 
 interface Author {
+  _id: any;
+  clerkId: any;
   name?: string;
   image?: string;
 }

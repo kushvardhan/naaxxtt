@@ -81,13 +81,13 @@ const RightSideBarClient = ({
         <div>
           <h1 className="text-xl font-bold mb-3">Top Questions</h1>
           <div className="flex flex-col gap-2">
-            {hotQuestions.slice(0, 5).map((que, ind) => (
+            {hotQuestions.map((que, ind) => (
               <Link
                 href={que.slug}
                 key={ind}
                 className={`group flex justify-between items-center gap-3 rounded-md px-2 py-3 text-sm ${hoverBg} transition-all duration-200`}
               >
-                <span className="flex-1 line-clamp-3.5">{que.question}</span>
+                <span className="flex-1 line-clamp-3.5">{que.question} jh</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-5 h-5 shrink-0"

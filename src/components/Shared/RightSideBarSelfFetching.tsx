@@ -16,10 +16,12 @@ const RightSideBarSelfFetching = () => {
         // Fetch hot questions
         const questionsResponse = await fetch('/api/hot-questions');
         const questionsData = await questionsResponse.json();
+        console.log("questionsData: ", questionsData);
         
         // Fetch popular tags
         const tagsResponse = await fetch('/api/popular-tags');
         const tagsData = await tagsResponse.json();
+        console.log("tagsData: ", tagsData);
 
         // Map the data to the expected format
         const mappedQuestions = questionsData.map((q: any) => ({

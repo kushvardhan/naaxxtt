@@ -6,10 +6,15 @@ const RightSideBar = async () => {
   try {
     const hotQuestionsRaw = await getHotQuestions();
     const tagsRaw = await getTopPopularTags();
+    console.log("hotQuestionsRaw: ", hotQuestionsRaw);
+    console.log("tagsRaw: ", tagsRaw);
 
     // Extra serialization safety - ensure no MongoDB objects leak through
     const safeHotQuestions = JSON.parse(JSON.stringify(hotQuestionsRaw));
     const safeTags = JSON.parse(JSON.stringify(tagsRaw));
+
+    console.log("safeHotQuestions: ", safeHotQuestions);
+    console.log("safeTags: ", safeTags);
 
     // Map to clean data structure
     const hotQuestions = safeHotQuestions.map((q: any) => ({
@@ -21,6 +26,9 @@ const RightSideBar = async () => {
       tag: tag.name,
       count: tag.numberOfQuestions,
     }));
+
+    console.log("hotQuestions: ", hotQuestions);
+    console.log("popularTags: ", popularTags);
 
     return (
       <RightSideBarClient

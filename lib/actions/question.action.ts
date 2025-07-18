@@ -275,7 +275,7 @@ export async function getHotQuestions() {
 
     const hotQuestions = await Question.find({})
       .sort({ views: -1, upvotes: -1 }) 
-      .limit(5);
+      .limit(5).lean();
 
       return hotQuestions;
   } catch (error) {

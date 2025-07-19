@@ -1,25 +1,12 @@
-// /pages/api/popular-tags.ts
+import { NextResponse } from "next/server";
 import { getTopPopularTags } from "../../../../lib/actions/tag.action";
 
-export default async function handler(req, res) {
+export async function GET() {
   try {
-    const tags = await getTopPopularTags();
-    res.status(200).json(tags);
+    const popularTags = await getTopPopularTags();
+    return NextResponse.json(popularTags);
   } catch (error) {
-    console.error("Popular tags error:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.error("Error fetching popular tags:", error);
+    return NextResponse.json([], { status: 500 });
   }
 }
-
-
-// import { getTopPopularTags } from "../../../../lib/actions/tag.action";
-
-// export default async function handler(req, res) {
-//   try {
-//     const tags = await getTopPopularTags();
-//     res.status(200).json(tags);
-//   } catch (error) {
-//     console.error("Popular tags error:", error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// }

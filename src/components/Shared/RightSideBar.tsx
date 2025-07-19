@@ -1,6 +1,8 @@
+"use server";
+
 import { getHotQuestions } from "../../../lib/actions/question.action";
 import { getTopPopularTags } from "../../../lib/actions/tag.action";
-import RightSideBarClient from "./RightSideBarClient"; 
+import RightSideBarClient from "@/components/Shared/RightSideBarClient";
 
 
 const RightSideBar = async () => {
@@ -17,6 +19,9 @@ const RightSideBar = async () => {
       tag: tag.name,
       count: tag.numberOfQuestions,
     }));
+
+    console.log("hotQuestions: ", hotQuestions);
+    console.log("popularTags: ", popularTags);
 
     return (
       <RightSideBarClient

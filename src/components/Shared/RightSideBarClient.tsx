@@ -1,100 +1,55 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useContext } from "react";
-import { ThemeContext } from "../../../context/ThemeContext";
+import React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import RenderTag from './RenderTag';
 
-interface RightSideBarClientProps {
-  hotQuestions: { slug: string; question: string }[];
-  popularTags: { tag: string; count: number }[];
+interface Props {
+  hotQuestions: { _id: string; title: string }[];
+  popularTags: { _id: string; name: string; numberOfQuestions: number }[];
 }
 
-const RightSideBarClient = ({
-  hotQuestions,
-  popularTags,
-}: RightSideBarClientProps) => {
-  const theme = useContext(ThemeContext);
-  const isReady = theme?.mounted;
-
-  const bgColor = isReady
-    ? theme.mode === "dark"
-      ? "bg-zinc-900 text-white border-zinc-800"
-      : "bg-gradient-to-l from-white to-zinc-100/30 text-black border-zinc-200"
-    : "bg-gray-200 dark:bg-gray-800";
-
-  const hoverBg = isReady
-    ? theme.mode === "dark"
-      ? "hover:bg-black"
-      : "hover:bg-zinc-300"
-    : "";
-
+const RightSidebarClient = ({ hotQuestions, popularTags }: Props) => {
   return (
-    <section
-      className={`${bgColor} ${
-        isReady && theme.mode === "light" ? "shadow-xl shadow-zinc-400/60" : ""
-      } sticky right-0 top-0 h-screen border-l p-6 pt-28 hidden lg:block lg:w-[300px] xl:w-[330px]`}
-      suppressHydrationWarning
-    >
-      <div className="h-full overflow-y-auto hide-scrollbar flex flex-col gap-6">
-        <div>
-          <h1 className="text-xl font-bold mb-3">Top Questions</h1>
-          <div className="flex flex-col gap-2">
-            {hotQuestions.map((que, ind) => (
-              <Link
-                href={que.slug}
-                key={ind}
-                className={`group flex justify-between items-center gap-3 rounded-md px-2 py-3 text-sm ${hoverBg} transition-all duration-200`}
-              >
-                <span className="flex-1 line-clamp-3.5">{que.question}</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5 shrink-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                  />
-                </svg>
-              </Link>
-            ))}
-          </div>
+    <section className="background-light900_dark200 light-border custom-scrollbar sticky right-0 top-0 flex h-screen w-[350px] flex-col overflow-y-auto border-l p-6 pt-36 shadow-light-300 dark:shadow-none max-xl:hidden">
+      <div>
+        <h3 className="h3-bold text-dark200_light900">Top Questions</h3>
+        <div className="mt-7 flex w-full flex-col gap-[30px]">
+          {hotQuestions.map((question) => (
+            <Link
+              href={`/question/${question._id}`}
+              key={question._id}
+              className="flex cursor-pointer items-center justify-between gap-7"
+            >
+              <p className="body-medium text-dark500_light700">{question.title}</p>
+              <Image
+                src="/assets/icons/chevron-right.svg"
+                alt="chevron right"
+                width={20}
+                height={20}
+                className="invert-colors"
+              />
+            </Link>
+          ))}
         </div>
-
-        <div>
-          <h1 className="text-xl font-bold mb-4">Popular Tags</h1>
-          <div className="flex flex-wrap gap-2">
-            {popularTags.map(({ tag, count }, index) => (
-              <Link
-                href={`/tag/${tag.toLowerCase()}`}
-                key={index}
-                className={`flex items-center gap-2 px-2 py-1 rounded-full text-sm font-medium border ${
-                  isReady && theme.mode === "dark"
-                    ? "border-zinc-700 text-white hover:bg-orange-400/30"
-                    : "border-zinc-300 text-black hover:bg-orange-200"
-                } transition-all duration-200 whitespace-nowrap`}
-              >
-                #{tag}
-                <span
-                  className={`text-xs rounded-full px-2 py-0.5 ${
-                    isReady && theme.mode === "dark"
-                      ? "bg-zinc-800 text-zinc-300"
-                      : "bg-zinc-200 text-zinc-700"
-                  }`}
-                >
-                  {count || 0}
-                </span>
-              </Link>
-            ))}
-          </div>
+      </div>
+      <div className="mt-16">
+        <h3 className="h3-bold text-dark200_light900">Popular Tags</h3>
+        <div className="mt-7 flex flex-col gap-4">
+          {popularTags.map((tag) => (
+            <RenderTag
+              key={tag._id}
+              _id={tag._id}
+              name={tag.name}
+              totalQuestions={tag.numberOfQuestions}
+              showCount
+            />
+          ))}
         </div>
       </div>
     </section>
   );
 };
 
-export default RightSideBarClient;
+export default RightSidebarClient;

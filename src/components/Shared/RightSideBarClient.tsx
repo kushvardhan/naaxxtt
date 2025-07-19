@@ -15,6 +15,9 @@ const RightSideBarClient = ({
   const theme = useContext(ThemeContext);
   const [mounted, setMounted] = useState(false);
 
+  console.log("hotQuestions from client: ", hotQuestions);
+  console.log("popularTags from client: ", popularTags);
+
   useEffect(() => {
     setMounted(true);
   }, []);

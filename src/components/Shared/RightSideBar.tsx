@@ -6,8 +6,8 @@ const RightSideBar = async () => {
   try {
     const hotQuestionsRaw = await getHotQuestions();
     const tagsRaw = await getTopPopularTags();
-    console.log("hotQuestionsRaw: ", hotQuestionsRaw);
-    console.log("tagsRaw: ", tagsRaw);
+    // console.log("hotQuestionsRaw: ", hotQuestionsRaw);
+    // console.log("tagsRaw: ", tagsRaw);
 
     // Extra serialization safety - ensure no MongoDB objects leak through
     const safeHotQuestions = JSON.parse(JSON.stringify(hotQuestionsRaw));
@@ -27,13 +27,13 @@ const RightSideBar = async () => {
       count: tag.numberOfQuestions,
     }));
 
-    console.log("hotQuestions: ", hotQuestions);
-    console.log("popularTags: ", popularTags);
+    // console.log("hotQuestions: ", hotQuestions);
+    // console.log("popularTags: ", popularTags);
 
     return (
       <RightSideBarClient
-        hotQuestions={hotQuestions}
-        popularTags={popularTags}
+        hotQuestions={safeHotQuestions}
+        popularTags={safeTags}
       />
     );
   } catch (error) {

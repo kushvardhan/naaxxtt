@@ -6,9 +6,9 @@ import {
   ThemeContextProvider,
 } from "../../../context/ThemeContext";
 import LeftSidebar from "../../components/Shared/LeftSideBar";
-import RightSideBarSelfFetching from "../../components/Shared/RightSideBarSelfFetching";
 import TopNav from "../../components/Shared/TopNav";
 import "../globals.css";
+import RightSideBar from "../../components/Shared/RightSideBar";
 
 function LayoutContent({ children }: { children: React.ReactNode }) {
   const navRef = useRef<HTMLDivElement>(null);
@@ -75,7 +75,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
             {children}
           </div>
         </section>
-        <RightSideBarSelfFetching />
+        <RightSideBar />
       </div>
     </main>
   );

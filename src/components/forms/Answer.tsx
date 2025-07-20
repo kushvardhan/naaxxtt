@@ -34,6 +34,8 @@ const Answer = ({ question, questionId, authorId }: Props) => {
   const editorRef = useRef(null);
   const theme = useContext(ThemeContext);
 
+  console.log({ question, questionId, authorId });
+
   const form = useForm<z.infer<typeof AnswerSchema>>({
     resolver: zodResolver(AnswerSchema),
     defaultValues: {
@@ -88,13 +90,44 @@ const Answer = ({ question, questionId, authorId }: Props) => {
     }
   }
 
+  const generateAiAnswer = async()=>{
+    try{
+      if(!authorId) return;
+
+      setSetIsSubmittingAI(true);
+
+       const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt`, { 
+        method: 'POST',
+        body: JSON.stringify({ question })
+      })
+
+      const aiAnswer = await response.json();
+      const formattedAnswer = aiAnswer.reply.replace(/\n/g, '<br />');
+      console.log("formattedAnswer: ",{ formattedAnswer });
+
+      if(editorRef.current) {
+        const editor = editorRef.current as any;
+        editor.setContent(formattedAnswer);
+      }
+
+
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSetIsSubmittingAI(false);
+    }
+  }
+
+
   return (
         <div className="mt-14 pt-10">
           <h2 className="text-2xl font-semibold mb-6">Write your Answer here</h2>
 
           {/* Generate AI Button */}
           <div className="flex justify-end mb-4">
-            <button className="flex items-center cursor-pointer gap-2 bg-orange-100 dark:bg-orange-900/30 text-orange-600 hover:text-orange-800 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-800/50 px-4 py-2 rounded-md font-medium shadow-sm transition-all duration-200">
+            <button onClick={
+              ()=> {generateAiAnswer}
+            } className="flex items-center cursor-pointer gap-2 bg-orange-100 dark:bg-orange-900/30 text-orange-600 hover:text-orange-800 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-800/50 px-4 py-2 rounded-md font-medium shadow-sm transition-all duration-200">
               <Sparkles className="w-5 h-5 text-orange-500" />
               Generate Answer with AI
             </button>

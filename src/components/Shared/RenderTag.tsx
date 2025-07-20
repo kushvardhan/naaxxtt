@@ -12,10 +12,10 @@ const RenderTag = ({ _id, name, totalQuestions, showCount }: Props) => {
   return (
     <Link
       href={`/tags/${_id}`}
-      className="flex items-center justify-between rounded-lg px-3 py-2 transition-all duration-200 hover:bg-light-800 dark:hover:bg-dark-300 group"
+      className="group flex items-center gap-2 rounded-md bg-light-800 dark:bg-dark-300 px-3 py-2 transition-colors duration-200 hover:bg-light-700 dark:hover:bg-dark-400"
     >
-      <Badge className="text-[10px] font-medium leading-[13px] bg-light-800 dark:bg-dark-300 text-light-400 dark:text-light-500 rounded-md border-none px-4 py-2 uppercase transition-colors duration-200 group-hover:bg-light-700 dark:group-hover:bg-dark-400">
-        {name}
+      <Badge className="text-[10px] font-medium leading-[13px] rounded-md border-none bg-transparent text-light-400 dark:text-light-500 px-0 py-0">
+        #{name}
       </Badge>
 
       {showCount && (

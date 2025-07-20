@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 export const POST = async (request: Request) => {
   const { question } = await request.json();
+  console.log(question);
 
   try {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -29,9 +30,11 @@ Prioritize user satisfaction, clarity, and precision at all times.
         ]
       })
     })
-
+    console.log("response4U94H: ",response);
     const responseData = await response.json();
     const reply = responseData.choices[0].message.content;
+    console.log("responseData4U94H: ",responseData);
+    console.log("reply4U94H: ",reply);
 
     return NextResponse.json({ reply })
   } catch (error: any) {

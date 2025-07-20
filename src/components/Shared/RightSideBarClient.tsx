@@ -25,7 +25,7 @@ const RightSideBarClient = ({ hotQuestions, popularTags }: RightSideBarClientPro
               <Link
                 href={`/question/${question._id}`}
                 key={question._id}
-className="group flex items-center justify-between gap-3 rounded-md px-4 py-3 border border-zinc-500 dark:border-zinc-300 bg-light-800 dark:bg-dark-300 transition-all duration-200 transform hover:scale-[1.02] hover:shadow-md hover:bg-zinc-200/10 dark:hover:bg-zinc-900"
+className="group flex items-center justify-between gap-3 rounded-md px-4 py-3 bg-light-800 dark:bg-dark-300 transition-all duration-200 transform hover:scale-[1.02] hover:shadow-md hover:bg-zinc-200/10 dark:hover:bg-zinc-900"
               >
                 <p className="text-[14px] font-medium leading-[18.2px] text-dark-500 dark:text-light-700 group-hover:text-dark-800 dark:group-hover:text-light-100 transition-colors">
                   {question.title}

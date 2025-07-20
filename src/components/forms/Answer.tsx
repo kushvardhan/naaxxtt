@@ -18,6 +18,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { createAnswer } from '../../../lib/actions/answer.action'
 import { useContext, useRef, useState } from "react";
 import { usePathname } from 'next/navigation'
+import { Button } from "../ui/button";
 
 
 interface Props {
@@ -34,7 +35,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
   const editorRef = useRef(null);
   const theme = useContext(ThemeContext);
 
-  console.log({ question, questionId, authorId });
+ // console.log({ question, questionId, authorId });
 
   const form = useForm<z.infer<typeof AnswerSchema>>({
     resolver: zodResolver(AnswerSchema),
@@ -90,9 +91,10 @@ const Answer = ({ question, questionId, authorId }: Props) => {
     }
   }
 
-  const generateAiAnswer = async()=>{
+  const generateAIAnswer = async()=>{
     try{
       if(!authorId) return;
+      console.log("HEY FROM GENAI Answer")
 
       setSetIsSubmittingAI(true);
 
@@ -103,7 +105,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
 
       const aiAnswer = await response.json();
       const formattedAnswer = aiAnswer.reply.replace(/\n/g, '<br />');
-      console.log("formattedAnswer: ",{ formattedAnswer });
+      console.log("formattedAnswer3REFBDF3902: ",{ formattedAnswer });
 
       if(editorRef.current) {
         const editor = editorRef.current as any;
@@ -125,12 +127,12 @@ const Answer = ({ question, questionId, authorId }: Props) => {
 
           {/* Generate AI Button */}
           <div className="flex justify-end mb-4">
-            <button onClick={
-              ()=> {generateAiAnswer}
-            } className="flex items-center cursor-pointer gap-2 bg-orange-100 dark:bg-orange-900/30 text-orange-600 hover:text-orange-800 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-800/50 px-4 py-2 rounded-md font-medium shadow-sm transition-all duration-200">
+            <Button className="flex items-center cursor-pointer gap-2 bg-orange-100 dark:bg-orange-900/30 text-orange-600 hover:text-orange-800 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-800/50 px-4 py-2 rounded-md font-medium shadow-sm transition-all duration-200"
+            onClick={generateAIAnswer}
+            >
               <Sparkles className="w-5 h-5 text-orange-500" />
               Generate Answer with AI
-            </button>
+            </Button>
           </div>
 
             <Form {...form}>
@@ -183,13 +185,13 @@ const Answer = ({ question, questionId, authorId }: Props) => {
         />
 
         <div className='flex justify-end'>
-          <button
+          <Button
               type="submit"
               className="px-6 py-2 bg-orange-600 text-white text-regular font-semibold text-white font-medium rounded-md hover:bg-orange-700/50 transition"
               disabled={isSubmitting}
             >
               {isSubmitting ? 'Submitting...' : 'Submit'}
-            </button>
+            </Button>
         </div>
       </form>
     </Form>

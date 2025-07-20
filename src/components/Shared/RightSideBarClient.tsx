@@ -18,7 +18,7 @@ const RightSideBarClient = ({ hotQuestions, popularTags }: RightSideBarClientPro
     <section className="bg-light-900 dark:bg-dark-200 border-light-800 dark:border-dark-300 custom-scrollbar sticky right-0 top-0 flex h-[calc(screen-120px)] overflow-y-scroll scrollbar-hidden w-[350px] flex-col border-l p-6 pt-36 shadow-light-300 dark:shadow-none max-xl:hidden transition-all duration-300">
       {/* Top Questions */}
       <div>
-        <h3 className="text-[20px] font-bold leading-[26px] text-dark-200 dark:text-light-900">Top Questions</h3>
+        <h3 className="text-xl font-bold leading-[26px] text-dark-200 dark:text-light-900">Top Questions</h3>
         <div className="mt-6 flex flex-col gap-4">
           {hotQuestions?.length > 0 ? (
             hotQuestions.map((question) => (
@@ -49,7 +49,7 @@ const RightSideBarClient = ({ hotQuestions, popularTags }: RightSideBarClientPro
 
       {/* Popular Tags */}
       <div className="mt-12">
-        <h3 className="text-[20px] font-bold leading-[26px] text-dark-200 dark:text-light-900">Popular Tags</h3>
+        <h3 className="text-xl font-bold leading-[26px] text-dark-200 dark:text-light-900">Popular Tags</h3>
         <div className="mt-6 flex flex-wrap gap-3">
           {popularTags?.length > 0 ? (
             popularTags.map((tag) => (

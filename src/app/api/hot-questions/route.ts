@@ -3,23 +3,24 @@ import { getHotQuestions } from "../../../../lib/actions/question.action";
 
 export async function GET() {
   try {
+    console.log("Fetching hot questions...");
     const hotQuestions = await getHotQuestions();
-    return NextResponse.json(hotQuestions);
+    console.log("Hot questions fetched:", hotQuestions);
+
+    // Ensure we return a proper JSON response
+    return NextResponse.json(hotQuestions || [], {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   } catch (error) {
     console.error("Error fetching hot questions:", error);
-    return NextResponse.json([], { status: 500 });
+    return NextResponse.json([], {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 }
-
-
-// import { getHotQuestions } from "../../../../lib/actions/question.action";
-
-// export default async function handler(req, res) {
-//   try {
-//     const questions = await getHotQuestions();
-//     res.status(200).json(questions);
-//   } catch (error) {
-//     console.error("Hot questions error:", error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// }

@@ -133,28 +133,44 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
       throw new Error("Tag not found");
     }
 
-    // Manually ensure populated data is plain objects
-    const rawQuestions = (tag.questions as any[]).map((q: any) => ({
-      ...q,
-      _id: q._id.toString(),
-      tags: q.tags.map((t: any) => ({
-        _id: t._id.toString(),
-        name: t.name,
-      })),
+    // Complete serialization to ensure no MongoDB objects leak through
+    const cleanQuestions = JSON.parse(JSON.stringify(tag.questions || []));
+
+    // Manually ensure populated data is plain objects with explicit type conversion
+    const rawQuestions = cleanQuestions.map((q: any) => ({
+      _id: String(q._id || ""),
+      title: String(q.title || ""),
+      content: String(q.content || ""),
+      views: Number(q.views || 0),
+      upvotes: Array.isArray(q.upvotes)
+        ? q.upvotes.map((id: any) => String(id))
+        : [],
+      downvotes: Array.isArray(q.downvotes)
+        ? q.downvotes.map((id: any) => String(id))
+        : [],
+      answers: Array.isArray(q.answers)
+        ? q.answers.map((id: any) => String(id))
+        : [],
+      tags: Array.isArray(q.tags)
+        ? q.tags.map((t: any) => ({
+            _id: String(t._id || ""),
+            name: String(t.name || ""),
+          }))
+        : [],
       author: q.author
         ? {
-            _id: q.author._id.toString(),
-            name: q.author.name,
-            clerkId: q.author.clerkId,
-            image: q.author.image,
+            _id: String(q.author._id || ""),
+            name: String(q.author.name || ""),
+            clerkId: String(q.author.clerkId || ""),
+            image: String(q.author.image || ""),
           }
         : null,
-      createdAt: q.createdAt?.toString() || "",
-      updatedAt: q.updatedAt?.toString() || "",
+      createdAt: q.createdAt ? String(q.createdAt) : "",
+      updatedAt: q.updatedAt ? String(q.updatedAt) : "",
     }));
 
     return {
-      tagTitle: tag.name,
+      tagTitle: String(tag.name || ""),
       questions: rawQuestions.slice(0, pageSize), // ensure pagination
       isNext: rawQuestions.length > pageSize,
     };

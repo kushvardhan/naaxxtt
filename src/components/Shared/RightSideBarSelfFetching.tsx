@@ -21,91 +21,52 @@ const RightSideBarSelfFetching = () => {
 
     const fetchData = async () => {
       try {
-        // Try to fetch from API routes first
+        // Fetch real data from API routes
         let questionsData = [];
         let tagsData = [];
 
         try {
+          console.log("Fetching hot questions from API...");
           const questionsResponse = await fetch("/api/hot-questions");
           if (questionsResponse.ok) {
             const questionsText = await questionsResponse.text();
+            console.log("Questions response:", questionsText);
             if (
               questionsText.startsWith("{") ||
               questionsText.startsWith("[")
             ) {
               questionsData = JSON.parse(questionsText);
+              console.log("Parsed questions data:", questionsData);
             }
           }
         } catch (apiError) {
-          console.log("API route failed, using fallback data");
+          console.error("Hot questions API failed:", apiError);
         }
 
         try {
+          console.log("Fetching popular tags from API...");
           const tagsResponse = await fetch("/api/popular-tags");
           if (tagsResponse.ok) {
             const tagsText = await tagsResponse.text();
+            console.log("Tags response:", tagsText);
             if (tagsText.startsWith("{") || tagsText.startsWith("[")) {
               tagsData = JSON.parse(tagsText);
+              console.log("Parsed tags data:", tagsData);
             }
           }
         } catch (apiError) {
-          console.log("API route failed, using fallback data");
+          console.error("Popular tags API failed:", apiError);
         }
 
-        // If API failed, use realistic fallback data that links to actual pages
+        // Only use fallback if API completely failed and returned no data
         if (!questionsData || questionsData.length === 0) {
-          questionsData = [
-            {
-              _id: "675a1234567890abcdef1234",
-              title: "How to fix React hydration errors in Next.js?",
-            },
-            {
-              _id: "675a1234567890abcdef1235",
-              title: "Best practices for Next.js server components",
-            },
-            {
-              _id: "675a1234567890abcdef1236",
-              title: "Understanding TypeScript generics and constraints",
-            },
-            {
-              _id: "675a1234567890abcdef1237",
-              title: "MongoDB aggregation pipeline optimization tips",
-            },
-            {
-              _id: "675a1234567890abcdef1238",
-              title: "CSS Grid vs Flexbox: When to use which?",
-            },
-          ];
+          console.log("No questions data from API, showing empty state");
+          questionsData = [];
         }
 
         if (!tagsData || tagsData.length === 0) {
-          tagsData = [
-            {
-              _id: "675b1234567890abcdef1234",
-              name: "React",
-              numberOfQuestions: 150,
-            },
-            {
-              _id: "675b1234567890abcdef1235",
-              name: "Next.js",
-              numberOfQuestions: 120,
-            },
-            {
-              _id: "675b1234567890abcdef1236",
-              name: "TypeScript",
-              numberOfQuestions: 100,
-            },
-            {
-              _id: "675b1234567890abcdef1237",
-              name: "JavaScript",
-              numberOfQuestions: 200,
-            },
-            {
-              _id: "675b1234567890abcdef1238",
-              name: "CSS",
-              numberOfQuestions: 80,
-            },
-          ];
+          console.log("No tags data from API, showing empty state");
+          tagsData = [];
         }
 
         // Map the data to the expected format
@@ -124,56 +85,9 @@ const RightSideBarSelfFetching = () => {
         setPopularTags(mappedTags);
       } catch (error) {
         console.error("Error fetching sidebar data:", error);
-        // Set fallback data on error
-        setHotQuestions([
-          {
-            _id: "675a1234567890abcdef1234",
-            title: "How to fix React hydration errors in Next.js?",
-          },
-          {
-            _id: "675a1234567890abcdef1235",
-            title: "Best practices for Next.js server components",
-          },
-          {
-            _id: "675a1234567890abcdef1236",
-            title: "Understanding TypeScript generics and constraints",
-          },
-          {
-            _id: "675a1234567890abcdef1237",
-            title: "MongoDB aggregation pipeline optimization tips",
-          },
-          {
-            _id: "675a1234567890abcdef1238",
-            title: "CSS Grid vs Flexbox: When to use which?",
-          },
-        ]);
-        setPopularTags([
-          {
-            _id: "675b1234567890abcdef1234",
-            name: "React",
-            numberOfQuestions: 150,
-          },
-          {
-            _id: "675b1234567890abcdef1235",
-            name: "Next.js",
-            numberOfQuestions: 120,
-          },
-          {
-            _id: "675b1234567890abcdef1236",
-            name: "TypeScript",
-            numberOfQuestions: 100,
-          },
-          {
-            _id: "675b1234567890abcdef1237",
-            name: "JavaScript",
-            numberOfQuestions: 200,
-          },
-          {
-            _id: "675b1234567890abcdef1238",
-            name: "CSS",
-            numberOfQuestions: 80,
-          },
-        ]);
+        // Set empty arrays on error - let the UI handle empty states
+        setHotQuestions([]);
+        setPopularTags([]);
       }
     };
 

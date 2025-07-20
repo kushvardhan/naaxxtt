@@ -11,30 +11,31 @@ interface RightSideBarClientProps {
 
 const RightSideBarClient = ({ hotQuestions, popularTags }: RightSideBarClientProps) => {
 
-  console.log("hotQuestions: ", hotQuestions);
-  console.log("popularTags: ", popularTags);
+  console.log("HotQuest837: ", hotQuestions);
+  console.log("popularTags837: ", popularTags);
 
   return (
-    <section className="bg-light-900 dark:bg-dark-200 border-light-800 dark:border-dark-300 custom-scrollbar sticky right-0 top-0 flex h-screen w-[350px] flex-col overflow-y-auto border-l p-6 pt-36 shadow-light-300 dark:shadow-none max-xl:hidden">
+    <section className="bg-light-900 dark:bg-dark-200 border-light-800 dark:border-dark-300 custom-scrollbar sticky right-0 top-0 flex h-screen w-[350px] flex-col overflow-y-auto border-l p-6 pt-36 shadow-light-300 dark:shadow-none max-xl:hidden transition-all duration-300">
+      {/* Top Questions */}
       <div>
         <h3 className="text-[20px] font-bold leading-[26px] text-dark-200 dark:text-light-900">Top Questions</h3>
-        <div className="mt-7 flex w-full flex-col gap-[30px]">
+        <div className="mt-6 flex flex-col gap-4">
           {hotQuestions && hotQuestions.length > 0 ? (
             hotQuestions.map((question) => (
               <Link
                 href={`/question/${question._id}`}
                 key={question._id}
-                className="flex cursor-pointer items-center justify-between gap-7"
+                className="group flex items-center justify-between gap-3 rounded-lg px-4 py-3 transition-all duration-200 hover:bg-light-800 dark:hover:bg-dark-300"
               >
-                <p className="text-[14px] font-medium leading-[18.2px] text-dark-500 dark:text-light-700">
+                <p className="text-[14px] font-medium leading-[18.2px] text-dark-500 dark:text-light-700 group-hover:text-dark-800 dark:group-hover:text-light-100 transition-colors">
                   {question.title}
                 </p>
                 <Image
                   src="/assets/icons/chevron-right.svg"
                   alt="chevron right"
-                  width={20}
-                  height={20}
-                  className="invert dark:invert-0"
+                  width={18}
+                  height={18}
+                  className="invert dark:invert-0 transition-transform duration-200 group-hover:translate-x-1"
                 />
               </Link>
             ))
@@ -45,9 +46,11 @@ const RightSideBarClient = ({ hotQuestions, popularTags }: RightSideBarClientPro
           )}
         </div>
       </div>
+
+      {/* Popular Tags */}
       <div className="mt-16">
         <h3 className="text-[20px] font-bold leading-[26px] text-dark-200 dark:text-light-900">Popular Tags</h3>
-        <div className="mt-7 flex flex-col gap-4">
+        <div className="mt-6 flex flex-col gap-3">
           {popularTags && popularTags.length > 0 ? (
             popularTags.map((tag) => (
               <RenderTag

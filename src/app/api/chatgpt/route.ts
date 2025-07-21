@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+ import { NextResponse } from "next/server";
 
 export const POST = async (request: Request) => {
   const { question } = await request.json();
@@ -22,7 +22,7 @@ Always think step-by-step, clarify ambiguity, and explain concepts in a clear an
 You are professional but friendly, concise but thorough, and never make assumptions without evidence. 
 If something is unknown, state it clearly rather than guessing. When useful, structure answers with bullet points, code blocks, or examples to aid understanding.
 Prioritize user satisfaction, clarity, and precision at all times.
-        `.trim()
+            `.trim()
           }, {
             role: 'user',
             content: `Tell me ${question}`
@@ -40,4 +40,4 @@ Prioritize user satisfaction, clarity, and precision at all times.
   } catch (error: any) {
     return NextResponse.json({ error: error.message })
   }
-}
+}            

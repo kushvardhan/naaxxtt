@@ -5,7 +5,7 @@ import { ThemeContext } from "../../../../context/ThemeContext";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 const cn = (...classes: (string | boolean | undefined | null)[]) => classes.filter(Boolean).join(" ");
 
-import { formUrlQuery } from "../../../../lib/utils";
+import { formUrlQuery, removeKeysFromQuery } from "../../../../lib/utils";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: "default" | "bare";
@@ -84,8 +84,9 @@ const LocalSearchBar = ({
       if(pathname === route){
         const newUrl = removeKeysFromQuery({
           params: searchParams.toString(),
-          keys: ['q']
+          keysToRemove: ['q']
         })
+      router.push(newUrl, { scroll: false });
       }
     }
   }, 300);

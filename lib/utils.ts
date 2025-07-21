@@ -14,6 +14,11 @@ interface UrlQueryParams {
   value: string | null;
 }
 
+interface RemoveUrlQueryParams {
+  params: string;
+  keysToRemove: string[];
+}
+
 
 export const getTimestamp = (createdAt: Date): string => {
   const now = new Date();
@@ -62,6 +67,20 @@ export const formatAndDivideNumber = (num: number): string => {
     return num.toString();
   }
 };
+
+export const removeKeysFromQuery = ({ params, keysToRemove}: RemoveUrlQueryParams) => {
+  const currentUrl = qs.parse(params);
+
+  keysToRemove.forEach((key) => {
+    delete currentUrl[key];
+  })
+
+  return qs.stringifyUrl({
+    url: window.location.pathname,
+    query: currentUrl,
+  },
+  { skipNull: true})
+}
 
 export const formUrlQuery = ({ params, key, value}: UrlQueryParams) => {
   const currentUrl = qs.parse(params);

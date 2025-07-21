@@ -1,7 +1,8 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { ThemeContext } from "../../../../context/ThemeContext";
+import {usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 function cn(...classes: (string | boolean | undefined | null)[]) {
   return classes.filter(Boolean).join(" ");
@@ -61,6 +62,19 @@ const LocalSearchBar = ({
   onChange,
 }: CustomInputProps) => {
   const theme = useContext(ThemeContext);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const query = searchParams.get('q');
+
+  const [search,setSearch] = useState(query || "");
+
+  useEffect(()=>{
+
+  },[search, route, pathname, searchParams, router, query])
+
+  console.log(query);
 
   if (!theme) {
     return <div>Loading...</div>;
@@ -100,8 +114,8 @@ const LocalSearchBar = ({
         spellCheck={false}
         autoComplete="on"
         type="text"
-        value={value}
-        onChange={onChange}
+        value={search}
+        onChange={(e)=>setSearch(e.target.value)}
       />
     </div>
   );

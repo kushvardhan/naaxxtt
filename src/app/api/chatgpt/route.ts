@@ -30,7 +30,7 @@ Prioritize user satisfaction, clarity, and precision at all times.
         ]
       })
     })
-    console.log("response4U94H: ",response);
+    console.log("resp 4U94H: ",response);
     const responseData = await response.json();
     const reply = responseData.choices[0].message.content;
     console.log("responseData4U94H: ",responseData);

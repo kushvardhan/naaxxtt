@@ -2,11 +2,10 @@
 
 import { useContext, useState, useEffect } from "react";
 import { ThemeContext } from "../../../../context/ThemeContext";
-import {usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+const cn = (...classes: (string | boolean | undefined | null)[]) => classes.filter(Boolean).join(" ");
 
-function cn(...classes: (string | boolean | undefined | null)[]) {
-  return classes.filter(Boolean).join(" ");
-}
+import { formUrlQuery } from "../../../../lib/utils";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: "default" | "bare";
@@ -55,6 +54,7 @@ interface CustomInputProps {
 }
 
 const LocalSearchBar = ({
+  route,
   iconPosition,
   placeholder,
   otherClasses,
@@ -71,6 +71,17 @@ const LocalSearchBar = ({
   const [search,setSearch] = useState(query || "");
 
   useEffect(()=>{
+    const delayDebounceFn = setTimeout(() => {
+    const newUrl = formUrlQuery({
+      params: searchParams.toString(),
+      key: "q",
+      value: search,
+    });
+
+    router.push(newUrl, { scroll: false });
+  }, 300);
+
+  return () => clearTimeout(delayDebounceFn);
 
   },[search, route, pathname, searchParams, router, query])
 

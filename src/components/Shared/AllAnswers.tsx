@@ -31,7 +31,7 @@ const AllAnswers = async ({
     page: page ? +page : 1,
     sortBy: filter,
   });
-  console.log("Server Answer resss: ", result);
+  // console.log("Server Answer resss: ", result);
 
   const AnswerFilters = [
     { name: "Highest Upvotes", value: "highestUpvotes" },

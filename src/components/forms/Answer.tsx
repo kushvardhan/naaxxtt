@@ -91,34 +91,42 @@ const Answer = ({ question, questionId, authorId }: Props) => {
     }
   }
 
-  const generateAIAnswer = async()=>{
-    try{
-      if(!authorId) return;
-      console.log("HEY FROM GENAI Answer")
+const generateAIAnswer = async () => {
+  try {
+    if (!authorId) return;
+    console.log("HEY FROM GENAI Answer");
 
-      setSetIsSubmittingAI(true);
+    setSetIsSubmittingAI(true);
 
-       const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt`, { 
-        method: 'POST',
-        body: JSON.stringify({ question })
-      })
+    await new Promise(res => setTimeout(res, 500)); // delay by 500ms
 
-      const aiAnswer = await response.json();
-      const formattedAnswer = aiAnswer.reply.replace(/\n/g, '<br />');
-      console.log("formattedAnswer3REFBDF3902: ",{ formattedAnswer });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt`, {
+      method: 'POST',
+      body: JSON.stringify({ question }),
+    });
 
-      if(editorRef.current) {
-        const editor = editorRef.current as any;
-        editor.setContent(formattedAnswer);
-      }
+    const aiAnswer = await response.json();
 
-
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setSetIsSubmittingAI(false);
+    if (aiAnswer.error) {
+      alert(`AI Error: ${aiAnswer.error}`);
+      return;
     }
+
+    const formattedAnswer = aiAnswer.reply.replace(/\n/g, '<br />');
+    console.log("formattedAnswer:", formattedAnswer);
+
+    if (editorRef.current) {
+      const editor = editorRef.current as any;
+      editor.setContent(formattedAnswer);
+    }
+
+  } catch (error) {
+    console.log("Client Error:", error);
+  } finally {
+    setSetIsSubmittingAI(false);
   }
+};
+
 
 
   return (

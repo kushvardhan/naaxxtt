@@ -72,7 +72,7 @@ export async function getAnswers(params: GetAnswersParams) {
       .skip(skipAmount)
       .limit(pageSize);
 
-    console.log("Getting answer by ID from server: ", answers);
+    // console.log("Getting answer by ID from server: ", answers);
     
     const totalAnswer = await Answer.countDocuments({ 
       question: questionId

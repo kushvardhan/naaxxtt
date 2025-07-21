@@ -47,10 +47,62 @@ const Input = ({
 const GlobalSearch = () => {
   const theme = useContext(ThemeContext);
   const [mounted, setMounted] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Debounced search function
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults([]);
+      setShowResults(false);
+      return;
+    }
+
+    const timeoutId = setTimeout(async () => {
+      setIsSearching(true);
+      try {
+        // Mock search results - replace with actual API call
+        const mockResults = [
+          {
+            type: "question",
+            id: "1",
+            title: `How to fix React hydration errors related to "${searchQuery}"?`,
+            excerpt:
+              "Learn how to resolve hydration mismatches in React applications...",
+          },
+          {
+            type: "question",
+            id: "2",
+            title: `Best practices for ${searchQuery} in Next.js`,
+            excerpt:
+              "Discover the most effective approaches for implementing...",
+          },
+          {
+            type: "tag",
+            id: "3",
+            name: searchQuery.toLowerCase(),
+            questionCount: 42,
+          },
+        ];
+
+        setSearchResults(mockResults);
+        setShowResults(true);
+      } catch (error) {
+        console.error("Search error:", error);
+        setSearchResults([]);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery]);
 
   // Hydration-safe loading state
   if (!mounted || !theme || !theme.mounted) {
@@ -115,8 +167,87 @@ const GlobalSearch = () => {
           isDark={isDark}
           spellCheck={false}
           autoComplete="off"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onFocus={() => searchQuery && setShowResults(true)}
+          onBlur={() => setTimeout(() => setShowResults(false), 200)}
         />
+
+        {isSearching && (
+          <div className="animate-spin h-4 w-4 border-2 border-orange-500 border-t-transparent rounded-full"></div>
+        )}
       </div>
+
+      {/* Search Results Dropdown */}
+      {showResults && searchResults.length > 0 && (
+        <div
+          className={cn(
+            "absolute top-full left-0 right-0 mt-2 rounded-xl border shadow-lg z-50 max-h-96 overflow-y-auto",
+            isDark ? "bg-black border-zinc-700" : "bg-white border-zinc-200"
+          )}
+        >
+          {searchResults.map((result, index) => (
+            <div
+              key={result.id}
+              className={cn(
+                "p-4 cursor-pointer transition-colors border-b last:border-b-0",
+                isDark
+                  ? "hover:bg-zinc-800 border-zinc-700"
+                  : "hover:bg-zinc-50 border-zinc-100"
+              )}
+              onClick={() => {
+                if (result.type === "question") {
+                  window.location.href = `/question/${result.id}`;
+                } else if (result.type === "tag") {
+                  window.location.href = `/tags/${result.id}`;
+                }
+              }}
+            >
+              {result.type === "question" ? (
+                <div>
+                  <div
+                    className={cn(
+                      "font-medium text-sm mb-1",
+                      isDark ? "text-white" : "text-black"
+                    )}
+                  >
+                    {result.title}
+                  </div>
+                  <div
+                    className={cn(
+                      "text-xs",
+                      isDark ? "text-zinc-400" : "text-zinc-600"
+                    )}
+                  >
+                    {result.excerpt}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <span
+                    className={cn(
+                      "px-2 py-1 rounded text-xs font-medium",
+                      isDark
+                        ? "bg-zinc-700 text-zinc-300"
+                        : "bg-zinc-100 text-zinc-700"
+                    )}
+                  >
+                    {result.name}
+                  </span>
+                  <span
+                    className={cn(
+                      "text-xs",
+                      isDark ? "text-zinc-400" : "text-zinc-600"
+                    )}
+                  >
+                    {result.questionCount} questions
+                  </span>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

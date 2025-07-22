@@ -25,16 +25,15 @@ export async function getQuestions(params: GetQuestionsParams) {
     const { searchQuery, filter } = params;
 
     // Build query
-    const query: Record<string, unknown> = {};
+    const query: FilterQuery<typeof Question> = {};
 
     if (searchQuery) {
       query.$or = [
-        { title: { $regex: searchQuery, $options: "i" } },
-        { explanation: { $regex: searchQuery, $options: "i" } },
+        { title: { $regex: new RegExp(searchQuery, $options: "i") } },
+        { explanation: { $regex: new RegExp(searchQuery, $options: "i") } },
       ];
     }
 
-    // Build sort options
     let sortOptions: Record<string, 1 | -1> = {};
 
     switch (filter) {

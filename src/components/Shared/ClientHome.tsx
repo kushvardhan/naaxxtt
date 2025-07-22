@@ -14,7 +14,12 @@ import { getQuestions } from "../../../../lib/actions/question.action";
 import { Button } from "../../../components/Shared/button";
 import Image from "next/image";
 
-export default function ClientHome() {
+interface SearchParamsProps {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}
+
+
+export default function ClientHome({ searchParams }: SearchParamsProps) {
   const theme = useContext(ThemeContext);
   const isDark = theme?.mode === "dark";
 
@@ -44,7 +49,10 @@ export default function ClientHome() {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const result = await getQuestions({});
+        const result = await getQuestions({
+          searchQuery: searchParams.q ,
+          filter: "newest",
+        });
         setQuestions(result.questions);
       } catch (err) {
         console.error("Failed to fetch questions:", err);
@@ -201,7 +209,7 @@ export default function ClientHome() {
                   <Image
                     src={que.user.image}
                     alt={que.user.name}
-                      width={24}
+                    width={24}
                   height={24}
                     className="h-8 w-8 rounded-full object-cover"
                   />

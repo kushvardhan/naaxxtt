@@ -18,21 +18,24 @@ interface CommunityClientProps {
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
-
-const CommunityClient = ({ users, searchParams  }: CommunityClientProps) => {
+const CommunityClient = ({ users, searchParams }: CommunityClientProps) => {
   const theme = useContext(ThemeContext);
-  const [searchQuery, setSearchQuery] = useState(searchParams.q || "");
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    // Update search query from URL params
+    if (searchParams.q && typeof searchParams.q === "string") {
+      setSearchQuery(searchParams.q);
+    }
+  }, [searchParams.q]);
 
   const filteredUsers = useMemo(() => {
     let filtered = users;
 
-    if (searchQuery.trim()) {
+    if (searchQuery && typeof searchQuery === "string" && searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       filtered = filtered.filter(
         (user) =>

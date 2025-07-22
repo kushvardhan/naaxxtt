@@ -9,7 +9,7 @@ import {
 import LocalSearchBar from "@/components/Shared/Search/LocalSearchBar";
 import Image from "next/image";
 import Link from "next/link";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
 import { Button } from "./button";
 
@@ -38,6 +38,7 @@ type Question = {
 
 type Props = {
   mappedQuestions: Question[];
+  searchParams?: { [key: string]: string | string[] | undefined };
 };
 
 const Tags = [
@@ -97,7 +98,10 @@ function formatDate(dateString: string): string {
   return `${day}${suffix} ${month} ${year}`;
 }
 
-export default function ClientHomehh({ mappedQuestions }: Props, ) {
+export default function ClientHomehh({
+  mappedQuestions,
+  searchParams = {},
+}: Props) {
   const theme = useContext(ThemeContext);
   const isDark = theme?.mode === "dark";
   const [searchQuery, setSearchQuery] = useState("");
@@ -106,7 +110,11 @@ export default function ClientHomehh({ mappedQuestions }: Props, ) {
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    // Initialize search from URL params
+    if (searchParams.q && typeof searchParams.q === "string") {
+      setSearchQuery(searchParams.q);
+    }
+  }, [searchParams.q]);
 
   if (!mounted || !theme || !theme.mounted) {
     return (
@@ -256,10 +264,10 @@ export default function ClientHomehh({ mappedQuestions }: Props, ) {
         {Tags.slice(0, 6).map((item, idx) => (
           <Button
             key={idx}
-            className={`text-xs cursor-pointer px-2 py-0.5 font-mono rounded-md hover:cursor-pointer  ${
+            className={`text-xs cursor-pointer px-2 py-0.5 font-mono rounded-md ${
               isDark
-                ? "bg-zinc-900 border-1 border-zinc-600 text-white hover:bg-zinc-950 hover:shadow-[inset_0px_1px_1px_0px_rgba(255,165,2,0.7)] hover:shadow-lg hover:shadow-zinc-700 transition-all duration-400"
-                : "bg-gray-100/70 border-1 border-zinc-400/50  hover:bg-zinc-950 hover:shadow-[inset_0px_2px_2px_0px_rgba(555,165,2,0.8)] hover:bg-yellow-100/30 hover:shadow-lg hover:shadow-zinc-400  text-black  transition-all duration-400"
+                ? "bg-zinc-900 border border-zinc-600 text-white hover:bg-zinc-950 hover:shadow-lg hover:shadow-zinc-700 transition-all duration-400"
+                : "bg-gray-100/70 border border-zinc-400/50 hover:bg-yellow-100/30 hover:shadow-lg hover:shadow-zinc-400 text-black transition-all duration-400"
             }`}
           >
             {item.tag}

@@ -11,24 +11,31 @@ export interface Tag {
 }
 
 
-const TagsPage = async () => {
+interface SearchParams {
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+const TagsPage = async ({ searchParams }: SearchParams) => {
   try {
+    const searchQuery = typeof searchParams.q === 'string' ? searchParams.q : '';
+    const filter = typeof searchParams.filter === 'string' ? searchParams.filter : 'popular';
+    const page = typeof searchParams.page === 'string' ? parseInt(searchParams.page) : 1;
+
     const result = await getAllTags({
-      searchQuery: "",
-      filter: "popular",
-      page: 1,
+      searchQuery,
+      filter,
+      page,
       pageSize: 10,
     });
-    // console.log("result of getAllTags: ", result);
 
     return (
       <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">
-        <TagsClient tags={result?.tags || []} />
+        <TagsClient tags={result?.tags || []} searchParams={searchParams} />
       </div>
     );
   } catch (error) {
     console.error("Error fetching tags:", error);
-    return <TagsClient tags={[]} />;
+    return <TagsClient tags={[]} searchParams={searchParams} />;
   }
 };
 

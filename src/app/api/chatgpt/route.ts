@@ -31,31 +31,35 @@ export const POST = async (request: Request) => {
 
     console.log("📡 Sending request to OpenAI API...");
 
-    const openAIResponse = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "system",
-            content: "You are a helpful assistant that provides clear and useful answers.",
-          },
-          {
-            role: "user",
-            content: question,
-          },
-        ],
-      }),
-    });
+    const openAIResponse = await fetch(
+      "https://api.openai.com/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "system",
+              content:
+                "You are a helpful assistant that provides clear and useful answers.",
+            },
+            {
+              role: "user",
+              content: question,
+            },
+          ],
+        }),
+      }
+    );
 
     const rawText = await openAIResponse.text();
     console.log("📨 Raw OpenAI Response:", rawText);
 
-    let responseData;
+    let responseData: any;
     try {
       responseData = JSON.parse(rawText);
       console.log("✅ Parsed OpenAI Response JSON:", responseData);
@@ -95,7 +99,6 @@ export const POST = async (request: Request) => {
     console.log("✅ Final AI Reply:", reply);
 
     return NextResponse.json({ reply });
-
   } catch (error: any) {
     console.error("🔥 ChatGPT API Error:", error);
     return NextResponse.json(

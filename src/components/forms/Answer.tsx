@@ -161,9 +161,9 @@ const Answer = ({ question, questionId, authorId }: Props) => {
                 <FormControl className="mt-2">
                   <Editor
                     apiKey={process.env.NEXT_PUBLIC_TINY_API_KEY}
-                    onInit={(_evt, editor) => (editorRef.current = editor)}
+                    onInit={(_evt: any, editor: any) => (editorRef.current = editor)}
                     onBlur={field.onBlur}
-                    onEditorChange={(content) => field.onChange(content)}
+                    onEditorChange={(content: string) => field.onChange(content)}
                     initialValue=""
                     init={{
                       height: 400,

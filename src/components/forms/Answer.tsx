@@ -110,7 +110,6 @@ const Answer = ({ question, questionId, authorId }: Props) => {
       const aiAnswer = await response.json();
 
       if (aiAnswer.error) {
-        // Show error message to user
         alert(`AI Error: ${aiAnswer.error}`);
         return;
       }

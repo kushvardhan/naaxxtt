@@ -26,21 +26,13 @@ export const POST = async (request: Request) => {
         messages: [
           {
             role: "system",
-            content: `
-You are an exceptionally intelligent, articulate, and helpful AI assistant. You provide accurate, insightful, and well-structured responses grounded in verified information.
-Always think step-by-step, clarify ambiguity, and explain concepts in a clear and concise manner.
-You are professional but friendly, concise but thorough, and never make assumptions without evidence.
-If something is unknown, state it clearly rather than guessing. When useful, structure answers with bullet points, code blocks, or examples to aid understanding.
-Prioritize user satisfaction, clarity, and precision at all times.
-            `.trim(),
+            content: "You are a knowledgable assistant that provides quality information",
           },
           {
             role: "user",
             content: `Tell me ${question}`,
           },
-        ],
-        max_tokens: 500,
-        temperature: 0.7,
+        ]
       }),
     });
 
@@ -78,6 +70,7 @@ Prioritize user satisfaction, clarity, and precision at all times.
     }
 
     const responseData = await response.json();
+    console.log("res Data934H: ", responseData);
 
     if (
       !responseData.choices ||
@@ -93,6 +86,7 @@ Prioritize user satisfaction, clarity, and precision at all times.
     }
 
     const reply = responseData.choices[0].message.content;
+    console.log("reply ",reply);
 
     return NextResponse.json({ reply });
   } catch (error: any) {

@@ -1,11 +1,25 @@
 import { NextResponse } from "next/server";
+import { connectToDatabase } from "../../../../lib/mongoose";
 
 export const POST = async (request: Request) => {
-  const { question } = await request.json();
-
   try {
-    // Check if API key exists
+    await connectToDatabase();
+
+    const { question } = await request.json();
+    console.log("🔍 Received question:", question);
+
+    if (!question || question.trim() === "") {
+      console.log("❗ Missing or empty question");
+      return NextResponse.json(
+        { error: "Question is required." },
+        { status: 400 }
+      );
+    }
+
+    console.log("🔑 API Key Loaded:", process.env.OPENAI_API_KEY);
+
     if (!process.env.OPENAI_API_KEY) {
+      console.log("❗ OPENAI_API_KEY is not configured");
       return NextResponse.json(
         {
           error:
@@ -15,7 +29,9 @@ export const POST = async (request: Request) => {
       );
     }
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    console.log("📡 Sending request to OpenAI API...");
+
+    const openAIResponse = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -26,57 +42,47 @@ export const POST = async (request: Request) => {
         messages: [
           {
             role: "system",
-            content: "You are a knowledgable assistant that provides quality information",
+            content: "You are a helpful assistant that provides clear and useful answers.",
           },
           {
             role: "user",
-            content: `Tell me ${question}`,
+            content: question,
           },
-        ]
+        ],
       }),
     });
 
-    // Handle different response statuses
-    if (response.status === 429) {
+    const rawText = await openAIResponse.text();
+    console.log("📨 Raw OpenAI Response:", rawText);
+
+    let responseData;
+    try {
+      responseData = JSON.parse(rawText);
+      console.log("✅ Parsed OpenAI Response JSON:", responseData);
+    } catch (parseError) {
+      console.error("❌ Failed to parse OpenAI JSON:", parseError);
       return NextResponse.json(
-        {
-          error:
-            "AI service is currently busy. Please try again in a few moments.",
-        },
-        { status: 429 }
+        { error: "Invalid JSON returned from OpenAI." },
+        { status: 500 }
       );
     }
 
-    if (response.status === 401) {
+    if (!openAIResponse.ok) {
+      console.error("❌ OpenAI returned error status:", openAIResponse.status);
       return NextResponse.json(
         {
-          error:
-            "AI service authentication failed. Please contact the administrator.",
+          error: responseData?.error?.message || "Unknown error from OpenAI.",
         },
-        { status: 401 }
+        { status: openAIResponse.status }
       );
     }
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      return NextResponse.json(
-        {
-          error: `AI service error: ${
-            errorData.error?.message || "Unknown error"
-          }`,
-        },
-        { status: response.status }
-      );
-    }
-
-    const responseData = await response.json();
-    console.log("res Data934H: ", responseData);
 
     if (
       !responseData.choices ||
       !responseData.choices[0] ||
-      !responseData.choices[0].message
+      !responseData.choices[0].message?.content
     ) {
+      console.error("❌ OpenAI response missing expected structure.");
       return NextResponse.json(
         {
           error: "Invalid response from AI service. Please try again.",
@@ -86,11 +92,12 @@ export const POST = async (request: Request) => {
     }
 
     const reply = responseData.choices[0].message.content;
-    console.log("reply ",reply);
+    console.log("✅ Final AI Reply:", reply);
 
     return NextResponse.json({ reply });
+
   } catch (error: any) {
-    console.error("ChatGPT API Error:", error);
+    console.error("🔥 ChatGPT API Error:", error);
     return NextResponse.json(
       {
         error: "Failed to generate AI response. Please try again later.",

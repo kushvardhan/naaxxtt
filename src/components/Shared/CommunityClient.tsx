@@ -29,6 +29,8 @@ const CommunityClient = ({ users, searchParams }: CommunityClientProps) => {
     // Update search query from URL params
     if (searchParams.q && typeof searchParams.q === "string") {
       setSearchQuery(searchParams.q);
+    }else{
+      setSearchQuery("");
     }
   }, [searchParams.q]);
 

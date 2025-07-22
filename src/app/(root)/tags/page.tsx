@@ -1,4 +1,5 @@
 import TagsClient from "@/components/Shared/TagsClient";
+import type { Metadata } from "next";
 import { getAllTags } from "../../../../lib/actions/tag.action";
 
 export interface Tag {
@@ -10,6 +11,9 @@ export interface Tag {
   createdOn: string;
 }
 
+export const metadata: Metadata = {
+  title: "NullPointer | Tags",
+};
 
 interface SearchParams {
   searchParams: { [key: string]: string | string[] | undefined };

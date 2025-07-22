@@ -15,11 +15,13 @@ import { ThemeContext } from "../../../context/ThemeContext";
 
 interface CommunityClientProps {
   users: User[];
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-const CommunityClient = ({ users }: CommunityClientProps) => {
+
+const CommunityClient = ({ users, searchParams  }: CommunityClientProps) => {
   const theme = useContext(ThemeContext);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(searchParams.q || "");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [mounted, setMounted] = useState(false);
 
@@ -27,7 +29,6 @@ const CommunityClient = ({ users }: CommunityClientProps) => {
     setMounted(true);
   }, []);
 
-  // Move useMemo before any conditional returns to follow Rules of Hooks
   const filteredUsers = useMemo(() => {
     let filtered = users;
 

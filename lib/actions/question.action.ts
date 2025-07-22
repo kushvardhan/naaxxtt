@@ -28,10 +28,11 @@ export async function getQuestions(params: GetQuestionsParams) {
     const query: FilterQuery<typeof Question> = {};
 
     if (searchQuery) {
-      query.$or = [
-        { title: { $regex: new RegExp(searchQuery, $options: "i") } },
-        { explanation: { $regex: new RegExp(searchQuery, $options: "i") } },
-      ];
+      query.$or =[
+  { title: { $regex: new RegExp(searchQuery, "i") } },
+  { explanation: { $regex: new RegExp(searchQuery, "i") } },
+];
+
     }
 
     let sortOptions: Record<string, 1 | -1> = {};

@@ -97,7 +97,7 @@ function formatDate(dateString: string): string {
   return `${day}${suffix} ${month} ${year}`;
 }
 
-export default function ClientHomehh({ mappedQuestions }: Props) {
+export default function ClientHomehh({ mappedQuestions }: Props, ) {
   const theme = useContext(ThemeContext);
   const isDark = theme?.mode === "dark";
   const [searchQuery, setSearchQuery] = useState("");

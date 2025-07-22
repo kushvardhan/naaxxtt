@@ -131,42 +131,45 @@ export async function getUserInfo(params: GetUserByIdParams) {
   }
 }
 
-export async function getAllUser(params?: GetAllUsersParams) {
+export async function getAllUser(params: GetAllUsersParams = {}) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const { searchQuery, filter, page = 1, pageSize = 10 } = params;
     const skipAmount = (page - 1) * pageSize;
 
     const query: FilterQuery<typeof User> = {};
 
-    if(searchQuery) {
-      const escapedSearchQuery = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    if (searchQuery) {
+      const escaped = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); 
+      const regex = new RegExp(escaped, "i");
+
       query.$or = [
-        { name: { $regex: new RegExp(escapedSearchQuery, 'i') }},
-        { username: { $regex: new RegExp(escapedSearchQuery, 'i') }},
-      ]
+        { name: { $regex: regex } },
+        { username: { $regex: regex } },
+        { about: { $regex: regex } },
+        { location: { $regex: regex } },
+      ];
     }
 
-    let sortOptions = {};
-
+    let sortOptions = { createdAt: -1 }; 
     switch (filter) {
       case "new_users":
-        sortOptions = { joinedAt: -1 }
+        sortOptions = { joinedAt: -1 };
         break;
       case "old_users":
-        sortOptions = { joinedAt: 1 }
+        sortOptions = { joinedAt: 1 };
         break;
       case "top_contributors":
-        sortOptions = { reputation: -1 }
-        break;
-    
-      default:
+        sortOptions = { reputation: -1 };
         break;
     }
 
-    const users = await User.find({}).sort({ createdAt: -1 }).skip(skipAmount)
-      .limit(pageSize).lean();
+    const users = await User.find(query)
+      .sort(sortOptions)
+      .skip(skipAmount)
+      .limit(pageSize)
+      .lean();
 
     const plainUsers = users.map((user: any) => ({
       ...user,
@@ -178,13 +181,12 @@ export async function getAllUser(params?: GetAllUsersParams) {
       saved: user.saved?.map((id: any) => id.toString()) || [],
     }));
 
-     const totalUsers = await User.countDocuments(query);
+    const totalUsers = await User.countDocuments(query);
     const isNext = totalUsers > skipAmount + users.length;
 
     return { users: plainUsers, isNext };
-
   } catch (err) {
-    console.log("Error getting users: ", err);
+    console.error("❌ Error in getAllUser:", err);
     throw err;
   }
 }

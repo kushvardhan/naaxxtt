@@ -15,9 +15,10 @@ import { ThemeContext } from "../../../context/ThemeContext";
 
 interface TagsClientProps {
   tags: Tag[];
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
-const TagsClient = ({ tags }: TagsClientProps) => {
+const TagsClient = ({ tags, searchParams = {} }: TagsClientProps) => {
   const theme = useContext(ThemeContext);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
@@ -25,7 +26,11 @@ const TagsClient = ({ tags }: TagsClientProps) => {
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    // Initialize search from URL params
+    if (searchParams.q && typeof searchParams.q === "string") {
+      setSearchQuery(searchParams.q);
+    }
+  }, [searchParams.q]);
 
   // Move useMemo before any conditional returns to follow Rules of Hooks
   const filteredTags = useMemo(() => {
@@ -74,8 +79,14 @@ const TagsClient = ({ tags }: TagsClientProps) => {
 
   if (!mounted || !theme || !theme.mounted) {
     return (
-      <div className="flex items-center justify-center h-64" suppressHydrationWarning>
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500" suppressHydrationWarning></div>
+      <div
+        className="flex items-center justify-center h-64"
+        suppressHydrationWarning
+      >
+        <div
+          className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"
+          suppressHydrationWarning
+        ></div>
       </div>
     );
   }

@@ -8,10 +8,10 @@ import { ThemeContext } from "../../../context/ThemeContext";
 
 interface UserCardProps {
   user: User;
-  interactedTags: { _id: number | string; name: string }[];
+  interactedTags?: { _id: number | string; name: string }[];
 }
 
-const UserCard = ({ user, interactedTags }: UserCardProps) => {
+const UserCard = ({ user, interactedTags = [] }: UserCardProps) => {
   const theme = useContext(ThemeContext);
   console.log("tags: ", interactedTags);
 

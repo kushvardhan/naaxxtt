@@ -24,12 +24,22 @@ interface Question {
   createdAt?: string | Date;
 }
 
-export default async function Home() {
+interface SearchParams {
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export default async function Home({ searchParams }: SearchParams) {
   try {
-    const result = await getQuestions({});
-    // console.log(result);
+    const searchQuery =
+      typeof searchParams.q === "string" ? searchParams.q : "";
+    const filter =
+      typeof searchParams.filter === "string" ? searchParams.filter : "newest";
+
+    const result = await getQuestions({
+      searchQuery,
+      filter,
+    });
     const questions = result || [];
-    // console.log(result);
 
     const mappedQuestions = questions.map((q: Question) => ({
       _id: q._id.toString(),
@@ -57,14 +67,17 @@ export default async function Home() {
 
     return (
       <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">
-        <ClientHomehh mappedQuestions={mappedQuestions} />
+        <ClientHomehh
+          mappedQuestions={mappedQuestions}
+          searchParams={searchParams}
+        />
       </div>
     );
   } catch (error) {
     console.error("Error loading home page:", error);
     return (
       <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">
-        <ClientHomehh mappedQuestions={[]} />
+        <ClientHomehh mappedQuestions={[]} searchParams={searchParams} />
       </div>
     );
   }

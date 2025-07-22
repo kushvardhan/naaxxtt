@@ -1,9 +1,10 @@
 "use client";
 
-import { useContext, useState, useEffect } from "react";
-import { ThemeContext } from "../../../../context/ThemeContext";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-const cn = (...classes: (string | boolean | undefined | null)[]) => classes.filter(Boolean).join(" ");
+import { useContext, useEffect, useState } from "react";
+import { ThemeContext } from "../../../../context/ThemeContext";
+const cn = (...classes: (string | boolean | undefined | null)[]) =>
+  classes.filter(Boolean).join(" ");
 
 import { formUrlQuery, removeKeysFromQuery } from "../../../../lib/utils";
 
@@ -49,8 +50,8 @@ interface CustomInputProps {
   iconPosition?: string;
   placeholder: string;
   otherClasses?: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const LocalSearchBar = ({
@@ -58,47 +59,66 @@ const LocalSearchBar = ({
   iconPosition,
   placeholder,
   otherClasses,
-  value,
-  onChange,
 }: CustomInputProps) => {
   const theme = useContext(ThemeContext);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [mounted, setMounted] = useState(false);
 
-  const query = searchParams.get('q');
+  const query = searchParams.get("q");
+  const [search, setSearch] = useState("");
 
-  const [search,setSearch] = useState(query || "");
-
-  useEffect(()=>{
-    const delayDebounceFn = setTimeout(() => {
-      if(search){
-    const newUrl = formUrlQuery({
-      params: searchParams.toString(),
-      key: "q",
-      value: search,
-    });
-
-    router.push(newUrl, { scroll: false });
-    }else{
-      if(pathname === route){
-        const newUrl = removeKeysFromQuery({
-          params: searchParams.toString(),
-          keysToRemove: ['q']
-        })
-      router.push(newUrl, { scroll: false });
-      }
+  useEffect(() => {
+    setMounted(true);
+    // Initialize search from URL params after mounting
+    if (query) {
+      setSearch(query);
     }
-  }, 300);
+  }, [query]);
 
-  return () => clearTimeout(delayDebounceFn);
+  useEffect(() => {
+    if (!mounted) return;
 
-  },[search, route, pathname, searchParams, router, query])
+    const delayDebounceFn = setTimeout(() => {
+      if (search.trim()) {
+        const newUrl = formUrlQuery({
+          params: searchParams.toString(),
+          key: "q",
+          value: search,
+        });
+        router.push(newUrl, { scroll: false });
+      } else {
+        if (pathname === route) {
+          const newUrl = removeKeysFromQuery({
+            params: searchParams.toString(),
+            keysToRemove: ["q"],
+          });
+          router.push(newUrl, { scroll: false });
+        }
+      }
+    }, 300);
 
-  console.log(query);
+    return () => clearTimeout(delayDebounceFn);
+  }, [search, route, pathname, searchParams, router, mounted]);
 
-  if (!theme) {
-    return <div>Loading...</div>;
+  // Hydration-safe loading state
+  if (!mounted || !theme || !theme.mounted) {
+    return (
+      <div
+        className={`min-h-[45px] flex flex-grow items-center gap-4 px-2 py-2 rounded-[10px] bg-gray-200 dark:bg-gray-700 ${otherClasses}`}
+        suppressHydrationWarning
+      >
+        <div
+          className="animate-pulse bg-gray-300 dark:bg-gray-600 h-6 w-6 rounded"
+          suppressHydrationWarning
+        ></div>
+        <div
+          className="animate-pulse bg-gray-300 dark:bg-gray-600 h-6 flex-1 rounded"
+          suppressHydrationWarning
+        ></div>
+      </div>
+    );
   }
 
   const isDark = theme?.mode === "dark";
@@ -136,7 +156,7 @@ const LocalSearchBar = ({
         autoComplete="on"
         type="text"
         value={search}
-        onChange={(e)=>setSearch(e.target.value)}
+        onChange={(e) => setSearch(e.target.value)}
       />
     </div>
   );

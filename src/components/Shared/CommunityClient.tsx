@@ -29,7 +29,7 @@ const CommunityClient = ({ users, searchParams }: CommunityClientProps) => {
     // Update search query from URL params
     if (searchParams.q && typeof searchParams.q === "string") {
       setSearchQuery(searchParams.q);
-    }else{
+    } else {
       setSearchQuery("");
     }
   }, [searchParams.q]);
@@ -128,8 +128,6 @@ const CommunityClient = ({ users, searchParams }: CommunityClientProps) => {
           iconPosition="left"
           placeholder="Search for amazing minds..."
           otherClasses="flex-1 min-w-[300px]"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
         />
 
         <DropdownMenu>

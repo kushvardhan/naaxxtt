@@ -194,8 +194,6 @@ export default function ClientHomehh({
           iconPosition="left"
           placeholder="Search for questions"
           otherClasses="flex-1 "
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
         />
 
         {/* Dropdown for sm/md screens */}

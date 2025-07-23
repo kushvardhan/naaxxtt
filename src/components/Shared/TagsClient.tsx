@@ -135,8 +135,6 @@ const TagsClient = ({ tags, searchParams = {} }: TagsClientProps) => {
           iconPosition="left"
           placeholder="Search tags..."
           otherClasses="flex-1 min-w-[300px]"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
         />
 
         <DropdownMenu>

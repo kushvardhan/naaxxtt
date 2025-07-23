@@ -1,6 +1,21 @@
 "use client";
 
 import { useContext, useEffect, useState } from "react";
+import {
+  Sparkles,
+  Users2,
+  Trophy,
+  LayoutPanelTop,
+  Activity,
+  BellRing,
+  FolderKanban,
+  BadgeHelp,
+  ThumbsUp,
+  Tags,
+  Star,
+  Moon,
+  TabletSmartphone
+} from "lucide-react";
 import { ThemeContext } from "../../../context/ThemeContext";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,38 +45,74 @@ const AboutClient = () => {
 
   const isDark = theme.mode === "dark";
 
-  const features = [
-    {
-      icon: "❓",
-      title: "Ask & Answer",
-      description: "Post technical questions and get expert answers from the community"
-    },
-    {
-      icon: "👍",
-      title: "Vote System",
-      description: "Upvote quality content and help the best answers rise to the top"
-    },
-    {
-      icon: "🏷️",
-      title: "Smart Tags",
-      description: "Organize content with tags for easy discovery and navigation"
-    },
-    {
-      icon: "⭐",
-      title: "Reputation",
-      description: "Build your reputation by contributing valuable content"
-    },
-    {
-      icon: "🌙",
-      title: "Dark Mode",
-      description: "Seamless dark/light mode switching for comfortable coding"
-    },
-    {
-      icon: "📱",
-      title: "Responsive",
-      description: "Perfect experience across all devices and screen sizes"
-    }
-  ];
+const features = [
+  {
+    icon: Sparkles,
+    title: "AI Answer Suggestions",
+    description: "Get instant AI-generated answers while typing your question using advanced LLMs"
+  },
+  {
+    icon: Users2,
+    title: "Real-Time Collaboration",
+    description: "Work together on answers in real-time, just like Google Docs"
+  },
+  {
+    icon: Trophy,
+    title: "Weekly Challenges",
+    description: "Sharpen your skills with weekly coding problems and climb the leaderboard"
+  },
+  {
+    icon: LayoutPanelTop,
+    title: "Live Code Editor",
+    description: "Add runnable code snippets directly inside your answers using a built-in editor"
+  },
+  {
+    icon: Activity,
+    title: "Smart Recommendations",
+    description: "Get personalized question suggestions based on your activity and interests"
+  },
+  {
+    icon: BellRing,
+    title: "Tag Following & Notifications",
+    description: "Follow your favorite tags and get notified about new posts and updates"
+  },
+  {
+    icon: FolderKanban,
+    title: "Bookmark Collections",
+    description: "Save and organize your favorite content into custom collections"
+  },
+  {
+    icon: BadgeHelp,
+    title: "Ask & Answer",
+    description: "Post technical questions and get expert answers from the community"
+  },
+  {
+    icon: ThumbsUp,
+    title: "Vote System",
+    description: "Upvote quality content and help the best answers rise to the top"
+  },
+  {
+    icon: Tags,
+    title: "Smart Tags",
+    description: "Organize content with tags for easy discovery and navigation"
+  },
+  {
+    icon: Star,
+    title: "Reputation",
+    description: "Build your reputation by contributing valuable content"
+  },
+  {
+    icon: Moon,
+    title: "Dark Mode",
+    description: "Seamless dark/light mode switching for comfortable coding"
+  },
+  {
+    icon: TabletSmartphone,
+    title: "Responsive",
+    description: "Perfect experience across all devices and screen sizes"
+  }
+];
+
 
   const techStack = [
     { name: "Next.js", category: "Frontend", color: "bg-blue-500" },
@@ -124,33 +175,39 @@ const AboutClient = () => {
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className={`p-6 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 ${
-                  isDark 
-                    ? "bg-zinc-900 border border-zinc-800 hover:border-orange-500/50" 
-                    : "bg-zinc-50 border border-zinc-200 hover:border-orange-500/50"
-                } shadow-lg hover:shadow-xl`}
-                style={{ 
-                  animationDelay: `${index * 100}ms`,
-                  animation: `fadeInUp 0.6s ease-out ${index * 100}ms both`
-                }}
-              >
-                <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className={`text-xl font-bold mb-3 ${
-                  isDark ? "text-zinc-100" : "text-zinc-800"
-                }`}>
-                  {feature.title}
-                </h3>
-                <p className={`leading-relaxed ${
-                  isDark ? "text-zinc-400" : "text-zinc-600"
-                }`}>
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
+  {features.map((feature, index) => {
+    const Icon = feature.icon;
+    return (
+      <div
+        key={index}
+        className={`p-6 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 ${
+          isDark 
+            ? "bg-zinc-900 border border-zinc-800 hover:border-orange-500/50" 
+            : "bg-zinc-50 border border-zinc-200 hover:border-orange-500/50"
+        } shadow-lg hover:shadow-xl`}
+        style={{ 
+          animationDelay: `${index * 100}ms`,
+          animation: `fadeInUp 0.6s ease-out ${index * 100}ms both`
+        }}
+      >
+        <div className="mb-4 text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-orange-500">
+          <Icon />
+        </div>
+        <h3 className={`text-xl font-bold mb-3 ${
+          isDark ? "text-zinc-100" : "text-zinc-800"
+        }`}>
+          {feature.title}
+        </h3>
+        <p className={`leading-relaxed ${
+          isDark ? "text-zinc-400" : "text-zinc-600"
+        }`}>
+          {feature.description}
+        </p>
+      </div>
+    );
+  })}
+</div>
+
         </section>
 
         {/* Tech Stack */}

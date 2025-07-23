@@ -17,7 +17,7 @@ const RightSideBarClient = ({
   console.log("popularTags233: ", popularTags);
 
   return (
-    <section className="bg-light-900 dark:bg-dark-200 border-light-800 dark:border-dark-300 sticky right-0 top-0 flex h-[calc(screen-120px)] overflow-y-scroll scrollbar-hidden w-[350px] flex-col border-l p-6 pt-36 shadow-light-300 dark:shadow-none max-xl:hidden transition-all duration-300">
+    <section className="bg-light-900 dark:bg-zinc-900 border-light-800 dark:border-dark-300 sticky right-0 top-0 flex h-[calc(screen-120px)] overflow-y-scroll scrollbar-hidden w-[350px] flex-col border-l p-6 pt-36 shadow-light-300 dark:shadow-none max-xl:hidden transition-all duration-300">
       {/* Top Questions */}
       <div>
         <h3 className="text-xl font-bold leading-[26px] text-dark-200 dark:text-light-900">

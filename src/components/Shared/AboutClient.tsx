@@ -19,7 +19,6 @@ import {
 import { ThemeContext } from "../../../context/ThemeContext";
 import CTASection from "./CTASection";
 import Link from "next/link";
-import { useUser } from "@clerk/nextjs";
 
 const AboutClient = () => {
   const theme = useContext(ThemeContext);
@@ -130,10 +129,10 @@ const features = [
     <div className={`min-h-screen transition-all duration-300 ${
       isDark ? "bg-black text-white" : "bg-white text-black"
     }`}>
-      <div className="max-w-6xl mx-auto p-6 space-y-2">
+      <div className="max-w-6xl mx-auto px-6 py-2">
         
         {/* Hero Section */}
-        <section className="text-center py-16 animate-fade-in">
+        <section className="text-center pb-2 animate-fade-in">
           <div className="mb-8">
             <h1 className={`text-5xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent animate-pulse`}>
               NullPointer
@@ -168,7 +167,7 @@ const features = [
         </section>
 
         {/* Features Grid */}
-        <section className="py-16">
+        <section className="pb-16">
           <h2 className={`text-4xl font-bold text-center mb-12 ${
             isDark ? "text-zinc-100" : "text-zinc-800"
           }`}>
@@ -194,11 +193,12 @@ const features = [
         <div className="mb-4 text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-orange-500">
           <Icon />
         </div>
-        <h3 className={`text-xl font-bold mb-3 text-wrap leading-relaxed ${
-          isDark ? "text-zinc-100" : "text-zinc-800"
-        }`}>
-          {feature.title}
-        </h3>
+        <h3 className={`text-xl font-bold mb-3 break-words text-center leading-relaxed ${
+  isDark ? "text-zinc-100" : "text-zinc-800"
+}`}>
+  {feature.title}
+</h3>
+
         <p className={`leading-relaxed ${
           isDark ? "text-zinc-400" : "text-zinc-600"
         }`}>

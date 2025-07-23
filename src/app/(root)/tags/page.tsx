@@ -16,14 +16,22 @@ export const metadata: Metadata = {
 };
 
 interface SearchParams {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 const TagsPage = async ({ searchParams }: SearchParams) => {
   try {
-    const searchQuery = typeof searchParams.q === 'string' ? searchParams.q : '';
-    const filter = typeof searchParams.filter === 'string' ? searchParams.filter : 'popular';
-    const page = typeof searchParams.page === 'string' ? parseInt(searchParams.page) : 1;
+    const resolvedSearchParams = await searchParams;
+    const searchQuery =
+      typeof resolvedSearchParams.q === "string" ? resolvedSearchParams.q : "";
+    const filter =
+      typeof resolvedSearchParams.filter === "string"
+        ? resolvedSearchParams.filter
+        : "popular";
+    const page =
+      typeof resolvedSearchParams.page === "string"
+        ? parseInt(resolvedSearchParams.page)
+        : 1;
 
     const result = await getAllTags({
       searchQuery,
@@ -34,12 +42,16 @@ const TagsPage = async ({ searchParams }: SearchParams) => {
 
     return (
       <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">
-        <TagsClient tags={result?.tags || []} searchParams={searchParams} />
+        <TagsClient
+          tags={result?.tags || []}
+          searchParams={resolvedSearchParams}
+        />
       </div>
     );
   } catch (error) {
     console.error("Error fetching tags:", error);
-    return <TagsClient tags={[]} searchParams={searchParams} />;
+    const fallbackSearchParams = await searchParams;
+    return <TagsClient tags={[]} searchParams={fallbackSearchParams} />;
   }
 };
 

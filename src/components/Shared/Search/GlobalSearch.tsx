@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { ThemeContext } from "../../../../context/ThemeContext";
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { formUrlQuery, removeKeysFromQuery } from "../../../../lib/utils";
 
 function cn(...classes: (string | boolean | undefined | null)[]) {
   return classes.filter(Boolean).join(" ");
@@ -51,6 +53,61 @@ const GlobalSearch = () => {
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [showResults, setShowResults] = useState(false);
+   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const searchContainerRef = useRef(null)
+
+  const query = searchParams.get('q');
+
+  const [search, setSearch] = useState(query || '');
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const handleOutsideClick = (event: any) => {
+      if(searchContainerRef.current &&
+      // @ts-ignore
+      !searchContainerRef.current.contains(event.target)
+      ) {
+        setIsOpen(false);
+        setSearch('')
+      }
+    }
+
+    setIsOpen(false);
+
+    document.addEventListener("click", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("click", handleOutsideClick)
+    }
+  }, [pathname]) 
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if(search) {
+        const newUrl = formUrlQuery({
+          params: searchParams.toString(),
+          key: 'global',
+          value: search
+        })
+
+        router.push(newUrl, { scroll: false });
+      } else {
+        if(query) {
+          const newUrl = removeKeysFromQuery({
+            params: searchParams.toString(),
+            keysToRemove: ['global', 'type']
+          })
+
+          router.push(newUrl, { scroll: false });
+        }
+
+      }
+    }, 300);
+    
+    return () => clearTimeout(delayDebounceFn)
+  }, [search, router, pathname, searchParams, query])
 
   useEffect(() => {
     setMounted(true);

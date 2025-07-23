@@ -79,11 +79,25 @@ export async function getAllTags(params: GetAllTagsParams) {
       .limit(pageSize)
       .lean();
 
-    console.log("GetAllTags from DB: ", tags);
+    // Serialize the tags to avoid Buffer issues
+    const serializedTags = tags.map((tag: any) => ({
+      _id: tag._id.toString(),
+      name: String(tag.name || ""),
+      description: String(tag.description || ""),
+      questions: Array.isArray(tag.questions)
+        ? tag.questions.map((q: any) => q.toString())
+        : [],
+      followers: Array.isArray(tag.followers)
+        ? tag.followers.map((f: any) => f.toString())
+        : [],
+      createdOn: tag.createdOn
+        ? tag.createdOn.toISOString()
+        : new Date().toISOString(),
+    }));
 
     const isNext = totalTags > skipAmount + tags.length;
 
-    return { tags, isNext };
+    return { tags: serializedTags, isNext };
   } catch (error) {
     console.log(error);
     throw error;

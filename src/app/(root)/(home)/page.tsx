@@ -25,15 +25,18 @@ interface Question {
 }
 
 interface SearchParams {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export default async function Home({ searchParams }: SearchParams) {
   try {
+    const resolvedSearchParams = await searchParams;
     const searchQuery =
-      typeof searchParams.q === "string" ? searchParams.q : "";
+      typeof resolvedSearchParams.q === "string" ? resolvedSearchParams.q : "";
     const filter =
-      typeof searchParams.filter === "string" ? searchParams.filter : "newest";
+      typeof resolvedSearchParams.filter === "string"
+        ? resolvedSearchParams.filter
+        : "newest";
 
     const result = await getQuestions({
       searchQuery,
@@ -69,15 +72,19 @@ export default async function Home({ searchParams }: SearchParams) {
       <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">
         <ClientHomehh
           mappedQuestions={mappedQuestions}
-          searchParams={searchParams}
+          searchParams={resolvedSearchParams}
         />
       </div>
     );
   } catch (error) {
     console.error("Error loading home page:", error);
+    const fallbackSearchParams = await searchParams;
     return (
       <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">
-        <ClientHomehh mappedQuestions={[]} searchParams={searchParams} />
+        <ClientHomehh
+          mappedQuestions={[]}
+          searchParams={fallbackSearchParams}
+        />
       </div>
     );
   }

@@ -17,8 +17,9 @@ import {
   TabletSmartphone
 } from "lucide-react";
 import { ThemeContext } from "../../../context/ThemeContext";
-import Image from "next/image";
+import CTASection from "./CTASection";
 import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
 
 const AboutClient = () => {
   const theme = useContext(ThemeContext);
@@ -129,7 +130,7 @@ const features = [
     <div className={`min-h-screen transition-all duration-300 ${
       isDark ? "bg-black text-white" : "bg-white text-black"
     }`}>
-      <div className="max-w-6xl mx-auto p-6 space-y-16">
+      <div className="max-w-6xl mx-auto p-6 space-y-2">
         
         {/* Hero Section */}
         <section className="text-center py-16 animate-fade-in">
@@ -193,7 +194,7 @@ const features = [
         <div className="mb-4 text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-orange-500">
           <Icon />
         </div>
-        <h3 className={`text-xl font-bold mb-3 ${
+        <h3 className={`text-xl font-bold mb-3 text-wrap leading-relaxed ${
           isDark ? "text-zinc-100" : "text-zinc-800"
         }`}>
           {feature.title}
@@ -249,33 +250,7 @@ const features = [
         </section>
 
         {/* Call to Action */}
-        <section className={`py-16 px-8 rounded-3xl text-center ${
-          isDark 
-            ? "bg-gradient-to-r from-orange-900/20 to-orange-800/20 border border-orange-800/30" 
-            : "bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200"
-        }`}>
-          <h2 className={`text-3xl lg:text-4xl font-bold mb-6 ${
-            isDark ? "text-zinc-100" : "text-zinc-800"
-          }`}>
-            Ready to Start Your Journey?
-          </h2>
-          <p className={`text-lg mb-8 max-w-2xl mx-auto ${
-            isDark ? "text-zinc-300" : "text-zinc-600"
-          }`}>
-            Join thousands of developers who are already part of our growing community. 
-            Share knowledge, learn new skills, and advance your career.
-          </p>
-          
-          <Link href="/sign-up">
-            <button className={`px-10 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 ${
-              isDark 
-                ? "bg-orange-600 hover:bg-orange-700 text-white shadow-lg hover:shadow-orange-500/25" 
-                : "bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-orange-500/25"
-            }`}>
-              Get Started Today
-            </button>
-          </Link>
-        </section>
+        <CTASection />
 
       </div>
     </div>

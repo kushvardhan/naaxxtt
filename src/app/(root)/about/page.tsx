@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const AboutPage = () => {
   return (
-    <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">
+    <div className="w-full h-[calc(100vh-130px)] overflow-y-scroll scrollbar-hidden">
       <AboutClient />
     </div>
   );

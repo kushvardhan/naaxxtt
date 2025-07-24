@@ -173,16 +173,16 @@ const GlobalSearch = () => {
         </svg>
 
         <Input
-          placeholder="Search globally..."
-          variant="bare"
-          isDark={isDark}
-          spellCheck={false}
-          autoComplete="off"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onFocus={() => searchQuery && setShowResults(true)}
-          onBlur={() => setTimeout(() => setShowResults(false), 200)}
-        />
+  placeholder="Search globally..."
+  variant="bare"
+  spellCheck={false}
+  autoComplete="off"
+  value={searchQuery}
+  onChange={(e) => setSearchQuery(e.target.value)}
+  onFocus={() => searchQuery && setShowResults(true)}
+  onBlur={() => setTimeout(() => setShowResults(false), 200)}
+/>
+
 
         {isSearching && (
           <div className="animate-spin h-4 w-4 border-2 border-orange-500 border-t-transparent rounded-full"></div>

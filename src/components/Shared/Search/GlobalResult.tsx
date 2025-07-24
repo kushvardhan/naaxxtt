@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from 'react';
-import { ReloadIcon } from '@radix-ui/react-icons';
+import { IoReload } from "react-icons/io5";
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -71,7 +71,7 @@ const GlobalResult = () => {
 
         {isLoading ? (
           <div className="flex-center flex-col px-5">
-            <ReloadIcon className="my-2 h-10 w-10 animate-spin text-primary-500" />
+            <IoReload className="my-2 h-10 w-10 animate-spin text-primary-500" />
             <p className="text-dark200_light800 body-regular">Browsing the entire database</p>
           </div>
         ): (

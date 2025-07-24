@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { ThemeContext } from "../../../../context/ThemeContext";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { formUrlQuery, removeKeysFromQuery } from "../../../../lib/utils";
-import { Input } from "./input";
+import { Input } from "@/components/ui/input";
 
 
 function cn(...classes) {

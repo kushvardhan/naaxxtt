@@ -1,6 +1,5 @@
 "use client";
 
-import { Input } from "@/components/Shared/input";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,6 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Editor } from "@tinymce/tinymce-react";
 import { usePathname, useRouter } from "next/navigation";
@@ -18,7 +18,10 @@ import { useContext, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ThemeContext } from "../../../context/ThemeContext";
-import { createQuestion, editQuestion } from "../../../lib/actions/question.action";
+import {
+  createQuestion,
+  editQuestion,
+} from "../../../lib/actions/question.action";
 import { QuestionSchema } from "../../../lib/validations";
 
 interface Props {
@@ -27,13 +30,19 @@ interface Props {
   questionDetails?: string;
 }
 
-export function Question({ type = "Create", mongoUserId, questionDetails }: Props) {
+export function Question({
+  type = "Create",
+  mongoUserId,
+  questionDetails,
+}: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const editorRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const parsedQuestionDetails = questionDetails ? JSON.parse(questionDetails) : null;
+  const parsedQuestionDetails = questionDetails
+    ? JSON.parse(questionDetails)
+    : null;
   const tags = parsedQuestionDetails?.tags?.map((tag: any) => tag.name) || [];
 
   const theme = useContext(ThemeContext);
@@ -70,8 +79,10 @@ export function Question({ type = "Create", mongoUserId, questionDetails }: Prop
     }
   `;
 
-  function handleInputKeyDown(e: React.KeyboardEvent<HTMLElement>,
-    field: { name: string; value: string[]; }) {
+  function handleInputKeyDown(
+    e: React.KeyboardEvent<HTMLElement>,
+    field: { name: string; value: string[] }
+  ) {
     if (e.key === "Enter" && field.name === "tags") {
       e.preventDefault();
       const tagInput = e.target as HTMLInputElement;
@@ -137,25 +148,39 @@ export function Question({ type = "Create", mongoUserId, questionDetails }: Prop
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full flex flex-col gap-10 overflow-y-auto">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full flex flex-col gap-10 overflow-y-auto"
+      >
         {/* Title */}
         <FormField
           control={form.control}
           name="title"
           render={({ field }) => (
             <FormItem className="w-full flex flex-col">
-              <FormLabel className={`font-semibold ${isDark ? "text-white" : "text-black"}`}>
+              <FormLabel
+                className={`font-semibold ${
+                  isDark ? "text-white" : "text-black"
+                }`}
+              >
                 Question Title <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
                 <Input
-                  className={`font-mono text-xl min-h-[56px] ${isDark ? "bg-zinc-900 text-white border-zinc-700" : "bg-zinc-200 text-black border-zinc-400"}`}
+                  className={`font-mono text-xl min-h-[56px] ${
+                    isDark
+                      ? "bg-zinc-900 text-white border-zinc-700"
+                      : "bg-zinc-200 text-black border-zinc-400"
+                  }`}
                   placeholder="Enter your question title"
                   {...field}
                 />
               </FormControl>
-              <FormDescription className={isDark ? "text-zinc-400" : "text-zinc-700"}>
-                Be specific and imagine you are asking a question to another person.
+              <FormDescription
+                className={isDark ? "text-zinc-400" : "text-zinc-700"}
+              >
+                Be specific and imagine you are asking a question to another
+                person.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -168,7 +193,11 @@ export function Question({ type = "Create", mongoUserId, questionDetails }: Prop
           name="explanation"
           render={({ field }) => (
             <FormItem className="w-full flex flex-col gap-5">
-              <FormLabel className={`font-semibold ${isDark ? "text-white" : "text-black"}`}>
+              <FormLabel
+                className={`font-semibold ${
+                  isDark ? "text-white" : "text-black"
+                }`}
+              >
                 Detailed explanation <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
@@ -210,7 +239,9 @@ export function Question({ type = "Create", mongoUserId, questionDetails }: Prop
                   }}
                 />
               </FormControl>
-              <FormDescription className={isDark ? "text-zinc-400" : "text-zinc-700"}>
+              <FormDescription
+                className={isDark ? "text-zinc-400" : "text-zinc-700"}
+              >
                 Expand on your problem. Minimum 100 characters.
               </FormDescription>
               <FormMessage />
@@ -224,13 +255,21 @@ export function Question({ type = "Create", mongoUserId, questionDetails }: Prop
           name="tags"
           render={({ field }) => (
             <FormItem className="w-full flex flex-col">
-              <FormLabel className={`font-semibold ${isDark ? "text-white" : "text-black"}`}>
+              <FormLabel
+                className={`font-semibold ${
+                  isDark ? "text-white" : "text-black"
+                }`}
+              >
                 Tags <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
                 <>
                   <Input
-                    className={`font-mono text-xl min-h-[56px] ${isDark ? "bg-zinc-900 text-white border-zinc-700" : "bg-zinc-200 text-black border-zinc-400"}`}
+                    className={`font-mono text-xl min-h-[56px] ${
+                      isDark
+                        ? "bg-zinc-900 text-white border-zinc-700"
+                        : "bg-zinc-200 text-black border-zinc-400"
+                    }`}
                     placeholder="Press enter to add tags"
                     onKeyDown={(e) => handleInputKeyDown(e, field)}
                   />
@@ -240,7 +279,9 @@ export function Question({ type = "Create", mongoUserId, questionDetails }: Prop
                         <div
                           key={tag}
                           className={`flex items-center gap-1 px-2 py-[0.8] rounded-md text-sm font-medium border ${
-                            isDark ? "bg-zinc-800 text-white border-zinc-600" : "bg-orange-100 text-orange-800 border-orange-300"
+                            isDark
+                              ? "bg-zinc-800 text-white border-zinc-600"
+                              : "bg-orange-100 text-orange-800 border-orange-300"
                           }`}
                         >
                           <span>{tag}</span>
@@ -251,7 +292,9 @@ export function Question({ type = "Create", mongoUserId, questionDetails }: Prop
                               form.setValue("tags", updatedTags);
                             }}
                             className={`ml-1 text-base font-bold cursor-pointer ${
-                              isDark ? "text-zinc-400 hover:text-red-400" : "text-zinc-700 hover:text-red-600"
+                              isDark
+                                ? "text-zinc-400 hover:text-red-400"
+                                : "text-zinc-700 hover:text-red-600"
                             }`}
                           >
                             ×
@@ -262,7 +305,9 @@ export function Question({ type = "Create", mongoUserId, questionDetails }: Prop
                   )}
                 </>
               </FormControl>
-              <FormDescription className={isDark ? "text-zinc-400" : "text-zinc-700"}>
+              <FormDescription
+                className={isDark ? "text-zinc-400" : "text-zinc-700"}
+              >
                 Add up to 5 tags. Press enter after each tag.
               </FormDescription>
               <FormMessage />
@@ -277,7 +322,13 @@ export function Question({ type = "Create", mongoUserId, questionDetails }: Prop
             className="w-fit py-6 px-4 rounded-md font-bold text-lg bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-md"
             type="submit"
           >
-            {isSubmitting ? (type === "Edit" ? "Editing..." : "Posting...") : type === "Edit" ? "Edit Question" : "Ask Question"}
+            {isSubmitting
+              ? type === "Edit"
+                ? "Editing..."
+                : "Posting..."
+              : type === "Edit"
+              ? "Edit Question"
+              : "Ask Question"}
           </Button>
         </div>
       </form>

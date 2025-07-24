@@ -2,27 +2,15 @@
 
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ThemeContext } from "../../../../context/ThemeContext";
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { formUrlQuery, removeKeysFromQuery } from "../../../../lib/utils";
 
-function cn(...classes: (string | boolean | undefined | null)[]) {
+function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-interface InputProps extends React.ComponentProps<"input"> {
-  variant?: "default" | "bare";
-  isDark?: boolean;
-}
-
-const Input = ({
-  className,
-  type,
-  variant = "default",
-  isDark = false,
-  ...props
-}: InputProps) => {
+const Input = ({ className, type, variant = "default", isDark = false, ...props }) => {
   const isBare = variant === "bare";
-
   return (
     <input
       type={type}
@@ -50,70 +38,57 @@ const GlobalSearch = () => {
   const theme = useContext(ThemeContext);
   const [mounted, setMounted] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [showResults, setShowResults] = useState(false);
-   const router = useRouter();
+  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const searchContainerRef = useRef(null)
+  const searchContainerRef = useRef(null);
 
-  const query = searchParams.get('q');
-
-  const [search, setSearch] = useState(query || '');
+  const query = searchParams.get("q");
+  const [search, setSearch] = useState(query || "");
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const handleOutsideClick = (event: any) => {
-      if(searchContainerRef.current &&
-      // @ts-ignore
-      !searchContainerRef.current.contains(event.target)
+    const handleOutsideClick = (event) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target)
       ) {
         setIsOpen(false);
-        setSearch('')
+        setSearch("");
       }
-    }
-
-    setIsOpen(false);
+    };
 
     document.addEventListener("click", handleOutsideClick);
-
-    return () => {
-      document.removeEventListener("click", handleOutsideClick)
-    }
-  }, [pathname]) 
+    return () => document.removeEventListener("click", handleOutsideClick);
+  }, [pathname]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      if(search) {
+      if (search) {
         const newUrl = formUrlQuery({
           params: searchParams.toString(),
-          key: 'global',
-          value: search
-        })
-
+          key: "global",
+          value: search,
+        });
         router.push(newUrl, { scroll: false });
-      } else {
-        if(query) {
-          const newUrl = removeKeysFromQuery({
-            params: searchParams.toString(),
-            keysToRemove: ['global', 'type']
-          })
-
-          router.push(newUrl, { scroll: false });
-        }
-
+      } else if (query) {
+        const newUrl = removeKeysFromQuery({
+          params: searchParams.toString(),
+          keysToRemove: ["global", "type"],
+        });
+        router.push(newUrl, { scroll: false });
       }
     }, 300);
-    
-    return () => clearTimeout(delayDebounceFn)
-  }, [search, router, pathname, searchParams, query])
+    return () => clearTimeout(delayDebounceFn);
+  }, [search, router, pathname, searchParams, query]);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Debounced search function
   useEffect(() => {
     if (!searchQuery.trim()) {
       setSearchResults([]);
@@ -124,21 +99,18 @@ const GlobalSearch = () => {
     const timeoutId = setTimeout(async () => {
       setIsSearching(true);
       try {
-        // Mock search results - replace with actual API call
         const mockResults = [
           {
             type: "question",
             id: "1",
             title: `How to fix React hydration errors related to "${searchQuery}"?`,
-            excerpt:
-              "Learn how to resolve hydration mismatches in React applications...",
+            excerpt: "Learn how to resolve hydration mismatches in React applications...",
           },
           {
             type: "question",
             id: "2",
             title: `Best practices for ${searchQuery} in Next.js`,
-            excerpt:
-              "Discover the most effective approaches for implementing...",
+            excerpt: "Discover the most effective approaches for implementing...",
           },
           {
             type: "tag",
@@ -161,44 +133,27 @@ const GlobalSearch = () => {
     return () => clearTimeout(timeoutId);
   }, [searchQuery]);
 
-  // Hydration-safe loading state
-  if (!mounted || !theme || !theme.mounted) {
+  const isDark = theme?.mode === "dark" || false;
+
+  if (!mounted || !theme?.mounted) {
     return (
-      <div
-        className="relative w-full max-w-[600px] max-lg:hidden"
-        suppressHydrationWarning
-      >
-        <div
-          className="relative min-h-[48px] rounded-xl flex items-center gap-2 px-4 bg-gray-200 dark:bg-gray-700"
-          suppressHydrationWarning
-        >
-          <div
-            className="animate-pulse bg-gray-300 dark:bg-gray-600 h-6 w-6 rounded"
-            suppressHydrationWarning
-          ></div>
-          <div
-            className="animate-pulse bg-gray-300 dark:bg-gray-600 h-6 flex-1 rounded"
-            suppressHydrationWarning
-          ></div>
+      <div className="relative w-full max-w-[600px] max-lg:hidden" suppressHydrationWarning>
+        <div className="relative min-h-[48px] rounded-xl flex items-center gap-2 px-4 bg-gray-200 dark:bg-gray-700">
+          <div className="animate-pulse bg-gray-300 dark:bg-gray-600 h-6 w-6 rounded"></div>
+          <div className="animate-pulse bg-gray-300 dark:bg-gray-600 h-6 flex-1 rounded"></div>
         </div>
       </div>
     );
   }
 
-  // Safe access with fallback
-  const isDark = theme?.mode === "dark" || false;
-
   return (
-    <div
-      className="relative w-full max-w-[600px] max-lg:hidden"
-      suppressHydrationWarning
-    >
+    <div className="relative w-full max-w-[600px] max-lg:hidden" suppressHydrationWarning>
       <div
         className={cn(
-          "relative min-h-[48px] rounded-xl flex items-center  gap-2 px-4",
+          "relative min-h-[48px] rounded-xl flex items-center gap-2 px-4",
           isDark ? "bg-black" : "bg-zinc-200"
         )}
-        suppressHydrationWarning
+        ref={searchContainerRef}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -206,10 +161,7 @@ const GlobalSearch = () => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className={cn(
-            "h-6 w-6 cursor-pointer",
-            isDark ? "text-zinc-400" : "text-zinc-700"
-          )}
+          className={cn("h-6 w-6 cursor-pointer", isDark ? "text-zinc-400" : "text-zinc-700")}
         >
           <path
             strokeLinecap="round"
@@ -235,7 +187,6 @@ const GlobalSearch = () => {
         )}
       </div>
 
-      {/* Search Results Dropdown */}
       {showResults && searchResults.length > 0 && (
         <div
           className={cn(
@@ -243,14 +194,12 @@ const GlobalSearch = () => {
             isDark ? "bg-black border-zinc-700" : "bg-white border-zinc-200"
           )}
         >
-          {searchResults.map((result, index) => (
+          {searchResults.map((result) => (
             <div
               key={result.id}
               className={cn(
                 "p-4 cursor-pointer transition-colors border-b last:border-b-0",
-                isDark
-                  ? "hover:bg-zinc-800 border-zinc-700"
-                  : "hover:bg-zinc-50 border-zinc-100"
+                isDark ? "hover:bg-zinc-800 border-zinc-700" : "hover:bg-zinc-50 border-zinc-100"
               )}
               onClick={() => {
                 if (result.type === "question") {
@@ -262,43 +211,20 @@ const GlobalSearch = () => {
             >
               {result.type === "question" ? (
                 <div>
-                  <div
-                    className={cn(
-                      "font-medium text-sm mb-1",
-                      isDark ? "text-white" : "text-black"
-                    )}
-                  >
-                    {result.title}
-                  </div>
-                  <div
-                    className={cn(
-                      "text-xs",
-                      isDark ? "text-zinc-400" : "text-zinc-600"
-                    )}
-                  >
-                    {result.excerpt}
-                  </div>
+                  <div className={cn("font-medium text-sm mb-1", isDark ? "text-white" : "text-black")}>{result.title}</div>
+                  <div className={cn("text-xs", isDark ? "text-zinc-400" : "text-zinc-600")}>{result.excerpt}</div>
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
                   <span
                     className={cn(
                       "px-2 py-1 rounded text-xs font-medium",
-                      isDark
-                        ? "bg-zinc-700 text-zinc-300"
-                        : "bg-zinc-100 text-zinc-700"
+                      isDark ? "bg-zinc-700 text-zinc-300" : "bg-zinc-100 text-zinc-700"
                     )}
                   >
                     {result.name}
                   </span>
-                  <span
-                    className={cn(
-                      "text-xs",
-                      isDark ? "text-zinc-400" : "text-zinc-600"
-                    )}
-                  >
-                    {result.questionCount} questions
-                  </span>
+                  <span className={cn("text-xs", isDark ? "text-zinc-400" : "text-zinc-600")}>{result.questionCount} questions</span>
                 </div>
               )}
             </div>

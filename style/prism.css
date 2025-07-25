@@ -119,3 +119,11 @@
    color: #d6e7ff;
  }
  
+ @keyframes spin{
+  to{
+    transform: rotate(360deg);
+  }
+ }
+ .animated-spin{
+  animation: spin 1s linear infinite;
+ }

@@ -4,7 +4,7 @@ import { formUrlQuery } from '../../../../lib/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 
-export const GlobalSearchFilters = [
+const GlobalSearchFilters = [
   { name: "Question", value: "question" },
   { name: "Answer", value: "answer" },
   { name: "User", value: "user" },

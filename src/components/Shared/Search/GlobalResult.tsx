@@ -27,7 +27,8 @@ const GlobalResult = () => {
       setIsLoading(true);
 
       try {
-        const res = await globalSearch({ query: global, type })
+        const res = await globalSearch({ query: global, type });
+        console.log("res from global search: ", res);
 
         setResult(JSON.parse(res));
       } catch (error) {
@@ -71,7 +72,7 @@ const GlobalResult = () => {
 
         {isLoading ? (
           <div className="flex-center flex-col px-5">
-            <IoReload className="my-2 h-10 w-10 animate-spin text-primary-500" />
+            <IoReload className="my-2 h-10 w-10 animate-spin text-orange-500" />
             <p className="text-dark200_light800 body-regular">Browsing the entire database</p>
           </div>
         ): (

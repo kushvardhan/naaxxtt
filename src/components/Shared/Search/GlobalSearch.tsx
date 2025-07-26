@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect, useRef, useState } from "react";
 import { ThemeContext } from "../../../../context/ThemeContext";
 import { formUrlQuery, removeKeysFromQuery } from "../../../../lib/utils";
+import GlobalResult from "./GlobalResult";
 
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -66,13 +67,16 @@ const GlobalSearch = () => {
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (search) {
+        console.log("🔍 GlobalSearch: Updating URL with search:", search); // Debug log
         const newUrl = formUrlQuery({
           params: searchParams.toString(),
           key: "global",
           value: search,
         });
+        console.log("🔍 GlobalSearch: New URL:", newUrl); // Debug log
         router.push(newUrl, { scroll: false });
       } else if (query) {
+        console.log("🔍 GlobalSearch: Clearing search from URL"); // Debug log
         const newUrl = removeKeysFromQuery({
           params: searchParams.toString(),
           keysToRemove: ["global", "type"],
@@ -87,51 +91,12 @@ const GlobalSearch = () => {
     setMounted(true);
   }, []);
 
+  // Initialize search from URL params
   useEffect(() => {
-    if (!searchQuery.trim()) {
-      setSearchResults([]);
-      setShowResults(false);
-      return;
+    if (query && query !== search) {
+      setSearch(query);
     }
-
-    const timeoutId = setTimeout(async () => {
-      setIsSearching(true);
-      try {
-        const mockResults = [
-          {
-            type: "question",
-            id: "1",
-            title: `How to fix React hydration errors related to "${searchQuery}"?`,
-            excerpt:
-              "Learn how to resolve hydration mismatches in React applications...",
-          },
-          {
-            type: "question",
-            id: "2",
-            title: `Best practices for ${searchQuery} in Next.js`,
-            excerpt:
-              "Discover the most effective approaches for implementing...",
-          },
-          {
-            type: "tag",
-            id: "3",
-            name: searchQuery.toLowerCase(),
-            questionCount: 42,
-          },
-        ];
-
-        setSearchResults(mockResults);
-        setShowResults(true);
-      } catch (error) {
-        console.error("Search error:", error);
-        setSearchResults([]);
-      } finally {
-        setIsSearching(false);
-      }
-    }, 300);
-
-    return () => clearTimeout(timeoutId);
-  }, [searchQuery]);
+  }, [query]);
 
   const isDark = theme?.mode === "dark" || false;
 
@@ -186,89 +151,22 @@ const GlobalSearch = () => {
           autoComplete="off"
           value={search}
           onChange={(e) => {
-            console.log("GlobalSearch: Input changed:", e.target.value); // Debug log
+            console.log("🔍 GlobalSearch: Input changed:", e.target.value); // Debug log
             setSearch(e.target.value);
             if (!isOpen) setIsOpen(true);
           }}
           onFocus={() => {
-            console.log("GlobalSearch: Input focused"); // Debug log
+            console.log("🔍 GlobalSearch: Input focused"); // Debug log
             setIsOpen(true);
           }}
           onBlur={() => setTimeout(() => setIsOpen(false), 200)}
         />
-
-        {isSearching && (
-          <div className="animate-spin h-4 w-4 border-2 border-orange-500 border-t-transparent rounded-full"></div>
-        )}
       </div>
 
-      {showResults && searchResults.length > 0 && (
-        <div
-          className={cn(
-            "absolute top-full left-0 right-0 mt-2 rounded-xl border shadow-lg z-50 max-h-96 overflow-y-auto",
-            isDark ? "bg-black border-zinc-700" : "bg-white border-zinc-200"
-          )}
-        >
-          {searchResults.map((result) => (
-            <div
-              key={result.id}
-              className={cn(
-                "p-4 cursor-pointer transition-colors border-b last:border-b-0",
-                isDark
-                  ? "hover:bg-zinc-800 border-zinc-700"
-                  : "hover:bg-zinc-50 border-zinc-100"
-              )}
-              onClick={() => {
-                if (result.type === "question") {
-                  window.location.href = `/question/${result.id}`;
-                } else if (result.type === "tag") {
-                  window.location.href = `/tags/${result.id}`;
-                }
-              }}
-            >
-              {result.type === "question" ? (
-                <div>
-                  <div
-                    className={cn(
-                      "font-medium text-sm mb-1",
-                      isDark ? "text-white" : "text-black"
-                    )}
-                  >
-                    {result.title}
-                  </div>
-                  <div
-                    className={cn(
-                      "text-xs",
-                      isDark ? "text-zinc-400" : "text-zinc-600"
-                    )}
-                  >
-                    {result.excerpt}
-                  </div>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <span
-                    className={cn(
-                      "px-2 py-1 rounded text-xs font-medium",
-                      isDark
-                        ? "bg-zinc-700 text-zinc-300"
-                        : "bg-zinc-100 text-zinc-700"
-                    )}
-                  >
-                    {result.name}
-                  </span>
-                  <span
-                    className={cn(
-                      "text-xs",
-                      isDark ? "text-zinc-400" : "text-zinc-600"
-                    )}
-                  >
-                    {result.questionCount} questions
-                  </span>
-                </div>
-              )}
-            </div>
-          ))}
+      {/* Search Results */}
+      {isOpen && (
+        <div className="absolute top-full left-0 right-0 z-50">
+          <GlobalResult />
         </div>
       )}
     </div>

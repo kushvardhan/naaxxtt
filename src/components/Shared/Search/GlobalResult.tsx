@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -22,17 +21,25 @@ const GlobalResult = () => {
   const type = searchParams.get("type");
 
   useEffect(() => {
+    console.log(
+      "🔍 GlobalResult: Effect triggered with global:",
+      global,
+      "type:",
+      type
+    ); // Debug log
+
     const fetchResult = async () => {
+      console.log("🔍 GlobalResult: Starting search for:", global); // Debug log
       setResult([]);
       setIsLoading(true);
 
       try {
         const res = await globalSearch({ query: global, type });
-        console.log("res from global search: ", res);
+        console.log("🔍 GlobalResult: Search response:", res);
 
         setResult(JSON.parse(res));
       } catch (error) {
-        console.error(error);
+        console.error("🔍 GlobalResult: Search error:", error);
         throw error;
       } finally {
         setIsLoading(false);
@@ -41,6 +48,8 @@ const GlobalResult = () => {
 
     if (global) {
       fetchResult();
+    } else {
+      console.log("🔍 GlobalResult: No global query, skipping search"); // Debug log
     }
   }, [global, type]);
 
@@ -59,53 +68,100 @@ const GlobalResult = () => {
   };
 
   return (
-    <div className="absolute top-full z-10 mt-3 w-full rounded-xl bg-gray-100 py-5 shadow-sm dark:bg-gray-900">
+    <div className="absolute top-full z-10 mt-3 w-full rounded-xl bg-white dark:bg-black border border-zinc-200 dark:border-zinc-700 py-5 shadow-lg dark:shadow-2xl backdrop-blur-sm">
       <GlobalFilters />
-      <div className="my-5 h-[1px] bg-gray-200/50 dark:bg-gray-600/50" />
+      <div className="my-5 h-[1px] bg-zinc-200 dark:bg-zinc-700" />
 
-      <div className="space-y-5">
-        <p className="px-5 text-base font-semibold text-neutral-600 dark:text-neutral-100">
-          Top Match
+      <div className="space-y-3">
+        <p className="px-5 text-base font-semibold text-zinc-700 dark:text-zinc-200">
+          🔍 Search Results
         </p>
 
         {isLoading ? (
-          <div className="flex flex-col items-center justify-center px-5">
+          <div className="flex flex-col items-center justify-center px-5 py-8">
             <IoReload className="my-2 h-10 w-10 animate-spin text-orange-500" />
-            <p className="text-sm font-normal text-neutral-400 dark:text-neutral-200">
-              Browsing the entire database
+            <p className="text-sm font-normal text-zinc-500 dark:text-zinc-400">
+              Searching the entire database...
             </p>
           </div>
         ) : (
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1">
             {result.length > 0 ? (
               result.map((item: any, index: number) => (
                 <Link
                   href={renderLink(item.type, item.id)}
                   key={item.type + item.id + index}
-                  className="flex w-full cursor-pointer items-start gap-3 px-5 py-2.5 hover:bg-gray-200/50 dark:hover:bg-gray-800/50"
+                  className="flex w-full cursor-pointer items-start gap-3 px-5 py-3 hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-all duration-200 rounded-lg mx-2 border border-transparent hover:border-orange-200 dark:hover:border-orange-800"
+                  style={{
+                    animationDelay: `${index * 50}ms`,
+                    animation: `fadeInUp 0.3s ease-out ${index * 50}ms both`,
+                  }}
                 >
-                  <Image
-                    src="/assets/icons/tag.svg"
-                    alt="tags"
-                    width={18}
-                    height={18}
-                    className="invert mt-1 object-contain dark:invert-0 text-black dark:text-white"
-                  />
+                  <div className="flex-shrink-0 mt-1">
+                    {item.type === "question" && (
+                      <div className="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                        <span className="text-xs text-blue-600 dark:text-blue-400">
+                          Q
+                        </span>
+                      </div>
+                    )}
+                    {item.type === "user" && (
+                      <div className="w-5 h-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                        <span className="text-xs text-green-600 dark:text-green-400">
+                          U
+                        </span>
+                      </div>
+                    )}
+                    {item.type === "tag" && (
+                      <div className="w-5 h-5 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                        <span className="text-xs text-purple-600 dark:text-purple-400">
+                          T
+                        </span>
+                      </div>
+                    )}
+                    {item.type === "answer" && (
+                      <div className="w-5 h-5 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
+                        <span className="text-xs text-orange-600 dark:text-orange-400">
+                          A
+                        </span>
+                      </div>
+                    )}
+                  </div>
 
-                  <div className="flex flex-col">
-                    <p className="line-clamp-1 text-base font-medium text-neutral-400 dark:text-neutral-200">
+                  <div className="flex flex-col flex-1 min-w-0">
+                    <p className="line-clamp-1 text-sm font-medium text-zinc-800 dark:text-zinc-200 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">
                       {item.title}
                     </p>
-                    <p className="mt-1 text-xs font-medium text-gray-400 dark:text-gray-500 capitalize">
+                    <p className="mt-1 text-xs font-medium text-zinc-500 dark:text-zinc-500 capitalize">
                       {item.type}
                     </p>
+                  </div>
+
+                  <div className="flex-shrink-0">
+                    <svg
+                      className="w-4 h-4 text-zinc-400 dark:text-zinc-600 group-hover:text-orange-500 transition-colors"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
                   </div>
                 </Link>
               ))
             ) : (
-              <div className="flex flex-col items-center justify-center px-5">
-                <p className="px-5 py-2.5 text-sm font-normal text-neutral-400 dark:text-neutral-200">
-                  Oops, no results found
+              <div className="flex flex-col items-center justify-center px-5 py-8">
+                <div className="text-4xl mb-3">🔍</div>
+                <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400 mb-1">
+                  No results found
+                </p>
+                <p className="text-xs text-zinc-500 dark:text-zinc-500">
+                  Try adjusting your search terms
                 </p>
               </div>
             )}

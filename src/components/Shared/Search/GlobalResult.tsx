@@ -1,5 +1,6 @@
 "use client";
 
+import { Search } from 'lucide-react';
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -74,14 +75,14 @@ const GlobalResult = () => {
 
       <div className="space-y-3">
         <p className="px-5 text-base font-semibold text-zinc-700 dark:text-zinc-200">
-          🔍 Search Results
+          <Search className="animate-spin text-gray-600 dark:text-gray-300 w-8 h-8" /> Search Results
         </p>
 
         {isLoading ? (
           <div className="flex flex-col items-center justify-center px-5 py-8">
             <IoReload className="my-2 h-10 w-10 animate-spin text-orange-500" />
             <p className="text-sm font-normal text-zinc-500 dark:text-zinc-400">
-              Searching the entire database...
+                 Searching the entire database...
             </p>
           </div>
         ) : (

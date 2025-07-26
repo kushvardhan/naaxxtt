@@ -76,7 +76,7 @@ const GlobalResult = () => {
   };
 
   return (
-    <div className="absolute top-full z-10 mt-3 w-full max-h-96 overflow-y-auto rounded-xl bg-white dark:bg-black border border-zinc-200 dark:border-zinc-700 py-5 shadow-lg dark:shadow-2xl backdrop-blur-sm">
+<div className="absolute top-full z-10 mt-3 w-full max-h-96 overflow-y-scroll overflow-x-hidden scrollbar-hidden rounded-xl bg-white dark:bg-black border border-zinc-200 dark:border-zinc-700 py-5 shadow-lg dark:shadow-2xl backdrop-blur-sm">
       <GlobalFilters />
       <div className="my-5 h-[1px] bg-zinc-200 dark:bg-zinc-700" />
 
@@ -105,18 +105,8 @@ const GlobalResult = () => {
                 }}
               >
                 <div className="flex-shrink-0">
-                  <svg
-                    className="w-4 h-4 text-zinc-400 dark:text-zinc-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
+                  <svg className="w-4 h-4 text-zinc-400 dark:text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
                 <div className="flex flex-col flex-1 min-w-0">
@@ -128,18 +118,8 @@ const GlobalResult = () => {
                   </p>
                 </div>
                 <div className="flex-shrink-0">
-                  <svg
-                    className="w-4 h-4 text-zinc-400 dark:text-zinc-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
+                  <svg className="w-4 h-4 text-zinc-400 dark:text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </div>
               </div>

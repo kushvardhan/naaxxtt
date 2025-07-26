@@ -1,24 +1,24 @@
-"use client"
+"use client";
 
-import React, { useEffect, useState } from 'react';
+import Image from "next/image";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { IoReload } from "react-icons/io5";
-import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
-import GlobalFilters from './GlobalFilters';
-import { globalSearch } from '../../../../lib/actions/general.action';
+import { globalSearch } from "../../../../lib/actions/general.action";
+import GlobalFilters from "./GlobalFilters";
 
 const GlobalResult = () => {
   const searchParams = useSearchParams();
 
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState([
-    { type: 'question', id: 1, title: 'Next.js question'},
-    { type: 'tag', id: 1, title: 'Nextjs'},
-    { type: 'user', id: 1, title: 'jsm'},
+    { type: "question", id: 1, title: "Next.js question" },
+    { type: "tag", id: 1, title: "Nextjs" },
+    { type: "user", id: 1, title: "jsm" },
   ]);
 
-  const global = searchParams.get('global');
+  const global = searchParams.get("global");
   const type = searchParams.get("type");
 
   useEffect(() => {
@@ -37,30 +37,30 @@ const GlobalResult = () => {
       } finally {
         setIsLoading(false);
       }
-    }
+    };
 
-    if(global) {
+    if (global) {
       fetchResult();
     }
   }, [global, type]);
 
   const renderLink = (type: string, id: string) => {
     switch (type) {
-      case 'question':
-      case 'answer':
+      case "question":
+      case "answer":
         return `/question/${id}`;
-      case 'user':
+      case "user":
         return `/profile/${id}`;
-      case 'tag':
+      case "tag":
         return `/tags/${id}`;
       default:
-        return '/';
+        return "/";
     }
-  }
+  };
 
   return (
     <div className="absolute top-full z-10 mt-3 w-full rounded-xl bg-gray-100 py-5 shadow-sm dark:bg-gray-900">
-      <GlobalFilters /> 
+      <GlobalFilters />
       <div className="my-5 h-[1px] bg-gray-200/50 dark:bg-gray-600/50" />
 
       <div className="space-y-5">
@@ -71,18 +71,20 @@ const GlobalResult = () => {
         {isLoading ? (
           <div className="flex flex-col items-center justify-center px-5">
             <IoReload className="my-2 h-10 w-10 animate-spin text-orange-500" />
-            <p className="text-sm font-normal text-neutral-400 dark:text-neutral-200">Browsing the entire database</p>
+            <p className="text-sm font-normal text-neutral-400 dark:text-neutral-200">
+              Browsing the entire database
+            </p>
           </div>
         ) : (
           <div className="flex flex-col gap-2">
-            {result.length < 0 ? (
+            {result.length > 0 ? (
               result.map((item: any, index: number) => (
                 <Link
                   href={renderLink(item.type, item.id)}
                   key={item.type + item.id + index}
                   className="flex w-full cursor-pointer items-start gap-3 px-5 py-2.5 hover:bg-gray-200/50 dark:hover:bg-gray-800/50"
                 >
-                  <Image 
+                  <Image
                     src="/assets/icons/tag.svg"
                     alt="tags"
                     width={18}
@@ -91,21 +93,27 @@ const GlobalResult = () => {
                   />
 
                   <div className="flex flex-col">
-                    <p className="line-clamp-1 text-base font-medium text-neutral-400 dark:text-neutral-200">{item.title}</p>
-                    <p className="mt-1 text-xs font-medium text-gray-400 dark:text-gray-500 capitalize">{item.type}</p>
+                    <p className="line-clamp-1 text-base font-medium text-neutral-400 dark:text-neutral-200">
+                      {item.title}
+                    </p>
+                    <p className="mt-1 text-xs font-medium text-gray-400 dark:text-gray-500 capitalize">
+                      {item.type}
+                    </p>
                   </div>
                 </Link>
               ))
             ) : (
               <div className="flex flex-col items-center justify-center px-5">
-                <p className="px-5 py-2.5 text-sm font-normal text-neutral-400 dark:text-neutral-200">Oops, no results found</p>
+                <p className="px-5 py-2.5 text-sm font-normal text-neutral-400 dark:text-neutral-200">
+                  Oops, no results found
+                </p>
               </div>
             )}
           </div>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default GlobalResult;

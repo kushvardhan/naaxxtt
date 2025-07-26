@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { ThemeContext } from "../../../../context/ThemeContext";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { formUrlQuery, removeKeysFromQuery } from "../../../../lib/utils";
 import { Input } from "@/components/ui/input";
-
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useContext, useEffect, useRef, useState } from "react";
+import { ThemeContext } from "../../../../context/ThemeContext";
+import { formUrlQuery, removeKeysFromQuery } from "../../../../lib/utils";
 
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -39,16 +38,13 @@ function cn(...classes) {
 const GlobalSearch = () => {
   const theme = useContext(ThemeContext);
   const [mounted, setMounted] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const [showResults, setShowResults] = useState(false);
+
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const searchContainerRef = useRef(null);
 
-  const query = searchParams.get("q");
+  const query = searchParams.get("global");
   const [search, setSearch] = useState(query || "");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -106,13 +102,15 @@ const GlobalSearch = () => {
             type: "question",
             id: "1",
             title: `How to fix React hydration errors related to "${searchQuery}"?`,
-            excerpt: "Learn how to resolve hydration mismatches in React applications...",
+            excerpt:
+              "Learn how to resolve hydration mismatches in React applications...",
           },
           {
             type: "question",
             id: "2",
             title: `Best practices for ${searchQuery} in Next.js`,
-            excerpt: "Discover the most effective approaches for implementing...",
+            excerpt:
+              "Discover the most effective approaches for implementing...",
           },
           {
             type: "tag",
@@ -139,7 +137,10 @@ const GlobalSearch = () => {
 
   if (!mounted || !theme?.mounted) {
     return (
-      <div className="relative w-full max-w-[600px] max-lg:hidden" suppressHydrationWarning>
+      <div
+        className="relative w-full max-w-[600px] max-lg:hidden"
+        suppressHydrationWarning
+      >
         <div className="relative min-h-[48px] rounded-xl flex items-center gap-2 px-4 bg-gray-200 dark:bg-gray-700">
           <div className="animate-pulse bg-gray-300 dark:bg-gray-600 h-6 w-6 rounded"></div>
           <div className="animate-pulse bg-gray-300 dark:bg-gray-600 h-6 flex-1 rounded"></div>
@@ -149,7 +150,10 @@ const GlobalSearch = () => {
   }
 
   return (
-    <div className="relative w-full max-w-[600px] max-lg:hidden" suppressHydrationWarning>
+    <div
+      className="relative w-full max-w-[600px] max-lg:hidden"
+      suppressHydrationWarning
+    >
       <div
         className={cn(
           "relative min-h-[48px] rounded-xl flex items-center gap-2 px-4",
@@ -163,7 +167,10 @@ const GlobalSearch = () => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className={cn("h-6 w-6 cursor-pointer", isDark ? "text-zinc-400" : "text-zinc-700")}
+          className={cn(
+            "h-6 w-6 cursor-pointer",
+            isDark ? "text-zinc-400" : "text-zinc-700"
+          )}
         >
           <path
             strokeLinecap="round"
@@ -173,16 +180,22 @@ const GlobalSearch = () => {
         </svg>
 
         <Input
-  placeholder="Search globally..."
-  variant="bare"
-  spellCheck={false}
-  autoComplete="off"
-  value={searchQuery}
-  onChange={(e) => setSearchQuery(e.target.value)}
-  onFocus={() => searchQuery && setShowResults(true)}
-  onBlur={() => setTimeout(() => setShowResults(false), 200)}
-/>
-
+          placeholder="Search globally..."
+          variant="bare"
+          spellCheck={false}
+          autoComplete="off"
+          value={search}
+          onChange={(e) => {
+            console.log("GlobalSearch: Input changed:", e.target.value); // Debug log
+            setSearch(e.target.value);
+            if (!isOpen) setIsOpen(true);
+          }}
+          onFocus={() => {
+            console.log("GlobalSearch: Input focused"); // Debug log
+            setIsOpen(true);
+          }}
+          onBlur={() => setTimeout(() => setIsOpen(false), 200)}
+        />
 
         {isSearching && (
           <div className="animate-spin h-4 w-4 border-2 border-orange-500 border-t-transparent rounded-full"></div>
@@ -201,7 +214,9 @@ const GlobalSearch = () => {
               key={result.id}
               className={cn(
                 "p-4 cursor-pointer transition-colors border-b last:border-b-0",
-                isDark ? "hover:bg-zinc-800 border-zinc-700" : "hover:bg-zinc-50 border-zinc-100"
+                isDark
+                  ? "hover:bg-zinc-800 border-zinc-700"
+                  : "hover:bg-zinc-50 border-zinc-100"
               )}
               onClick={() => {
                 if (result.type === "question") {
@@ -213,20 +228,43 @@ const GlobalSearch = () => {
             >
               {result.type === "question" ? (
                 <div>
-                  <div className={cn("font-medium text-sm mb-1", isDark ? "text-white" : "text-black")}>{result.title}</div>
-                  <div className={cn("text-xs", isDark ? "text-zinc-400" : "text-zinc-600")}>{result.excerpt}</div>
+                  <div
+                    className={cn(
+                      "font-medium text-sm mb-1",
+                      isDark ? "text-white" : "text-black"
+                    )}
+                  >
+                    {result.title}
+                  </div>
+                  <div
+                    className={cn(
+                      "text-xs",
+                      isDark ? "text-zinc-400" : "text-zinc-600"
+                    )}
+                  >
+                    {result.excerpt}
+                  </div>
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
                   <span
                     className={cn(
                       "px-2 py-1 rounded text-xs font-medium",
-                      isDark ? "bg-zinc-700 text-zinc-300" : "bg-zinc-100 text-zinc-700"
+                      isDark
+                        ? "bg-zinc-700 text-zinc-300"
+                        : "bg-zinc-100 text-zinc-700"
                     )}
                   >
                     {result.name}
                   </span>
-                  <span className={cn("text-xs", isDark ? "text-zinc-400" : "text-zinc-600")}>{result.questionCount} questions</span>
+                  <span
+                    className={cn(
+                      "text-xs",
+                      isDark ? "text-zinc-400" : "text-zinc-600"
+                    )}
+                  >
+                    {result.questionCount} questions
+                  </span>
                 </div>
               )}
             </div>

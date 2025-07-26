@@ -18,6 +18,7 @@ export async function globalSearch(params: SearchParams) {
     await connectToDatabase();
 
     const { query, type } = params;
+    console.log("FROM GLOBALSEARCH ACTION: ", query, type);
     const regexQuery = { $regex: query, $options: "i" };
 
     let results = [];
@@ -54,7 +55,6 @@ export async function globalSearch(params: SearchParams) {
           )
       }
     } else {
-      // SEARCH IN THE SPECIFIED MODEL TYPE
       const modelInfo = modelsAndTypes.find((item) => item.type === type);
 
       console.log({modelInfo, type});
@@ -80,7 +80,7 @@ export async function globalSearch(params: SearchParams) {
             : item._id,
       }));
     }
-
+    console.log("REs from action general: ", results);
     return JSON.stringify(results);
   } catch (error) {
     console.log(`Error fetching global results, ${error}`);

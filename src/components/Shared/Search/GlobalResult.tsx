@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import GlobalFilters from './GlobalFilters';
-import { globalSearch } from '../../../../lib/actions/general.actions';
+import { globalSearch } from '../../../../lib/actions/general.action';
 
 const GlobalResult = () => {
   const searchParams = useSearchParams();

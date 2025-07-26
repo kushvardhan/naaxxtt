@@ -1,5 +1,4 @@
 "use server";
-import mongoose from 'mongoose';
 import { FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
 import Answer from "../../database/answer.model";
@@ -43,7 +42,14 @@ export async function getUserInfo(params: GetUserByIdParams) {
     const user = await User.findOne({ clerkId: userId });
 
     if (!user) {
-      throw new Error("User not found");
+      console.log("User not found for clerkId:", userId);
+      return {
+        user: null,
+        totalQuestions: 0,
+        totalAnswers: 0,
+        badgeCounts: { GOLD: 0, SILVER: 0, BRONZE: 0 },
+        reputation: 0,
+      };
     }
 
     const totalQuestions = await Question.countDocuments({ author: user._id });
@@ -141,7 +147,7 @@ export async function getAllUser(params: GetAllUsersParams = {}) {
     const query: FilterQuery<typeof User> = {};
 
     if (searchQuery) {
-      const escaped = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); 
+      const escaped = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       const regex = new RegExp(escaped, "i");
 
       query.$or = [
@@ -152,7 +158,7 @@ export async function getAllUser(params: GetAllUsersParams = {}) {
       ];
     }
 
-    let sortOptions = { createdAt: -1 }; 
+    let sortOptions = { createdAt: -1 };
     switch (filter) {
       case "new_users":
         sortOptions = { joinedAt: -1 };

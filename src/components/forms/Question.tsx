@@ -131,7 +131,7 @@ export function Question({
       } else {
         await createQuestion({
           title: values.title,
-          content: values.explanation,
+          explanation: values.explanation,
           tags: values.tags,
           author: new (require("bson").ObjectId)(mongoUserId),
           path: pathname,

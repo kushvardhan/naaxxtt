@@ -95,42 +95,45 @@ export async function getQuestions(params: GetQuestionsParams) {
 
 export async function createQuestion(params: CreateQuestionParams) {
   try {
-    await connectToDatabase();
-    console.log("createQuestion called with params:", params);
+    connectToDatabase();
 
     const { title, explanation, tags, author, path } = params;
 
+    // Create the question
     const question = await Question.create({
       title,
       explanation,
-      author,
+      author
     });
-    const tagDocuments: any[] = [];
 
-    if (tags && tags.length > 0) {
-      for (const tag of tags) {
-        const existingTag = await Tag.findOneAndUpdate(
-          { name: { $regex: new RegExp(`^${tag}$`, "i") } },
-          { $setOnInsert: { name: tag }, $push: { questions: question._id } },
-          { new: true, upsert: true }
-        );
-        if (existingTag) {
-          tagDocuments.push(existingTag._id);
-        }
-      }
+    const tagDocuments = [];
+
+    for (const tag of tags) {
+      const existingTag = await Tag.findOneAndUpdate(
+        { name: { $regex: new RegExp(`^${tag}$`, "i") } }, 
+        { $setOnInsert: { name: tag }, $push: { questions: question._id } },
+        { upsert: true, new: true }
+      )
+
+      tagDocuments.push(existingTag._id);
     }
 
-    if (tagDocuments.length > 0) {
-      await Question.findByIdAndUpdate(question._id, {
-        $push: {
-          tags: { $each: tagDocuments },
-        },
-      });
-    }
+    await Question.findByIdAndUpdate(question._id, {
+      $push: { tags: { $each: tagDocuments }}
+    });
 
-    if (path) {
-      revalidatePath(path);
-    }
+    // Create an interaction record for the user's ask_question action
+    await Interaction.create({
+      user: author,
+      action: "ask_question",
+      question: question._id,
+      tags: tagDocuments,
+    })
+
+    // Increment author's reputation by +5 for creating a question
+    await User.findByIdAndUpdate(author, { $inc: { reputation: 5 }})
+
+    revalidatePath(path)
   } catch (error) {
     console.log(error);
   }

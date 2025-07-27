@@ -2,6 +2,8 @@ import Question from "@/components/forms/Question";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getOrCreateUser } from "../../../../lib/helpers/user";
+import Loading from './loading';
+
 
 export const metadata: Metadata = {
   title: "nullPointer | Ask-Question",
@@ -14,6 +16,9 @@ const Page = async () => {
     if (!mongoUser) {
       redirect("/sign-in");
     }
+
+    const isLoading = true;
+  if(isLoading) return <Loading />
 
     return (
       <div className="mt-20 max-h-[80vh] overflow-y-auto scrollbar-none">

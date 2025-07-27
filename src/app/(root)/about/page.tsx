@@ -1,5 +1,6 @@
 import AboutClient from "@/components/Shared/AboutClient";
 import type { Metadata } from "next";
+import Loading from './loading';
 
 export const metadata: Metadata = {
   title: "NullPointer | About Us",
@@ -7,7 +8,12 @@ export const metadata: Metadata = {
     "Learn about NullPointer - A community-driven platform for developers to share knowledge, ask questions, and grow together.",
 };
 
+
 const AboutPage = () => {
+
+  const isLoading = true;
+  if(isLoading) return <Loading />
+
   return (
     <div className="w-full h-[calc(100vh-130px)] overflow-y-scroll scrollbar-hidden">
       <AboutClient />

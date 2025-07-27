@@ -1,5 +1,6 @@
 import { getQuestions } from "../../../../lib/actions/question.action";
 import ClientHomehh from "../../../components/Shared/ClientHomehh";
+import Loading from './loading';
 
 interface Tag {
   _id: string;
@@ -67,6 +68,9 @@ export default async function Home({ searchParams }: SearchParams) {
         ? new Date(q.createdAt).toISOString()
         : new Date().toISOString(),
     }));
+
+  const isLoading = true;
+  if(isLoading) return <Loading />
 
     return (
       <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">

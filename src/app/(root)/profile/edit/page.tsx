@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Profile from '../../../../components/forms/Profile';
 import { auth } from "@clerk/nextjs/server";
 import { getUserById } from "../../../../../lib/actions/user.action";
+import Loading from './loading';
 
 interface ParamsProps {
   params: { id: string };
@@ -20,6 +21,9 @@ const Page = async ({ params }: ParamsProps) => {
 
   const mongoUser = await getUserById({ userId });
   console.log("mongoUser: ", mongoUser);
+
+  const isLoading = true;
+  if(isLoading) return <Loading />
 
   return (
     <div className='w-full h-[calc(100vh-120px)] mt-20 overflow-y-scroll scrollbar-hidden'>

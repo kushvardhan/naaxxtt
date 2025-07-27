@@ -2,6 +2,8 @@ import { auth } from "@clerk/nextjs/server";
 import type { Metadata } from "next";
 import { getSavedQuestions } from "../../../../lib/actions/user.action";
 import CollectionPage from "../../../components/Shared/CollectionPage";
+import Loading from './loading';
+
 
 export interface SearchParamsProps {
   searchParams: Promise<{ [key: string]: string | undefined }>;
@@ -55,6 +57,9 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
     : [];
 
   // console.log('mapped collection: ', mappedQuestions);
+
+  const isLoading = true;
+  if(isLoading) return <Loading />
 
   return (
     <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">

@@ -14,6 +14,7 @@ import Metric from "../../../../components/Shared/Metric";
 import ParseHTML from "../../../../components/Shared/ParseHTML";
 import Votes from "../../../../components/Shared/Votes";
 import EditDeleteAction from "@/components/Shared/EditDeleteAction";
+import Loading from './loading';
 
 interface QuestionDetailPageProps {
   params: Promise<{
@@ -68,6 +69,9 @@ const QuestionDetailPage = async ({
 
     const page = Number(getParamValue("page", "1"));
     const filter = getParamValue("filter", "10");
+
+    const isLoading = true;
+  if(isLoading) return <Loading />
 
     return (
       <section className="w-full h-[calc(100vh-120px)] mt-18 overflow-y-auto scrollbar-hidden max-w-5xl mx-auto px-4 pt-6 pb-10 text-black dark:text-white">

@@ -8,6 +8,7 @@ import ProfileLink from "../../../../components/Shared/ProfileLink";
 import ProfileTabs from "../../../../components/Shared/ProfileTabs";
 import Stats from "../../../../components/Shared/Stats";
 import { Button } from "../../../../components/ui/button";
+import Loading from './loading';
 
 export const metadata: Metadata = {
   title: "NullFlow | Profile",
@@ -53,6 +54,9 @@ export default async function Page({ params, searchParams }: URLProps) {
       </div>
     );
   }
+
+  const isLoading = true;
+  if(isLoading) return <Loading />
 
   return (
     <div className="w-full h-[calc(100vh-130px)] overflow-y-auto scrollbar-hidden  px-4 sm:px-10 md:px-20 mt-20 bg-white dark:bg-black text-black dark:text-white transition-colors duration-300">

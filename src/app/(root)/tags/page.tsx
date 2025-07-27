@@ -1,6 +1,7 @@
 import TagsClient from "@/components/Shared/TagsClient";
 import type { Metadata } from "next";
 import { getAllTags } from "../../../../lib/actions/tag.action";
+import Loading from './loading';
 
 export interface Tag {
   _id: string;
@@ -39,6 +40,9 @@ const TagsPage = async ({ searchParams }: SearchParams) => {
       page,
       pageSize: 10,
     });
+
+    const isLoading = true;
+  if(isLoading) return <Loading />
 
     return (
       <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">

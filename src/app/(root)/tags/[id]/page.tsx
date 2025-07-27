@@ -4,6 +4,7 @@ import { getQuestionsByTagId } from "../../../../../lib/actions/tag.action";
 import { formatAndDivideNumber } from "../../../../../lib/utils";
 import NoResult from "../../../../components/Shared/NoResult";
 import Pagination from "../../../../components/Shared/Pagination";
+import Loading from './loading';
 
 interface URLProps {
   params: Promise<{ id: string }>;
@@ -58,6 +59,9 @@ const Page = async ({ params, searchParams }: URLProps) => {
       return `${years} ${years === 1 ? "year" : "years"} ago`;
     }
   }
+
+  const isLoading = true;
+  if(isLoading) return <Loading />
 
   return (
     <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">

@@ -1,4 +1,5 @@
 import QuestionsClient from "@/components/Shared/QuestionsClient";
+import Loading from './loading';
 
 // Mock questions data for UI development
 const mockQuestions = [
@@ -124,6 +125,8 @@ const QuestionsPage = async () => {
     // In a real app, you would fetch the questions data here
     // const questions = await getAllQuestions();
     
+    const isLoading = true;
+  if(isLoading) return <Loading />
     return (
     <>
     <div className='w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden'>

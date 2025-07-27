@@ -103,7 +103,7 @@ export async function createQuestion(params: CreateQuestionParams) {
     const question = await Question.create({
       title,
       explanation,
-      author
+      author,
     });
 
     const tagDocuments = [];

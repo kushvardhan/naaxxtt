@@ -1,0 +1,103 @@
+<!-- NullFlow Logo 1: Elegant Orange Orbital with Dark Theme Adaptation -->
+<svg width="140" height="48" viewBox="0 0 140 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="orangeElegant" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="35%" style="stop-color:#fb923c;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#ea580c;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="subtleOrange" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#fb923c;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#ea580c;stop-opacity:0.3" />
+    </linearGradient>
+    <linearGradient id="lightTheme" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1f2937;stop-opacity:1" />
+      <stop offset="35%" style="stop-color:#374151;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#4b5563;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6b7280;stop-opacity:1" />
+    </linearGradient>
+    <filter id="elegantGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Theme-adaptive orbital system -->
+  <g transform="translate(24,24)" class="orbital-system">
+    <!-- Central nucleus with elegant styling -->
+    <circle cx="0" cy="0" r="4" fill="url(#orangeElegant)" filter="url(#elegantGlow)"/>
+    <circle cx="0" cy="0" r="2.5" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.9"/>
+    <circle cx="0" cy="0" r="1" fill="#ffffff"/>
+    
+    <!-- Refined orbital rings with dash patterns -->
+    <ellipse cx="0" cy="0" rx="16" ry="8" 
+             stroke="url(#orangeElegant)" stroke-width="2" fill="none" opacity="0.8"
+             transform="rotate(0)" stroke-dasharray="2,1"/>
+    <ellipse cx="0" cy="0" rx="16" ry="8" 
+             stroke="url(#orangeElegant)" stroke-width="1.8" fill="none" opacity="0.6"
+             transform="rotate(60)" stroke-dasharray="1,2"/>
+    <ellipse cx="0" cy="0" rx="16" ry="8" 
+             stroke="url(#orangeElegant)" stroke-width="1.5" fill="none" opacity="0.4"
+             transform="rotate(120)" stroke-dasharray="3,1"/>
+    
+    <!-- Sophisticated electron particles -->
+    <circle cx="16" cy="0" r="1.8" fill="url(#orangeElegant)" stroke="#ffffff" stroke-width="0.8">
+      <animateTransform attributeName="transform" type="rotate" values="0 0 0; 360 0 0" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="-8" cy="13.9" r="1.5" fill="url(#orangeElegant)" stroke="#ffffff" stroke-width="0.6" opacity="0.9">
+      <animateTransform attributeName="transform" type="rotate" values="60 0 0; 420 0 0" dur="3.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="-8" cy="-13.9" r="1.3" fill="url(#orangeElegant)" stroke="#ffffff" stroke-width="0.5" opacity="0.8">
+      <animateTransform attributeName="transform" type="rotate" values="120 0 0; 480 0 0" dur="3.8s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Elegant energy field -->
+    <circle cx="0" cy="0" r="19" stroke="url(#subtleOrange)" stroke-width="1.2" fill="none" opacity="0.5" stroke-dasharray="2,3">
+      <animate attributeName="stroke-dashoffset" values="0;8;0" dur="6s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Data flow with elegant curves -->
+    <path d="M22,0 Q28,-5 34,0 Q40,5 46,0" stroke="url(#subtleOrange)" stroke-width="2" fill="none" stroke-dasharray="1,2"/>
+    
+    <!-- Minimalist accents -->
+    <g opacity="0.7">
+      <circle cx="24" cy="-3" r="0.8" fill="url(#orangeElegant)"/>
+      <circle cx="36" cy="2" r="0.6" fill="url(#orangeElegant)" opacity="0.8"/>
+      <circle cx="44" cy="-1" r="0.5" fill="url(#orangeElegant)" opacity="0.6"/>
+    </g>
+    
+    <!-- Subtle quantum indicators -->
+    <circle cx="30" cy="-7" r="0.8" fill="url(#orangeElegant)" opacity="0.8">
+      <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="42" cy="6" r="0.6" fill="url(#orangeElegant)" opacity="0.6">
+      <animate attributeName="opacity" values="0.6;0.2;0.6" dur="3s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Premium Typography -->
+  <g transform="translate(75,30)">
+    <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="url(#orangeElegant)">
+      NullFlow
+    </text>
+    <!-- Elegant underline -->
+    <line x1="0" y1="5" x2="52" y2="5" stroke="url(#subtleOrange)" stroke-width="1.5" opacity="0.6"/>
+    <line x1="0" y1="7" x2="32" y2="7" stroke="url(#subtleOrange)" stroke-width="1" opacity="0.4"/>
+  </g>
+  
+  <!-- Theme adaptation styles -->
+  <style>
+    @media (prefers-color-scheme: light) {
+      .orbital-system circle[stroke="#ffffff"] {
+        stroke: #1f2937;
+      }
+      .orbital-system circle[fill="#ffffff"] {
+        fill: #1f2937;
+      }
+    }
+  </style>
+</svg>

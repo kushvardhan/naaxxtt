@@ -1,0 +1,85 @@
+<!-- Orbital Variant 4: Monochrome Elegant -->
+<svg width="140" height="48" viewBox="0 0 140 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="monoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="25%" style="stop-color:#e2e8f0;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#94a3b8;stop-opacity:1" />
+      <stop offset="75%" style="stop-color:#64748b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#334155;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="monoOrbital" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#94a3b8;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#64748b;stop-opacity:0.3" />
+    </linearGradient>
+    <filter id="monoGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.8" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <g transform="translate(24,24)">
+    <!-- Elegant central nucleus -->
+    <circle cx="0" cy="0" r="4.5" fill="url(#monoGrad)" filter="url(#monoGlow)"/>
+    <circle cx="0" cy="0" r="2.5" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.9"/>
+    <circle cx="0" cy="0" r="1" fill="#ffffff"/>
+    
+    <!-- Refined orbital rings -->
+    <ellipse cx="0" cy="0" rx="17" ry="8.5" 
+             stroke="url(#monoGrad)" stroke-width="2.2" fill="none" opacity="0.8"
+             transform="rotate(0)" stroke-dasharray="1,2"/>
+    <ellipse cx="0" cy="0" rx="17" ry="8.5" 
+             stroke="url(#monoGrad)" stroke-width="2.2" fill="none" opacity="0.6"
+             transform="rotate(60)" stroke-dasharray="2,1"/>
+    <ellipse cx="0" cy="0" rx="17" ry="8.5" 
+             stroke="url(#monoGrad)" stroke-width="2.2" fill="none" opacity="0.4"
+             transform="rotate(120)" stroke-dasharray="1,3"/>
+    
+    <!-- Sophisticated electron particles -->
+    <circle cx="17" cy="0" r="2" fill="url(#monoGrad)" stroke="#ffffff" stroke-width="1">
+      <animateTransform attributeName="transform" type="rotate" values="0 0 0; 360 0 0" dur="4.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="-8.5" cy="14.7" r="1.8" fill="url(#monoGrad)" stroke="#ffffff" stroke-width="0.8" opacity="0.9">
+      <animateTransform attributeName="transform" type="rotate" values="60 0 0; 420 0 0" dur="3.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="-8.5" cy="-14.7" r="1.6" fill="url(#monoGrad)" stroke="#ffffff" stroke-width="0.6" opacity="0.8">
+      <animateTransform attributeName="transform" type="rotate" values="120 0 0; 480 0 0" dur="4.2s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Elegant energy field -->
+    <circle cx="0" cy="0" r="21" stroke="url(#monoOrbital)" stroke-width="1.5" fill="none" opacity="0.4" stroke-dasharray="3,2">
+      <animate attributeName="stroke-dashoffset" values="0;10;0" dur="6s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Minimalist data flow -->
+    <path d="M25,0 Q31,-6 37,0 Q43,6 49,0" stroke="url(#monoOrbital)" stroke-width="2.5" fill="none" stroke-dasharray="2,3"/>
+    
+    <!-- Geometric accents -->
+    <g opacity="0.7">
+      <polygon points="27,-3 29,-1 27,1 25,-1" fill="url(#monoGrad)"/>
+      <polygon points="39,-2 41,0 39,2 37,0" fill="url(#monoGrad)" opacity="0.8"/>
+      <polygon points="47,-1 49,1 47,3 45,1" fill="url(#monoGrad)" opacity="0.6"/>
+    </g>
+    
+    <!-- Subtle quantum indicators -->
+    <circle cx="32" cy="-9" r="1" fill="url(#monoGrad)" opacity="0.8">
+      <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="45" cy="7" r="0.8" fill="url(#monoGrad)" opacity="0.6">
+      <animate attributeName="opacity" values="0.6;0.2;0.6" dur="3s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Typography -->
+  <g transform="translate(75,30)">
+    <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="19" font-weight="600" fill="url(#monoGrad)">
+      NullFlow
+    </text>
+    <!-- Elegant accent -->
+    <line x1="0" y1="6" x2="55" y2="6" stroke="url(#monoOrbital)" stroke-width="1.5" opacity="0.6"/>
+    <line x1="0" y1="8" x2="35" y2="8" stroke="url(#monoOrbital)" stroke-width="1" opacity="0.4"/>
+  </g>
+</svg>

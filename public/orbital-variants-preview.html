@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NullFlow Orbital Logo Variants</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #fbbf24, #ea580c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.8rem;
+            font-weight: 800;
+        }
+        .subtitle {
+            text-align: center;
+            margin-bottom: 50px;
+            color: #cbd5e1;
+            font-size: 1.3rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .variant {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .variant::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transition: left 0.8s;
+        }
+        .variant:hover::before {
+            left: 100%;
+        }
+        .variant:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+        .variant h3 {
+            margin: 0 0 25px 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .variant-1 h3 { color: #6366f1; }
+        .variant-2 h3 { color: #06b6d4; }
+        .variant-3 h3 { color: #fb923c; }
+        .variant-4 h3 { color: #94a3b8; }
+        .variant-5 h3 { color: #ff0080; }
+        
+        .logo-container {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 80px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+        .dark-preview {
+            background: #1e293b;
+            margin-top: 15px;
+            border: 1px solid #334155;
+        }
+        .description {
+            font-size: 1rem;
+            color: #e2e8f0;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .feature-tag {
+            padding: 6px 14px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .variant-1 .feature-tag { background: rgba(99, 102, 241, 0.2); color: #a5b4fc; }
+        .variant-2 .feature-tag { background: rgba(6, 182, 212, 0.2); color: #67e8f9; }
+        .variant-3 .feature-tag { background: rgba(251, 146, 60, 0.2); color: #fdba74; }
+        .variant-4 .feature-tag { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; }
+        .variant-5 .feature-tag { background: rgba(255, 0, 128, 0.2); color: #f472b6; }
+        
+        .note {
+            text-align: center;
+            margin-top: 50px;
+            padding: 40px;
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 20px;
+            border: 2px solid rgba(59, 130, 246, 0.2);
+        }
+        .note h3 {
+            color: #60a5fa;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+        }
+        .note p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #e2e8f0;
+        }
+        .highlight {
+            color: #fbbf24;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quantum Orbital Variants</h1>
+        <p class="subtitle">5 sophisticated variations of your chosen orbital design</p>
+        
+        <div class="grid">
+            <div class="variant variant-1">
+                <h3>Variant 1: Blue Quantum</h3>
+                <div class="logo-container">
+                    <img src="orbital-variant-1.svg" alt="Blue Quantum" style="height: 48px;">
+                </div>
+                <div class="logo-container dark-preview">
+                    <img src="orbital-variant-1.svg" alt="Blue Quantum" style="height: 48px;">
+                </div>
+                <p class="description">Professional blue-purple gradient with enhanced glow effects and pulsing energy field. Perfect for tech companies.</p>
+                <div class="features">
+                    <span class="feature-tag">Professional</span>
+                    <span class="feature-tag">Trustworthy</span>
+                    <span class="feature-tag">Tech-focused</span>
+                </div>
+            </div>
+
+            <div class="variant variant-2">
+                <h3>Variant 2: Cyber Teal</h3>
+                <div class="logo-container">
+                    <img src="orbital-variant-2.svg" alt="Cyber Teal" style="height: 48px;">
+                </div>
+                <div class="logo-container dark-preview">
+                    <img src="orbital-variant-2.svg" alt="Cyber Teal" style="height: 48px;">
+                </div>
+                <p class="description">Emerald-teal cyber theme with geometric nodes and floating data particles. Modern and innovative feel.</p>
+                <div class="features">
+                    <span class="feature-tag">Modern</span>
+                    <span class="feature-tag">Innovative</span>
+                    <span class="feature-tag">Data-driven</span>
+                </div>
+            </div>
+
+            <div class="variant variant-3">
+                <h3>Variant 3: Enhanced Orange</h3>
+                <div class="logo-container">
+                    <img src="orbital-variant-3.svg" alt="Enhanced Orange" style="height: 48px;">
+                </div>
+                <div class="logo-container dark-preview">
+                    <img src="orbital-variant-3.svg" alt="Enhanced Orange" style="height: 48px;">
+                </div>
+                <p class="description">Your original orange theme with enhanced effects, multiple orbital layers, and stronger visual impact.</p>
+                <div class="features">
+                    <span class="feature-tag">Brand Colors</span>
+                    <span class="feature-tag">Enhanced</span>
+                    <span class="feature-tag">Dynamic</span>
+                </div>
+            </div>
+
+            <div class="variant variant-4">
+                <h3>Variant 4: Elegant Mono</h3>
+                <div class="logo-container">
+                    <img src="orbital-variant-4.svg" alt="Elegant Mono" style="height: 48px;">
+                </div>
+                <div class="logo-container dark-preview">
+                    <img src="orbital-variant-4.svg" alt="Elegant Mono" style="height: 48px;">
+                </div>
+                <p class="description">Sophisticated monochrome design with subtle elegance. Timeless and professional for any context.</p>
+                <div class="features">
+                    <span class="feature-tag">Timeless</span>
+                    <span class="feature-tag">Elegant</span>
+                    <span class="feature-tag">Versatile</span>
+                </div>
+            </div>
+
+            <div class="variant variant-5">
+                <h3>Variant 5: Neon Cyberpunk</h3>
+                <div class="logo-container">
+                    <img src="orbital-variant-5.svg" alt="Neon Cyberpunk" style="height: 48px;">
+                </div>
+                <div class="logo-container dark-preview">
+                    <img src="orbital-variant-5.svg" alt="Neon Cyberpunk" style="height: 48px;">
+                </div>
+                <p class="description">Bold cyberpunk neon design with intense glow effects and pulsing animations. Eye-catching and futuristic.</p>
+                <div class="features">
+                    <span class="feature-tag">Bold</span>
+                    <span class="feature-tag">Futuristic</span>
+                    <span class="feature-tag">Eye-catching</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="note">
+            <h3>🚀 Choose Your Perfect Orbital Design</h3>
+            <p>Each variant maintains the sophisticated <span class="highlight">quantum orbital concept</span> you loved while offering different moods and brand personalities. All designs feature smooth animations, professional typography, and work perfectly across all devices and backgrounds.</p>
+            <p><strong>Just tell me which variant number (1-5) you prefer</strong> and I'll implement it immediately across your entire NullFlow application!</p>
+        </div>
+    </div>
+</body>
+</html>

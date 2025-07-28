@@ -1,6 +1,60 @@
+import type { Metadata } from "next";
 import { getQuestions } from "../../../../lib/actions/question.action";
 import ClientHomehh from "../../../components/Shared/ClientHomehh";
-import Loading from './loading';
+
+export const metadata: Metadata = {
+  title: "NullPointer | Developer Q&A Community",
+  description:
+    "Join NullPointer, the premier developer community for asking questions, sharing knowledge, and learning together. Get expert answers on programming, web development, mobile apps, and more.",
+  keywords: [
+    "programming",
+    "developer community",
+    "Q&A",
+    "coding help",
+    "software development",
+    "web development",
+    "mobile development",
+    "tech questions",
+  ],
+  authors: [{ name: "NullPointer Team" }],
+  creator: "NullPointer",
+  publisher: "NullPointer",
+  openGraph: {
+    title: "NullPointer | Developer Q&A Community",
+    description:
+      "Join thousands of developers sharing knowledge and solving problems together",
+    url: "https://nullpointer.dev",
+    siteName: "NullPointer",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "NullPointer - Developer Community",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "NullPointer | Developer Q&A Community",
+    description:
+      "Join thousands of developers sharing knowledge and solving problems together",
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
 
 interface Tag {
   _id: string;
@@ -68,9 +122,6 @@ export default async function Home({ searchParams }: SearchParams) {
         ? new Date(q.createdAt).toISOString()
         : new Date().toISOString(),
     }));
-
-  const isLoading = true;
-  if(isLoading) return <Loading />
 
     return (
       <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">

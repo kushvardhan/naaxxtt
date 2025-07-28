@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 
+import EditDeleteAction from "@/components/Shared/EditDeleteAction";
 import { SignedIn } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { Clock, Eye, MessageCircle } from "lucide-react";
@@ -13,8 +14,6 @@ import AllAnswers from "../../../../components/Shared/AllAnswers";
 import Metric from "../../../../components/Shared/Metric";
 import ParseHTML from "../../../../components/Shared/ParseHTML";
 import Votes from "../../../../components/Shared/Votes";
-import EditDeleteAction from "@/components/Shared/EditDeleteAction";
-import Loading from './loading';
 
 interface QuestionDetailPageProps {
   params: Promise<{
@@ -70,9 +69,6 @@ const QuestionDetailPage = async ({
     const page = Number(getParamValue("page", "1"));
     const filter = getParamValue("filter", "10");
 
-    const isLoading = true;
-  if(isLoading) return <Loading />
-
     return (
       <section className="w-full h-[calc(100vh-120px)] mt-18 overflow-y-auto scrollbar-hidden max-w-5xl mx-auto px-4 pt-6 pb-10 text-black dark:text-white">
         <div className="w-full flex justify-end gap-3">
@@ -87,13 +83,15 @@ const QuestionDetailPage = async ({
             hasSaved={mongoUser?.saved?.includes(question?._id)}
           />
 
-        <SignedIn>
-  {question?.author?.clerkId && clerkId === question.author.clerkId && (
-    <EditDeleteAction type="Question" itemId={JSON.stringify(question?._id)} />
-  )}
-</SignedIn>
-
-
+          <SignedIn>
+            {question?.author?.clerkId &&
+              clerkId === question.author.clerkId && (
+                <EditDeleteAction
+                  type="Question"
+                  itemId={JSON.stringify(question?._id)}
+                />
+              )}
+          </SignedIn>
         </div>
         <div className="mt-4 flex  items-center gap-4">
           <Link href={`/profile/${question?.author?.clerkId}`}>

@@ -82,238 +82,133 @@ const UserCard = ({ user, interactedTags = [] }: UserCardProps) => {
   };
 
   return (
-    <div
-      className={`group relative overflow-hidden rounded-3xl transition-all duration-500 w-80 min-w-[320px] max-w-[380px] ${
-        isDark
-          ? "bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 border border-zinc-700/50 hover:border-orange-500/50 shadow-2xl hover:shadow-orange-500/20"
-          : "bg-gradient-to-br from-white via-zinc-50 to-white border border-zinc-200/50 hover:border-orange-400/50 shadow-2xl hover:shadow-orange-500/30"
-      }`}
-    >
-      {/* Animated Background Pattern */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/8 via-transparent to-orange-600/8"></div>
-        <div className="absolute top-0 left-0 w-32 h-32 bg-orange-400/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-0 w-24 h-24 bg-orange-600/10 rounded-full blur-2xl"></div>
-      </div>
-
-      {/* Badge */}
-      {badge && (
-        <div
-          className={`absolute top-5 right-5 ${badge.color} text-white text-sm px-4 py-2 rounded-full font-mono font-bold shadow-xl backdrop-blur-sm z-10 border-2 border-white/20`}
-        >
-          {badge.label}
-        </div>
-      )}
-
-      {/* Card Content */}
-      <div className="relative p-8 flex flex-col space-y-6">
-        {/* Header Section */}
-        <div className="flex items-center space-x-5 w-full">
-          {/* Avatar */}
-          <div className="relative flex-shrink-0">
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full blur-lg opacity-0 group-hover:opacity-80 transition-opacity duration-700"></div>
-            <Image
-              src={
-                user.image ||
-                "https://banner2.cleanpng.com/20180416/gbw/avfp7lvmb.webp"
-              }
-              alt={user.name}
-              width={90}
-              height={90}
-              className="relative w-[90px] h-[90px] rounded-full object-cover border-4 border-white dark:border-zinc-800 shadow-2xl group-hover:border-orange-400 transition-all duration-500"
-            />
-            <div
-              className={`absolute -bottom-2 -right-2 w-8 h-8 rounded-full border-4 shadow-xl ${
-                isDark ? "border-zinc-900" : "border-white"
-              } ${
-                user.reputation > 50 ? "bg-emerald-500" : "bg-zinc-400"
-              } transition-all duration-300 group-hover:scale-125 flex items-center justify-center`}
-            >
-              <div className="w-3 h-3 bg-white rounded-full opacity-90"></div>
-            </div>
+    <Link href={`/profile/${user.clerkId}`}>
+      <div
+        className={`group relative overflow-hidden rounded-xl transition-all duration-300 w-full max-w-sm mx-auto ${
+          isDark
+            ? "bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-800/50"
+            : "bg-white border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50"
+        } shadow-sm hover:shadow-md cursor-pointer`}
+      >
+        {/* Simple Badge */}
+        {badge && (
+          <div
+            className={`absolute top-3 right-3 ${badge.color} text-white text-xs px-2 py-1 rounded-md font-medium`}
+          >
+            {badge.label}
           </div>
+        )}
 
-          {/* User Info */}
-          <div className="flex-1 min-w-0 space-y-2">
-            <h3
-              className={`text-xl font-bold font-mono truncate ${
-                isDark ? "text-zinc-100" : "text-zinc-800"
-              } group-hover:text-orange-400 transition-colors duration-300`}
-            >
-              {user.name}
-            </h3>
-            <p
-              className={`text-base font-mono truncate ${
-                isDark ? "text-orange-400" : "text-orange-600"
-              }`}
-            >
-              @{user.username}
-            </p>
-            <div className="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className={`w-4 h-4 ${
-                  isDark ? "text-zinc-500" : "text-zinc-500"
+        {/* Card Content */}
+        <div className="p-6">
+          {/* Header Section */}
+          <div className="flex items-center space-x-4">
+            {/* Avatar */}
+            <div className="relative flex-shrink-0">
+              <Image
+                src={
+                  user.image ||
+                  "https://banner2.cleanpng.com/20180416/gbw/avfp7lvmb.webp"
+                }
+                alt={user.name}
+                width={60}
+                height={60}
+                className="w-[60px] h-[60px] rounded-full object-cover border-2 border-zinc-200 dark:border-zinc-700"
+              />
+              {user.reputation > 50 && (
+                <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white dark:border-zinc-900 flex items-center justify-center">
+                  <div className="w-2 h-2 bg-white rounded-full"></div>
+                </div>
+              )}
+            </div>
+
+            {/* User Info */}
+            <div className="flex-1 min-w-0">
+              <h3
+                className={`text-lg font-semibold truncate ${
+                  isDark ? "text-zinc-100" : "text-zinc-800"
                 }`}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5"
-                />
-              </svg>
-              <span
-                className={`text-sm font-mono ${
+                {user.name}
+              </h3>
+              <p
+                className={`text-sm truncate ${
                   isDark ? "text-zinc-400" : "text-zinc-600"
                 }`}
               >
-                {formatJoinDate(user.joinedAt)}
-              </span>
+                @{user.username}
+              </p>
             </div>
           </div>
-        </div>
 
-        {/* Stats Section */}
-        <div className="w-full">
-          <div className="flex justify-between items-center gap-4">
-            <div
-              className={`flex-1 text-center p-4 rounded-2xl border-2 transition-all duration-300 hover:scale-105 ${
-                isDark
-                  ? "bg-gradient-to-br from-zinc-800 to-zinc-700 border-zinc-600 group-hover:border-orange-500/50 shadow-lg"
-                  : "bg-gradient-to-br from-zinc-50 to-white border-zinc-300 group-hover:border-orange-400/50 shadow-lg"
-              }`}
-            >
+          {/* Stats Section */}
+          <div className="mt-4 grid grid-cols-2 gap-4">
+            <div className="text-center">
               <div
-                className={`text-3xl font-bold font-mono mb-1 ${
-                  isDark ? "text-orange-400" : "text-orange-600"
+                className={`text-lg font-bold ${
+                  isDark ? "text-zinc-100" : "text-zinc-800"
                 }`}
               >
                 {user.reputation}
               </div>
               <div
-                className={`text-sm font-mono uppercase tracking-wider font-semibold ${
-                  isDark ? "text-zinc-400" : "text-zinc-600"
+                className={`text-xs ${
+                  isDark ? "text-zinc-500" : "text-zinc-500"
                 }`}
               >
                 Reputation
               </div>
             </div>
-
-            <div
-              className={`flex-1 text-center p-4 rounded-2xl border-2 transition-all duration-300 hover:scale-105 ${
-                isDark
-                  ? "bg-gradient-to-br from-zinc-800 to-zinc-700 border-zinc-600 group-hover:border-orange-500/50 shadow-lg"
-                  : "bg-gradient-to-br from-zinc-50 to-white border-zinc-300 group-hover:border-orange-400/50 shadow-lg"
-              }`}
-            >
+            <div className="text-center">
               <div
-                className={`text-3xl font-bold font-mono mb-1 ${
-                  isDark ? "text-orange-400" : "text-orange-600"
+                className={`text-lg font-bold ${
+                  isDark ? "text-zinc-100" : "text-zinc-800"
                 }`}
               >
-                {user.saved?.length || 0}
+                {daysSinceJoined}
               </div>
               <div
-                className={`text-sm font-mono uppercase tracking-wider font-semibold ${
-                  isDark ? "text-zinc-400" : "text-zinc-600"
+                className={`text-xs ${
+                  isDark ? "text-zinc-500" : "text-zinc-500"
                 }`}
               >
-                Saved
+                Days Active
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Location Section */}
-        {user.location && (
-          <div className="w-full">
-            <div
-              className={`flex items-center justify-center gap-3 p-3 rounded-xl border ${
-                isDark
-                  ? "bg-zinc-800/30 border-zinc-700"
-                  : "bg-zinc-50/50 border-zinc-200"
-              }`}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className={`w-5 h-5 ${
-                  isDark ? "text-orange-400" : "text-orange-600"
-                }`}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
-                />
-              </svg>
-              <span
-                className={`text-base font-mono font-medium ${
-                  isDark ? "text-zinc-300" : "text-zinc-700"
-                }`}
-              >
-                {user.location}
-              </span>
+          {/* Tags Section */}
+          {interactedTags && interactedTags.length > 0 && (
+            <div className="mt-4">
+              <div className="flex flex-wrap gap-1">
+                {interactedTags.slice(0, 3).map((tag) => (
+                  <Link
+                    key={tag._id}
+                    href={`/tags/${tag._id}`}
+                    className={`px-2 py-1 text-xs rounded-md transition-colors ${
+                      isDark
+                        ? "bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
+                        : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+                    }`}
+                  >
+                    {tag.name}
+                  </Link>
+                ))}
+                {interactedTags.length > 3 && (
+                  <span
+                    className={`px-2 py-1 text-xs rounded-md ${
+                      isDark ? "text-zinc-500" : "text-zinc-500"
+                    }`}
+                  >
+                    +{interactedTags.length - 3}
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
-        )}
-
-        {/* Action Buttons */}
-        <div className="w-full flex gap-4">
-          {user.portfolioWebsite && (
-            <Link
-              href={user.portfolioWebsite}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`flex items-center justify-center gap-2 p-4 rounded-2xl transition-all duration-300   hover:rotate-3 ${
-                isDark
-                  ? "text-orange-400  hover:bg-orange-500/10 hover:shadow-xl hover:shadow-orange-500/20"
-                  : "text-orange-600  hover:bg-orange-50 hover:shadow-xl hover:shadow-orange-500/30"
-              }`}
-              title="Portfolio Website"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244"
-                />
-              </svg>
-              <span className="text-xl"></span>
-            </Link>
           )}
-          <Link
-            href={`/profile/${user.clerkId}`}
-            className={`flex-1 text-center py-4 px-6 rounded-2xl font-mono text-base font-bold transition-all duration-300  ${
-              isDark
-                ? "bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600 text-white hover:from-orange-500 hover:via-orange-400 hover:to-orange-500 shadow-lg shadow-orange-500/25"
-                : "bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 text-white hover:from-orange-400 hover:via-orange-500 hover:to-orange-400 shadow-lg shadow-orange-500/25"
-            }`}
-          >
-            View Profile
-          </Link>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

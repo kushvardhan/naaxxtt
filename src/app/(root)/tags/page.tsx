@@ -1,7 +1,6 @@
 import TagsClient from "@/components/Shared/TagsClient";
 import type { Metadata } from "next";
 import { getAllTags } from "../../../../lib/actions/tag.action";
-import Loading from './loading';
 
 export interface Tag {
   _id: string;
@@ -13,7 +12,13 @@ export interface Tag {
 }
 
 export const metadata: Metadata = {
-  title: "NullPointer | Tags",
+  title: "Programming Tags | NullPointer",
+  description: "Explore programming tags and technologies on NullPointer. Find questions and discussions about React, JavaScript, Python, Node.js, and hundreds of other technologies.",
+  keywords: ["programming tags", "technology topics", "coding categories", "development frameworks", "programming languages"],
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 interface SearchParams {
@@ -40,9 +45,6 @@ const TagsPage = async ({ searchParams }: SearchParams) => {
       page,
       pageSize: 10,
     });
-
-    const isLoading = true;
-  if(isLoading) return <Loading />
 
     return (
       <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">

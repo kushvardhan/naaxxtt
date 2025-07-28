@@ -1,18 +1,30 @@
+import type { Metadata } from "next";
 import QuestionsClient from "@/components/Shared/QuestionsClient";
-import Loading from './loading';
+
+export const metadata: Metadata = {
+  title: "All Questions | NullPointer",
+  description: "Browse all programming questions on NullPointer. Find answers to coding problems, learn from community discussions, and discover solutions to technical challenges.",
+  keywords: ["programming questions", "coding problems", "technical discussions", "developer Q&A", "software development help"],
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 // Mock questions data for UI development
 const mockQuestions = [
   {
     _id: "1",
     title: "How to implement authentication in Next.js with Clerk?",
-    content: "I'm building a Next.js application and want to implement authentication using Clerk...",
+    content:
+      "I'm building a Next.js application and want to implement authentication using Clerk...",
     author: {
       _id: "user1",
       clerkId: "user_123",
       name: "John Doe",
       username: "johndoe",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+      image:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
       reputation: 1250,
     },
     tags: [
@@ -29,13 +41,15 @@ const mockQuestions = [
   {
     _id: "2",
     title: "Best practices for state management in React applications?",
-    content: "I'm working on a large React application and struggling with state management...",
+    content:
+      "I'm working on a large React application and struggling with state management...",
     author: {
       _id: "user2",
       clerkId: "user_456",
       name: "Jane Smith",
       username: "janesmith",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+      image:
+        "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
       reputation: 2840,
     },
     tags: [
@@ -52,13 +66,15 @@ const mockQuestions = [
   {
     _id: "3",
     title: "How to optimize MongoDB queries for better performance?",
-    content: "My MongoDB queries are running slowly and I need to optimize them...",
+    content:
+      "My MongoDB queries are running slowly and I need to optimize them...",
     author: {
       _id: "user3",
       clerkId: "user_789",
       name: "Mike Johnson",
       username: "mikej",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+      image:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
       reputation: 1890,
     },
     tags: [
@@ -75,13 +91,15 @@ const mockQuestions = [
   {
     _id: "4",
     title: "TypeScript generics: When and how to use them effectively?",
-    content: "I'm learning TypeScript and having trouble understanding when to use generics...",
+    content:
+      "I'm learning TypeScript and having trouble understanding when to use generics...",
     author: {
       _id: "user4",
       clerkId: "user_101",
       name: "Sarah Wilson",
       username: "sarahw",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+      image:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
       reputation: 945,
     },
     tags: [
@@ -104,7 +122,8 @@ const mockQuestions = [
       clerkId: "user_202",
       name: "Alex Chen",
       username: "alexc",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+      image:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
       reputation: 1567,
     },
     tags: [
@@ -124,15 +143,14 @@ const QuestionsPage = async () => {
   try {
     // In a real app, you would fetch the questions data here
     // const questions = await getAllQuestions();
-    
-    const isLoading = true;
-  if(isLoading) return <Loading />
+
     return (
-    <>
-    <div className='w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden'>
-    <QuestionsClient questions={mockQuestions} /> 
-    </div>
-    </>)
+      <>
+        <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">
+          <QuestionsClient questions={mockQuestions} />
+        </div>
+      </>
+    );
   } catch (error) {
     console.error("Error loading questions:", error);
     return <QuestionsClient questions={[]} />;

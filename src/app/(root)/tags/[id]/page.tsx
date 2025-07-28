@@ -60,8 +60,7 @@ const Page = async ({ params, searchParams }: URLProps) => {
     }
   }
 
-  const isLoading = true;
-  if(isLoading) return <Loading />
+
 
   return (
     <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">
@@ -77,7 +76,7 @@ const Page = async ({ params, searchParams }: URLProps) => {
           result.questions.map((que) => (
             <div
               key={que._id}
-              className="w-full rounded-xl cursor-pointer border p-4 shadow-sm transition-all duration-200 hover:shadow-lg bg-white border-zinc-300 shadow-md shadow-zinc-400 dark:bg-zinc-950 dark:border-zinc-700 dark:shadow-zinc-800"
+              className="w-full rounded-xl cursor-pointer border p-4 shadow-md transition-all duration-200 hover:shadow-lg bg-white border-zinc-300 shadow-zinc-400 dark:bg-zinc-950 dark:border-zinc-700 dark:shadow-zinc-800"
             >
               <Link href={`/question/${que._id}`}>
                 <h2 className="text-base sm:text-lg hover:underline font-semibold line-clamp-2 break-words text-zinc-800 hover:text-blue-700 dark:text-zinc-100 dark:hover:text-blue-300">

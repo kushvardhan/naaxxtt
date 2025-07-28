@@ -38,9 +38,16 @@ const TopNav = () => {
       <div className="flex items-center gap-1 px-3">
         <Link
           href="/"
-          className="font-black font-mono font-spaceGrotesk lg:tracking-wide text-4xl lg:text-5xl bg-gradient-to-r from-amber-300 via-orange-400 to-orange-600 bg-clip-text text-transparent"
+          className="flex items-center gap-2 transition-transform hover:scale-105"
         >
-          NullFlow
+          <Image
+            src="/logo-compact.svg"
+            alt="NullFlow Logo"
+            width={120}
+            height={40}
+            className="h-8 w-auto lg:h-10"
+            priority
+          />
         </Link>
       </div>
 

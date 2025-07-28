@@ -59,28 +59,6 @@ const UserCard = ({ user, interactedTags = [] }: UserCardProps) => {
 
   const badge = getUserBadge();
 
-  // Format join date
-  const formatJoinDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const month = monthNames[date.getMonth()];
-    const year = date.getFullYear();
-    return `${month} ${year}`;
-  };
-
   return (
     <Link href={`/profile/${user.clerkId}`}>
       <div

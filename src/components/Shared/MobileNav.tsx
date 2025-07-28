@@ -204,11 +204,15 @@ const MobileNav = () => {
               : "bg-white text-black"
           }`}
         >
-          <Link
-            href="/"
-            className="font-black font-mono font-spaceGrotesk mt-2  lg:tracking-wide text-4xl lg:text-5xl bg-gradient-to-r from-amber-300 via-orange-400 to-orange-600 bg-clip-text text-transparent"
-          >
-            NullFlow
+          <Link href="/" className="flex items-center mt-2">
+            <Image
+              src="/logo-compact.svg"
+              alt="NullFlow Logo"
+              width={120}
+              height={40}
+              className="h-10 w-auto"
+              priority
+            />
           </Link>
 
           <nav className="mt-8 flex flex-col gap-3">

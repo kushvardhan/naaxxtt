@@ -20,9 +20,29 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "NullFlow",
+  title: "NullFlow | Developer Q&A Community",
   description:
     "NullFlow is a developer community platform focused on solving coding problems and debugging efficiently. It connects programmers to share knowledge, find practical solutions, and collaborate to overcome coding challenges.",
+  keywords: [
+    "programming",
+    "developer community",
+    "Q&A",
+    "coding help",
+    "software development",
+    "debugging",
+    "null pointer",
+    "stack overflow alternative",
+  ],
+  authors: [{ name: "NullFlow Team" }],
+  creator: "NullFlow",
+  publisher: "NullFlow",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-16x16.svg", sizes: "16x16", type: "image/svg+xml" },
+    ],
+    apple: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
@@ -38,6 +58,8 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1"
           suppressHydrationWarning
         />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/favicon.svg" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} antialiased`}

@@ -304,8 +304,9 @@ export default function ClientHomehh({
               {/* Tags */}
               <div className="mt-3 flex flex-wrap gap-2">
                 {que.tags.map((tag) => (
-                  <span
+                  <Link
                     key={tag._id}
+                    href={`/tags/${tag._id}`}
                     title={tag.name}
                     className={`rounded-md cursor-pointer px-2 py-1 text-xs font-mono
                       ${
@@ -316,7 +317,7 @@ export default function ClientHomehh({
                     `}
                   >
                     {tag.name}
-                  </span>
+                  </Link>
                 ))}
               </div>
 

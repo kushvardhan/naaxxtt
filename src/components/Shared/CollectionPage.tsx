@@ -66,8 +66,20 @@ function formatDate(dateString: string): string {
       ? "rd"
       : "th";
 
-  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   const month = monthNames[date.getMonth()];
   const year = date.getFullYear();
 
@@ -145,7 +157,9 @@ export default function ClientHomeQuestions({ mappedQuestions }: Props) {
               <Link href={`/question/${que._id}`}>
                 <h2
                   className={`text-base sm:text-lg hover:underline font-semibold line-clamp-2 break-words ${
-                    isDark ? "text-zinc-100 hover:text-blue-300" : "text-zinc-800 hover:text-blue-700"
+                    isDark
+                      ? "text-zinc-100 hover:text-blue-300"
+                      : "text-zinc-800 hover:text-blue-700"
                   }`}
                 >
                   {que.title}
@@ -154,17 +168,18 @@ export default function ClientHomeQuestions({ mappedQuestions }: Props) {
 
               <div className="mt-3 flex flex-wrap gap-2">
                 {que.tags.map((tag) => (
-                  <span
+                  <Link
                     key={tag._id}
-                    title={tag.name }
-                    className={`rounded-md px-2 py-1 text-xs font-mono ${
+                    href={`/tags/${tag._id}`}
+                    title={tag.name}
+                    className={`rounded-md px-2 py-1 text-xs font-mono transition-colors ${
                       isDark
                         ? "bg-zinc-800 text-white hover:bg-zinc-700 border-1 border-zinc-600"
                         : "bg-zinc-200 text-zinc-950 hover:bg-zinc-300"
                     }`}
                   >
                     {tag.name}
-                  </span>
+                  </Link>
                 ))}
               </div>
 

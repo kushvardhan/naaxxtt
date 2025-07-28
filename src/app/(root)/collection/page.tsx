@@ -2,16 +2,26 @@ import { auth } from "@clerk/nextjs/server";
 import type { Metadata } from "next";
 import { getSavedQuestions } from "../../../../lib/actions/user.action";
 import CollectionPage from "../../../components/Shared/CollectionPage";
-import Loading from './loading';
 
+export const metadata: Metadata = {
+  title: "Saved Questions | NullPointer",
+  description:
+    "Access your saved programming questions and bookmarked discussions. Keep track of important solutions and revisit helpful answers.",
+  keywords: [
+    "saved questions",
+    "bookmarks",
+    "programming collection",
+    "developer resources",
+  ],
+  robots: {
+    index: false, // Private collection page
+    follow: false,
+  },
+};
 
 export interface SearchParamsProps {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }
-
-export const metadata: Metadata = {
-  title: "NullFlow | Collection",
-};
 
 const Page = async ({ searchParams }: SearchParamsProps) => {
   const { userId: clerkId } = await auth();
@@ -57,9 +67,6 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
     : [];
 
   // console.log('mapped collection: ', mappedQuestions);
-
-  const isLoading = true;
-  if(isLoading) return <Loading />
 
   return (
     <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">

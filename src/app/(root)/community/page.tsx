@@ -1,7 +1,6 @@
 import CommunityClient from "@/components/Shared/CommunityClient";
 import type { Metadata } from "next";
 import { getAllUser } from "../../../../lib/actions/user.action";
-import Loading from './loading';
 
 export interface User {
   _id: string;
@@ -19,7 +18,20 @@ export interface User {
 }
 
 export const metadata: Metadata = {
-  title: "NullPointer | Community",
+  title: "Developer Community | NullPointer",
+  description:
+    "Connect with thousands of developers in the NullPointer community. Discover talented programmers, share knowledge, and build your professional network.",
+  keywords: [
+    "developer community",
+    "programmers",
+    "software engineers",
+    "tech professionals",
+    "networking",
+  ],
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 interface SearchParams {
@@ -40,9 +52,6 @@ const CommunityPage = async ({ searchParams }: SearchParams) => {
     filter,
   });
 
-  const isLoading = true;
-  if(isLoading) return <Loading />
- 
   return (
     <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">
       <CommunityClient

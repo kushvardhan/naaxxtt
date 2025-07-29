@@ -7,6 +7,8 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/Shared/sheet";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

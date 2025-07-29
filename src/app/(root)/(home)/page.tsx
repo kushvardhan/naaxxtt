@@ -3,7 +3,7 @@ import { getQuestions } from "../../../../lib/actions/question.action";
 import ClientHomehh from "../../../components/Shared/ClientHomehh";
 
 export const metadata: Metadata = {
-  title: "NullPointer | Developer Q&A Community",
+  title: "NullPointer | Home",
   description:
     "Join NullPointer, the premier developer community for asking questions, sharing knowledge, and learning together. Get expert answers on programming, web development, mobile apps, and more.",
   keywords: [

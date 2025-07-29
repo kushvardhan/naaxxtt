@@ -2,6 +2,7 @@
 
 import { SignedIn, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
+import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
 import MobileNav from "./MobileNav";

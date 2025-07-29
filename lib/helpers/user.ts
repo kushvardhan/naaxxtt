@@ -20,7 +20,7 @@ export async function getOrCreateUser() {
 
   // If user doesn't exist by clerkId, check if they exist by email
   if (!mongoUser && clerkUser.emailAddresses[0]?.emailAddress) {
-    console.log("User not found by clerkId, checking by email...");
+    // console.log("User not found by clerkId, checking by email...");
     try {
       await connectToDatabase();
       const existingUser = await User.findOne({
@@ -28,7 +28,7 @@ export async function getOrCreateUser() {
       }).lean();
 
       if (existingUser) {
-        console.log("Found existing user by email, updating clerkId...");
+        // console.log("Found existing user by email, updating clerkId...");
         // Update the existing user with the new clerkId
         await updateUser({
           clerkId: existingUser.clerkId || clerkUser.id,
@@ -54,7 +54,7 @@ export async function getOrCreateUser() {
 
   // If user still doesn't exist, create them
   if (!mongoUser) {
-    console.log("User not found in MongoDB, creating new user...");
+    // console.log("User not found in MongoDB, creating new user...");
 
     // Generate a unique username
     const baseUsername =
@@ -97,7 +97,7 @@ export async function getOrCreateUser() {
         error.message.includes("E11000") ||
         error.message.includes("duplicate key")
       ) {
-        console.log("Duplicate key error, attempting to find existing user...");
+        // console.log("Duplicate key error, attempting to find existing user...");
         try {
           await connectToDatabase();
 
@@ -114,16 +114,16 @@ export async function getOrCreateUser() {
           }
 
           if (existingUser) {
-            console.log(
-              "Found existing user after duplicate error, updating clerkId..."
-            );
+            // console.log(
+            //   "Found existing user after duplicate error, updating clerkId..."
+            // );
             await User.findByIdAndUpdate(existingUser._id, {
               clerkId: clerkUser.id,
             });
 
             mongoUser = await getUserById({ userId: clerkUser.id });
             if (mongoUser) {
-              console.log("Successfully recovered existing user");
+              // console.log("Successfully recovered existing user");
               return mongoUser;
             }
           }

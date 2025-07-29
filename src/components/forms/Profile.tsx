@@ -33,6 +33,8 @@ const Profile = ({ clerkId, user }: Props) => {
 
   const [mounted, setMounted] = useState(false);
 
+  console.log('user PARSED: ', parsedUser);
+
   const form = useForm<z.infer<typeof ProfileSchema>>({
     resolver: zodResolver(ProfileSchema),
     defaultValues: {

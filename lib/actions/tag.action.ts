@@ -141,7 +141,7 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
         ],
       })
       .lean();
-    console.log("GetQuestionbyID from DB: ", tag);
+    // console.log("GetQuestionbyID from DB: ", tag);
 
     if (!tag) {
       throw new Error("Tag not found");

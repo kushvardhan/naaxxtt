@@ -42,7 +42,7 @@ export async function getUserInfo(params: GetUserByIdParams) {
     const user = await User.findOne({ clerkId: userId });
 
     if (!user) {
-      console.log("User not found for clerkId:", userId);
+      // console.log("User not found for clerkId:", userId);
       return {
         user: null,
         totalQuestions: 0,
@@ -116,13 +116,13 @@ export async function getUserInfo(params: GetUserByIdParams) {
 
     const badgeCounts = assignBadges({ criteria });
 
-    console.log(
-      user,
-      totalQuestions,
-      totalAnswers,
-      badgeCounts,
-      user.reputation
-    );
+    // console.log(
+    //   user,
+    //   totalQuestions,
+    //   totalAnswers,
+    //   badgeCounts,
+    //   user.reputation
+    // );
 
     return {
       user,
@@ -285,7 +285,7 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
       })
       .lean();
 
-    console.log("user from DB : ", user);
+    // console.log("user from DB : ", user);
 
     const isNext = user.saved.length > pageSize;
 
@@ -305,11 +305,11 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
 export async function createUser(userData: CreateUserParams) {
   try {
     await connectToDatabase();
-    console.log("Creating USERRR");
+    // console.log("Creating USERRR");
 
     const user = await User.create(userData);
 
-    console.log("User created: ", user);
+    // console.log("User created: ", user);
 
     // Convert to plain object for client components
     return {
@@ -334,7 +334,7 @@ export async function updateUser(params: UpdateUserParams) {
       new: true,
     });
 
-    console.log("User updated!!");
+    // console.log("User updated!!");
 
     revalidatePath(path);
   } catch (error) {
@@ -361,7 +361,7 @@ export async function deleteUser(params: DeleteUserParams) {
 
     const deletedUser = await User.findByIdAndDelete(user._id).lean();
 
-    console.log(deletedUser, "deleted.");
+    // console.log(deletedUser, "deleted.");
 
     if (!deletedUser) return null;
 
@@ -428,13 +428,3 @@ export async function getUserAnswers(params: GetUserStatsParams) {
     throw error;
   }
 }
-
-// export async function User(params:GetAllUsersParams){
-//   try{
-//     await connectToDatabase();
-
-//   }catch(err){
-//     console.log("Error getting users: ",err);
-//     throw err;
-//   }
-// }

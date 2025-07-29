@@ -63,7 +63,7 @@ export interface AnswerVoteParams {
 
 export interface CreateQuestionParams {
   title: string;
-  content: string;
+  explanation: string;
   tags: string[];
   author: Schema.Types.ObjectId | IUser;
   path: string;

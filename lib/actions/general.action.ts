@@ -18,7 +18,7 @@ export async function globalSearch(params: SearchParams) {
     await connectToDatabase();
 
     const { query, type } = params;
-    console.log("🔍 GlobalSearch Action: ", query, type);
+    // console.log("🔍 GlobalSearch Action: ", query, type);
 
     // Early return for empty queries
     if (!query || query.trim().length < 2) {
@@ -94,7 +94,7 @@ export async function globalSearch(params: SearchParams) {
       }));
     }
 
-    console.log("🔍 Search results:", results.length, "items");
+    // console.log("🔍 Search results:", results.length, "items");
     return JSON.stringify(results);
   } catch (error) {
     console.log(`Error fetching global results, ${error}`);

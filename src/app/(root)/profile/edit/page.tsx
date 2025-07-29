@@ -7,7 +7,11 @@ export const metadata: Metadata = {
   title: "NullFlow | Edit Profile",
 };
 
-const Page = async ({ params }: { params: { id: string } }) => {
+interface ParamsProps {
+  params: { id: string };
+}
+
+const Page = async ({ params }: ParamsProps) => {
   const { userId } = await auth();
   console.log("User id of edit page: ", userId);
 

@@ -61,132 +61,98 @@ const UserCard = ({ user, interactedTags = [] }: UserCardProps) => {
 
   return (
     <Link href={`/profile/${user.clerkId}`}>
+  <div
+    className={`group relative overflow-hidden rounded-xl transition-all duration-300 w-full min-w-[250px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto ${
+      isDark
+        ? "bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-800/50"
+        : "bg-white border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50"
+    } shadow-sm hover:shadow-md cursor-pointer`}
+  >
+    {/* Badge */}
+    {badge && (
       <div
-        className={`group relative overflow-hidden rounded-xl transition-all duration-300 w-full max-w-sm mx-auto ${
-          isDark
-            ? "bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-800/50"
-            : "bg-white border border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50"
-        } shadow-sm hover:shadow-md cursor-pointer`}
+        className={`absolute top-3 right-3 ${badge.color} text-white text-xs px-2 py-1 rounded-md font-medium`}
       >
-        {/* Simple Badge */}
-        {badge && (
-          <div
-            className={`absolute top-3 right-3 ${badge.color} text-white text-xs px-2 py-1 rounded-md font-medium`}
-          >
-            {badge.label}
-          </div>
-        )}
+        {badge.label}
+      </div>
+    )}
 
-        {/* Card Content */}
-        <div className="p-6">
-          {/* Header Section */}
-          <div className="flex items-center space-x-4">
-            {/* Avatar */}
-            <div className="relative flex-shrink-0">
-              <Image
-                src={
-                  user.image ||
-                  "https://banner2.cleanpng.com/20180416/gbw/avfp7lvmb.webp"
-                }
-                alt={user.name}
-                width={60}
-                height={60}
-                className="w-[60px] h-[60px] rounded-full object-cover border-2 border-zinc-200 dark:border-zinc-700"
-              />
-              {user.reputation > 50 && (
-                <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white dark:border-zinc-900 flex items-center justify-center">
-                  <div className="w-2 h-2 bg-white rounded-full"></div>
-                </div>
-              )}
-            </div>
-
-            {/* User Info */}
-            <div className="flex-1 min-w-0">
-              <h3
-                className={`text-lg font-semibold truncate ${
-                  isDark ? "text-zinc-100" : "text-zinc-800"
-                }`}
-              >
-                {user.name}
-              </h3>
-              <p
-                className={`text-sm truncate ${
-                  isDark ? "text-zinc-400" : "text-zinc-600"
-                }`}
-              >
-                @{user.username}
-              </p>
-            </div>
-          </div>
-
-          {/* Stats Section */}
-          <div className="mt-4 grid grid-cols-2 gap-4">
-            <div className="text-center">
-              <div
-                className={`text-lg font-bold ${
-                  isDark ? "text-zinc-100" : "text-zinc-800"
-                }`}
-              >
-                {user.reputation}
-              </div>
-              <div
-                className={`text-xs ${
-                  isDark ? "text-zinc-500" : "text-zinc-500"
-                }`}
-              >
-                Reputation
-              </div>
-            </div>
-            <div className="text-center">
-              <div
-                className={`text-lg font-bold ${
-                  isDark ? "text-zinc-100" : "text-zinc-800"
-                }`}
-              >
-                {daysSinceJoined}
-              </div>
-              <div
-                className={`text-xs ${
-                  isDark ? "text-zinc-500" : "text-zinc-500"
-                }`}
-              >
-                Days Active
-              </div>
-            </div>
-          </div>
-
-          {/* Tags Section */}
-          {interactedTags && interactedTags.length > 0 && (
-            <div className="mt-4">
-              <div className="flex flex-wrap gap-1">
-                {interactedTags.slice(0, 3).map((tag) => (
-                  <Link
-                    key={tag._id}
-                    href={`/tags/${tag._id}`}
-                    className={`px-2 py-1 text-xs rounded-md transition-colors ${
-                      isDark
-                        ? "bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
-                        : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
-                    }`}
-                  >
-                    {tag.name}
-                  </Link>
-                ))}
-                {interactedTags.length > 3 && (
-                  <span
-                    className={`px-2 py-1 text-xs rounded-md ${
-                      isDark ? "text-zinc-500" : "text-zinc-500"
-                    }`}
-                  >
-                    +{interactedTags.length - 3}
-                  </span>
-                )}
-              </div>
+    <div className="p-6">
+      {/* Header */}
+      <div className="flex items-center space-x-4">
+        <div className="relative flex-shrink-0">
+          <Image
+            src={
+              user.image ||
+              "https://banner2.cleanpng.com/20180416/gbw/avfp7lvmb.webp"
+            }
+            alt={user.name}
+            width={60}
+            height={60}
+            className="w-[60px] h-[60px] rounded-full object-cover border-2 border-zinc-200 dark:border-zinc-700"
+          />
+          {user.reputation > 50 && (
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white dark:border-zinc-900 flex items-center justify-center">
+              <div className="w-2 h-2 bg-white rounded-full"></div>
             </div>
           )}
         </div>
+
+        <div className="flex-1 min-w-0">
+          <h3 className={`text-lg font-semibold truncate ${isDark ? "text-zinc-100" : "text-zinc-800"}`}>
+            {user.name}
+          </h3>
+          <p className={`text-sm truncate ${isDark ? "text-zinc-400" : "text-zinc-600"}`}>
+            @{user.username}
+          </p>
+        </div>
       </div>
-    </Link>
+
+      {/* Stats */}
+      <div className="mt-4 grid grid-cols-2 gap-4">
+        <div className="text-center">
+          <div className={`text-lg font-bold ${isDark ? "text-zinc-100" : "text-zinc-800"}`}>
+            {user.reputation}
+          </div>
+          <div className="text-xs text-zinc-500">Reputation</div>
+        </div>
+        <div className="text-center">
+          <div className={`text-lg font-bold ${isDark ? "text-zinc-100" : "text-zinc-800"}`}>
+            {daysSinceJoined}
+          </div>
+          <div className="text-xs text-zinc-500">Days Active</div>
+        </div>
+      </div>
+
+      {/* Tags */}
+      {interactedTags && interactedTags.length > 0 && (
+        <div className="mt-4">
+          <div className="flex flex-wrap gap-1">
+            {interactedTags.slice(0, 3).map((tag) => (
+              <Link
+                key={tag._id}
+                href={`/tags/${tag._id}`}
+                className={`px-2 py-1 text-xs rounded-md transition-colors ${
+                  isDark
+                    ? "bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
+                    : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+                }`}
+              >
+                {tag.name}
+              </Link>
+            ))}
+            {interactedTags.length > 3 && (
+              <span className="px-2 py-1 text-xs rounded-md text-zinc-500">
+                +{interactedTags.length - 3}
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+</Link>
+
   );
 };
 

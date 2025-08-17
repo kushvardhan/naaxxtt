@@ -211,7 +211,7 @@ const MobileNav = () => {
               alt="NullFlow Orbital Logo"
               width={40}
               height={40}
-              className="h-13 w-13"
+              className="h-13 w-13 sm:block md:block"
               priority
             />
             <span className="text-4xl sm:hidden md:hidden md:text-6xl font-black font-mono text-orange-500">NullFlow</span>

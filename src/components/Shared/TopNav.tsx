@@ -46,7 +46,7 @@ const TopNav = () => {
             alt="NullFlow Orbital Logo"
             width={40}
             height={40}
-            className="h-10 w-10 sm:h-12 sm:w-12"
+            className="h-10 w-10 sm:h-13 sm:w-13 sm:block md:block"
             priority
           />
           <h1 className="md:hidden sm:hidden text-4xl md:text-6xl font-black font-mono dark:text-orange-500 text-orange-600">

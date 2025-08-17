@@ -2,6 +2,9 @@ import CommunityClient from "@/components/Shared/CommunityClient";
 import type { Metadata } from "next";
 import { getAllUser } from "../../../../lib/actions/user.action";
 
+// Force dynamic rendering for this page
+export const dynamic = "force-dynamic";
+
 export interface User {
   _id: string;
   clerkId: string;

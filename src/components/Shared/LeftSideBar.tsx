@@ -212,7 +212,7 @@ const LeftSB = () => {
             >
               <div
                 className={`transition-transform font-semibold duration-300 ${
-                  isActive ? "scale-110 font-bold text-black" : ""
+                  isActive ? "scale-110 font-bold  text-black" : ""
                 } ${
                   !isActive
                     ? theme?.mode === "dark"

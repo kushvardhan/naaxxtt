@@ -2,6 +2,9 @@ import TagsClient from "@/components/Shared/TagsClient";
 import type { Metadata } from "next";
 import { getAllTags } from "../../../../lib/actions/tag.action";
 
+// Force dynamic rendering for this page
+export const dynamic = "force-dynamic";
+
 export interface Tag {
   _id: string;
   name: string;
@@ -13,8 +16,15 @@ export interface Tag {
 
 export const metadata: Metadata = {
   title: "Programming Tags | NullPointer",
-  description: "Explore programming tags and technologies on NullPointer. Find questions and discussions about React, JavaScript, Python, Node.js, and hundreds of other technologies.",
-  keywords: ["programming tags", "technology topics", "coding categories", "development frameworks", "programming languages"],
+  description:
+    "Explore programming tags and technologies on NullPointer. Find questions and discussions about React, JavaScript, Python, Node.js, and hundreds of other technologies.",
+  keywords: [
+    "programming tags",
+    "technology topics",
+    "coding categories",
+    "development frameworks",
+    "programming languages",
+  ],
   robots: {
     index: true,
     follow: true,

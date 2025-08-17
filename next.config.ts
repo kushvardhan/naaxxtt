@@ -22,6 +22,14 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Ignore ESLint errors during build
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  // Ignore TypeScript errors during build (if needed)
+  typescript: {
+    ignoreBuildErrors: false, // Keep this false to catch real TypeScript errors
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {

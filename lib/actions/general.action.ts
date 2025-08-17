@@ -41,7 +41,7 @@ export async function globalSearch(params: SearchParams) {
       // SEARCH ACROSS EVERYTHING - Use Promise.all for parallel execution
       const searchPromises = modelsAndTypes.map(
         async ({ model, searchField, type }) => {
-          const queryResults = await model
+          const queryResults = await (model as any)
             .find({ [searchField]: regexQuery })
             .select(searchField + " _id clerkId question") // Only select needed fields
             .limit(2)
@@ -73,7 +73,7 @@ export async function globalSearch(params: SearchParams) {
         throw new Error("Invalid search type");
       }
 
-      const queryResults = await modelInfo.model
+      const queryResults = await (modelInfo.model as any)
         .find({ [modelInfo.searchField]: regexQuery })
         .select(modelInfo.searchField + " _id clerkId question") // Only select needed fields
         .limit(8)

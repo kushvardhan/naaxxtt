@@ -158,13 +158,13 @@ export async function getAllUser(params: GetAllUsersParams = {}) {
       ];
     }
 
-    let sortOptions = { createdAt: -1 };
+    let sortOptions: any = { createdAt: -1 };
     switch (filter) {
       case "new_users":
-        sortOptions = { joinedAt: -1 };
+        sortOptions = { createdAt: -1 }; // Use createdAt instead of joinedAt
         break;
       case "old_users":
-        sortOptions = { joinedAt: 1 };
+        sortOptions = { createdAt: 1 }; // Use createdAt instead of joinedAt
         break;
       case "top_contributors":
         sortOptions = { reputation: -1 };
@@ -209,7 +209,9 @@ export async function toggleSaveQuestion(params?: ToggleSaveQuestionParams) {
       throw new Error("User not found");
     }
 
-    const isQuestionSaved = user.saved.includes(questionId);
+    const isQuestionSaved = user.saved.some(
+      (id: any) => id.toString() === questionId
+    );
 
     if (isQuestionSaved) {
       // remove question from saved

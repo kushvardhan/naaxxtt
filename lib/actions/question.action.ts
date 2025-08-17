@@ -28,11 +28,10 @@ export async function getQuestions(params: GetQuestionsParams) {
     const query: FilterQuery<typeof Question> = {};
 
     if (searchQuery) {
-      query.$or =[
-  { title: { $regex: new RegExp(searchQuery, "i") } },
-  { explanation: { $regex: new RegExp(searchQuery, "i") } },
-];
-
+      query.$or = [
+        { title: { $regex: new RegExp(searchQuery, "i") } },
+        { explanation: { $regex: new RegExp(searchQuery, "i") } },
+      ];
     }
 
     let sortOptions: Record<string, 1 | -1> = {};
@@ -77,8 +76,12 @@ export async function getQuestions(params: GetQuestionsParams) {
       })),
       author: {
         ...question.author,
-        _id: question.author._id.toString(),
-        saved: question.author.saved.map((id: any) => id.toString()),
+        _id:
+          (question.author as any)?._id?.toString() ||
+          question.author.toString(),
+        saved:
+          (question.author as any)?.saved?.map((id: any) => id.toString()) ||
+          [],
       },
       upvotes: question.upvotes.map((id: any) => id.toString()),
       downvotes: question.downvotes.map((id: any) => id.toString()),
@@ -110,16 +113,16 @@ export async function createQuestion(params: CreateQuestionParams) {
 
     for (const tag of tags) {
       const existingTag = await Tag.findOneAndUpdate(
-        { name: { $regex: new RegExp(`^${tag}$`, "i") } }, 
+        { name: { $regex: new RegExp(`^${tag}$`, "i") } },
         { $setOnInsert: { name: tag }, $push: { questions: question._id } },
         { upsert: true, new: true }
-      )
+      );
 
       tagDocuments.push(existingTag._id);
     }
 
     await Question.findByIdAndUpdate(question._id, {
-      $push: { tags: { $each: tagDocuments }}
+      $push: { tags: { $each: tagDocuments } },
     });
 
     // Create an interaction record for the user's ask_question action
@@ -128,12 +131,12 @@ export async function createQuestion(params: CreateQuestionParams) {
       action: "ask_question",
       question: question._id,
       tags: tagDocuments,
-    })
+    });
 
     // Increment author's reputation by +5 for creating a question
-    await User.findByIdAndUpdate(author, { $inc: { reputation: 5 }})
+    await User.findByIdAndUpdate(author, { $inc: { reputation: 5 } });
 
-    revalidatePath(path)
+    revalidatePath(path);
   } catch (error) {
     console.log(error);
   }

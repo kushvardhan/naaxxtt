@@ -77,7 +77,7 @@ export async function getOrCreateUser() {
     }
 
     try {
-      mongoUser = await createUser({
+      const createdUser = await createUser({
         clerkId: clerkUser.id,
         name:
           `${clerkUser.firstName || ""}${
@@ -88,6 +88,7 @@ export async function getOrCreateUser() {
         image: clerkUser.imageUrl || "",
         about: "Hello, I'm new here!",
       });
+      mongoUser = await User.findOne({ clerkId: clerkUser.id });
       console.log("User created successfully in MongoDB:", mongoUser);
     } catch (error) {
       console.error("Error creating user in MongoDB:", error);

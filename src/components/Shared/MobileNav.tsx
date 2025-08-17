@@ -209,8 +209,8 @@ const MobileNav = () => {
             <Image
               src="/favicon.svg"
               alt="NullFlow Orbital Logo"
-              width={40}
-              height={40}
+              width={42}
+              height={42}
               className="h-13 w-13 sm:block"
               priority
             />

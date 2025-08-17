@@ -44,12 +44,12 @@ const TopNav = () => {
           <Image
             src="/favicon.svg"
             alt="NullFlow Orbital Logo"
-            width={40}
-            height={40}
-            className="h-10 w-10 sm:h-13 sm:w-13 sm:block"
+            width={42}
+            height={42}
+            className="h-12 w-12 lg:h-14 lg:w-14" 
             priority
           />
-          <h1 className="sm:hidden text-4xl md:text-6xl font-black font-mono dark:text-orange-500 text-orange-600">
+          <h1 className="sm:hidden text-4xl md:text-5xl lg:text-6xl font-black font-mono dark:text-orange-500 text-orange-600">
             NullFlow
           </h1>
         </Link>

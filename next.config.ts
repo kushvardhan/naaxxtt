@@ -3,7 +3,10 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
-      allowedOrigins: ["localhost:3000"],
+      allowedOrigins:
+        process.env.NODE_ENV === "production"
+          ? [process.env.VERCEL_URL || "nullflow.vercel.app"]
+          : ["localhost:3000"],
     },
   },
   serverExternalPackages: ["mongoose"],
@@ -16,7 +19,7 @@ const nextConfig: NextConfig = {
       {
         protocol: "http",
         hostname: "*",
-      }
+      },
     ],
   },
   webpack: (config, { isServer }) => {

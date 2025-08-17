@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import { getSavedQuestions } from "../../../../lib/actions/user.action";
 import CollectionPage from "../../../components/Shared/CollectionPage";
 
+// Force dynamic rendering for this page
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Saved Questions | NullPointer",
   description:

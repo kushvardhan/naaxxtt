@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { getQuestions } from "../../../../lib/actions/question.action";
 import ClientHomehh from "../../../components/Shared/ClientHomehh";
 
+// Force dynamic rendering for this page
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "NullPointer | Home",
   description:

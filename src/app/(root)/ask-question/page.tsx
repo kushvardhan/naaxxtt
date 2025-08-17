@@ -3,6 +3,9 @@ import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getOrCreateUser } from "../../../../lib/helpers/user";
 
+// Force dynamic rendering for this page
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Ask a Question | NullPointer",
   description:

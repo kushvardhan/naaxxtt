@@ -7,9 +7,8 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/Shared/sheet";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
 import { SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useContext } from "react";
@@ -206,15 +205,16 @@ const MobileNav = () => {
               : "bg-white text-black"
           }`}
         >
-          <Link href="/" className="flex items-center mt-2">
+          <Link href="/" className="flex items-center mt-2 gap-3">
             <Image
-              src="/logo-compact.svg"
-              alt="NullFlow Logo"
-              width={120}
+              src="/orbital-favicon.svg"
+              alt="NullFlow Orbital Logo"
+              width={40}
               height={40}
-              className="h-10 w-auto"
+              className="h-10 w-10"
               priority
             />
+            <span className="text-2xl font-bold text-orange-500">NullFlow</span>
           </Link>
 
           <nav className="mt-8 flex flex-col gap-3">

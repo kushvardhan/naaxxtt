@@ -257,15 +257,25 @@ const QuestionTab = async ({ searchParams, userId }: Props) => {
           <div className=" h-full flex w-full flex-col gap-6">
             {result.questions.map((question) => (
               <QuestionCard
-                key={question._id}
-                _id={question._id}
+                key={question._id.toString()}
+                _id={question._id.toString()}
                 title={question.title}
-                tags={question.tags}
-                author={question.author}
+                tags={
+                  (question.tags as any)?.map((tag: any) => ({
+                    _id: tag._id?.toString() || tag.toString(),
+                    name: tag.name || "Unknown",
+                  })) || []
+                }
+                author={{
+                  name: (question.author as any)?.name || "Unknown",
+                  image:
+                    (question.author as any)?.image || "/default-avatar.png",
+                  clerkId: (question.author as any)?.clerkId,
+                }}
                 upvotes={question.upvotes.length}
                 views={question.views}
                 answers={question.answers.length}
-                createdAt={question.createdAt}
+                createdAt={new Date(question.createdAt).toISOString()}
               />
             ))}
 

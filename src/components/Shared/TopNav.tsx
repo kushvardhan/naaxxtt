@@ -1,8 +1,8 @@
 "use client";
 
 import { SignedIn, UserButton } from "@clerk/nextjs";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
 import MobileNav from "./MobileNav";
@@ -39,9 +39,19 @@ const TopNav = () => {
       <div className="flex items-center gap-1 px-3">
         <Link
           href="/"
-          className="flex items-center gap-2 transition-transform hover:scale-105"
+          className="flex items-center gap-3 transition-transform hover:scale-105"
         >
-          <h1 className='text-5xl font-black dark:text-orange-500 text-orange-600'>NullFlow</h1>
+          <Image
+            src="/orbital-favicon.svg"
+            alt="NullFlow Orbital Logo"
+            width={40}
+            height={40}
+            className="h-10 w-10"
+            priority
+          />
+          <h1 className="text-4xl font-black dark:text-orange-500 text-orange-600">
+            NullFlow
+          </h1>
         </Link>
       </div>
 
@@ -51,7 +61,6 @@ const TopNav = () => {
         <ThemeToggleMenu />
         <SignedIn>
           <UserButton
-            afterSignOutUrl="/"
             appearance={{
               elements: {
                 userButtonAvatarBox: `h-14 w-14 sm:h-8 sm:w-8 rounded-full overflow-hidden shadow-sm shadow-white/20 ${

@@ -6,20 +6,28 @@ export const POST = async (request: Request) => {
     await connectToDatabase();
 
     const { question } = await request.json();
-    console.log("🔍 Received question:", question);
+    if (process.env.NODE_ENV === "development") {
+      console.log("🔍 Received question:", question);
+    }
 
     if (!question || question.trim() === "") {
-      console.log("❗ Missing or empty question");
+      if (process.env.NODE_ENV === "development") {
+        console.log("❗ Missing or empty question");
+      }
       return NextResponse.json(
         { error: "Question is required." },
         { status: 400 }
       );
     }
 
-    console.log("🔑 API Key Loaded:", process.env.OPENAI_API_KEY);
+    if (process.env.NODE_ENV === "development") {
+      console.log("🔑 API Key present:", !!process.env.OPENAI_API_KEY);
+    }
 
     if (!process.env.OPENAI_API_KEY) {
-      console.log("❗ OPENAI_API_KEY is not configured");
+      if (process.env.NODE_ENV === "development") {
+        console.log("❗ OPENAI_API_KEY is not configured");
+      }
       return NextResponse.json(
         {
           error:
@@ -29,7 +37,9 @@ export const POST = async (request: Request) => {
       );
     }
 
-    console.log("📡 Sending request to OpenAI API...");
+    if (process.env.NODE_ENV === "development") {
+      console.log("📡 Sending request to OpenAI API...");
+    }
 
     const openAIResponse = await fetch(
       "https://api.openai.com/v1/chat/completions",
@@ -57,12 +67,16 @@ export const POST = async (request: Request) => {
     );
 
     const rawText = await openAIResponse.text();
-    console.log("📨 Raw OpenAI Response:", rawText);
+    if (process.env.NODE_ENV === "development") {
+      console.log("📨 Raw OpenAI Response:", rawText);
+    }
 
     let responseData: any;
     try {
       responseData = JSON.parse(rawText);
-      console.log("✅ Parsed OpenAI Response JSON:", responseData);
+      if (process.env.NODE_ENV === "development") {
+        console.log("✅ Parsed OpenAI Response JSON:", responseData);
+      }
     } catch (parseError) {
       console.error("❌ Failed to parse OpenAI JSON:", parseError);
       return NextResponse.json(
@@ -96,7 +110,9 @@ export const POST = async (request: Request) => {
     }
 
     const reply = responseData.choices[0].message.content;
-    console.log("✅ Final AI Reply:", reply);
+    if (process.env.NODE_ENV === "development") {
+      console.log("✅ Final AI Reply:", reply);
+    }
 
     return NextResponse.json({ reply });
   } catch (error: any) {

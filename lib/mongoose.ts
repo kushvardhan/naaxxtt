@@ -1,10 +1,12 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 let isConnected = false;
 
 export const connectToDatabase = async () => {
   if (isConnected) {
-    console.log("✅ Using existing DB connection");
+    if (process.env.NODE_ENV === "development") {
+      console.log("✅ Using existing DB connection");
+    }
     return;
   }
 
@@ -14,11 +16,13 @@ export const connectToDatabase = async () => {
 
   try {
     await mongoose.connect(process.env.MONGODB_URL, {
-      dbName: 'NullDeBugged',
+      dbName: "NullDeBugged",
       serverSelectionTimeoutMS: 10000,
     });
     isConnected = true;
-    console.log("✅ MongoDB connected successfully");
+    if (process.env.NODE_ENV === "development") {
+      console.log("✅ MongoDB connected successfully");
+    }
   } catch (error) {
     console.error("❌ MongoDB connection error:", error);
     throw error;

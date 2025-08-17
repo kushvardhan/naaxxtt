@@ -22,7 +22,7 @@ const Page = async ({ params }: PageProps) => {
 
   return (
     <div className='w-full h-[calc(100vh-120px)] mt-20 overflow-y-scroll scrollbar-hidden'>
-      <h1 className="text-xl mt-2 lg:text-4xl font-bold font-mono lg:text-5xl font-bold dark:text-zinc-100 text-black">Edit Profile</h1>
+      <h1 className="text-xl mt-2 font-mono lg:text-5xl font-bold dark:text-zinc-100 text-black">Edit Profile</h1>
       
       <div className="mt-9">
         <Profile 

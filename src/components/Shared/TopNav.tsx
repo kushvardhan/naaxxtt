@@ -49,7 +49,7 @@ const TopNav = () => {
             className="h-10 w-10 sm:h-12 sm:w-12"
             priority
           />
-          <h1 className="text-4xl sm:hidden md:text-6xl md:hidden font-black font-mono dark:text-orange-500 text-orange-600">
+          <h1 className="md:hidden sm:hidden text-4xl md:text-6xl font-black font-mono dark:text-orange-500 text-orange-600">
             NullFlow
           </h1>
         </Link>

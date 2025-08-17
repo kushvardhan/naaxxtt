@@ -214,7 +214,7 @@ const MobileNav = () => {
               className="h-13 w-13"
               priority
             />
-            <span className="text-4xl sm:hidden  md:text-6xl font-black font-mono text-orange-500">NullFlow</span>
+            <span className="text-4xl sm:hidden md:hidden md:text-6xl font-black font-mono text-orange-500">NullFlow</span>
           </Link>
 
           <nav className="mt-8 flex flex-col gap-3">

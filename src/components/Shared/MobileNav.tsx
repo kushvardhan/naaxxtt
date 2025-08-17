@@ -207,7 +207,7 @@ const MobileNav = () => {
         >
           <Link href="/" className="flex items-center mt-2 gap-3">
             <Image
-              src="/orbital-favicon.svg"
+              src="/favicon.svg"
               alt="NullFlow Orbital Logo"
               width={40}
               height={40}

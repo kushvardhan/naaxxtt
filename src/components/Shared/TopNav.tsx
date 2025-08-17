@@ -42,7 +42,7 @@ const TopNav = () => {
           className="flex items-center gap-3 transition-transform hover:scale-105"
         >
           <Image
-            src="/orbital-favicon.svg"
+            src="/favicon.svg"
             alt="NullFlow Orbital Logo"
             width={40}
             height={40}

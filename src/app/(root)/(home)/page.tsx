@@ -99,7 +99,7 @@ export default async function Home({ searchParams }: SearchParams) {
     });
     const questions = result || [];
 
-    const mappedQuestions = questions.map((q: Question) => ({
+    const mappedQuestions = questions.map((q: any) => ({
       _id: q._id.toString(),
       title: q.title || "No Title",
       tags:

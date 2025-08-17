@@ -182,7 +182,6 @@ const AnswerForm = ({ questionId }: AnswerFormProps) => {
               </button>
             </div>
             <div
-              type="button"
               onClick={handleClick}
               className={`group flex gap-2 items-center cursor-pointer border-2 ${
                 isDark ? "border-orange-500" : "border-orange-600"
@@ -191,12 +190,14 @@ const AnswerForm = ({ questionId }: AnswerFormProps) => {
               }`}
             >
               <Sparkles
-        className={`h-4 w-4 transition-transform duration-500 ease-out ${
-          isDark ? "text-orange-500" : "text-orange-600"
-        } group-hover:scale-110`}
-      />
-      <span className="text-sm font-semibold font-mono">Generate AI answer</span>
-    </div>
+                className={`h-4 w-4 transition-transform duration-500 ease-out ${
+                  isDark ? "text-orange-500" : "text-orange-600"
+                } group-hover:scale-110`}
+              />
+              <span className="text-sm font-semibold font-mono">
+                Generate AI answer
+              </span>
+            </div>
           </div>
 
           {/* Editor */}

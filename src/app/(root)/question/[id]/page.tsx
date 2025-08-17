@@ -84,8 +84,8 @@ const QuestionDetailPage = async ({
           />
 
           <SignedIn>
-            {question?.author?.clerkId &&
-              clerkId === question.author.clerkId && (
+            {(question?.author as any)?.clerkId &&
+              clerkId === (question.author as any).clerkId && (
                 <EditDeleteAction
                   type="Question"
                   itemId={JSON.stringify(question?._id)}
@@ -94,10 +94,10 @@ const QuestionDetailPage = async ({
           </SignedIn>
         </div>
         <div className="mt-4 flex  items-center gap-4">
-          <Link href={`/profile/${question?.author?.clerkId}`}>
+          <Link href={`/profile/${(question?.author as any)?.clerkId}`}>
             <Image
-              src={question.author?.image || "/default-avatar.png"}
-              alt={question.author?.name || "User"}
+              src={(question.author as any)?.image || "/default-avatar.png"}
+              alt={(question.author as any)?.name || "User"}
               width={40}
               height={40}
               className="rounded-full border-2 border-orange-400"
@@ -105,10 +105,10 @@ const QuestionDetailPage = async ({
           </Link>
           <div>
             <p className="font-semibold dark:text-zinc-100 text-zinc-900 text-regular">
-              {question.author?.name}
+              {(question.author as any)?.name}
             </p>
-            {question.author?.username && (
-              <p className="text-xs">@{question.author.username}</p>
+            {(question.author as any)?.username && (
+              <p className="text-xs">@{(question.author as any).username}</p>
             )}
           </div>
         </div>
@@ -161,12 +161,12 @@ const QuestionDetailPage = async ({
 
         {/* Answers Section */}
         <AllAnswers
-          questionId={question._id}
+          questionId={question._id.toString()}
           userId={mongoUser._id}
           totalAnswers={question.answers.length}
           page={page}
           filter={filter}
-          clerkId={question.author.clerkId}
+          clerkId={(question.author as any).clerkId}
         />
 
         {/* Answer Form */}

@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
 import { Button } from "./button";
+import Pagination from "./Pagination";
 
 type Tag = {
   _id: string;
@@ -39,6 +40,11 @@ type Question = {
 type Props = {
   mappedQuestions: Question[];
   searchParams?: { [key: string]: string | string[] | undefined };
+  pagination?: {
+    page: number;
+    isNext: boolean;
+    totalQuestions: number;
+  };
 };
 
 const Tags = [
@@ -101,6 +107,7 @@ function formatDate(dateString: string): string {
 export default function ClientHomehh({
   mappedQuestions,
   searchParams = {},
+  pagination,
 }: Props) {
   const theme = useContext(ThemeContext);
   const isDark = theme?.mode === "dark";
@@ -498,6 +505,11 @@ export default function ClientHomehh({
               </Link>
             </div>
           </div>
+        )}
+
+        {/* Pagination */}
+        {pagination && (
+          <Pagination pageNumber={pagination.page} isNext={pagination.isNext} />
         )}
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { connectToDatabase } from "../../../../lib/mongoose";
 import Question from "../../../../database/question.model";
+import { connectToDatabase } from "../../../../lib/mongoose";
 
 export async function GET(request: NextRequest) {
   try {
@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId");
     const page = parseInt(searchParams.get("page") || "1");
-    const pageSize = 10;
+    const pageSize = parseInt(searchParams.get("pageSize") || "10");
 
     if (!userId) {
       return NextResponse.json(
@@ -36,22 +36,26 @@ export async function GET(request: NextRequest) {
     const serializedQuestions = userQuestions.map((question: any) => ({
       _id: question._id.toString(),
       title: question.title || "",
-      content: question.content || "",
+      explanation: question.explanation || "",
       upvotes: question.upvotes || [],
       downvotes: question.downvotes || [],
       answers: question.answers || [],
       views: question.views || 0,
       createdAt: question.createdAt ? question.createdAt.toISOString() : null,
-      tags: question.tags ? question.tags.map((tag: any) => ({
-        _id: tag._id.toString(),
-        name: tag.name || ""
-      })) : [],
-      author: question.author ? {
-        _id: question.author._id.toString(),
-        clerkId: question.author.clerkId || "",
-        name: question.author.name || "Unknown User",
-        image: question.author.image || ""
-      } : null
+      tags: question.tags
+        ? question.tags.map((tag: any) => ({
+            _id: tag._id.toString(),
+            name: tag.name || "",
+          }))
+        : [],
+      author: question.author
+        ? {
+            _id: question.author._id.toString(),
+            clerkId: question.author.clerkId || "",
+            name: question.author.name || "Unknown User",
+            image: question.author.image || "",
+          }
+        : null,
     }));
 
     return NextResponse.json({

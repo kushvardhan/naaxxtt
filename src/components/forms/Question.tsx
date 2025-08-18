@@ -124,6 +124,7 @@ export function Question({
           questionId: parsedQuestionDetails._id,
           title: values.title,
           content: values.explanation,
+          tags: values.tags,
           path: pathname,
         });
 

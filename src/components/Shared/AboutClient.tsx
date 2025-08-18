@@ -324,6 +324,7 @@ const AboutClient = () => {
 
             <div className="space-y-6">
               <h3
+              title="kushvardhan39797@gmail.com"
                 className={`text-2xl font-semibold ${
                   isDark ? "text-orange-400" : "text-orange-600"
                 }`}
@@ -380,6 +381,7 @@ const AboutClient = () => {
                 >
                   "Building the future of developer collaboration, one question
                   at a time."
+                             - kushvardhan39797@gmail.com
                 </p>
               </div>
             </div>

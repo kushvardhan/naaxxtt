@@ -44,6 +44,7 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
     searchQuery: resolvedSearchParams?.q,
     filter: resolvedSearchParams?.filter,
     page: resolvedSearchParams?.page ? +resolvedSearchParams?.page : 1,
+    pageSize: 7,
   });
   // console.log("Collection DOEFD: ", result);
 
@@ -73,7 +74,14 @@ const Page = async ({ searchParams }: SearchParamsProps) => {
 
   return (
     <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">
-      <CollectionPage mappedQuestions={mappedQuestions} />
+      <CollectionPage
+        mappedQuestions={mappedQuestions}
+        pagination={{
+          page: resolvedSearchParams?.page ? +resolvedSearchParams?.page : 1,
+          isNext: result?.isNext || false,
+          totalQuestions: result?.totalQuestions || 0,
+        }}
+      />
     </div>
   );
 };

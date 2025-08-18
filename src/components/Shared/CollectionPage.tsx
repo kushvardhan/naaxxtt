@@ -7,6 +7,7 @@ import { useContext, useState } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";
 import { Button } from "./button";
 import Filter from "./Filter";
+import Pagination from "./Pagination";
 
 type Tag = {
   _id: string;
@@ -31,6 +32,11 @@ type QuestionType = {
 
 type Props = {
   mappedQuestions: QuestionType[];
+  pagination?: {
+    page: number;
+    isNext: boolean;
+    totalQuestions: number;
+  };
 };
 
 const QuestionFilters = [
@@ -86,7 +92,10 @@ function formatDate(dateString: string): string {
   return `${day}${suffix} ${month} ${year}`;
 }
 
-export default function ClientHomeQuestions({ mappedQuestions }: Props) {
+export default function ClientHomeQuestions({
+  mappedQuestions,
+  pagination,
+}: Props) {
   console.log("mapped client queestion: ", mappedQuestions);
   const theme = useContext(ThemeContext);
   const isDark = theme?.mode === "dark";
@@ -323,6 +332,11 @@ export default function ClientHomeQuestions({ mappedQuestions }: Props) {
               </Link>
             </div>
           </div>
+        )}
+
+        {/* Pagination */}
+        {pagination && (
+          <Pagination pageNumber={pagination.page} isNext={pagination.isNext} />
         )}
       </div>
     </div>

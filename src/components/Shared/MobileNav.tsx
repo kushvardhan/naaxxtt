@@ -117,7 +117,7 @@ const sideBarLinks = [
         />
       </svg>
     ),
-    route: "/tag",
+    route: "/tags",
     label: "Tags",
   },
   {

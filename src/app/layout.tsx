@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
 import Providers from "../../lib/Providers";
-import { generateMetadata } from "../../lib/seo";
+import {
+  generateJsonLd,
+  generateMetadata,
+  structuredData,
+} from "../../lib/seo";
 import "../../style/prism.css";
 import "./globals.css";
 

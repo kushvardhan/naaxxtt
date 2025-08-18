@@ -98,7 +98,7 @@ export async function getAllTags(params: GetAllTagsParams) {
 
     const isNext = totalTags > skipAmount + tags.length;
 
-    return { tags: serializedTags, isNext };
+    return { tags: serializedTags, isNext, totalTags };
   } catch (error) {
     console.log(error);
     throw error;

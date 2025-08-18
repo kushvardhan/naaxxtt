@@ -54,9 +54,6 @@ const TopNav = () => {
             <h1 className="text-4xl font-black font-mono bg-gradient-to-r from-orange-300 via-orange-400 to-orange-500 bg-clip-text text-transparent">
               NullFlow
             </h1>
-            <p className="text-xs text-gray-500 dark:text-gray-400 -mt-1">
-              by Kush Vardhan
-            </p>
           </div>
         </Link>
       </div>

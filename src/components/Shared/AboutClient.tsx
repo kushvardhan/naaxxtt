@@ -146,7 +146,7 @@ const AboutClient = () => {
 
   return (
     <div
-      className={`min-h-screen transition-all duration-300 ${
+      className={`h-full w-full transition-all duration-300 ${
         isDark ? "bg-black text-white" : "bg-white text-black"
       }`}
     >

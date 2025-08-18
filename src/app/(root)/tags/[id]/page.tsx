@@ -4,7 +4,6 @@ import { getQuestionsByTagId } from "../../../../../lib/actions/tag.action";
 import { formatAndDivideNumber } from "../../../../../lib/utils";
 import NoResult from "../../../../components/Shared/NoResult";
 import Pagination from "../../../../components/Shared/Pagination";
-import Loading from './loading';
 
 interface URLProps {
   params: Promise<{ id: string }>;
@@ -59,8 +58,6 @@ const Page = async ({ params, searchParams }: URLProps) => {
       return `${years} ${years === 1 ? "year" : "years"} ago`;
     }
   }
-
-
 
   return (
     <div className="w-full h-[calc(100vh-130px)] mt-20 overflow-y-scroll scrollbar-hidden">
@@ -122,7 +119,9 @@ const Page = async ({ params, searchParams }: URLProps) => {
                     >
                       <path d="M12.781 2.375c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10zM15 12h-1v8h-4v-8H6.081L12 4.601 17.919 12H15z" />
                     </svg>
-                    {formatAndDivideNumber(que.upvotes)}
+                    {formatAndDivideNumber(
+                      Array.isArray(que.upvotes) ? que.upvotes.length : 0
+                    )}
                   </span>
 
                   <span

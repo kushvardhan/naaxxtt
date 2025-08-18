@@ -129,12 +129,12 @@ export default function ProfileClient({ userInfo }: ProfileClientProps) {
   ];
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gray-50'} transition-colors duration-300`}>
+    <div className={`min-h-screen ${isDark ? 'bg-black' : 'bg-gray-50'} transition-colors duration-300`}>
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header Section */}
         <div className={`rounded-2xl p-8 mb-8 ${
           isDark 
-            ? 'bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700' 
+            ? 'bg-gradient-to-br from-zinc-900 to-zinc-950 border border-gray-700' 
             : 'bg-gradient-to-br from-white to-orange-50 border border-orange-100'
         } shadow-xl transition-all duration-300 hover:shadow-2xl`}>
           

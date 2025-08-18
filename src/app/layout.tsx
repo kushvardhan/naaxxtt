@@ -81,7 +81,7 @@ export default function RootLayout({
           <Providers>{children}</Providers>
 
           {/* Developer Credit Footer */}
-          <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 py-4 mt-auto">
+          <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-zinc-900 py-4 mt-auto">
             <div className="max-w-7xl mx-auto px-4 text-center">
               <p title={"kushvardhan39797@gmail.com"} className="text-sm text-gray-600 dark:text-gray-400">
                 Developed with ❤️ by{" "}

@@ -3,6 +3,8 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { formUrlQuery } from "../../../lib/utils";
+import { useContext } from "react";
+import { ThemeContext } from "../../../context/ThemeContext";
 
 interface Props {
   pageNumber: number;

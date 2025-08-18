@@ -1,13 +1,12 @@
 "use client";
 
-import { 
-  User, 
-  Calendar, 
-  MapPin, 
-  Link as LinkIcon, 
-  Mail, 
-  Trophy, 
-  MessageSquare, 
+import {
+  Calendar,
+  MapPin,
+  Link as LinkIcon,
+  Mail,
+  Trophy,
+  MessageSquare,
   HelpCircle,
   Eye,
   Star,
@@ -15,9 +14,7 @@ import {
   Award,
   Target,
   Zap,
-  Clock,
-  BarChart3,
-  Activity
+  Clock
 } from "lucide-react";
 import { useContext, useState, useEffect } from "react";
 import { ThemeContext } from "../../../context/ThemeContext";

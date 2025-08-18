@@ -287,17 +287,25 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
       })
       .lean();
 
-    // console.log("user from DB : ", user);
-
-    const isNext = user.saved.length > pageSize;
-
     if (!user) {
       throw new Error("User not found");
     }
 
-    const savedQuestions = user.saved;
+    // Get total count of saved questions matching the query
+    const userForCount = await User.findOne({ clerkId })
+      .populate({
+        path: "saved",
+        match: query,
+      })
+      .lean();
 
-    return { questions: savedQuestions, isNext };
+    const totalQuestions = userForCount?.saved?.length || 0;
+    const isNext = user.saved.length > pageSize;
+
+    // Remove the extra item used for pagination check
+    const savedQuestions = user.saved.slice(0, pageSize);
+
+    return { questions: savedQuestions, isNext, totalQuestions };
   } catch (error) {
     console.log(error);
     throw error;

@@ -44,15 +44,20 @@ const TopNav = () => {
           <Image
             src="/favicon.svg"
             alt="NullFlow Orbital Logo"
-            width={40}
-            height={40}
-            className="h-10 w-10"
+            width={41}
+            height={41}
+            className="h-12 w-12"
             priority
           />
           {/* Hide text on mobile, show on larger screens */}
-          <h1 className="hidden sm:block text-4xl font-black font-mono bg-gradient-to-r from-orange-300 via-orange-400 to-orange-500 bg-clip-text text-transparent">
-            NullFlow
-          </h1>
+          <div className="hidden sm:block">
+            <h1 className="text-4xl font-black font-mono bg-gradient-to-r from-orange-300 via-orange-400 to-orange-500 bg-clip-text text-transparent">
+              NullFlow
+            </h1>
+            <p className="text-xs text-gray-500 dark:text-gray-400 -mt-1">
+              by Kush Vardhan
+            </p>
+          </div>
         </Link>
       </div>
 

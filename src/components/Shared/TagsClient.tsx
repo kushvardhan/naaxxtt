@@ -8,6 +8,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/Shared/dropdown-menu";
+import Pagination from "@/components/Shared/Pagination";
 import LocalSearchBar from "@/components/Shared/Search/LocalSearchBar";
 import TagCard from "@/components/Shared/TagCard";
 import { useContext, useEffect, useMemo, useState } from "react";
@@ -16,9 +17,18 @@ import { ThemeContext } from "../../../context/ThemeContext";
 interface TagsClientProps {
   tags: Tag[];
   searchParams?: { [key: string]: string | string[] | undefined };
+  pagination?: {
+    page: number;
+    isNext: boolean;
+    totalTags: number;
+  };
 }
 
-const TagsClient = ({ tags, searchParams = {} }: TagsClientProps) => {
+const TagsClient = ({
+  tags,
+  searchParams = {},
+  pagination,
+}: TagsClientProps) => {
   const theme = useContext(ThemeContext);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
@@ -269,6 +279,11 @@ const TagsClient = ({ tags, searchParams = {} }: TagsClientProps) => {
             </Button>
           )}
         </div>
+      )}
+
+      {/* Pagination */}
+      {pagination && (
+        <Pagination pageNumber={pagination.page} isNext={pagination.isNext} />
       )}
     </div>
   );

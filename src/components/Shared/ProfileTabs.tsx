@@ -119,19 +119,39 @@ const QuestionTabContent = ({
         setLoading(true);
         setError(null);
 
+        console.log(
+          "🔍 Loading questions for userId:",
+          userId,
+          "page:",
+          currentPage
+        );
+
         const response = await fetch(
           `/api/user-questions?userId=${userId}&page=${currentPage}&pageSize=4`
         );
 
-        if (!response.ok) throw new Error("Failed to fetch questions");
+        console.log("📡 Response status:", response.status);
+        console.log("📡 Response ok:", response.ok);
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("❌ API Error:", errorText);
+          throw new Error(`Failed to fetch questions: ${response.status}`);
+        }
 
         const data = await response.json();
+        console.log("📊 Questions data received:", data);
 
         if (!cancelled) {
           setQuestions(data.questions || []);
           setTotalPages(Math.ceil((data.totalQuestions || 0) / 4));
+          console.log(
+            "✅ Questions loaded successfully:",
+            data.questions?.length || 0
+          );
         }
       } catch (err) {
+        console.error("❌ Error loading questions:", err);
         if (!cancelled) setError("Failed to load questions");
       } finally {
         if (!cancelled) setLoading(false);
@@ -180,155 +200,154 @@ const QuestionTabContent = ({
 
   return (
     <div className="mt-8 flex w-full flex-col gap-6">
-        {questions.map((question) => (
-  <div
-    key={question._id}
-    className={`w-full rounded-xl cursor-pointer border p-4 shadow-sm transition-all duration-200  ${
-      isDark
-        ? "bg-zinc-950 border-zinc-700 shadow-regular hover:shadow-xl shadow-zinc-800"
-        : "bg-white border-zinc-300 shadow-md hover:shadow-lg shadow-zinc-400"
-    }`}
-  >
-    {/* Title */}
-    <Link href={`/question/${question._id}`}>
-      <h2
-        className={`text-base sm:text-lg hover:underline font-semibold line-clamp-2 break-words ${
-          isDark
-            ? "text-zinc-100 hover:text-blue-300"
-            : "text-zinc-800 hover:text-blue-700"
-        }`}
-      >
-        {question.title}
-      </h2>
-    </Link>
-
-    {/* Tags */}
-    <div className="mt-3 flex flex-wrap gap-2">
-      {question.tags?.map((tag: any) => (
-        <span
-          key={tag._id}
-          title={tag.name}
-          className={`rounded-md cursor-pointer px-2 py-1 text-xs font-mono ${
+      {questions.map((question) => (
+        <div
+          key={question._id}
+          className={`w-full rounded-xl cursor-pointer border p-4 shadow-sm transition-all duration-200  ${
             isDark
-              ? "bg-zinc-700 text-white hover:bg-zinc-600 transition-all"
-              : "bg-zinc-200 text-zinc-950 hover:bg-zinc-300 transition-all"
+              ? "bg-zinc-950 border-zinc-700 shadow-regular hover:shadow-xl shadow-zinc-800"
+              : "bg-white border-zinc-300 shadow-md hover:shadow-lg shadow-zinc-400"
           }`}
         >
-          {tag.name}
-        </span>
+          {/* Title */}
+          <Link href={`/question/${question._id}`}>
+            <h2
+              className={`text-base sm:text-lg hover:underline font-semibold line-clamp-2 break-words ${
+                isDark
+                  ? "text-zinc-100 hover:text-blue-300"
+                  : "text-zinc-800 hover:text-blue-700"
+              }`}
+            >
+              {question.title}
+            </h2>
+          </Link>
+
+          {/* Tags */}
+          <div className="mt-3 flex flex-wrap gap-2">
+            {question.tags?.map((tag: any) => (
+              <span
+                key={tag._id}
+                title={tag.name}
+                className={`rounded-md cursor-pointer px-2 py-1 text-xs font-mono ${
+                  isDark
+                    ? "bg-zinc-700 text-white hover:bg-zinc-600 transition-all"
+                    : "bg-zinc-200 text-zinc-950 hover:bg-zinc-300 transition-all"
+                }`}
+              >
+                {tag.name}
+              </span>
+            ))}
+          </div>
+
+          {/* Meta Info */}
+          <div
+            className={`mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm ${
+              isDark ? "text-zinc-400" : "text-zinc-500"
+            }`}
+          >
+            {/* User */}
+            <div className="flex items-center gap-3">
+              <Image
+                src={
+                  question.author?.image ||
+                  "https://banner2.cleanpng.com/20180416/gbw/avfp7lvmb.webp"
+                }
+                alt={question.author?.name || "User"}
+                width={24}
+                height={24}
+                className={`h-8 w-8 rounded-full object-cover ${
+                  isDark
+                    ? "border-1 border-orange-700"
+                    : "border-2 border-orange-500"
+                }`}
+              />
+              <Link
+                title={`clerkId: ${question.author?.clerkId}`}
+                href={`/profile/${question.author?.clerkId}`}
+              >
+                <span className="text-sm font-medium">
+                  {question.author?.name || "Unknown User"}
+                </span>
+              </Link>
+            </div>
+
+            {/* Stats */}
+            <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm">
+              {/* Upvotes */}
+              <span
+                title="Upvote"
+                className={`flex items-center gap-1 ${
+                  isDark ? "text-white" : "text-red-600"
+                }`}
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  stroke="none"
+                >
+                  <path d="M12.781 2.375c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10zM15 12h-1v8h-4v-8H6.081L12 4.601 17.919 12H15z" />
+                </svg>
+                {question.upvotes?.length || 0}
+              </span>
+
+              {/* Answers */}
+              <span
+                title="Answer"
+                className={`flex items-center gap-1 ${
+                  isDark ? "text-zinc-100" : "text-zinc-700"
+                }`}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-4.5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z"
+                  />
+                </svg>
+                {question.answers?.length || 0}
+              </span>
+
+              {/* Views */}
+              <span
+                title="Views"
+                className={`flex items-center gap-1 ${
+                  isDark ? "text-zinc-100" : "text-zinc-700"
+                }`}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                  />
+                </svg>
+                {question.views || 0}
+              </span>
+            </div>
+          </div>
+        </div>
       ))}
-    </div>
-
-    {/* Meta Info */}
-    <div
-      className={`mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm ${
-        isDark ? "text-zinc-400" : "text-zinc-500"
-      }`}
-    >
-      {/* User */}
-      <div className="flex items-center gap-3">
-        <Image
-          src={
-            question.author?.image ||
-            "https://banner2.cleanpng.com/20180416/gbw/avfp7lvmb.webp"
-          }
-          alt={question.author?.name || "User"}
-          width={24}
-          height={24}
-          className={`h-8 w-8 rounded-full object-cover ${
-            isDark
-              ? "border-1 border-orange-700"
-              : "border-2 border-orange-500"
-          }`}
-        />
-        <Link
-          title={`clerkId: ${question.author?.clerkId}`}
-          href={`/profile/${question.author?.clerkId}`}
-        >
-          <span className="text-sm font-medium">
-            {question.author?.name || "Unknown User"}
-          </span>
-        </Link>
-      </div>
-
-      {/* Stats */}
-      <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm">
-        {/* Upvotes */}
-        <span
-          title="Upvote"
-          className={`flex items-center gap-1 ${
-            isDark ? "text-white" : "text-red-600"
-          }`}
-        >
-          <svg
-            className="w-4 h-4"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            stroke="none"
-          >
-            <path d="M12.781 2.375c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10zM15 12h-1v8h-4v-8H6.081L12 4.601 17.919 12H15z" />
-          </svg>
-          {question.upvotes?.length || 0}
-        </span>
-
-        {/* Answers */}
-        <span
-          title="Answer"
-          className={`flex items-center gap-1 ${
-            isDark ? "text-zinc-100" : "text-zinc-700"
-          }`}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-4.5"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z"
-            />
-          </svg>
-          {question.answers?.length || 0}
-        </span>
-
-        {/* Views */}
-        <span
-          title="Views"
-          className={`flex items-center gap-1 ${
-            isDark ? "text-zinc-100" : "text-zinc-700"
-          }`}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-4"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
-            />
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-            />
-          </svg>
-          {question.views || 0}
-        </span>
-      </div>
-    </div>
-  </div>
-))}
-
 
       {/* Pagination */}
       {totalPages > 1 && (
@@ -366,7 +385,6 @@ const QuestionTabContent = ({
   );
 };
 
-
 // AnswerTabContent - Using AnswerCardProfile with pagination (2 answers per page)
 const AnswerTabContent = ({
   userId,
@@ -397,25 +415,37 @@ const AnswerTabContent = ({
         setError(null);
 
         const page = searchParams?.page || currentPage;
+        console.log("🔍 Loading answers for userId:", userId, "page:", page);
+
         // Use API route with pagination (2 answers per page)
         const response = await fetch(
           `/api/user-answers?userId=${userId}&page=${page}&pageSize=2`
         );
 
+        console.log("📡 Answers response status:", response.status);
+        console.log("📡 Answers response ok:", response.ok);
+
         if (cancelled) return;
 
         if (!response.ok) {
-          throw new Error("Failed to fetch answers");
+          const errorText = await response.text();
+          console.error("❌ Answers API Error:", errorText);
+          throw new Error(`Failed to fetch answers: ${response.status}`);
         }
 
         const data = await response.json();
+        console.log("📊 Answers data received:", data);
 
         if (!cancelled) {
           setAnswers(data.answers || []);
           setTotalPages(Math.ceil((data.totalAnswers || 0) / 2));
+          console.log(
+            "✅ Answers loaded successfully:",
+            data.answers?.length || 0
+          );
         }
       } catch (err) {
-        console.error("Error loading answers:", err);
+        console.error("❌ Error loading answers:", err);
         if (!cancelled) {
           setError("Failed to load answers");
         }

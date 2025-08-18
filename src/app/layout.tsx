@@ -83,15 +83,16 @@ export default function RootLayout({
           {/* Developer Credit Footer */}
           <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 py-4 mt-auto">
             <div className="max-w-7xl mx-auto px-4 text-center">
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p title={"kushvardhan39797@gmail.com"} className="text-sm text-gray-600 dark:text-gray-400">
                 Developed with ❤️ by{" "}
                 <a
+                target="_blank"
                   href="mailto:kushvardhan39797@gmail.com"
-                  className="text-orange-500 hover:text-orange-600 font-medium transition-colors"
+                  className="text-orange-400 hover:text-orange-500 font-mono font-medium transition-colors"
                 >
                   Kush Vardhan
                 </a>{" "}
-                • © 2024 NullFlow. All rights reserved.
+                • © 2025 NullFlow. All rights reserved.
               </p>
             </div>
           </footer>

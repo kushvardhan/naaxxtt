@@ -59,7 +59,7 @@ export default async function ProfilePage() {
     };
 
     return (
-      <div className="flex w-full flex-col">
+      <div className="w-full h-[calc(100vh-120px)] mt-20 overflow-y-scroll scrollbar-hidden flex flex-col">
         <ProfileClient userInfo={profileData} />
       </div>
     );

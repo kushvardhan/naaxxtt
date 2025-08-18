@@ -22,7 +22,8 @@ export async function getQuestions(params: GetQuestionsParams) {
   try {
     await connectToDatabase();
 
-    const { searchQuery, filter } = params;
+    const { searchQuery, filter, page = 1, pageSize = 7 } = params;
+    const skipAmount = (page - 1) * pageSize;
 
     // Build query
     const query: FilterQuery<typeof Question> = {};
@@ -52,6 +53,8 @@ export async function getQuestions(params: GetQuestionsParams) {
         break;
     }
 
+    const totalQuestions = await Question.countDocuments(query as any);
+
     const questions = await Question.find(query as any)
       .populate({
         path: "tags",
@@ -62,7 +65,11 @@ export async function getQuestions(params: GetQuestionsParams) {
         model: User,
       })
       .sort(sortOptions)
+      .skip(skipAmount)
+      .limit(pageSize)
       .lean();
+
+    const isNext = totalQuestions > skipAmount + questions.length;
 
     // Convert to plain objects for client components
     const serializedQuestions = questions.map((question) => ({
@@ -89,7 +96,11 @@ export async function getQuestions(params: GetQuestionsParams) {
       answers: question.answers.map((id: any) => id.toString()),
     }));
 
-    return serializedQuestions;
+    return {
+      questions: serializedQuestions,
+      isNext,
+      totalQuestions,
+    };
   } catch (error) {
     console.log(error);
     throw error;
@@ -273,7 +284,7 @@ export async function editQuestion(params: EditQuestionParams) {
   try {
     connectToDatabase();
 
-    const { questionId, title, content, path } = params;
+    const { questionId, title, content, tags, path } = params;
 
     const question = await Question.findById(questionId).populate("tags");
 
@@ -281,17 +292,40 @@ export async function editQuestion(params: EditQuestionParams) {
       throw new Error("Question not found");
     }
 
+    // Update basic fields
     question.title = title;
     question.explanation = content;
 
-    console.log("Updated Title: ", title);
-    console.log("Updated Explanation: ", content);
+    // Handle tag updates if provided
+    if (tags && Array.isArray(tags)) {
+      // Remove question from old tags
+      const oldTagIds = question.tags.map((tag: any) => tag._id);
+      await Tag.updateMany(
+        { _id: { $in: oldTagIds } },
+        { $pull: { questions: questionId } }
+      );
+
+      // Process new tags
+      const tagDocuments = [];
+      for (const tag of tags) {
+        const existingTag = await Tag.findOneAndUpdate(
+          { name: { $regex: new RegExp(`^${tag}$`, "i") } },
+          { $setOnInsert: { name: tag }, $addToSet: { questions: questionId } },
+          { upsert: true, new: true }
+        );
+        tagDocuments.push(existingTag._id);
+      }
+
+      // Update question with new tags
+      question.tags = tagDocuments;
+    }
 
     await question.save();
 
     revalidatePath(path);
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 

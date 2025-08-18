@@ -69,7 +69,6 @@ export interface CreateQuestionParams {
   path: string;
 }
 
-
 export interface DeleteQuestionParams {
   questionId: string;
   path: string;
@@ -79,6 +78,7 @@ export interface EditQuestionParams {
   questionId: string;
   title: string;
   content: string;
+  tags?: string[];
   path: string;
 }
 
@@ -125,16 +125,15 @@ export interface GetTopInteractedTagsParams {
   limit?: number;
 }
 
-
 export interface ToggleSaveQuestionParams {
   userId: string;
   questionId: string;
   path: string;
 }
 
-export interface GetTopInteractedTagsParams{
-  userId : string;
-  limit? : number;
+export interface GetTopInteractedTagsParams {
+  userId: string;
+  limit?: number;
 }
 
 export interface GetAllUsersParams {
@@ -143,7 +142,6 @@ export interface GetAllUsersParams {
   filter?: string;
   searchQuery?: string;
 }
-
 
 export interface ToggleSaveQuestionParams {
   userId: string;
@@ -164,7 +162,6 @@ export interface GetUserStatsParams {
   page?: number;
   pageSize?: number;
 }
-
 
 export interface GetUserByIdParams {
   userId: string;

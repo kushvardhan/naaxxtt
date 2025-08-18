@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { formUrlQuery } from '../../../lib/utils';
-import { Button } from '../ui/button'
-import { useRouter, useSearchParams } from 'next/navigation';
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { formUrlQuery } from "../../../lib/utils";
 
 interface Props {
   pageNumber: number;
@@ -12,45 +12,72 @@ interface Props {
 const Pagination = ({ pageNumber, isNext }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const theme = useContext(ThemeContext);
 
   const handleNavigation = (direction: string) => {
-    const nextPageNumber = direction === 'prev'
-      ? pageNumber - 1
-      : pageNumber + 1;
+    const nextPageNumber =
+      direction === "prev" ? pageNumber - 1 : pageNumber + 1;
 
     const newUrl = formUrlQuery({
       params: searchParams.toString(),
-      key: 'page',
+      key: "page",
       value: nextPageNumber.toString(),
-    })
+    });
 
-    router.push(newUrl)
-  }
+    router.push(newUrl);
+  };
 
-  if(!isNext && pageNumber === 1) return null;
+  if (!isNext && pageNumber === 1) return null;
+
+  const isDark = (theme as any)?.mode === "dark";
 
   return (
-    <div className="flex w-full items-center justify-center gap-2">
-      <Button
+    <div className="flex w-full items-center justify-center gap-3 mt-8">
+      <button
         disabled={pageNumber === 1}
-        onClick={() => handleNavigation('prev')}
-        className="light-border-2 btn flex min-h-[36px] items-center justify-center gap-2 border"
+        onClick={() => handleNavigation("prev")}
+        className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+          pageNumber === 1
+            ? "opacity-50 cursor-not-allowed"
+            : "hover:scale-105 active:scale-95"
+        } ${
+          isDark
+            ? "bg-gray-800 text-white border border-gray-700 hover:bg-gray-700 hover:border-orange-500"
+            : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-500"
+        }`}
       >
-        <p className="body-medium text-dark200_light800">Prev</p>
-      </Button>
-      <div className="flex items-center justify-center rounded-md bg-primary-500 px-3.5 py-2">
-        <p className="body-semibold text-light-900">{pageNumber}
-        </p>
-      </div>
-      <Button
-        disabled={!isNext}
-        onClick={() => handleNavigation('next')}
-        className="light-border-2 btn flex min-h-[36px] items-center justify-center gap-2 border"
-      >
-        <p className="body-medium text-dark200_light800">Next</p>
-      </Button>
-    </div>
-  )
-}
+        <ChevronLeft className="h-4 w-4" />
+        <span className="hidden sm:inline">Previous</span>
+      </button>
 
-export default Pagination
+      <div
+        className={`flex items-center justify-center px-4 py-2 rounded-lg font-bold ${
+          isDark
+            ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white"
+            : "bg-gradient-to-r from-orange-500 to-orange-600 text-white"
+        }`}
+      >
+        <span className="text-sm">Page {pageNumber}</span>
+      </div>
+
+      <button
+        disabled={!isNext}
+        onClick={() => handleNavigation("next")}
+        className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+          !isNext
+            ? "opacity-50 cursor-not-allowed"
+            : "hover:scale-105 active:scale-95"
+        } ${
+          isDark
+            ? "bg-gray-800 text-white border border-gray-700 hover:bg-gray-700 hover:border-orange-500"
+            : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-500"
+        }`}
+      >
+        <span className="hidden sm:inline">Next</span>
+        <ChevronRight className="h-4 w-4" />
+      </button>
+    </div>
+  );
+};
+
+export default Pagination;

@@ -95,12 +95,21 @@ export default async function Home({ searchParams }: SearchParams) {
       typeof resolvedSearchParams.filter === "string"
         ? resolvedSearchParams.filter
         : "newest";
+    const page =
+      typeof resolvedSearchParams.page === "string"
+        ? parseInt(resolvedSearchParams.page)
+        : 1;
 
     const result = await getQuestions({
       searchQuery,
       filter,
+      page,
+      pageSize: 7,
     });
-    const questions = result || [];
+
+    const questions = result?.questions || [];
+    const isNext = result?.isNext || false;
+    const totalQuestions = result?.totalQuestions || 0;
 
     const mappedQuestions = questions.map((q: any) => ({
       _id: q._id.toString(),
@@ -131,6 +140,11 @@ export default async function Home({ searchParams }: SearchParams) {
         <ClientHomehh
           mappedQuestions={mappedQuestions}
           searchParams={resolvedSearchParams}
+          pagination={{
+            page,
+            isNext,
+            totalQuestions,
+          }}
         />
       </div>
     );

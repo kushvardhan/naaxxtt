@@ -1,22 +1,24 @@
 import AboutClient from "@/components/Shared/AboutClient";
 import type { Metadata } from "next";
+import { generateMetadata } from "../../../../lib/seo";
 
-export const metadata: Metadata = {
-  title: "About NullPointer | Developer Community Platform",
+// Force dynamic rendering for this page
+export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = generateMetadata({
+  title: "About NullFlow",
   description:
-    "Learn about NullPointer, the premier developer community platform. Discover our mission to connect programmers, share knowledge, and build the future of software development together.",
+    "Learn about NullFlow - the modern Q&A platform for developers. Discover our mission, features, and meet the developer behind this innovative community platform.",
   keywords: [
-    "about nullpointer",
-    "developer community",
-    "programming platform",
-    "software development",
-    "tech community",
+    "about nullflow",
+    "developer platform",
+    "Q&A community",
+    "Kush Vardhan",
+    "developer tools",
+    "coding community",
   ],
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+  url: "/about",
+});
 
 const AboutPage = () => {
   return (

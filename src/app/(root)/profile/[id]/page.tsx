@@ -57,15 +57,18 @@ export default async function Page({ params, searchParams }: URLProps) {
   return (
     <div className="w-full h-[calc(100vh-130px)] overflow-y-auto scrollbar-hidden  px-4 sm:px-10 md:px-20 mt-20 bg-white dark:bg-black text-black dark:text-white transition-colors duration-300">
       {/* Profile Header */}
-      <div className="flex flex-col-reverse mt-3 sm:flex-row justify-between items-start sm:items-center gap-6">
+      <div className="flex flex-col-reverse mt-3 sm:flex-row justify-between items-start sm:items-center gap-6 animate-fadeIn">
         <div className="flex items-start gap-6">
-          <Image
-            src={userInfo.user.image}
-            alt="profile picture"
-            width={130}
-            height={130}
-            className="rounded-full object-cover border-2 border-orange-300 dark:border-orange-700"
-          />
+          <div className="relative group">
+            <Image
+              src={userInfo.user.image}
+              alt="profile picture"
+              width={130}
+              height={130}
+              className="rounded-full object-cover border-4 border-orange-300 dark:border-orange-700 transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl"
+            />
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-orange-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
           <div className="space-y-2">
             <h2 className="text-2xl sm:text-3xl font-bold text-zinc-800 dark:text-zinc-100">
               {userInfo.user.name}

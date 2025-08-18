@@ -159,7 +159,7 @@ export default function FindJobsClient({ searchParams = {} }: FindJobsClientProp
   }, [searchQuery, selectedType, selectedLocation]);
 
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-gray-900' : 'bg-gray-50'}`}>
+    <div className={`min-h-screen ${isDark ? 'bg-black' : 'bg-gray-50'}`}>
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-12">
@@ -359,13 +359,6 @@ export default function FindJobsClient({ searchParams = {} }: FindJobsClientProp
                       : 'bg-orange-500 hover:bg-orange-600 text-white'
                   }`}>
                     Apply Now
-                  </button>
-                  <button className={`px-6 py-2 rounded-lg font-medium border transition-all duration-200 ${
-                    isDark
-                      ? 'border-gray-600 text-gray-300 hover:bg-gray-700'
-                      : 'border-gray-300 text-gray-600 hover:bg-gray-50'
-                  }`}>
-                    Save Job
                   </button>
                 </div>
               </div>

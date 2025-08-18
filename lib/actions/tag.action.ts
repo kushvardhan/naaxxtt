@@ -68,6 +68,7 @@ export async function getAllTags(params: GetAllTagsParams) {
         break;
 
       default:
+        sortOptions = { name: 1 }; // Default to alphabetical order
         break;
     }
 

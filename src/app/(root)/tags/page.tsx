@@ -61,6 +61,11 @@ const TagsPage = async ({ searchParams }: SearchParams) => {
         <TagsClient
           tags={result?.tags || []}
           searchParams={resolvedSearchParams}
+          pagination={{
+            page,
+            isNext: result?.isNext || false,
+            totalTags: result?.totalTags || 0,
+          }}
         />
       </div>
     );

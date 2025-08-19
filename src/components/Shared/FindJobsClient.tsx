@@ -168,9 +168,9 @@ export default function FindJobsClient({ searchParams = {} }: FindJobsClientProp
           }`}>
             Find Your Dream Job
           </h1>
-          <p className="text-center text-sm text-gray-500 mt-2">
-  (This page is just for demo — the data shown here is not real)
-</p>
+          <p className="text-center text-sm text-gray-500 mt-2 select-none">
+            (This page is just for demo — the data shown here is not real)
+          </p>
 
           <p className={`text-lg md:text-xl mb-8 ${
             isDark ? 'text-gray-300' : 'text-gray-600'

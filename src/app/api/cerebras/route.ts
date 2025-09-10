@@ -10,7 +10,7 @@ export const POST = async (request: Request) => {
   try {
     await connectToDatabase();
     const { question } = await request.json();
-
+    console.log("Question to AI: ",question);
     if (!question?.trim()) {
       return NextResponse.json({ error: "Question is required." }, { status: 400 });
     }
@@ -28,9 +28,17 @@ export const POST = async (request: Request) => {
       ],
       max_completion_tokens: 1000,
     });
-
+    console.log("completion of answer: ",completion);
     const reply = completion.choices[0]?.message?.content || "No response";
-    return NextResponse.json({ reply });
+    console.log("Reply: ", reply);
+     return new NextResponse(JSON.stringify({ reply }), {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      },
+    });
   } catch (error: any) {
     console.error("🔥 Cerebras API Error:", error);
     return NextResponse.json(

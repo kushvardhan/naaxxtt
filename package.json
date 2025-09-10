@@ -11,6 +11,7 @@
     "audit-fix": "npm audit fix --force"
   },
   "dependencies": {
+    "@cerebras/cerebras_cloud_sdk": "^1.50.0",
     "@clerk/nextjs": "^6.19.4",
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^5.0.1",
